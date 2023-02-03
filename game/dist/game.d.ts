@@ -1,0 +1,25 @@
+/// <reference types="lichess" />
+import { GameData, Player } from './interfaces';
+export * from './interfaces';
+export declare const playable: (data: GameData) => boolean;
+export declare const isPlayerPlaying: (data: GameData) => boolean;
+export declare const isPlayerTurn: (data: GameData) => boolean;
+export declare const mandatory: (data: GameData) => boolean;
+export declare const playedTurns: (data: GameData) => number;
+export declare const bothPlayersHavePlayed: (data: GameData) => boolean;
+export declare const abortable: (data: GameData) => boolean;
+export declare const rematchable: (data: GameData) => boolean;
+export declare const takebackable: (data: GameData) => boolean;
+export declare const drawable: (data: GameData) => boolean;
+export declare const resignable: (data: GameData) => boolean;
+export declare const berserkableBy: (data: GameData) => boolean;
+export declare const moretimeable: (data: GameData) => boolean;
+export declare const replayable: (data: GameData) => boolean;
+export declare function getPlayer(data: GameData, color: Color): Player;
+export declare const hasAi: (data: GameData) => boolean;
+export declare const userAnalysable: (data: GameData) => boolean;
+export declare const isCorrespondence: (data: GameData) => boolean;
+export declare const setOnGame: (data: GameData, color: Color, onGame: boolean) => void;
+export declare const setGone: (data: GameData, color: Color, gone: number | boolean) => void;
+export declare const nbMoves: (data: GameData, color: Color) => number;
+export declare const isSwitchable: (data: GameData) => boolean;

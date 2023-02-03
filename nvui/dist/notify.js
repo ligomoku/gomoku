@@ -1,0 +1,22 @@
+import { h } from 'snabbdom';
+export class Notify {
+    constructor(redraw, timeout = 3000) {
+        this.redraw = redraw;
+        this.timeout = timeout;
+        this.set = (msg) => {
+            // make sure it's different from previous, so it gets read again
+            if (this.notification && this.notification.text == msg)
+                msg += ' ';
+            this.notification = { text: msg, date: new Date() };
+            lichess.requestIdleCallback(this.redraw, 500);
+        };
+        this.currentText = () => this.notification && this.notification.date.getTime() > Date.now() - this.timeout ? this.notification.text : '';
+        this.render = () => h('div.notify', {
+            attrs: {
+                'aria-live': 'assertive',
+                'aria-atomic': 'true',
+            },
+        }, this.currentText());
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibm90aWZ5LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vc3JjL25vdGlmeS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsQ0FBQyxFQUFFLE1BQU0sVUFBVSxDQUFDO0FBTzdCLE1BQU0sT0FBTyxNQUFNO0lBR2pCLFlBQXFCLE1BQWtCLEVBQVcsVUFBa0IsSUFBSTtRQUFuRCxXQUFNLEdBQU4sTUFBTSxDQUFZO1FBQVcsWUFBTyxHQUFQLE9BQU8sQ0FBZTtRQUV4RSxRQUFHLEdBQUcsQ0FBQyxHQUFXLEVBQUUsRUFBRTtZQUNwQixnRUFBZ0U7WUFDaEUsSUFBSSxJQUFJLENBQUMsWUFBWSxJQUFJLElBQUksQ0FBQyxZQUFZLENBQUMsSUFBSSxJQUFJLEdBQUc7Z0JBQUUsR0FBRyxJQUFJLEdBQUcsQ0FBQztZQUNuRSxJQUFJLENBQUMsWUFBWSxHQUFHLEVBQUUsSUFBSSxFQUFFLEdBQUcsRUFBRSxJQUFJLEVBQUUsSUFBSSxJQUFJLEVBQUUsRUFBRSxDQUFDO1lBQ3BELE9BQU8sQ0FBQyxtQkFBbUIsQ0FBQyxJQUFJLENBQUMsTUFBTSxFQUFFLEdBQUcsQ0FBQyxDQUFDO1FBQ2hELENBQUMsQ0FBQztRQUVGLGdCQUFXLEdBQUcsR0FBRyxFQUFFLENBQ2pCLElBQUksQ0FBQyxZQUFZLElBQUksSUFBSSxDQUFDLFlBQVksQ0FBQyxJQUFJLENBQUMsT0FBTyxFQUFFLEdBQUcsSUFBSSxDQUFDLEdBQUcsRUFBRSxHQUFHLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxZQUFZLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxFQUFFLENBQUM7UUFFbEgsV0FBTSxHQUFHLEdBQUcsRUFBRSxDQUNaLENBQUMsQ0FDQyxZQUFZLEVBQ1o7WUFDRSxLQUFLLEVBQUU7Z0JBQ0wsV0FBVyxFQUFFLFdBQVc7Z0JBQ3hCLGFBQWEsRUFBRSxNQUFNO2FBQ3RCO1NBQ0YsRUFDRCxJQUFJLENBQUMsV0FBVyxFQUFFLENBQ25CLENBQUM7SUF0QnVFLENBQUM7Q0F1QjdFIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgaCB9IGZyb20gJ3NuYWJiZG9tJztcblxudHlwZSBOb3RpZmljYXRpb24gPSB7XG4gIHRleHQ6IHN0cmluZztcbiAgZGF0ZTogRGF0ZTtcbn07XG5cbmV4cG9ydCBjbGFzcyBOb3RpZnkge1xuICBub3RpZmljYXRpb246IE5vdGlmaWNhdGlvbiB8IHVuZGVmaW5lZDtcblxuICBjb25zdHJ1Y3RvcihyZWFkb25seSByZWRyYXc6ICgpID0+IHZvaWQsIHJlYWRvbmx5IHRpbWVvdXQ6IG51bWJlciA9IDMwMDApIHt9XG5cbiAgc2V0ID0gKG1zZzogc3RyaW5nKSA9PiB7XG4gICAgLy8gbWFrZSBzdXJlIGl0J3MgZGlmZmVyZW50IGZyb20gcHJldmlvdXMsIHNvIGl0IGdldHMgcmVhZCBhZ2FpblxuICAgIGlmICh0aGlzLm5vdGlmaWNhdGlvbiAmJiB0aGlzLm5vdGlmaWNhdGlvbi50ZXh0ID09IG1zZykgbXNnICs9ICcgJztcbiAgICB0aGlzLm5vdGlmaWNhdGlvbiA9IHsgdGV4dDogbXNnLCBkYXRlOiBuZXcgRGF0ZSgpIH07XG4gICAgbGljaGVzcy5yZXF1ZXN0SWRsZUNhbGxiYWNrKHRoaXMucmVkcmF3LCA1MDApO1xuICB9O1xuXG4gIGN1cnJlbnRUZXh0ID0gKCkgPT5cbiAgICB0aGlzLm5vdGlmaWNhdGlvbiAmJiB0aGlzLm5vdGlmaWNhdGlvbi5kYXRlLmdldFRpbWUoKSA+IERhdGUubm93KCkgLSB0aGlzLnRpbWVvdXQgPyB0aGlzLm5vdGlmaWNhdGlvbi50ZXh0IDogJyc7XG5cbiAgcmVuZGVyID0gKCkgPT5cbiAgICBoKFxuICAgICAgJ2Rpdi5ub3RpZnknLFxuICAgICAge1xuICAgICAgICBhdHRyczoge1xuICAgICAgICAgICdhcmlhLWxpdmUnOiAnYXNzZXJ0aXZlJyxcbiAgICAgICAgICAnYXJpYS1hdG9taWMnOiAndHJ1ZScsXG4gICAgICAgIH0sXG4gICAgICB9LFxuICAgICAgdGhpcy5jdXJyZW50VGV4dCgpXG4gICAgKTtcbn1cbiJdfQ==
