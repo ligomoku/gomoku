@@ -1,13 +1,17 @@
 {
   "name": "ui",
-  "version": "2.0.0",
+  "version": "0.0.1",
   "private": true,
   "keywords": [
-    "chess",
-    "lichess"
+    "ligomoku",
+    "gomoku"
   ],
-  "author": "Thibault Duplessis",
-  "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": "19.0.0",
+    "yarn": "3.3.0"
+  },
+  "author": "Vitaly & Sanja",
+  "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
