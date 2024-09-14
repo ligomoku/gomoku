@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { UserplayService } from './userplay.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { UserplayService } from './userplay.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [UserplayService],
+  providers: [UserplayService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
