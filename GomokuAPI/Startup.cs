@@ -16,6 +16,7 @@ namespace GomokuAPI
             {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder.WithOrigins(_allowedDomain)
+                        .WithOrigins("https://gomoku-gi8o.onrender.com") // ToDo: put this in global env's to pass to client and server to have single source of truth
                         .WithMethods("GET", "POST")
                         .WithHeaders("content-type"));
             });
