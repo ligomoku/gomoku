@@ -1,3 +1,10 @@
+## Setup Instructions
+
+Using Makefile
+
+1.	Run `make client` in one terminal tab.
+2.	In a separate terminal tab, run `make server`.
+
 ### BACK-END:
 1) Open "Gomoku/GomokuAPI.sln" with Visual Studio 2017
 2) Open "Startup.cs" and replace "http://localhost:4200" with the domain and port where the Angular web server is running
