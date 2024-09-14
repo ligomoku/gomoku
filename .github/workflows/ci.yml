@@ -72,13 +72,19 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore GomokuAPI/GomokuAPI.sln
+        run: |
+          cd GomokuAPI
+          dotnet restore GomokuAPI/GomokuAPI.sln
 
       - name: Build C# project
-        run: dotnet build GomokuAPI/GomokuAPI.sln --configuration Release
+        run: |
+         cd GomokuAPI
+         dotnet build GomokuAPI/GomokuAPI.sln --configuration Release
 
       - name: Run tests
-        run: dotnet test GomokuAPI/GomokuAPI.sln --configuration Release
+        run: |
+          cd GomokuAPI
+          dotnet test GomokuAPI/GomokuAPI.sln --configuration Release
 
       - name: Publish artifacts
         if: success()
