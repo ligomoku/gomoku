@@ -31,7 +31,7 @@
     "@angular/cli": "~18.2.4",
     "@angular/compiler-cli": "^18.2.4",
     "@angular/language-service": "^18.2.4",
-    "@types/jasmine": "~5.1.4",
+    "@types/jasmine": "^5.1.4",
     "@types/jasminewd2": "~2.0.13",
     "@types/karma-coverage": "^2",
     "@types/node": "~22.5.5",
