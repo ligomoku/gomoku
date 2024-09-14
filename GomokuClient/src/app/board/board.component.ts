@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserplayService } from '../userplay.service';
 import { Move } from '../move';
 import { GameInfo } from '../game-info';
-import { unescapeIdentifier } from '@angular/compiler';
 
 @Component({
   selector: 'app-board',
@@ -67,7 +66,7 @@ export class BoardComponent implements OnInit {
       ,1000
     );
    }
-  
+
   ngOnInit() {  }
 
   getSquare(row: number, column: number): number {
