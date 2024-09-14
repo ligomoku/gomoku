@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://gomoku-multi.fly.dev/api'
+  apiUrl: 'https://gomoku-gi8o.onrender.com/api',
 };
