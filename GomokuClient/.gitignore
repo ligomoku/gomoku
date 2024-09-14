@@ -5,6 +5,8 @@
 /dist-server
 /tmp
 /out-tsc
+.angular
+/.angular
 
 # dependencies
 /node_modules
@@ -42,4 +44,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-.angular
