@@ -20,5 +20,4 @@ Open 2 or more separate client windows with a browser to simulate 2 or more play
 
 Each player takes turns against his opponent. The goal of the game is to occupy 5 consecutive squares in any direction. Squares that are occupied by the player are red. Squares occupied by the player opponent are blue.
 
-![alt text](screenshots/romeo.png "Screenshot from player 1 point of view")
-![alt text](screenshots/juliet.png "Screenshot from player 2 point of view")
+<img width="1292" alt="Screenshot 2024-09-14 at 15 20 10" src="https://github.com/user-attachments/assets/86d85dc2-48d5-4055-a720-13f24000dc19">
