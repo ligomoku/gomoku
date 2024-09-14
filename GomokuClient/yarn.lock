@@ -3820,13 +3820,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app-root-path@npm:^2.1.0":
-  version: 2.2.1
-  resolution: "app-root-path@npm:2.2.1"
-  checksum: 10c0/630edac4852e174290326cce1efab72a3a22bc245128969b7e2851f2a28ee594a01d2e9967a1c08c1e39e96d9e7ba79d63c7a6d3207b88a340e00593d719105e
-  languageName: node
-  linkType: hard
-
 "append-transform@npm:^0.4.0":
   version: 0.4.0
   resolution: "append-transform@npm:0.4.0"
@@ -4856,24 +4849,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"codelyzer@npm:^4.0.1":
-  version: 4.5.0
-  resolution: "codelyzer@npm:4.5.0"
-  dependencies:
-    app-root-path: "npm:^2.1.0"
-    css-selector-tokenizer: "npm:^0.7.0"
-    cssauron: "npm:^1.4.0"
-    semver-dsl: "npm:^1.0.1"
-    source-map: "npm:^0.5.7"
-    sprintf-js: "npm:^1.1.1"
-  peerDependencies:
-    "@angular/compiler": ">=2.3.1 <8.0.0 || >7.0.0-beta <8.0.0"
-    "@angular/core": ">=2.3.1 <8.0.0 || >7.0.0-beta <8.0.0"
-    tslint: ^5.0.0
-  checksum: 10c0/dba6e1d3a6b99f9c5f3f51a736c45ddb777b4b1d1d656c3fc7808006419648fce6310d32059d71c9b164f0c3883ad012dd9b78ca5f9b3c2f4d4ccace0493a70a
-  languageName: node
-  linkType: hard
-
 "collection-visit@npm:^1.0.0":
   version: 1.0.0
   resolution: "collection-visit@npm:1.0.0"
@@ -5256,29 +5231,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-selector-tokenizer@npm:^0.7.0":
-  version: 0.7.3
-  resolution: "css-selector-tokenizer@npm:0.7.3"
-  dependencies:
-    cssesc: "npm:^3.0.0"
-    fastparse: "npm:^1.1.2"
-  checksum: 10c0/bc4d14204bf5716f70085526bf370cbdd1c643dcb2e7366ba96212649fa5a07885e3f5dc2bde53646bac557ded79a60c7118cf7cf5d4dda898353a9e08277649
-  languageName: node
-  linkType: hard
-
 "css-what@npm:^6.1.0":
   version: 6.1.0
   resolution: "css-what@npm:6.1.0"
   checksum: 10c0/a09f5a6b14ba8dcf57ae9a59474722e80f20406c53a61e9aedb0eedc693b135113ffe2983f4efc4b5065ae639442e9ae88df24941ef159c218b231011d733746
-  languageName: node
-  linkType: hard
-
-"cssauron@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "cssauron@npm:1.4.0"
-  dependencies:
-    through: "npm:X.X.X"
-  checksum: 10c0/844827f577049ba6a93637ce224c9529b901eaf9bfe718bfba4cbcc831a5360e64b94c1db84353ddc340e6d4e2673e110fa0e77a1863aa01018259bf52237cc8
   languageName: node
   linkType: hard
 
@@ -6373,13 +6329,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastparse@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "fastparse@npm:1.1.2"
-  checksum: 10c0/c08d6e7ef10c0928426c1963dd4593e2baaf44d223ab1e5ba5d7b30470144b3a4ecb3605958b73754cea3f857ecef00b67c885f07ca2c312b38b67d9d88b84b5
-  languageName: node
-  linkType: hard
-
 "fastq@npm:^1.6.0":
   version: 1.17.1
   resolution: "fastq@npm:1.17.1"
@@ -6897,7 +6846,6 @@ __metadata:
     "@types/jasmine": "npm:~2.8.3"
     "@types/jasminewd2": "npm:~2.0.2"
     "@types/node": "npm:~22.5.5"
-    codelyzer: "npm:^4.0.1"
     core-js: "npm:^2.4.1"
     jasmine-core: "npm:~2.8.0"
     jasmine-spec-reporter: "npm:~4.2.1"
@@ -11252,15 +11200,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver-dsl@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "semver-dsl@npm:1.0.1"
-  dependencies:
-    semver: "npm:^5.3.0"
-  checksum: 10c0/28d9640a2a1acf4c6ef28d413ac94516b5654a514e74decf03d9fd27241a10054c6dbd8e38ddf018dd5e4f21d2a99cc5463f007a57a3163cbeb41ebc3c12597e
-  languageName: node
-  linkType: hard
-
 "semver@npm:5.5.x":
   version: 5.5.1
   resolution: "semver@npm:5.5.1"
@@ -11844,7 +11783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sprintf-js@npm:^1.1.1, sprintf-js@npm:^1.1.3":
+"sprintf-js@npm:^1.1.3":
   version: 1.1.3
   resolution: "sprintf-js@npm:1.1.3"
   checksum: 10c0/09270dc4f30d479e666aee820eacd9e464215cdff53848b443964202bf4051490538e5dd1b42e1a65cf7296916ca17640aebf63dae9812749c7542ee5f288dec
@@ -12166,13 +12105,6 @@ __metadata:
   peerDependencies:
     tslib: ^2
   checksum: 10c0/7570ee855aecb73185a672ecf3eb1c287a6512bf5476449388433b2d4debcf78100bc8bfd439b0edd38d2bc3bfb8341de5ce85b8557dec66d0f27b962c9a8bc1
-  languageName: node
-  linkType: hard
-
-"through@npm:X.X.X":
-  version: 2.3.8
-  resolution: "through@npm:2.3.8"
-  checksum: 10c0/4b09f3774099de0d4df26d95c5821a62faee32c7e96fb1f4ebd54a2d7c11c57fe88b0a0d49cf375de5fee5ae6bf4eb56dbbf29d07366864e2ee805349970d3cc
   languageName: node
   linkType: hard
 
