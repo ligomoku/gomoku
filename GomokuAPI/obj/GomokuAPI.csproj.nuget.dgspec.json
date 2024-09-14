@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/kuprins/Desktop/Coding/gomoku/Gomoku/GomokuAPI/GomokuAPI.csproj": {}
+  },
+  "projects": {
+    "/Users/kuprins/Desktop/Coding/gomoku/Gomoku/GomokuAPI/GomokuAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/kuprins/Desktop/Coding/gomoku/Gomoku/GomokuAPI/GomokuAPI.csproj",
+        "projectName": "GomokuAPI",
+        "projectPath": "/Users/kuprins/Desktop/Coding/gomoku/Gomoku/GomokuAPI/GomokuAPI.csproj",
+        "packagesPath": "/Users/kuprins/.nuget/packages/",
+        "outputPath": "/Users/kuprins/Desktop/Coding/gomoku/Gomoku/GomokuAPI/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/kuprins/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.0": {
+            "targetAlias": "netcoreapp2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.0": {
+          "targetAlias": "netcoreapp2.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.All": {
+              "target": "Package",
+              "version": "[2.0.5, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

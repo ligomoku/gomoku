@@ -1,0 +1,16 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <div>
+    <input [(ngModel)]="player" placeholder="Player Name" [disabled]="disabled">
+    <button (click)="addPlayer();" [disabled]="disabled">Submit</button>
+    <div *ngIf="nameNotValid" class="error-message">{{errorMessage}}</div>
+  </div>
+  <br/>
+  <div class="board">
+    <app-board [player]="player" [nameInserted]="nameInserted"></app-board>
+  </div>
+  <br/>
+</div>
+

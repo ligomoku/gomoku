@@ -1,0 +1,13 @@
+<div *ngIf="knownOpponentName">Your opponent is {{opponentName}}</div>
+<div *ngIf="winner" class="winner">{{winnerMessage}}</div>
+<table border="1">
+  <tr *ngFor="let row of board; let rowIndex = index">
+    <td *ngFor="let cell of row; let columnIndex = index" (click)="userPlayed(rowIndex,columnIndex);">
+      <div [class.circle]="getSquare(rowIndex, columnIndex) > 0" 
+        [class.red]="getSquare(rowIndex, columnIndex) == 1"
+        [class.dark-red]="getSquare(rowIndex, columnIndex) == 3"
+        [class.blue]="getSquare(rowIndex, columnIndex) == 2"
+        [class.dark-blue]="getSquare(rowIndex, columnIndex) == 4"></div>
+    </td>
+  </tr>
+</table>
