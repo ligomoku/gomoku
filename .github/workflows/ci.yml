@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build_node:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,12 +39,12 @@ jobs:
           cd GomokuClient
           yarn install
 
-#      - name: Run tests
-#        run: |
-#          cd GomokuClient
-#          node --stack-size=8192 $(which yarn) test --watch=false --browsers=ChromeHeadless
-#        env:
-#          CHROME_BIN: /usr/bin/chromium-browser
+      #      - name: Run tests
+      #        run: |
+      #          cd GomokuClient
+      #          node --stack-size=8192 $(which yarn) test --watch=false --browsers=ChromeHeadless
+      #        env:
+      #          CHROME_BIN: /usr/bin/chromium-browser
 
       - name: Build project
         run: |
@@ -57,3 +57,32 @@ jobs:
         with:
           name: production-artifacts
           path: GomokuClient/dist/
+
+  # C# build job
+  build_csharp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore GomokuAPI/GomokuAPI.sln
+
+      - name: Build C# project
+        run: dotnet build GomokuAPI/GomokuAPI.sln --configuration Release
+
+      - name: Run tests
+        run: dotnet test GomokuAPI/GomokuAPI.sln --configuration Release
+
+      - name: Publish artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: csharp-build-artifacts
+          path: GomokuAPI/bin/Release/net8.0/
