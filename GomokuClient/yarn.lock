@@ -376,10 +376,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:~6.0.60":
-  version: 6.0.118
-  resolution: "@types/node@npm:6.0.118"
-  checksum: 10c0/a74740bb43f60422acefb669a4cf1984695ee5c69e1d59882b587e9698cc459999315671cf4cdd48461c71f91aa51c4c4b69417723f55c87272e4480aded700a
+"@types/node@npm:~22.5.5":
+  version: 22.5.5
+  resolution: "@types/node@npm:22.5.5"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: 10c0/ead9495cfc6b1da5e7025856dcce2591e9bae635357410c0d2dd619fce797d2a1d402887580ca4b336cb78168b195224869967de370a23f61663cf1e4836121c
   languageName: node
   linkType: hard
 
@@ -4696,7 +4698,7 @@ __metadata:
     "@angular/router": "npm:^5.2.0"
     "@types/jasmine": "npm:~2.8.3"
     "@types/jasminewd2": "npm:~2.0.2"
-    "@types/node": "npm:~6.0.60"
+    "@types/node": "npm:~22.5.5"
     codelyzer: "npm:^4.0.1"
     core-js: "npm:^2.4.1"
     jasmine-core: "npm:~2.8.0"
@@ -4710,7 +4712,7 @@ __metadata:
     rxjs: "npm:^5.5.6"
     ts-node: "npm:~4.1.0"
     tslint: "npm:~5.9.1"
-    typescript: "npm:~2.5.3"
+    typescript: "npm:~5.6.2"
     zone.js: "npm:^0.8.19"
   languageName: unknown
   linkType: soft
@@ -11072,16 +11074,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~2.5.3":
-  version: 2.5.3
-  resolution: "typescript@npm:2.5.3"
-  bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 10c0/56092000fa36c9af67e2be79722e95e72c35450dba3e830afae602d38c009af18d1aed07bf545dee446adb598812612acd73abd81955687b65343632fa159a1b
-  languageName: node
-  linkType: hard
-
 "typescript@npm:~2.6.2":
   version: 2.6.2
   resolution: "typescript@npm:2.6.2"
@@ -11092,13 +11084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A~2.5.3#optional!builtin<compat/typescript>":
-  version: 2.5.3
-  resolution: "typescript@patch:typescript@npm%3A2.5.3#optional!builtin<compat/typescript>::version=2.5.3&hash=3bafbf"
+"typescript@npm:~5.6.2":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
   bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 10c0/aaf016a1f934cb088930e7b5ffeea9a1d910aba4df5a5e8ff89f6bc742da6776f860ac9deebb74849466462b5c73f4392aeb0a0d806d8d8fd813652e38ae761f
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
   languageName: node
   linkType: hard
 
@@ -11109,6 +11101,16 @@ __metadata:
     tsc: ./bin/tsc
     tsserver: ./bin/tsserver
   checksum: 10c0/632791700f20be18e5b8af734aa826d0dc7d268204db4a37192b116c35a4a9eaaca13f65045909739da08fcc628bdd7497c3201d869150cb25a093f8d0f722f0
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A~5.6.2#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/94eb47e130d3edd964b76da85975601dcb3604b0c848a36f63ac448d0104e93819d94c8bdf6b07c00120f2ce9c05256b8b6092d23cf5cf1c6fa911159e4d572f
   languageName: node
   linkType: hard
 
@@ -11229,6 +11231,13 @@ __metadata:
   version: 1.7.0
   resolution: "underscore@npm:1.7.0"
   checksum: 10c0/03d6d187c88031c8bf6fada822f43e956974b87dfd37232960e637dc10036968596b644ba4a65bdf09390493eff121d780e276c016addea6e2b3d5b6dd848696
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
   languageName: node
   linkType: hard
 
