@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
-  "exclude": ["src/**/*.spec.ts", "src/test.ts"],
+  "target": "es2017", // Ensure this is at least 'es2017'
+  "module": "esnext", // Optional: can be 'esnext' or 'commonjs'
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
