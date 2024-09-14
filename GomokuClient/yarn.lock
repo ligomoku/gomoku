@@ -5114,10 +5114,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^2.2.0, core-js@npm:^2.4.0, core-js@npm:^2.4.1":
+"core-js@npm:^2.2.0, core-js@npm:^2.4.0":
   version: 2.6.12
   resolution: "core-js@npm:2.6.12"
   checksum: 10c0/00128efe427789120a06b819adc94cc72b96955acb331cb71d09287baf9bd37bebd191d91f1ee4939c893a050307ead4faea08876f09115112612b6a05684b63
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.38.1":
+  version: 3.38.1
+  resolution: "core-js@npm:3.38.1"
+  checksum: 10c0/7df063b6f13a54e46515817ac3e235c6c598a4d3de65cd188a061fc250642be313b895fb9fb2f36e1e31890a1bb4ef61d82666a340413f540b7ce3c65689739b
   languageName: node
   linkType: hard
 
@@ -6846,7 +6853,7 @@ __metadata:
     "@types/jasmine": "npm:~2.8.3"
     "@types/jasminewd2": "npm:~2.0.2"
     "@types/node": "npm:~22.5.5"
-    core-js: "npm:^2.4.1"
+    core-js: "npm:^3.38.1"
     jasmine-core: "npm:~2.8.0"
     jasmine-spec-reporter: "npm:~4.2.1"
     karma: "npm:~2.0.0"
@@ -6858,7 +6865,7 @@ __metadata:
     rxjs: "npm:^7.8.1"
     ts-node: "npm:~10.9.2"
     typescript: "npm:~5.4.3"
-    zone.js: "npm:^0.8.19"
+    zone.js: "npm:^0.15.0"
   languageName: unknown
   linkType: soft
 
@@ -13269,9 +13276,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zone.js@npm:^0.8.19":
-  version: 0.8.29
-  resolution: "zone.js@npm:0.8.29"
-  checksum: 10c0/301716b997b5221aee98d1bafa067b410c368f7a5494b1b327d0c7c3824f3d34b02a37ab56981eb2871a80ed7fdc915497878414aaf1f0f1f4a82b5d094aba72
+"zone.js@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "zone.js@npm:0.15.0"
+  checksum: 10c0/981b664c1978759a2854f6e6692d245d1d6334c6b20b7e2e5fa9b60eed74743b29c6a71f7472dc6d2790ab53d67e30475bcd92b9f7664e50aef8bbcd40379552
   languageName: node
   linkType: hard
