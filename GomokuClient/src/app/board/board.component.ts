@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UserplayService } from '../userplay.service';
 import { Move } from '../move';
 import { GameInfo } from '../game-info';
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: 'app-board',
@@ -13,6 +14,9 @@ export class BoardComponent implements OnInit {
   @Input() nameInserted: boolean;
 
   board: number[][] = [];
+  dataSource = new MatTableDataSource<number[]>();
+  columns: string[] = [];
+
   size: number = 19;
   goal: number = 5;
   gameId: number = 1;
@@ -24,48 +28,42 @@ export class BoardComponent implements OnInit {
   winnerMessage: string = "";
 
   constructor(private userplayService: UserplayService) {
-    for (let i:number = 0; i < this.size; i++) {
-      this.board[i] = [];
-      for (let j:number = 0; j < this.size; j++) {
-        this.board[i][j] = 0;
-      }
+    // Initialize the board with default values
+    for (let i: number = 0; i < this.size; i++) {
+      this.board[i] = Array(this.size).fill(0);
     }
 
-    userplayService.getGameInfo().subscribe(gameInfo => {
+    // Define columns based on board size
+    this.columns = Array.from({ length: this.size }, (_, i) => `${i}`);
+    this.dataSource.data = this.board;
+
+    userplayService.getGameInfo().subscribe((gameInfo: GameInfo) => {
       this.gameId = gameInfo.gameId;
       this.myTurn = gameInfo.yourTurn;
       this.gameStarted = true;
       console.log("Game number " + this.gameId);
     });
 
-    setInterval(
-      () => {
-        if (!this.gameStarted)
-          return;
-        userplayService.getLastMove(this.gameId).subscribe(move => {
-          console.log(move);
-          console.log(move.gameId + " " + this.gameId);
-          if (move.gameId != this.gameId)
-            return;
-          if (this.board[move.row][move.column])
-            return;
-          if (move.player) {
-              console.log(move.player);
-              this.opponentName = move.player;
-              this.knownOpponentName = true;
-            }
-          this.board[move.row][move.column] = 2;
-          if (this.isWinner(move.row, move.column)) {
-            this.winnerMessage = "You lost!";
-            this.winner = true;
-            this.gameStarted = false;
-          };
-          this.myTurn = true;
-        });
-      }
-      ,1000
-    );
-   }
+    setInterval(() => {
+      if (!this.gameStarted) return;
+      userplayService.getLastMove(this.gameId).subscribe((move: Move) => {
+        console.log(move);
+        if (move.gameId != this.gameId) return;
+        if (this.board[move.row][move.column]) return;
+        if (move.player) {
+          this.opponentName = move.player;
+          this.knownOpponentName = true;
+        }
+        this.board[move.row][move.column] = 2;
+        if (this.isWinner(move.row, move.column)) {
+          this.winnerMessage = "You lost!";
+          this.winner = true;
+          this.gameStarted = false;
+        }
+        this.myTurn = true;
+      });
+    }, 1000);
+  }
 
   ngOnInit() {  }
 
