@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace GomokuAPI
 {
     public class Startup
     {
-        private const string _allowedDomain = "http://localhost:4200";
+        private const string _allowedVercelDomain = "https://gomoku-ruddy.vercel.app";
+        private const string _allowedRenderDomain = "https://gomoku-gi8o.onrender.com"; // Optional: for server-to-server requests if needed.
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -14,16 +16,24 @@ namespace GomokuAPI
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins(_allowedDomain)
-                        .WithOrigins("https://gomoku-gi8o.onrender.com") // ToDo: put this in global env's to pass to client and server to have single source of truth
-                        .WithMethods("GET", "POST")
-                        .WithHeaders("content-type"));
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder
+                        .WithOrigins(_allowedVercelDomain)
+                        .WithMethods("GET", "POST", "PUT", "DELETE")
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
             });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseRouting();
 
             app.UseCors("AllowSpecificOrigin");
