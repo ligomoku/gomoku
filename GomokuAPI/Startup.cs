@@ -10,20 +10,27 @@ namespace GomokuAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddControllers();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
                     builder => builder.WithOrigins(_allowedDomain)
-                    .WithMethods("GET", "POST")
-                    .WithHeaders("content-type"));
+                        .WithMethods("GET", "POST")
+                        .WithHeaders("content-type"));
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMvc();
+            app.UseRouting();
+
             app.UseCors("AllowSpecificOrigin");
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

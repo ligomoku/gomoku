@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "GomokuAPI/1.0.0": {
+        "runtime": {
+          "GomokuAPI.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GomokuAPI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

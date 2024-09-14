@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "7O+o01ur9VjG4kX38tSQxHEoA1uG6rz0zm+6a9kMUTI=",
+  "Source": "GomokuAPI",
+  "BasePath": "_content/GomokuAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
