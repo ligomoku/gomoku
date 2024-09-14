@@ -1,37 +1,37 @@
-mat-cell {
-  height: 20px;
-  width: 20px;
+td {
+    height: 20px;
+    width: 20px;
 }
 
-mat-table {
-  border-collapse: collapse;
-  width: 500px;
-  margin: 0 auto;
+table {
+    border-collapse: collapse;
+    width: 500px;
+    margin: 0 auto;
 }
 
 .circle {
-  width: 75%;
-  height: 75%;
-  border-radius: 100%;
-  margin: 0 auto;
+    width: 75%;
+    height: 75%;
+    border-radius: 100%;
+    margin: 0 auto;
 }
 
 .red {
-  background-color: red;
+    background-color: red;
 }
 
 .dark-red {
-  background-color: darkred;
+    background-color: darkred;
 }
 
 .blue {
-  background-color: lightblue;
+    background-color: lightblue;
 }
 
 .dark-blue {
-  background-color: blue;
+    background-color: blue;
 }
 
 .winner {
-  color: red;
+    color: red;
 }
