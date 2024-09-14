@@ -1,0 +1,56 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.11.0'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            .yarn/cache
+          key: ${{ runner.os }}-node-${{ hashFiles('**/GomokuClient/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd GomokuClient
+          yarn install
+
+      - name: Run tests
+        run: |
+          cd GomokuClient
+          yarn test --watch=false --browsers=ChromeHeadlessCI
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+
+      - name: Build project
+        run: |
+          cd GomokuClient
+          yarn build --configuration production
+
+      - name: Archive production artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-artifacts
+          path: GomokuClient/dist/  # Adjust this path based on the Angular output directory
