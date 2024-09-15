@@ -8,10 +8,12 @@ builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(CorsPolicyName.GomokuLocalhostClient,
-		builder => builder.WithOrigins("http://localhost:4200")
-			.WithMethods("GET", "POST")
-			.WithHeaders("content-type"));
-}); ;
+		builder => builder
+			.WithOrigins("http://localhost:4200")
+			.WithMethods("GET", "POST", "PUT", "DELETE")
+			.AllowAnyHeader()
+			.AllowCredentials());
+});
 
 var app = builder.Build();
 
