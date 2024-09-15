@@ -1,4 +1,4 @@
-DOTNET_PROJECT = GomokuAPI/GomokuAPI.sln
+API_PROJECT = GomokuServer/src/GomokuServer.Api
 CLIENT_DIR = GomokuClient
 
 .PHONY: all dev server client clean
@@ -9,7 +9,7 @@ dev: server client
 
 server:
 	@echo "Starting C# server..."
-	@cd GomokuAPI && dotnet run
+	@cd $(API_PROJECT) && dotnet run --configuration Release
 
 client:
 	@echo "Starting Node.js client..."
@@ -17,5 +17,5 @@ client:
 
 clean:
 	@echo "Cleaning build artifacts..."
-	@cd GomokuAPI && dotnet clean
+	@cd GomokuServer && dotnet clean
 	@cd $(CLIENT_DIR) && yarn clean

@@ -2,15 +2,17 @@
 
 Using Makefile
 
-1.	Run `make client` in one terminal tab.
-2.	In a separate terminal tab, run `make server`.
+1. Run `make client` in one terminal tab.
+2. In a separate terminal tab, run `make server`.
 
 ### BACK-END:
-1) Open "Gomoku/GomokuAPI.sln" with Visual Studio 2017
-2) Open "Startup.cs" and replace "http://localhost:4200" with the domain and port where the Angular web server is running
+
+1) Open "Gomoku/GomokuServer/GomokuServer.sln" with Visual Studio 2022
+2) Open "Program.cs" and replace "http://localhost:4200" with the domain and port where the Angular web server is running
 3) Build and Start
 
 ### FRONT-END:
+
 1) Open "GomokuClient\src\app\userplay.service.ts" and replace "http://localhost:62411/api/game" with the URL where the C# service is running
 2) Open "GomokuClient" in console
 3) Run "npm install"
