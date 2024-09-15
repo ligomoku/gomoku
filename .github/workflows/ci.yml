@@ -62,7 +62,7 @@ jobs:
   build_csharp:
     runs-on: ubuntu-latest
     env:
-      WORKING_DIR: GomokuServer
+      SERVER_DIR: GomokuServer
 
     steps:
       - name: Checkout repository
@@ -75,15 +75,15 @@ jobs:
 
       - name: Build C# project
         run: dotnet build --configuration Release
-        working-directory: ${{ env.WORKING_DIR }}
+        working-directory: ${{ env.SERVER_DIR }}
 
       - name: Run tests
         run: dotnet test --configuration Release
-        working-directory: ${{ env.WORKING_DIR }}
+        working-directory: ${{ env.SERVER_DIR }}
 
       - name: Publish artifacts
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: csharp-build-artifacts
-          path: ${{ env.WORKING_DIR }}/src/GomokuServer.Api/bin/Release/net8.0/
+          path: ${{ env.SERVER_DIR }}/src/GomokuServer.Api/bin/Release/net8.0/
