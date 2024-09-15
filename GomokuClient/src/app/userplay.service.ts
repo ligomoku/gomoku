@@ -3,8 +3,9 @@ import { Move } from './move';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { GameInfo } from './game-info';
+import { environment } from "../environments/environment";
 
-const apiURI: string = 'http://localhost:62411/api/game/';
+const apiURI: string = `${environment.apiUrl}/game/`;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
