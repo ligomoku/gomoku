@@ -3,9 +3,11 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GomokuServer.Api.Controllers;
+namespace GomokuServer.Api.Controllers.v1;
 
-[Route("api/[controller]")]
+[ApiController]
+[ApiVersion("1.0")]
+[Route("api/v1/[Controller]")]
 [EnableCors(CorsPolicyName.GomokuClient)]
 public class GameController : Controller
 {

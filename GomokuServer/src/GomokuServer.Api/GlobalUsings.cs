@@ -1,1 +1,3 @@
-﻿global using GomokuServer.Api.Constants;
+﻿global using Asp.Versioning;
+
+global using GomokuServer.Api.Constants;
