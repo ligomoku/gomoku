@@ -61,6 +61,8 @@ jobs:
   # C# build job
   build_csharp:
     runs-on: ubuntu-latest
+    env:
+      SERVER_DIR: GomokuServer
 
     steps:
       - name: Checkout repository
@@ -71,21 +73,17 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Navigate to GomokuAPI Directory
-        run: cd GomokuAPI
-
-      - name: Restore dependencies
-        run: dotnet restore GomokuAPI.sln
-
       - name: Build C# project
-        run: dotnet build GomokuAPI.sln --configuration Release
+        run: dotnet build --configuration Release
+        working-directory: ${{ env.SERVER_DIR }}
 
       - name: Run tests
-        run: dotnet test GomokuAPI.sln --configuration Release
+        run: dotnet test --configuration Release
+        working-directory: ${{ env.SERVER_DIR }}
 
       - name: Publish artifacts
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: csharp-build-artifacts
-          path: GomokuAPI/bin/Release/net8.0/
+          path: ${{ env.SERVER_DIR }}/src/GomokuServer.Api/bin/Release/net8.0/
