@@ -75,13 +75,13 @@ jobs:
         run: cd GomokuServer
 
       - name: Restore dependencies
-        run: dotnet restore GomokuServer.sln
+        run: dotnet restore
 
       - name: Build C# project
-        run: dotnet build src/GomokuServer.Api.csproj --configuration Release
+        run: dotnet build --configuration Release
 
       - name: Run tests
-        run: dotnet test GomokuServer.sln --configuration Release
+        run: dotnet test --configuration Release
 
       - name: Publish artifacts
         if: success()
