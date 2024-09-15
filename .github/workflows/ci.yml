@@ -71,21 +71,21 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Navigate to GomokuAPI Directory
-        run: cd GomokuAPI
+      - name: Navigate to GomokuServer Directory
+        run: cd GomokuServer
 
       - name: Restore dependencies
-        run: dotnet restore GomokuAPI.sln
+        run: dotnet restore GomokuServer.sln
 
       - name: Build C# project
-        run: dotnet build GomokuAPI.sln --configuration Release
+        run: dotnet build src/GomokuServer.Api.csproj --configuration Release
 
       - name: Run tests
-        run: dotnet test GomokuAPI.sln --configuration Release
+        run: dotnet test GomokuServer.sln --configuration Release
 
       - name: Publish artifacts
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: csharp-build-artifacts
-          path: GomokuAPI/bin/Release/net8.0/
+          path: GomokuServer/bin/Release/net8.0/
