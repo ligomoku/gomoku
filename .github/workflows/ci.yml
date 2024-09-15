@@ -74,9 +74,6 @@ jobs:
       - name: Navigate to GomokuServer Directory
         run: cd GomokuServer
 
-      - name: Restore dependencies
-        run: dotnet restore
-
       - name: Build C# project
         run: dotnet build --configuration Release
 
