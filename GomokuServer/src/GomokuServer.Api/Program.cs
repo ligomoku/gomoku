@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen(options =>
 		{
 			Title = $"Gomoku API v{description.ApiVersion}",
 			Version = description.ApiVersion.ToString(),
-			Description = description.IsDeprecated ? "This API version is deprecated." : ""
+			Description = description.IsDeprecated ? "This API version is deprecated" : ""
 		});
 	}
 });
