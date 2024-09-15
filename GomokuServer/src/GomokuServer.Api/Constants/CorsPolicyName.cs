@@ -2,5 +2,5 @@
 
 public static class CorsPolicyName
 {
-	public const string GomokuLocalhostClient = nameof(GomokuLocalhostClient);
+	public const string GomokuClient = nameof(GomokuClient);
 }

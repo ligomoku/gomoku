@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GomokuServer.Api.Controllers;
 
 [Route("api/[controller]")]
-[EnableCors(CorsPolicyName.GomokuLocalhostClient)]
+[EnableCors(CorsPolicyName.GomokuClient)]
 public class GameController : Controller
 {
 	private static object _lockObject = new object();

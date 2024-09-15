@@ -7,9 +7,12 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy(CorsPolicyName.GomokuLocalhostClient,
+	var localhostUrl = "http://localhost:4200";
+	var vercelUrl = "https://gomoku-ruddy.vercel.app";
+
+	options.AddPolicy(CorsPolicyName.GomokuClient,
 		builder => builder
-			.WithOrigins("http://localhost:4200")
+			.WithOrigins(localhostUrl, vercelUrl)
 			.WithMethods("GET", "POST", "PUT", "DELETE")
 			.AllowAnyHeader()
 			.AllowCredentials());
@@ -23,7 +26,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-app.UseCors(CorsPolicyName.GomokuLocalhostClient);
+app.UseCors(CorsPolicyName.GomokuClient);
 app.MapControllers();
 
 app.Run();
