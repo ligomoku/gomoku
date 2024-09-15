@@ -61,6 +61,8 @@ jobs:
   # C# build job
   build_csharp:
     runs-on: ubuntu-latest
+    env:
+      WORKING_DIR: GomokuServer
 
     steps:
       - name: Checkout repository
@@ -71,14 +73,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Navigate to GomokuServer Directory
-        run: cd GomokuServer
-
       - name: Build C# project
         run: dotnet build --configuration Release
+        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Run tests
         run: dotnet test --configuration Release
+        working-directory: ${{ env.WORKING_DIR }}
 
       - name: Publish artifacts
         if: success()
