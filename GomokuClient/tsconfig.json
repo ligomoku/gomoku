@@ -1,17 +1,7 @@
 {
-  "compileOnSave": false,
-  "target": "es2017", // Ensure this is at least 'es2017'
-  "module": "esnext", // Optional: can be 'esnext' or 'commonjs'
-  "exclude": ["src/test.ts", "src/**/*.spec.ts"],
-  "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "ES2022",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom"]
-  }
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

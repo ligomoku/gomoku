@@ -13,7 +13,7 @@ server:
 
 client:
 	@echo "Starting Node.js client..."
-	@cd $(CLIENT_DIR) && yarn install && yarn start
+	@cd $(CLIENT_DIR) && yarn install && yarn dev
 
 clean:
 	@echo "Cleaning build artifacts..."
