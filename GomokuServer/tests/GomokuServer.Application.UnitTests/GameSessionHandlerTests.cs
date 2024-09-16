@@ -1,8 +1,6 @@
-using GomokuServer.Core.Validation;
-
 namespace GomokuServer.Application.UnitTests;
 
-public class Tests
+public class GameSessionHandlerTests
 {
 	private IGameRepository _gameRepository;
 	private IPlayersRepository _playersRepository;
