@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 import { Board } from "./components/Board";
+import { client } from "./api/client";
+
+client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 const App = () => {
   const [player, setPlayer] = useState<string>("");

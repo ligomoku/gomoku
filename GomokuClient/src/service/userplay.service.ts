@@ -7,7 +7,7 @@ import {
   PostApiV1GameData,
 } from "../api/client";
 
-class UserplayService {
+const UserplayService = {
   async getGameInfo(): Promise<GetApiV1GameResponse | undefined> {
     console.log("Getting game info");
     try {
@@ -18,7 +18,7 @@ class UserplayService {
       console.error("Error fetching game info:", error);
       throw error;
     }
-  }
+  },
 
   async userPlayed(move: PostApiV1GameData["body"]): Promise<void> {
     try {
@@ -31,7 +31,7 @@ class UserplayService {
     } catch (error) {
       console.error("Error posting move:", error);
     }
-  }
+  },
 
   async getLastMove(
     gameId: number,
@@ -50,4 +50,4 @@ class UserplayService {
   }
 }
 
-export default new UserplayService();
+export default UserplayService;
