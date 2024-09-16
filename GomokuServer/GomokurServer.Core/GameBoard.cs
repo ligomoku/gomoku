@@ -19,7 +19,7 @@ public class GameBoard
 		{
 			return new()
 			{
-				IsPlacementValid = false,
+				IsValid = false,
 				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
 			};
 		}
@@ -28,7 +28,7 @@ public class GameBoard
 		{
 			return new()
 			{
-				IsPlacementValid = false,
+				IsValid = false,
 				ValidationError = TilePlacementValidationError.TileIndexOutOfTheBoardRange
 			};
 		}
@@ -37,7 +37,7 @@ public class GameBoard
 		{
 			return new()
 			{
-				IsPlacementValid = false,
+				IsValid = false,
 				ValidationError = TilePlacementValidationError.TileAlreadyOcupied
 			};
 		}
@@ -48,7 +48,7 @@ public class GameBoard
 		return new()
 		{
 			WinnerId = CalculateWinner(tile, playerId),
-			IsPlacementValid = true,
+			IsValid = true,
 		};
 	}
 

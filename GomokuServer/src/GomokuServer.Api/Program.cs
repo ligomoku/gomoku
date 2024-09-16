@@ -1,5 +1,3 @@
-using Asp.Versioning.ApiExplorer;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -45,17 +43,21 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
+builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
+builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();
+
 var app = builder.Build();
 
-	app.UseSwagger();
-	app.UseSwaggerUI(options =>
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+	var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+	foreach (var description in provider.ApiVersionDescriptions)
 	{
-		var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-		foreach (var description in provider.ApiVersionDescriptions)
-		{
-			options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-		}
-	});
+		options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+	}
+});
 
 app.UseCors(CorsPolicyName.GomokuClient);
 app.MapControllers();

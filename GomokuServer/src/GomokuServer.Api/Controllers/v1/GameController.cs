@@ -1,8 +1,5 @@
 ﻿using GomokuServer.Api.Core;
 
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
-
 namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]

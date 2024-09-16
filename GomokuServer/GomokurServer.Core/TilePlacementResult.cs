@@ -2,7 +2,7 @@
 
 public class TilePlacementResult
 {
-	public bool IsPlacementValid { get; init; }
+	public bool IsValid { get; init; }
 
 	public TilePlacementValidationError? ValidationError { get; init; }
 

@@ -30,7 +30,7 @@ public class GameTests
 		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
-		result.IsPlacementValid.Should().BeTrue();
+		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().BeNull();
 	}
 
@@ -44,7 +44,7 @@ public class GameTests
 		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
-		result.IsPlacementValid.Should().BeFalse();
+		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.TileIndexOutOfTheBoardRange);
 	}
 
@@ -59,8 +59,8 @@ public class GameTests
 		var secondPlacement = _game.PlaceTile(tile, _game.PlayerTwo.Id);
 
 		// Assert
-		firstPlacement.IsPlacementValid.Should().BeTrue();
-		secondPlacement.IsPlacementValid.Should().BeFalse();
+		firstPlacement.IsValid.Should().BeTrue();
+		secondPlacement.IsValid.Should().BeFalse();
 		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.TileAlreadyOcupied);
 	}
 
@@ -75,8 +75,8 @@ public class GameTests
 		var secondPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
-		firstPlacement.IsPlacementValid.Should().BeTrue();
-		secondPlacement.IsPlacementValid.Should().BeFalse();
+		firstPlacement.IsValid.Should().BeTrue();
+		secondPlacement.IsValid.Should().BeFalse();
 		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.SamePlayerMadeSecondMoveInARow);
 	}
 
@@ -94,7 +94,7 @@ public class GameTests
 		var result = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne.Id);
 
 		// Assert
-		result.IsPlacementValid.Should().BeTrue();
+		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
 	}
 
@@ -112,7 +112,7 @@ public class GameTests
 		var result = _game.PlaceTile(new Tile(7, 4), _game.PlayerOne.Id);
 
 		// Assert
-		result.IsPlacementValid.Should().BeTrue();
+		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
 	}
 
@@ -133,7 +133,7 @@ public class GameTests
 		var result = _game.PlaceTile(new Tile(4, 4), _game.PlayerOne.Id);
 
 		// Assert
-		result.IsPlacementValid.Should().BeTrue();
+		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
 	}
 
