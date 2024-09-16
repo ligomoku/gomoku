@@ -49,7 +49,7 @@ jobs:
       - name: Build project
         run: |
           cd GomokuClient
-          yarn build --configuration production
+          yarn build
 
       - name: Archive production artifacts
         if: success()
