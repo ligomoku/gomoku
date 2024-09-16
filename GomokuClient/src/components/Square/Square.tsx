@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import styles from './Square.module.scss';
+import { memo } from "react";
+import styles from "./Square.module.scss";
 
 interface SquareProps {
   row: number;
@@ -20,12 +20,12 @@ const Square = ({ row, col, value, onClick }: SquareProps) => {
   if (col === 18) cellClasses.push(styles.col18);
 
   const pieceClasses = [styles.piece];
-  if (value === 'black') pieceClasses.push(styles.black);
-  if (value === 'white') pieceClasses.push(styles.white);
+  if (value === "black") pieceClasses.push(styles.black);
+  if (value === "white") pieceClasses.push(styles.white);
 
   return (
-    <div className={cellClasses.join(' ')} onClick={handleSquareClick}>
-      <div className={pieceClasses.join(' ')} />
+    <div className={cellClasses.join(" ")} onClick={handleSquareClick}>
+      <div className={pieceClasses.join(" ")} />
     </div>
   );
 };

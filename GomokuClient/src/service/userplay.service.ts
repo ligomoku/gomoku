@@ -47,7 +47,7 @@ const UserplayService = {
       console.error("Error fetching last move:", error);
       throw error;
     }
-  }
-}
+  },
+};
 
 export default UserplayService;
