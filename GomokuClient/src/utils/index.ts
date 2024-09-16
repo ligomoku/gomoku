@@ -5,17 +5,14 @@ const countTotal = (
   currentY: number,
   currentX: number,
   directionY: number,
-  directionX: number
+  directionX: number,
 ): number => {
   const now = board[currentY][currentX];
   let total = 0;
 
   for (
     let tempY = currentY + directionY, tempX = currentX + directionX;
-    tempY >= 0 &&
-    tempY < board.length &&
-    tempX >= 0 &&
-    tempX < board[0].length;
+    tempY >= 0 && tempY < board.length && tempX >= 0 && tempX < board[0].length;
     tempY += directionY, tempX += directionX
   ) {
     if (board[tempY][tempX] === now) {
@@ -27,7 +24,6 @@ const countTotal = (
 
   return total;
 };
-
 
 export type Winner = string | "draw" | undefined;
 

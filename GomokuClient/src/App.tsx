@@ -1,7 +1,7 @@
 import "./App.scss";
 import { client } from "./api/client";
 import Square from "./components/Square/Square.tsx";
-import {CellValue, useBoard} from "./hooks/useBoard.ts";
+import { CellValue, useBoard } from "./hooks/useBoard.ts";
 
 client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
