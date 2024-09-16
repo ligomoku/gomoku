@@ -12,6 +12,7 @@
     "download-openapi-document": "sh ./scripts/download-openapi-document.sh",
     "openapi-ts": "openapi-ts",
     "prettier": "prettier . --write src",
+    "prettier:check": "prettier . --check src",
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {

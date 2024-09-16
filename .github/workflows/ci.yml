@@ -21,9 +21,6 @@ jobs:
         with:
           node-version: '20.11.0'
 
-#      - name: Install Chrome
-#        run: sudo apt-get install -y chromium-browser
-
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -39,12 +36,15 @@ jobs:
           cd GomokuClient
           yarn install
 
-      #      - name: Run tests
-      #        run: |
-      #          cd GomokuClient
-      #          node --stack-size=8192 $(which yarn) test --watch=false --browsers=ChromeHeadless
-      #        env:
-      #          CHROME_BIN: /usr/bin/chromium-browser
+      - name: Run linting
+        run: |
+          cd GomokuClient
+          yarn lint
+
+      - name: Run Prettier
+        run: |
+          cd GomokuClient
+          yarn prettier:check
 
       - name: Build project
         run: |
