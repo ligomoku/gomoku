@@ -1,11 +1,11 @@
-import "./App.scss";
+import "./App.module.scss";
 import { client } from "./api/client";
 import Square from "./components/Square/Square.tsx";
 import {CellValue, useBoard} from "./hooks/useBoard.ts";
 
 client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
-export default function App() {
+const App = () => {
   const { board, winner, handlePieceClick, playAgain } = useBoard();
 
   return (
@@ -36,4 +36,6 @@ export default function App() {
       </div>
     </div>
   );
-}
+};
+
+export default App;
