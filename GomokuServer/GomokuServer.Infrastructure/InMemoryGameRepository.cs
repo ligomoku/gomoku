@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 
+using GomokuServer.Core.Entities;
+
 namespace GomokuServer.Infrastructure;
 
 public class InMemoryGameRepository : IGameRepository

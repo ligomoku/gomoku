@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Core;
+﻿using GomokuServer.Core.Validation;
+
+namespace GomokuServer.Core.Results;
 
 public class TilePlacementResult
 {

@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Interfaces;
+﻿using GomokuServer.Core.Entities;
+
+namespace GomokuServer.Application.Interfaces;
 
 public interface IGameRepository
 {

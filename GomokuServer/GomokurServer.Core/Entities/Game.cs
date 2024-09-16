@@ -1,4 +1,7 @@
-﻿namespace GomokuServer.Core;
+﻿using GomokuServer.Core.Results;
+using GomokuServer.Core.Validation;
+
+namespace GomokuServer.Core.Entities;
 
 public class Game
 {

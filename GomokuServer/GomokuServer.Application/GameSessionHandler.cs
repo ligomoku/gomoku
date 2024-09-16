@@ -1,4 +1,7 @@
-﻿namespace GomokuServer.Application;
+﻿using GomokuServer.Core.Entities;
+using GomokuServer.Core.Results;
+
+namespace GomokuServer.Application;
 
 public class GameSessionHandler : IGameSessionHandler
 {
