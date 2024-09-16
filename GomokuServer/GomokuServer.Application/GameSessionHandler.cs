@@ -2,6 +2,7 @@
 
 public class GameSessionHandler : IGameSessionHandler
 {
+	private const int BOARD_MIN_SIZE = 13;
 	private readonly IGameRepository _gameRepository;
 	private readonly IPlayersRepository _playersRepository;
 
@@ -18,9 +19,9 @@ public class GameSessionHandler : IGameSessionHandler
 
 	public async Task<Result<Game>> CreateAsync(int boardSize)
 	{
-		if (boardSize < 13)
+		if (boardSize < BOARD_MIN_SIZE)
 		{
-			return Result.Invalid(new ValidationError("Board size cannot be less that 13"));
+			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE}"));
 		}
 
 		var game = new Game
