@@ -70,7 +70,7 @@ const App = () => {
           <h3>Messages</h3>
           <ul>
             {messages.map((msg, index) => (
-              <li key={index}>{msg}</li>
+              <li key={msg + index}>{msg}</li>
             ))}
           </ul>
         </div>
