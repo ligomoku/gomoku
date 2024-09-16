@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GomokurServer.Core\GomokuServer.Core.csproj" />
+    <ProjectReference Include="..\..\src\GomokurServer.Core\GomokuServer.Core.csproj" />
   </ItemGroup>
 
 </Project>

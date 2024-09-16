@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GomokuServer.Application\GomokuServer.Application.csproj" />
-    <ProjectReference Include="..\..\GomokuServer.Infrastructure\GomokuServer.Infrastructure.csproj" />
+    <ProjectReference Include="..\GomokuServer.Application\GomokuServer.Application.csproj" />
+    <ProjectReference Include="..\GomokuServer.Infrastructure\GomokuServer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
