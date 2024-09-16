@@ -1,0 +1,63 @@
+.cell {
+  background: #ba8c63;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  box-shadow: 6px 6px silver;
+
+  &:before {
+    content: "";
+    height: 100%;
+    width: 2px;
+    background: black;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &:after {
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: black;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  &.row0:before {
+    top: 50%;
+  }
+
+  &.row18:before {
+    height: 50%;
+  }
+
+  &.col0:after {
+    left: 50%;
+  }
+
+  &.col18:after {
+    width: 50%;
+  }
+}
+
+.piece {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  transform: scale(0.8);
+  z-index: 1;
+  cursor: pointer;
+
+  &.black {
+    background: black;
+  }
+
+  &.white {
+    background: white;
+  }
+}

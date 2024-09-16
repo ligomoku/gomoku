@@ -1,52 +1,37 @@
-import { useState } from "react";
-import "./App.css";
-import { Board } from "./components/Board";
-import { client } from "./api/client";
+import "./App.scss";
+import {client} from "./api/client";
+import useBoard from "./hooks/useBoard.ts";
+import Square from "./components/Square/Square.tsx";
 
-client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
+client.setConfig({baseUrl: import.meta.env.VITE_API_URL});
 
-const App = () => {
-  const [player, setPlayer] = useState<string>("");
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const [nameNotValid, setNameNotValid] = useState<boolean>(false);
-  const [nameInserted, setNameInserted] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const title = "Gomoku";
-
-  const addPlayer = () => {
-    if (!player.trim()) {
-      setNameNotValid(true);
-      setErrorMessage("Player Name is required");
-      return;
-    }
-    setNameNotValid(false);
-    setNameInserted(true);
-    console.log("Player is " + player);
-    setDisabled(true);
-  };
+export default function App() {
+  const {board, winner, handlePieceClick, playAgain} = useBoard();
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>Welcome to {title}!</h1>
-      <div>
-        <input
-          value={player}
-          onChange={(e) => setPlayer(e.target.value)}
-          placeholder="Player Name"
-          disabled={disabled}
-        />
-        <button onClick={addPlayer} disabled={disabled}>
-          Submit
-        </button>
-        {nameNotValid && <div className="error-message">{errorMessage}</div>}
+    <div className="container">
+      <div className="info">
+        <div className="title">Gomoku</div>
+        {winner && <div className="message">The Winner is: {winner}!</div>}
+        <button className="button" onClick={playAgain}>Play again</button>
       </div>
-      <br />
-      <div className="board">
-        <Board player={player} nameInserted={nameInserted} />
+      <div className="wrapper">
+        <div className="board">
+          {board.map((row, rowIndex) => (
+            <div className="row" key={rowIndex}>
+              {row.map((_col: any, colIndex: number) => (
+                <Square
+                  key={colIndex}
+                  value={board[rowIndex][colIndex]}
+                  row={rowIndex}
+                  col={colIndex}
+                  onClick={handlePieceClick}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-      <br />
     </div>
   );
-};
-
-export default App;
+}
