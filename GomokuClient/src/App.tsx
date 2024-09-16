@@ -1,4 +1,4 @@
-import "./App.module.scss";
+import "./App.scss";
 import { client } from "./api/client";
 import Square from "./components/Square/Square.tsx";
 import {CellValue, useBoard} from "./hooks/useBoard.ts";
