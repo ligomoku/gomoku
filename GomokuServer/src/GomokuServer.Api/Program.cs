@@ -1,57 +1,52 @@
-using Asp.Versioning.ApiExplorer;
+using Microsoft.OpenApi.Models;
 using GomokuServer.Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddControllers();
 
-builder.Services.AddSignalR();
+builder.Services.AddApiVersioning(options =>
+{
+	options.DefaultApiVersion = new ApiVersion(1, 0);
+	options.AssumeDefaultVersionWhenUnspecified = true;
+	options.ReportApiVersions = true;
+	options.ApiVersionReader = new HeaderApiVersionReader("X-Version");
+});
+
+builder.Services.AddSwaggerGen(options =>
+{
+	options.SwaggerDoc("v1", new OpenApiInfo { Title = "GomokuServer API", Version = "v1.0" });
+	options.SwaggerDoc("v2", new OpenApiInfo { Title = "GomokuServer API", Version = "v2.0" });
+});
 
 builder.Services.AddCors(options =>
 {
 	const string localhostUrl = "http://localhost:4200";
 	const string vercelUrl = "https://gomoku-ruddy.vercel.app";
 
-	options.AddPolicy(CorsPolicyName.GomokuClient,
-		policyBuilder => policyBuilder
+	options.AddPolicy("GomokuClient", policyBuilder =>
+		policyBuilder
 			.WithOrigins(localhostUrl, vercelUrl)
 			.WithMethods("GET", "POST", "PUT", "DELETE")
 			.AllowAnyHeader()
 			.AllowCredentials());
 });
 
-builder.Services.AddApiVersioning(option =>
-{
-	option.DefaultApiVersion = new ApiVersion(1, 0);
-	option.AssumeDefaultVersionWhenUnspecified = true;
-	option.ReportApiVersions = true;
-	option.ApiVersionReader = new HeaderApiVersionReader("X-Version");
-}).AddApiExplorer(options =>
-{
-	options.GroupNameFormat = "'v'VVV";
-	options.SubstituteApiVersionInUrl = true;
-});
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
-var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
 app.UseSwagger();
+
 app.UseSwaggerUI(options =>
 {
-	foreach (var description in provider.ApiVersionDescriptions)
-	{
-		options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-	}
+	options.SwaggerEndpoint("/swagger/v1/swagger.json", "GomokuServer API V1");
+	options.SwaggerEndpoint("/swagger/v2/swagger.json", "GomokuServer API V2");
 });
 
-app.UseCors(CorsPolicyName.GomokuClient);
-
+app.UseCors("GomokuClient");
+app.UseRouting();
 app.MapControllers();
-
 app.MapHub<GameHub>("/gamehub");
 
 app.Run();
