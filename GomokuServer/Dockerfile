@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}${DOTNET_OS_VERSION} AS b
 WORKDIR /src
 
 # copy everything
-COPY . ./
+COPY src/GomokuServer.Api ./
 # restore as distinct layers
 RUN dotnet restore
 # build and publish a release
