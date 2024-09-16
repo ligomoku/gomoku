@@ -8,11 +8,17 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
+import { useSignalR } from "./hooks/useSignlarR.ts";
 
 client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 const App = () => {
   const { board, winner, handlePieceClick, playAgain } = useBoard();
+  const { sendMessage, messages, isConnected } = useSignalR();
+
+  const handleSendMessage = () => {
+    sendMessage("User1", "Hello from Gomoku!");
+  };
 
   return (
     <>
@@ -52,6 +58,21 @@ const App = () => {
               </div>
             ))}
           </div>
+        </div>
+        <div className="messages">
+          {isConnected ? (
+            <button className="button" onClick={handleSendMessage}>
+              Send Test Message
+            </button>
+          ) : (
+            <div>Connecting...</div>
+          )}
+          <h3>Messages</h3>
+          <ul>
+            {messages.map((msg, index) => (
+              <li key={msg + index}>{msg}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
