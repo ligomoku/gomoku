@@ -1,34 +1,16 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./Board.css";
+import UserplayService from "../../service/userplay.service.ts";
 
-// Mocked service
-class UserplayService {
-  getGameInfo() {
-    return Promise.resolve({
-      gameId: 1,
-      yourTurn: true,
-    });
-  }
-
-  userPlayed() {
-    return Promise.resolve(true);
-  }
-
-  getLastMove() {
-    return Promise.resolve({
-      gameId: 1,
-      player: "Player 1",
-      row: 1,
-      column: 1,
-    });
-  }
+interface BoardProps {
+  player: string;
+  nameInserted: boolean;
 }
 
-export const Board = ({ player, nameInserted }) => {
+export const Board = ({ player, nameInserted }: BoardProps) => {
   const [board, setBoard] = useState(
     Array.from({ length: 19 }, () => Array(19).fill(0)),
   );
-  const [columns] = useState(Array.from({ length: 19 }, (_, i) => `${i}`));
   const [size] = useState(19);
   const [goal] = useState(5);
   const [gameId, setGameId] = useState(1);
@@ -38,11 +20,10 @@ export const Board = ({ player, nameInserted }) => {
   const [knownOpponentName, setKnownOpponentName] = useState(false);
   const [winner, setWinner] = useState(false);
   const [winnerMessage, setWinnerMessage] = useState("");
-  const userplayService = new UserplayService();
 
-  const getSquare = (row, column) => board[row][column];
+  const getSquare = (row: number, column: number) => board[row][column];
 
-  const isWinner = (lastPlayedRow, lastPlayedColumn) => {
+  const isWinner = (lastPlayedRow: number, lastPlayedColumn: number) => {
     return (
       isVerticalWinner(lastPlayedRow, lastPlayedColumn) ||
       isHorizontalWinner(lastPlayedRow, lastPlayedColumn) ||
@@ -51,7 +32,10 @@ export const Board = ({ player, nameInserted }) => {
     );
   };
 
-  const isVerticalWinner = (lastPlayedRow, lastPlayedColumn) => {
+  const isVerticalWinner = (
+    lastPlayedRow: number,
+    lastPlayedColumn: number,
+  ) => {
     const square = getSquare(lastPlayedRow, lastPlayedColumn);
     let count = 1;
     let top = lastPlayedRow;
@@ -84,7 +68,10 @@ export const Board = ({ player, nameInserted }) => {
     return false;
   };
 
-  const isHorizontalWinner = (lastPlayedRow, lastPlayedColumn) => {
+  const isHorizontalWinner = (
+    lastPlayedRow: number,
+    lastPlayedColumn: number,
+  ) => {
     const square = getSquare(lastPlayedRow, lastPlayedColumn);
     let count = 1;
     let left = lastPlayedColumn;
@@ -117,7 +104,10 @@ export const Board = ({ player, nameInserted }) => {
     return false;
   };
 
-  const isDiagonalWinner = (lastPlayedRow, lastPlayedColumn) => {
+  const isDiagonalWinner = (
+    lastPlayedRow: number,
+    lastPlayedColumn: number,
+  ) => {
     const square = getSquare(lastPlayedRow, lastPlayedColumn);
     let count = 1;
     let top = lastPlayedRow;
@@ -148,7 +138,7 @@ export const Board = ({ player, nameInserted }) => {
     }
 
     if (count === goal) {
-      let row = top;
+      // let row = top;
       for (let column = left; column <= right; column++) {
         board[top++][column] += 2;
       }
@@ -157,7 +147,10 @@ export const Board = ({ player, nameInserted }) => {
     return false;
   };
 
-  const isOppositeDiagonalWinner = (lastPlayedRow, lastPlayedColumn) => {
+  const isOppositeDiagonalWinner = (
+    lastPlayedRow: number,
+    lastPlayedColumn: number,
+  ) => {
     const square = getSquare(lastPlayedRow, lastPlayedColumn);
     let count = 1;
     let top = lastPlayedRow;
@@ -188,7 +181,7 @@ export const Board = ({ player, nameInserted }) => {
     }
 
     if (count === goal) {
-      let row = bottom;
+      // let row = bottom;
       for (let column = left; column <= right; column++) {
         board[bottom--][column] += 2;
       }
@@ -197,7 +190,7 @@ export const Board = ({ player, nameInserted }) => {
     return false;
   };
 
-  const userPlayed = (row, column) => {
+  const userPlayed = (row: number, column: number) => {
     if (!myTurn || !gameStarted || !nameInserted) return;
     if (board[row][column]) return;
     const newBoard = [...board];
@@ -205,7 +198,7 @@ export const Board = ({ player, nameInserted }) => {
     setBoard(newBoard);
     setMyTurn(false);
 
-    userplayService.userPlayed({
+    UserplayService.userPlayed({
       gameId,
       player,
       row,
@@ -220,7 +213,8 @@ export const Board = ({ player, nameInserted }) => {
   };
 
   useEffect(() => {
-    userplayService.getGameInfo().then((gameInfo) => {
+    UserplayService.getGameInfo().then((gameInfo) => {
+      if(!gameInfo || !gameInfo.gameId || !gameInfo.yourTurn) return;
       setGameId(gameInfo.gameId);
       setMyTurn(gameInfo.yourTurn);
       setGameStarted(true);
@@ -230,8 +224,10 @@ export const Board = ({ player, nameInserted }) => {
     const interval = setInterval(() => {
       if (!gameStarted) return;
 
-      userplayService.getLastMove(gameId).then((move) => {
+      UserplayService.getLastMove(gameId).then((move) => {
         console.log(move);
+        if(!move || !move.gameId || !move.row || !move.column) return;
+
         if (move.gameId !== gameId) return;
         if (board[move.row][move.column]) return;
 
@@ -259,11 +255,11 @@ export const Board = ({ player, nameInserted }) => {
     <div>
       {knownOpponentName && <div>Your opponent is {opponentName}</div>}
       {winner && <div className="winner">{winnerMessage}</div>}
-      <table border="1">
+      <table border={1}>
         <tbody>
           {board.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.map((cell, columnIndex) => (
+              {row.map((_cell, columnIndex) => (
                 <td
                   key={columnIndex}
                   onClick={() => userPlayed(rowIndex, columnIndex)}
