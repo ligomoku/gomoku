@@ -29,7 +29,7 @@ export const useSignalR = () => {
             setMessages((messages) => [...messages, `${user}: ${message}`]);
           });
 
-          connection.on("GameUpdate", (data: any) => {
+          connection.on("GameUpdate", (data) => {
             console.log("Game update received:", data);
           });
         })
