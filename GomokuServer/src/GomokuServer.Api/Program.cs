@@ -16,6 +16,10 @@ builder.Services.AddSwaggerGen(options =>
 	}
 });
 
+builder.Services.AddTransient<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>

@@ -16,6 +16,15 @@ public class InMemoryGameRepository : IGameRepository
 		return Task.FromResult(Result<Game>.NotFound());
 	}
 
+	public Task<Result<IEnumerable<Game>>> GetAvailableGamesAsync()
+	{
+		var availableGames = _games.Values.Where(game => !game.IsGameStarted).AsEnumerable();
+
+		return availableGames.Any()
+			? Task.FromResult(Result.Success(availableGames))
+			: Task.FromResult(Result<IEnumerable<Game>>.NotFound());
+	}
+
 	public Task<Result> SaveAsync(Game game)
 	{
 		_games[game.GameId] = game;

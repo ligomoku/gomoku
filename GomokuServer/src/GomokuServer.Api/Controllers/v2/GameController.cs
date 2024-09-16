@@ -23,6 +23,15 @@ public class GameController : Controller
 		return getGameSessionResult.ToApiResponse();
 	}
 
+	[HttpGet()]
+	[Route("/api/v2/games")]
+	public async Task<IActionResult> GetAvailableGames()
+	{
+		var getAvailableGames = await _gameSessionHandler.GetAvailableGamesAsync();
+
+		return getAvailableGames.ToApiResponse();
+	}
+
 	[HttpPost]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{

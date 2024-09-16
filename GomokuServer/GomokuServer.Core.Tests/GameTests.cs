@@ -13,11 +13,11 @@ public class GameTests
 
 		_game = new Game
 		{
-			GameId = "TestGame",
-			PlayerOne = playerOne,
-			PlayerTwo = playerTwo,
 			GameBoard = gameBoard
 		};
+
+		_game.AddPlayer(playerOne);
+		_game.AddPlayer(playerTwo);
 	}
 
 	[Test]
@@ -27,7 +27,7 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
@@ -41,7 +41,7 @@ public class GameTests
 		var tile = new Tile(20, 20);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
@@ -55,8 +55,8 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
-		var secondPlacement = _game.PlaceTile(tile, _game.PlayerTwo.Id);
+		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne!.Id);
+		var secondPlacement = _game.PlaceTile(tile, _game.PlayerTwo!.Id);
 
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
@@ -71,7 +71,7 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne!.Id);
 		var secondPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
@@ -86,12 +86,12 @@ public class GameTests
 		// Arrange
 		for (int i = 0; i < 4; i++)
 		{
-			_game.PlaceTile(new Tile(i, 7), _game.PlayerOne.Id);
-			_game.PlaceTile(new Tile(i, 8), _game.PlayerTwo.Id);
+			_game.PlaceTile(new Tile(i, 7), _game.PlayerOne!.Id);
+			_game.PlaceTile(new Tile(i, 8), _game.PlayerTwo!.Id);
 		}
 
 		// Act
-		var result = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne.Id);
+		var result = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
@@ -104,12 +104,12 @@ public class GameTests
 		// Arrange
 		for (int i = 0; i < 4; i++)
 		{
-			_game.PlaceTile(new Tile(7, i), _game.PlayerOne.Id);
-			_game.PlaceTile(new Tile(8, i), _game.PlayerTwo.Id);
+			_game.PlaceTile(new Tile(7, i), _game.PlayerOne!.Id);
+			_game.PlaceTile(new Tile(8, i), _game.PlayerTwo!.Id);
 		}
 
 		// Act
-		var result = _game.PlaceTile(new Tile(7, 4), _game.PlayerOne.Id);
+		var result = _game.PlaceTile(new Tile(7, 4), _game.PlayerOne!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
@@ -120,8 +120,8 @@ public class GameTests
 	public void PlaceTile_PlayerWinsDiagonally_ShouldDeclareWinner()
 	{
 		// Arrange
-		_game.PlaceTile(new Tile(0, 0), _game.PlayerOne.Id);
-		_game.PlaceTile(new Tile(5, 5), _game.PlayerTwo.Id);
+		_game.PlaceTile(new Tile(0, 0), _game.PlayerOne!.Id);
+		_game.PlaceTile(new Tile(5, 5), _game.PlayerTwo!.Id);
 		_game.PlaceTile(new Tile(1, 1), _game.PlayerOne.Id);
 		_game.PlaceTile(new Tile(6, 6), _game.PlayerTwo.Id);
 		_game.PlaceTile(new Tile(2, 2), _game.PlayerOne.Id);
@@ -144,7 +144,7 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
 
 		// Assert
 		result.WinnerId.Should().BeNull();

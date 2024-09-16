@@ -17,6 +17,11 @@ public class GameSessionHandler : IGameSessionHandler
 		return _gameRepository.GetAsync(gameId);
 	}
 
+	public Task<Result<IEnumerable<Game>>> GetAvailableGamesAsync()
+	{
+		return _gameRepository.GetAvailableGamesAsync();
+	}
+
 	public async Task<Result<Game>> CreateAsync(int boardSize)
 	{
 		if (boardSize < BOARD_MIN_SIZE)
