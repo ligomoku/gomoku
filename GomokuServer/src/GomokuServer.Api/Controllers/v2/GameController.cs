@@ -1,6 +1,4 @@
-﻿using GomokuServer.Core;
-
-namespace GomokuServer.Api.Controllers.v2;
+﻿namespace GomokuServer.Api.Controllers.v2;
 
 [ApiController]
 [ApiVersion("2.0")]
