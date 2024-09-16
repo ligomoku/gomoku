@@ -11,24 +11,39 @@ public class GameBoard
 		_board = new string[_boardSize, _boardSize];
 	}
 
+	public string? LastPlacementById { get; private set; }
+
 	public TilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
-		var isTileValid = 
-			tile.X >= 0 &&
-			tile.X < _boardSize &&
-			tile.Y >= 0 &&
-			tile.Y < _boardSize &&
-			_board[tile.X, tile.Y] == null;
-
-		if (!isTileValid)
+		if (playerId == LastPlacementById)
 		{
 			return new()
 			{
 				IsPlacementValid = false,
+				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
+			};
+		}
+
+		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
+		{
+			return new()
+			{
+				IsPlacementValid = false,
+				ValidationError = TilePlacementValidationError.TileIndexOutOfTheBoardRange
+			};
+		}
+
+		if (_board[tile.X, tile.Y] != null)
+		{
+			return new()
+			{
+				IsPlacementValid = false,
+				ValidationError = TilePlacementValidationError.TileAlreadyOcupied
 			};
 		}
 
 		_board[tile.X, tile.Y] = playerId;
+		LastPlacementById = playerId;
 
 		return new()
 		{
