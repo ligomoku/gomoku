@@ -1,0 +1,41 @@
+.container {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  min-width: 600px;
+}
+
+.info {
+  text-align: center;
+}
+
+.title {
+  font-size: 36px;
+}
+
+.message {
+  font-size: 24px;
+}
+
+.button {
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+  margin: 20px auto;
+  padding: 8px;
+  border-color: silver;
+  border-radius: 5px;
+  background: silver;
+  color: #555;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.board {
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+}
