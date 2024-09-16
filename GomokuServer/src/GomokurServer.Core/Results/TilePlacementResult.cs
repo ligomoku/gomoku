@@ -1,8 +1,10 @@
-﻿namespace GomokuServer.Core;
+﻿using GomokuServer.Core.Validation;
+
+namespace GomokuServer.Core.Results;
 
 public class TilePlacementResult
 {
-	public bool IsPlacementValid { get; init; }
+	public bool IsValid { get; init; }
 
 	public TilePlacementValidationError? ValidationError { get; init; }
 
