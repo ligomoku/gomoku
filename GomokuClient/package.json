@@ -2,6 +2,7 @@
   "name": "gomoku-multi",
   "version": "0.0.0",
   "license": "MIT",
+  "apiVersion": "1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +10,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "download-openapi-document": "sh ./scripts/download-openapi-document.sh",
+    "openapi-ts": "openapi-ts"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +26,7 @@
     "@angular/platform-browser": "^18.2.4",
     "@angular/platform-browser-dynamic": "^18.2.4",
     "@angular/router": "^18.2.4",
+    "@hey-api/client-fetch": "^0.2.4",
     "core-js": "^3.38.1",
     "rxjs": "^7.8.1",
     "zone.js": "^0.14.10"
@@ -32,6 +36,7 @@
     "@angular/cli": "~18.2.4",
     "@angular/compiler-cli": "^18.2.4",
     "@angular/language-service": "^18.2.4",
+    "@hey-api/openapi-ts": "^0.53.0",
     "@types/jasmine": "^5.1.4",
     "@types/jasminewd2": "~2.0.13",
     "@types/karma-coverage": "^2",
@@ -45,6 +50,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-puppeteer-launcher": "^1.0.4",
+    "prettier": "3.3.3",
     "puppeteer": "^23.3.0",
     "ts-node": "~10.9.2",
     "typescript": "~5.4.3"

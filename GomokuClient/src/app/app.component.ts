@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
   player: string;
   disabled: boolean = false;
-  title: string = 'Gomoku';
+  title: string = "Gomoku";
   nameNotValid: boolean = false;
   nameInserted: boolean = false;
   errorMessage: string = "";
 
-  addPlayer() : void {
+  addPlayer(): void {
     if (!this.player) {
       this.nameNotValid = true;
       this.errorMessage = "Player Name is required";

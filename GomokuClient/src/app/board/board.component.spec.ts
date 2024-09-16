@@ -1,9 +1,9 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BoardComponent } from './board.component';
-import {UserplayService} from "../userplay.service";
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { BoardComponent } from "./board.component";
+import { UserplayService } from "../userplay.service";
 
-describe('BoardComponent', () => {
+describe("BoardComponent", () => {
   let component: BoardComponent;
   let fixture: ComponentFixture<BoardComponent>;
 
@@ -11,9 +11,8 @@ describe('BoardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BoardComponent],
       imports: [HttpClientTestingModule],
-      providers: [UserplayService]
-    })
-      .compileComponents();
+      providers: [UserplayService],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,7 +21,7 @@ describe('BoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,8 +1,8 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserplayService } from './userplay.service';
+import { TestBed, inject } from "@angular/core/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { UserplayService } from "./userplay.service";
 
-describe('UserplayService', () => {
+describe("UserplayService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -10,7 +10,10 @@ describe('UserplayService', () => {
     });
   });
 
-  it('should be created', inject([UserplayService], (service: UserplayService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [UserplayService],
+    (service: UserplayService) => {
+      expect(service).toBeTruthy();
+    },
+  ));
 });

@@ -1,29 +1,29 @@
-import { Injectable } from '@angular/core';
-import { Move } from './move';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-import { GameInfo } from './game-info';
+import { Injectable } from "@angular/core";
+import { Move } from "./move";
+import { HttpClient } from "@angular/common/http";
+import { HttpHeaders } from "@angular/common/http";
+import { GameInfo } from "./game-info";
 import { environment } from "../environments/environment";
 
 const apiURI: string = `${environment.apiUrl}/game/`;
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json'
-  })
+    "Content-Type": "application/json",
+  }),
 };
 
 @Injectable()
 export class UserplayService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getGameInfo() {
     return this.http.get<GameInfo>(apiURI);
   }
 
   userPlayed(move: Move) {
-    this.http.post(apiURI , move, httpOptions)
-    .subscribe(msg => console.log(msg));
+    this.http
+      .post(apiURI, move, httpOptions)
+      .subscribe((msg) => console.log(msg));
   }
 
   getLastMove(gameId: number) {

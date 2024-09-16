@@ -1,13 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UserplayService } from '../userplay.service';
-import { Move } from '../move';
-import { GameInfo } from '../game-info';
+import { Component, OnInit, Input } from "@angular/core";
+import { UserplayService } from "../userplay.service";
+import { Move } from "../move";
+import { GameInfo } from "../game-info";
 import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
-  selector: 'app-board',
-  templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css']
+  selector: "app-board",
+  templateUrl: "./board.component.html",
+  styleUrls: ["./board.component.css"],
 })
 export class BoardComponent implements OnInit {
   @Input() player: string;
@@ -65,24 +65,22 @@ export class BoardComponent implements OnInit {
     }, 1000);
   }
 
-  ngOnInit() {  }
+  ngOnInit() {}
 
   getSquare(row: number, column: number): number {
     return this.board[row][column];
   }
 
   userPlayed(row: number, column: number): void {
-    if (!this.myTurn || !this.gameStarted || !this.nameInserted)
-      return;
-    if (this.board[row][column])
-      return;
+    if (!this.myTurn || !this.gameStarted || !this.nameInserted) return;
+    if (this.board[row][column]) return;
     this.board[row][column] = 1;
     this.myTurn = false;
     this.userplayService.userPlayed({
       gameId: this.gameId,
       player: this.player,
       row: row,
-      column: column
+      column: column,
     });
     if (this.isWinner(row, column)) {
       this.winnerMessage = "You won!";
@@ -92,10 +90,12 @@ export class BoardComponent implements OnInit {
   }
 
   isWinner(lastPlayedRow: number, lastPlayedColumn: number): boolean {
-    return this.isVerticalWinner(lastPlayedRow, lastPlayedColumn)
-      || this.isHorizontalWinner(lastPlayedRow, lastPlayedColumn)
-      || this.isDiagonalWinner(lastPlayedRow, lastPlayedColumn)
-      || this.isOppositeDiagonalWinner(lastPlayedRow, lastPlayedColumn);
+    return (
+      this.isVerticalWinner(lastPlayedRow, lastPlayedColumn) ||
+      this.isHorizontalWinner(lastPlayedRow, lastPlayedColumn) ||
+      this.isDiagonalWinner(lastPlayedRow, lastPlayedColumn) ||
+      this.isOppositeDiagonalWinner(lastPlayedRow, lastPlayedColumn)
+    );
   }
 
   isVerticalWinner(lastPlayedRow: number, lastPlayedColumn: number): boolean {
@@ -115,7 +115,10 @@ export class BoardComponent implements OnInit {
 
     while (count < this.goal) {
       bottom++;
-      if (bottom >= this.size || this.board[bottom][lastPlayedColumn] != square) {
+      if (
+        bottom >= this.size ||
+        this.board[bottom][lastPlayedColumn] != square
+      ) {
         bottom--;
         break;
       }
@@ -188,7 +191,11 @@ export class BoardComponent implements OnInit {
     while (count < this.goal) {
       right++;
       bottom++;
-      if (right >= this.size || bottom >= this.size || this.board[bottom][right] != square) {
+      if (
+        right >= this.size ||
+        bottom >= this.size ||
+        this.board[bottom][right] != square
+      ) {
         right--;
         bottom--;
         break;
@@ -207,7 +214,10 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  isOppositeDiagonalWinner(lastPlayedRow: number, lastPlayedColumn: number): boolean {
+  isOppositeDiagonalWinner(
+    lastPlayedRow: number,
+    lastPlayedColumn: number,
+  ): boolean {
     let square: number = this.getSquare(lastPlayedRow, lastPlayedColumn);
     let count: number = 1;
     let top: number = lastPlayedRow;
@@ -218,7 +228,11 @@ export class BoardComponent implements OnInit {
     while (count < this.goal) {
       left--;
       bottom++;
-      if (left < 0 || bottom >= this.size || this.board[bottom][left] != square) {
+      if (
+        left < 0 ||
+        bottom >= this.size ||
+        this.board[bottom][left] != square
+      ) {
         left++;
         bottom--;
         break;

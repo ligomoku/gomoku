@@ -47,8 +47,6 @@ builder.Services.AddApiVersioning(option =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
 	app.UseSwagger();
 	app.UseSwaggerUI(options =>
 	{
@@ -58,7 +56,6 @@ if (app.Environment.IsDevelopment())
 			options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
 		}
 	});
-}
 
 app.UseCors(CorsPolicyName.GomokuClient);
 app.MapControllers();

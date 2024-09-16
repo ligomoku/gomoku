@@ -1,4 +1,4 @@
 export class GameInfo {
-    gameId: number;
-    yourTurn: boolean;
+  gameId: number;
+  yourTurn: boolean;
 }
