@@ -9,8 +9,10 @@ import {
 
 class UserplayService {
   async getGameInfo(): Promise<GetApiV1GameResponse | undefined> {
+    console.log("Getting game info");
     try {
       const response = await getApiV1Game();
+      console.log("RESPONSE DATA", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching game info:", error);

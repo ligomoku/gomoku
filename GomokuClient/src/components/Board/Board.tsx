@@ -32,6 +32,17 @@ export const Board = ({ player, nameInserted }: BoardProps) => {
     );
   };
 
+  useEffect(() => {
+    console.log("Game started");
+    UserplayService.getGameInfo().then((gameInfo) => {
+      if(!gameInfo || !gameInfo.gameId || !gameInfo.yourTurn) return;
+      setGameId(gameInfo.gameId);
+      setMyTurn(gameInfo.yourTurn);
+      setGameStarted(true);
+      console.log("Game number " + gameInfo.gameId);
+    })
+  }, []);
+
   const isVerticalWinner = (
     lastPlayedRow: number,
     lastPlayedColumn: number,
@@ -190,7 +201,7 @@ export const Board = ({ player, nameInserted }: BoardProps) => {
     return false;
   };
 
-  const userPlayed = (row: number, column: number) => {
+  const userPlayed = async (row: number, column: number) => {
     if (!myTurn || !gameStarted || !nameInserted) return;
     if (board[row][column]) return;
     const newBoard = [...board];
@@ -198,7 +209,7 @@ export const Board = ({ player, nameInserted }: BoardProps) => {
     setBoard(newBoard);
     setMyTurn(false);
 
-    UserplayService.userPlayed({
+    await UserplayService.userPlayed({
       gameId,
       player,
       row,
