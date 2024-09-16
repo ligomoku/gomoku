@@ -2,7 +2,6 @@
 
 namespace GomokuServer.Api.Extensions;
 
-// TODO: Improve response messages
 public static class ArdalisResultExtensions
 {
 	public static IActionResult ToApiResponse<T>(this Result<T> result)
