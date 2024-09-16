@@ -46,6 +46,11 @@ jobs:
           cd GomokuClient
           yarn prettier:check
 
+      - name: Run typecheck
+        run: |
+          cd GomokuClient
+          yarn typecheck
+
       - name: Build project
         run: |
           cd GomokuClient
