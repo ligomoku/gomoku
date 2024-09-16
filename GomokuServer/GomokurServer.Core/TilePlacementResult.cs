@@ -2,7 +2,9 @@
 
 public class TilePlacementResult
 {
-	public bool IsPlacementValid { get; set; }
+	public bool IsPlacementValid { get; init; }
 
-	public string? WinnerId { get; set; }
+	public TilePlacementValidationError? ValidationError { get; init; }
+
+	public string? WinnerId { get; init; }
 }

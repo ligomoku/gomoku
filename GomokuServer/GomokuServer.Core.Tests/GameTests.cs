@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 namespace GomokuServer.Core.Tests;
 
 public class GameTests
@@ -40,13 +38,14 @@ public class GameTests
 	public void PlaceTile_InvalidTilePlacement_ShouldReturnFalse()
 	{
 		// Arrange
-		var tile = new Tile(20, 20); // Outside the board bounds
+		var tile = new Tile(20, 20);
 
 		// Act
 		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
 		result.IsPlacementValid.Should().BeFalse();
+		result.ValidationError.Should().Be(TilePlacementValidationError.TileIndexOutOfTheBoardRange);
 	}
 
 	[Test]
@@ -62,6 +61,23 @@ public class GameTests
 		// Assert
 		firstPlacement.IsPlacementValid.Should().BeTrue();
 		secondPlacement.IsPlacementValid.Should().BeFalse();
+		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.TileAlreadyOcupied);
+	}
+
+	[Test]
+	public void PlaceTile_SamePlayerMakesTwoMovesInARow_ShouldReturnFalse()
+	{
+		// Arrange
+		var tile = new Tile(7, 7);
+
+		// Act
+		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var secondPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
+
+		// Assert
+		firstPlacement.IsPlacementValid.Should().BeTrue();
+		secondPlacement.IsPlacementValid.Should().BeFalse();
+		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.SamePlayerMadeSecondMoveInARow);
 	}
 
 	[Test]
@@ -71,11 +87,12 @@ public class GameTests
 		for (int i = 0; i < 4; i++)
 		{
 			_game.PlaceTile(new Tile(i, 7), _game.PlayerOne.Id);
+			_game.PlaceTile(new Tile(i, 8), _game.PlayerTwo.Id);
 		}
 
 		// Act
 		var result = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne.Id);
-			
+
 		// Assert
 		result.IsPlacementValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
@@ -88,6 +105,7 @@ public class GameTests
 		for (int i = 0; i < 4; i++)
 		{
 			_game.PlaceTile(new Tile(7, i), _game.PlayerOne.Id);
+			_game.PlaceTile(new Tile(8, i), _game.PlayerTwo.Id);
 		}
 
 		// Act
@@ -103,9 +121,13 @@ public class GameTests
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _game.PlayerOne.Id);
+		_game.PlaceTile(new Tile(5, 5), _game.PlayerTwo.Id);
 		_game.PlaceTile(new Tile(1, 1), _game.PlayerOne.Id);
+		_game.PlaceTile(new Tile(6, 6), _game.PlayerTwo.Id);
 		_game.PlaceTile(new Tile(2, 2), _game.PlayerOne.Id);
+		_game.PlaceTile(new Tile(7, 7), _game.PlayerTwo.Id);
 		_game.PlaceTile(new Tile(3, 3), _game.PlayerOne.Id);
+		_game.PlaceTile(new Tile(8, 8), _game.PlayerTwo.Id);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(4, 4), _game.PlayerOne.Id);
@@ -125,6 +147,6 @@ public class GameTests
 		var result = _game.PlaceTile(tile, _game.PlayerOne.Id);
 
 		// Assert
-		result.WinnerId.Should().BeNull(); // No winner yet
+		result.WinnerId.Should().BeNull();
 	}
 }
