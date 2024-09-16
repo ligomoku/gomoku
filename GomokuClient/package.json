@@ -16,6 +16,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.9.0",
     "@hey-api/client-fetch": "^0.2.4",
     "@hey-api/openapi-ts": "^0.53.0",
     "react": "^18.3.1",
