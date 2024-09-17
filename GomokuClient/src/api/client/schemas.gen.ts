@@ -22,6 +22,55 @@ export const CreatePlayerRequestSchema = {
   additionalProperties: false,
 } as const;
 
+export const GameSchema = {
+  type: "object",
+  properties: {
+    gameId: {
+      type: "string",
+      nullable: true,
+      readOnly: true,
+    },
+    gameBoard: {
+      $ref: "#/components/schemas/GameBoard",
+    },
+    playersMoves: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/Tile",
+      },
+      nullable: true,
+      readOnly: true,
+    },
+    playerOne: {
+      $ref: "#/components/schemas/Player",
+    },
+    playerTwo: {
+      $ref: "#/components/schemas/Player",
+    },
+    isGameStarted: {
+      type: "boolean",
+      readOnly: true,
+    },
+    winnerId: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GameBoardSchema = {
+  type: "object",
+  properties: {
+    lastPlacementById: {
+      type: "string",
+      nullable: true,
+      readOnly: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const MakeMoveRequestSchema = {
   type: "object",
   properties: {
@@ -35,4 +84,53 @@ export const MakeMoveRequestSchema = {
     },
   },
   additionalProperties: false,
+} as const;
+
+export const PlayerSchema = {
+  type: "object",
+  properties: {
+    id: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const TileSchema = {
+  type: "object",
+  properties: {
+    x: {
+      type: "integer",
+      format: "int32",
+    },
+    y: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const TilePlacementResultSchema = {
+  type: "object",
+  properties: {
+    isValid: {
+      type: "boolean",
+    },
+    validationError: {
+      $ref: "#/components/schemas/TilePlacementValidationError",
+    },
+    winnerId: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const TilePlacementValidationErrorSchema = {
+  enum: [0, 1, 2, 3, 4, 5],
+  type: "integer",
+  format: "int32",
 } as const;

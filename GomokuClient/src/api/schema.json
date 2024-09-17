@@ -31,7 +31,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            }
           }
         }
       }
@@ -52,7 +69,33 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -92,7 +135,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            }
           }
         }
       }
@@ -189,7 +249,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TilePlacementResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TilePlacementResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TilePlacementResult"
+                }
+              }
+            }
           }
         }
       }
@@ -257,6 +334,53 @@
         },
         "additionalProperties": false
       },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "gameBoard": {
+            "$ref": "#/components/schemas/GameBoard"
+          },
+          "playersMoves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tile"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "playerOne": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "playerTwo": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "isGameStarted": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "winnerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GameBoard": {
+        "type": "object",
+        "properties": {
+          "lastPlacementById": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MakeMoveRequest": {
         "type": "object",
         "properties": {
@@ -270,6 +394,51 @@
           }
         },
         "additionalProperties": false
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Tile": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "y": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TilePlacementResult": {
+        "type": "object",
+        "properties": {
+          "isValid": {
+            "type": "boolean"
+          },
+          "validationError": {
+            "$ref": "#/components/schemas/TilePlacementValidationError"
+          },
+          "winnerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TilePlacementValidationError": {
+        "enum": [0, 1, 2, 3, 4, 5],
+        "type": "integer",
+        "format": "int32"
       }
     }
   }

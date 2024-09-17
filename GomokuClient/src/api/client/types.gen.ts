@@ -8,10 +8,50 @@ export type CreatePlayerRequest = {
   id?: string | null;
 };
 
+export type Game = {
+  readonly gameId?: string | null;
+  gameBoard?: GameBoard;
+  readonly playersMoves?: Array<Tile> | null;
+  playerOne?: Player;
+  playerTwo?: Player;
+  readonly isGameStarted?: boolean;
+  winnerId?: string | null;
+};
+
+export type GameBoard = {
+  readonly lastPlacementById?: string | null;
+};
+
 export type MakeMoveRequest = {
   x?: number;
   y?: number;
 };
+
+export type Player = {
+  id?: string | null;
+};
+
+export type Tile = {
+  x?: number;
+  y?: number;
+};
+
+export type TilePlacementResult = {
+  isValid?: boolean;
+  validationError?: TilePlacementValidationError;
+  winnerId?: string | null;
+};
+
+export type TilePlacementValidationError = 0 | 1 | 2 | 3 | 4 | 5;
+
+export const TilePlacementValidationError = {
+  _0: 0,
+  _1: 1,
+  _2: 2,
+  _3: 3,
+  _4: 4,
+  _5: 5,
+} as const;
 
 export type GetApiV2GameByGameIdData = {
   headers: {
@@ -22,7 +62,7 @@ export type GetApiV2GameByGameIdData = {
   };
 };
 
-export type GetApiV2GameByGameIdResponse = unknown;
+export type GetApiV2GameByGameIdResponse = Game;
 
 export type GetApiV2GameByGameIdError = unknown;
 
@@ -32,7 +72,7 @@ export type GetApiV2GamesData = {
   };
 };
 
-export type GetApiV2GamesResponse = unknown;
+export type GetApiV2GamesResponse = Array<Game>;
 
 export type GetApiV2GamesError = unknown;
 
@@ -43,7 +83,7 @@ export type PostApiV2GameData = {
   };
 };
 
-export type PostApiV2GameResponse = unknown;
+export type PostApiV2GameResponse = Game;
 
 export type PostApiV2GameError = unknown;
 
@@ -72,7 +112,8 @@ export type PostApiV2GameByGameIdMakeMoveByPlayerIdData = {
   };
 };
 
-export type PostApiV2GameByGameIdMakeMoveByPlayerIdResponse = unknown;
+export type PostApiV2GameByGameIdMakeMoveByPlayerIdResponse =
+  TilePlacementResult;
 
 export type PostApiV2GameByGameIdMakeMoveByPlayerIdError = unknown;
 
