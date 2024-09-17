@@ -1,0 +1,137 @@
+.header {
+  background-color: #fff;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.menuItem a {
+  display: block;
+  padding: 20px 20px;
+  border-right: 1px solid #f4f4f4;
+  text-decoration: none;
+}
+
+.menuItem a:hover,
+.menuBtn:hover {
+  background-color: #f4f4f4;
+}
+
+.logo {
+  display: block;
+  float: left;
+  font-size: 2em; // todo: check for 36px
+  color: #000;
+  font-family: "Open Sans", sans-serif;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.menu {
+  clear: both;
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+}
+
+.menuIcon {
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  padding: 28px 20px;
+  position: relative;
+  user-select: none;
+}
+
+.navicon {
+  background: #333;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background 0.2s ease-out;
+  width: 18px;
+}
+
+.navicon::before,
+.navicon::after {
+  background: #333;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all 0.2s ease-out;
+  width: 100%;
+}
+
+.navicon::before {
+  top: 5px;
+}
+
+.navicon::after {
+  top: -5px;
+}
+
+.menuBtn {
+  display: none;
+}
+
+.menuBtn:checked ~ .menu {
+  max-height: 240px;
+}
+
+.menuBtn:checked ~ .menuIcon .navicon {
+  background: transparent;
+}
+
+.menuBtn:checked ~ .menuIcon .navicon::before {
+  transform: rotate(-45deg);
+}
+
+.menuBtn:checked ~ .menuIcon .navicon::after {
+  transform: rotate(45deg);
+}
+
+.menuBtn:checked ~ .menuIcon:not(.steps) .navicon::before,
+.menuBtn:checked ~ .menuIcon:not(.steps) .navicon::after {
+  top: 0;
+}
+
+.button {
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+  padding: 8px;
+  border-color: silver;
+  border-radius: 5px;
+  background: silver;
+  color: #555;
+
+  margin-right: 8px;
+}
+
+@media (min-width: 48em) {
+  .menuItem {
+    float: left;
+  }
+  .menuItem a {
+    padding: 20px 30px;
+  }
+  .menu {
+    clear: none;
+    float: right;
+    max-height: none;
+  }
+  .menuIcon {
+    display: none;
+  }
+}

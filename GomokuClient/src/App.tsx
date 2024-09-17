@@ -1,4 +1,4 @@
-import "./App.scss";
+import styles from "./App.module.scss";
 import { client } from "./api/client";
 import Square from "./components/Square/Square";
 import { CellValue, useBoard } from "./hooks/useBoardLocal";
@@ -9,6 +9,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { useSignalR } from "./hooks/useSignlarR.ts";
+import { Header } from "./components/Header";
 
 client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
@@ -22,30 +23,24 @@ const App = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="info">
-          <div className="title">Gomoku</div>
-          {winner && <div className="message">The Winner is: {winner}!</div>}
-          <SignedOut>
-            <SignInButton>
-              <button className="button">Sign in</button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+      <Header />
+      <div className={styles.container}>
+        <div className={styles.info}>
+          {winner && (
+            <div className={styles.message}>The Winner is: {winner}!</div>
+          )}
           <button
-            className="button"
+            className={styles.button}
             onClick={playAgain}
             style={{ marginLeft: 20 }}
           >
             Play again
           </button>
         </div>
-        <div className="wrapper">
-          <div className="board">
+        <div className={styles.wrapper}>
+          <div className={styles.board}>
             {board.map((row, rowIndex) => (
-              <div className="row" key={rowIndex}>
+              <div className={styles.row} key={rowIndex}>
                 {row.map((_col: CellValue, colIndex: number) => (
                   <Square
                     key={colIndex}
@@ -59,9 +54,9 @@ const App = () => {
             ))}
           </div>
         </div>
-        <div className="messages">
+        <div className={styles.messages}>
           {isConnected ? (
-            <button className="button" onClick={handleSendMessage}>
+            <button className={styles.button} onClick={handleSendMessage}>
               Send Test Message
             </button>
           ) : (
