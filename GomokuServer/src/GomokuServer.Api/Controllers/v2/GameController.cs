@@ -33,7 +33,7 @@ public class GameController : Controller
 	}
 
 	[HttpPost]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
