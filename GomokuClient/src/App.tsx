@@ -2,12 +2,6 @@ import styles from "./App.module.scss";
 import { client } from "./api/client";
 import Square from "./components/Square/Square";
 import { CellValue, useBoard } from "./hooks/useBoardLocal";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
 import { useSignalR } from "./hooks/useSignlarR.ts";
 import { Header } from "./components/Header";
 
@@ -29,11 +23,7 @@ const App = () => {
           {winner && (
             <div className={styles.message}>The Winner is: {winner}!</div>
           )}
-          <button
-            className={styles.button}
-            onClick={playAgain}
-            style={{ marginLeft: 20 }}
-          >
+          <button className={styles.button} onClick={playAgain}>
             Play again
           </button>
         </div>
