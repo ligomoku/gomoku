@@ -1,0 +1,19 @@
+# Ignore build artifacts and directories in the C# project
+GomokuServer/**/*.bin/
+GomokuServer/**/*.obj/
+GomokuServer/**/*.csproj.nuget.dgspec.json
+GomokuServer/**/*.project.assets.json
+GomokuServer/**/*.project.packagespec.json
+GomokuServer/**/bin/
+GomokuServer/**/obj/
+
+# Ignore specific output files
+GomokuServer/**/GomokuServer.Api.deps.json
+GomokuServer/**/GomokuServer.Api.runtimeconfig.json
+GomokuServer/**/GomokuServer.Core.deps.json
+GomokuServer/**/GomokuServer.Core.sourcelink.json
+
+# Other files that should not be formatted
+GomokuClient/dist/
+
+# Additional files or directories to exclude, if needed

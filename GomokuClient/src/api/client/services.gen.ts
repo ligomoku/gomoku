@@ -6,54 +6,106 @@ import {
   type Options,
 } from "@hey-api/client-fetch";
 import type {
-  GetApiV1GameData,
-  GetApiV1GameError,
-  GetApiV1GameResponse,
-  PostApiV1GameData,
-  PostApiV1GameError,
-  PostApiV1GameResponse,
-  GetApiV1GameByGameIdData,
-  GetApiV1GameByGameIdError,
-  GetApiV1GameByGameIdResponse,
+  GetApiV2GameByGameIdData,
+  GetApiV2GameByGameIdError,
+  GetApiV2GameByGameIdResponse,
+  GetApiV2GamesData,
+  GetApiV2GamesError,
+  GetApiV2GamesResponse,
+  PostApiV2GameData,
+  PostApiV2GameError,
+  PostApiV2GameResponse,
+  PostApiV2GameByGameIdJoinByPlayerIdData,
+  PostApiV2GameByGameIdJoinByPlayerIdError,
+  PostApiV2GameByGameIdJoinByPlayerIdResponse,
+  PostApiV2GameByGameIdMakeMoveByPlayerIdData,
+  PostApiV2GameByGameIdMakeMoveByPlayerIdError,
+  PostApiV2GameByGameIdMakeMoveByPlayerIdResponse,
+  PostApiV2PlayersData,
+  PostApiV2PlayersError,
+  PostApiV2PlayersResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
 
-export const getApiV1Game = <ThrowOnError extends boolean = false>(
-  options?: Options<GetApiV1GameData, ThrowOnError>,
+export const getApiV2GameByGameId = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiV2GameByGameIdData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetApiV1GameResponse,
-    GetApiV1GameError,
+    GetApiV2GameByGameIdResponse,
+    GetApiV2GameByGameIdError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/Game",
+    url: "/api/v2/game/{gameId}",
   });
 };
 
-export const postApiV1Game = <ThrowOnError extends boolean = false>(
-  options?: Options<PostApiV1GameData, ThrowOnError>,
+export const getApiV2Games = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiV2GamesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiV2GamesResponse,
+    GetApiV2GamesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v2/games",
+  });
+};
+
+export const postApiV2Game = <ThrowOnError extends boolean = false>(
+  options: Options<PostApiV2GameData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
-    PostApiV1GameResponse,
-    PostApiV1GameError,
+    PostApiV2GameResponse,
+    PostApiV2GameError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/Game",
+    url: "/api/v2/game",
   });
 };
 
-export const getApiV1GameByGameId = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiV1GameByGameIdData, ThrowOnError>,
+export const postApiV2GameByGameIdJoinByPlayerId = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<PostApiV2GameByGameIdJoinByPlayerIdData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).get<
-    GetApiV1GameByGameIdResponse,
-    GetApiV1GameByGameIdError,
+  return (options?.client ?? client).post<
+    PostApiV2GameByGameIdJoinByPlayerIdResponse,
+    PostApiV2GameByGameIdJoinByPlayerIdError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/v1/Game/{gameId}",
+    url: "/api/v2/game/{gameId}/join/{playerId}",
+  });
+};
+
+export const postApiV2GameByGameIdMakeMoveByPlayerId = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<PostApiV2GameByGameIdMakeMoveByPlayerIdData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    PostApiV2GameByGameIdMakeMoveByPlayerIdResponse,
+    PostApiV2GameByGameIdMakeMoveByPlayerIdError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v2/game/{gameId}/make-move/{playerId}",
+  });
+};
+
+export const postApiV2Players = <ThrowOnError extends boolean = false>(
+  options: Options<PostApiV2PlayersData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    PostApiV2PlayersResponse,
+    PostApiV2PlayersError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v2/players",
   });
 };
