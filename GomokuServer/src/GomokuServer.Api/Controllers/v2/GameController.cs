@@ -13,7 +13,7 @@ public class GameController : Controller
 	public GameController(IGameSessionHandler gameSessionHandler)
 	{
 		_gameSessionHandler = gameSessionHandler;
-	}	
+	}
 
 	[HttpGet("{gameId}")]
     [ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
