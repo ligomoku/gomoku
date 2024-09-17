@@ -135,3 +135,14 @@
     display: none;
   }
 }
+
+@media (max-width: 48em) {
+    .header {
+      flex-direction: column;
+    }
+
+    .button {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+}
