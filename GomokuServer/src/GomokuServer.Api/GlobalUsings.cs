@@ -8,6 +8,7 @@ global using GomokuServer.Api.Hubs;
 global using GomokuServer.Application;
 global using GomokuServer.Application.Interfaces;
 global using GomokuServer.Core.Entities;
+global using GomokuServer.Core.Results;
 global using GomokuServer.Infrastructure;
 
 global using Microsoft.AspNetCore.Cors;
