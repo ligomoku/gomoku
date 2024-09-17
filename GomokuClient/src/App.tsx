@@ -1,11 +1,8 @@
 import styles from "./App.module.scss";
-import { client } from "./api/client";
 import Square from "./components/Square/Square";
 import { CellValue, useBoard } from "./hooks/useBoardLocal";
 import { useSignalR } from "./hooks/useSignlarR.ts";
 import { Header } from "./components/Header";
-
-client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 const App = () => {
   const { board, winner, handlePieceClick, playAgain } = useBoard();
