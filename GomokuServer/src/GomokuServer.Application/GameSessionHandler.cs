@@ -60,11 +60,11 @@ public class GameSessionHandler : IGameSessionHandler
 
 		if (getPlayerResult.Status != ResultStatus.Ok)
 		{
-			if (getPlayerResult.IsNotFound()) 
-			{ 
-				return Result.NotFound($"Player with id {playerId} not found"); 
+			if (getPlayerResult.IsNotFound())
+			{
+				return Result.NotFound($"Player with id {playerId} not found");
 			}
-			
+
 			return Result.Error();
 		}
 
@@ -99,7 +99,7 @@ public class GameSessionHandler : IGameSessionHandler
 		{
 			return Result.Invalid(new ValidationError(tilePlacementResult.ValidationError.ToString()));
 		}
-			
+
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status == ResultStatus.Error)
 		{

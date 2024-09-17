@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "prettier:client": "npx prettier --write \"GomokuClient/**/*.{js,ts,tsx,jsx,json,css,scss,md}\"",
+    "prettier:client:check": "npx prettier --check \"GomokuClient/**/*.{js,ts,tsx,jsx,json,css,scss,md}\"",
+    "prettier:server": "dotnet format ./GomokuServer/GomokuServer.sln",
+    "prettier:server:check": "dotnet format --verify-no-changes ./GomokuServer/GomokuServer.sln",
+    "format": "yarn prettier:client && yarn prettier:server",
+    "format:check": "yarn prettier:client:check && yarn prettier:server:check"
+  }
+}
