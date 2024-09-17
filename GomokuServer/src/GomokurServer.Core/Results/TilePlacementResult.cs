@@ -11,5 +11,5 @@ public class TilePlacementResult
 
 	public string? WinnerId { get; init; }
 
-	public List<Tile>? WinningRow { get; init; } 
+	public List<Tile>? WinningRow { get; init; }
 }

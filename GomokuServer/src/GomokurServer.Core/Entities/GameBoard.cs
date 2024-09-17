@@ -50,11 +50,11 @@ public class GameBoard
 
 		var winnerCalculationResult = CalculateWinner(tile, playerId);
 
-		return winnerCalculationResult == null 
+		return winnerCalculationResult == null
 		? new()
 		{
 			IsValid = true,
-		} 
+		}
 		: new()
 		{
 			IsValid = true,
