@@ -14,6 +14,7 @@ public class PlayersController : Controller
 	}
 
 	[HttpPost]
+	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<IActionResult> CreateNewPlayer([FromBody] CreatePlayerRequest request)
 	{
 		var createPlayerResult = await _playersRepository.CreateAsync(request.Id);
