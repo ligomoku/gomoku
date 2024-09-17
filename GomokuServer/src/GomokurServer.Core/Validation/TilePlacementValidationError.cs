@@ -8,4 +8,5 @@ public enum TilePlacementValidationError
 	GameNotStartedYet = 3,
 	GameIsOver = 4,
 	PlayerIsNotInvolvedInAGame = 5,
+	NotBothPlayerAreJoinedYet = 6,
 }

@@ -5,23 +5,31 @@ namespace GomokuServer.Core.Entities;
 
 public class Game
 {
-	private readonly List<Tile> _playersMoves = new();
+	private readonly List<GameMove> _playersMoves = new();
 
 	public string GameId { get; } = Guid.NewGuid().ToString();
 
 	public required GameBoard GameBoard { get; init; }
 
-	public IReadOnlyList<Tile> PlayersMoves => _playersMoves.AsReadOnly();
+	public IReadOnlyList<GameMove> PlayersMoves => _playersMoves.AsReadOnly();
 
 	public Player? PlayerOne { get; private set; }
 
 	public Player? PlayerTwo { get; private set; }
 
-	public bool IsGameStarted
+	public bool HasBothPlayersJoined
 	{
 		get
 		{
 			return PlayerOne != null && PlayerTwo != null;
+		}
+	}
+
+	public bool IsGameStarted
+	{
+		get
+		{
+			return PlayerOne != null && PlayerTwo != null && _playersMoves.Count > 0;
 		}
 	}
 
@@ -75,12 +83,12 @@ public class Game
 			};
 		}
 
-		if (!IsGameStarted)
+		if (!HasBothPlayersJoined)
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.GameNotStartedYet,
+				ValidationError = TilePlacementValidationError.NotBothPlayerAreJoinedYet,
 			};
 		}
 
@@ -97,7 +105,13 @@ public class Game
 
 		if (tilePlacementResult.IsValid)
 		{
-			_playersMoves.Add(tile);
+			var move = new GameMove()
+			{
+				MoveNumber = _playersMoves.Count / 2 + 1,
+				PlayerId = playerId,
+				Tile = tile,
+			};
+			_playersMoves.Add(move);
 		}
 
 		if (tilePlacementResult.WinnerId != null)

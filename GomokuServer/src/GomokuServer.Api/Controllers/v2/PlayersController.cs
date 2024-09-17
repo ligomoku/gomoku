@@ -1,9 +1,13 @@
-﻿namespace GomokuServer.Api.Controllers.v2;
+﻿using System.Net.Mime;
+
+namespace GomokuServer.Api.Controllers.v2;
 
 [ApiController]
 [ApiVersion("2.0")]
 [Route("api/v2/[controller]")]
 [EnableCors(CorsPolicyName.GomokuClient)]
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
 public class PlayersController : Controller
 {
 	private readonly IPlayersRepository _playersRepository;
