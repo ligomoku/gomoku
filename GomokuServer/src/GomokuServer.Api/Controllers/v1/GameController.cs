@@ -8,8 +8,8 @@ namespace GomokuServer.Api.Controllers.v1;
 [EnableCors(CorsPolicyName.GomokuClient)]
 public class GameController : Controller
 {
-	private static object _lockObject = new object();
-	private static IDictionary<int, IList<Move>> _movesByGameId = new Dictionary<int, IList<Move>>();
+	private static readonly object _lockObject = new object();
+	private static readonly IDictionary<int, IList<Move>> _movesByGameId = new Dictionary<int, IList<Move>>();
 	private static int _waitingGameId = -1;
 	private static int _gameCounter = 1;
 	private static readonly Move _emptyMove = new Move()

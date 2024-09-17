@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build_node:
+  lint_node:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,37 +41,84 @@ jobs:
           cd GomokuClient
           yarn lint
 
+  # Formatting job for both Node.js and C# projects
+  format_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.11.0'
+
+      - name: Install dependencies
+        run: |
+          cd GomokuClient
+          yarn install
+
       - name: Run Prettier
         run: |
           cd GomokuClient
           yarn prettier:check
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Check formatting for C#
+        run: dotnet format --verify-no-changes ./GomokuServer/GomokuServer.sln
+
+  # Building job for both Node.js and C# projects
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - lint_node
+      - format_check
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.11.0'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            .yarn/cache
+          key: ${{ runner.os }}-node-${{ hashFiles('**/GomokuClient/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd GomokuClient
+          yarn install
 
       - name: Run typecheck
         run: |
           cd GomokuClient
           yarn typecheck
 
-      - name: Build project
+      - name: Build Node.js project
         run: |
           cd GomokuClient
           yarn build
 
-      - name: Archive production artifacts
+      - name: Archive Node.js production artifacts
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: production-artifacts
           path: GomokuClient/dist/
-
-  # C# build job
-  build_csharp:
-    runs-on: ubuntu-latest
-    env:
-      SERVER_DIR: GomokuServer
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -80,15 +127,15 @@ jobs:
 
       - name: Build C# project
         run: dotnet build --configuration Release
-        working-directory: ${{ env.SERVER_DIR }}
+        working-directory: GomokuServer
 
-      - name: Run tests
+      - name: Run C# tests
         run: dotnet test --configuration Release
-        working-directory: ${{ env.SERVER_DIR }}
+        working-directory: GomokuServer
 
-      - name: Publish artifacts
+      - name: Publish C# build artifacts
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: csharp-build-artifacts
-          path: ${{ env.SERVER_DIR }}/src/GomokuServer.Api/bin/Release/net8.0/
+          path: GomokuServer/src/GomokuServer.Api/bin/Release/net8.0/

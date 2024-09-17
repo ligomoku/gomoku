@@ -15,6 +15,10 @@ client:
 	@echo "Starting Node.js client..."
 	@cd $(CLIENT_DIR) && yarn install && yarn dev
 
+format:
+	@echo "Formatting C# and Node.js code..."
+	yarn format
+
 clean:
 	@echo "Cleaning build artifacts..."
 	@cd GomokuServer && dotnet clean

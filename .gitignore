@@ -1,2 +1,6 @@
 .idea
 .vs
+node_modules
+.yarn/
+.yarnrc.yml
+yarn.lock
