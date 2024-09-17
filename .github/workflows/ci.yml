@@ -79,7 +79,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Check formatting
-        run: dotnet format --verify-no-changes
+        run: dotnet format --verify-no-changes ./GomokuServer/GomokuServer.sln
 
       - name: Build C# project
         run: dotnet build --configuration Release
