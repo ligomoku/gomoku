@@ -86,7 +86,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsHorizontally_ShouldDeclareWinner()
+	public void PlaceTile_PlayerWinsHorizontally_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		for (int i = 0; i < 4; i++)
@@ -101,10 +101,17 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.WinningRow.Should().BeEquivalentTo(new[] {
+			new Tile(0, 7),
+			new Tile(1, 7),
+			new Tile(2, 7),
+			new Tile(3, 7),
+			new Tile(4, 7)
+		});
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsVertically_ShouldDeclareWinner()
+	public void PlaceTile_PlayerWinsVertically_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		for (int i = 0; i < 4; i++)
@@ -119,10 +126,17 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.WinningRow.Should().BeEquivalentTo(new[] {
+			new Tile(7, 0),
+			new Tile(7, 1),
+			new Tile(7, 2),
+			new Tile(7, 3),
+			new Tile(7, 4)
+		});
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsDiagonally_ShouldDeclareWinner()
+	public void PlaceTile_PlayerWinsDiagonally_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _game.PlayerOne!.Id);
@@ -140,6 +154,13 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.WinningRow.Should().BeEquivalentTo(new[] {
+			new Tile(0, 0),
+			new Tile(1, 1),
+			new Tile(2, 2),
+			new Tile(3, 3),
+			new Tile(4, 4)
+		});
 	}
 
 	[Test]

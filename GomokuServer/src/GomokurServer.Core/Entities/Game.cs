@@ -17,23 +17,13 @@ public class Game
 
 	public Player? PlayerTwo { get; private set; }
 
-	public bool HasBothPlayersJoined
-	{
-		get
-		{
-			return PlayerOne != null && PlayerTwo != null;
-		}
-	}
+	public bool HasBothPlayersJoined => PlayerOne != null && PlayerTwo != null;
 
-	public bool IsGameStarted
-	{
-		get
-		{
-			return PlayerOne != null && PlayerTwo != null && _playersMoves.Count > 0;
-		}
-	}
+	public bool IsGameStarted => HasBothPlayersJoined && _playersMoves.Count > 0;
 
-	public string? WinnerId { get; set; }
+	public string? WinnerId { get; private set; }
+
+	public List<Tile>? WinningRow { get; private set; }
 
 	public PlayerAddingResult AddPlayer(Player player)
 	{
@@ -117,6 +107,7 @@ public class Game
 		if (tilePlacementResult.WinnerId != null)
 		{
 			WinnerId = tilePlacementResult.WinnerId;
+			WinningRow = tilePlacementResult.WinningRow;
 		}
 
 		return tilePlacementResult;

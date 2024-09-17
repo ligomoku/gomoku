@@ -164,17 +164,27 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerId = "player1";
+		var playerOneId = "player1";
+		var playerTwoId = "player2";
 		var tile = new Tile(0, 0);
-		var game = new Game { GameBoard = new GameBoard(15), WinnerId = "player2" };
+		var game = new Game { GameBoard = new GameBoard(15) };
+		game.AddPlayer(new Player(playerOneId));
+		game.AddPlayer(new Player(playerTwoId));
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+
+		for (int i = 0; i < 4; i++)
+		{
+			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 7), game.PlayerOne!.Id);
+			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 8), game.PlayerTwo!.Id);
+		}
+		var winningMove = await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(4, 7), game.PlayerOne!.Id);
 
 		// Act
-		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerId);
+		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerOneId);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 }
