@@ -17,15 +17,15 @@ public class Game
 
 	public Player? PlayerTwo { get; private set; }
 
-    public bool HasBothPlayersJoined
-    {
-        get
-        {
-            return PlayerOne != null && PlayerTwo != null;
-        }
-    }
+	public bool HasBothPlayersJoined
+	{
+		get
+		{
+			return PlayerOne != null && PlayerTwo != null;
+		}
+	}
 
-    public bool IsGameStarted
+	public bool IsGameStarted
 	{
 		get
 		{
