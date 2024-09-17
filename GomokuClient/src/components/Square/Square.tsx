@@ -1,7 +1,7 @@
 import { memo } from "react";
 import styles from "./Square.module.scss";
 
-interface SquareProps {
+export interface SquareProps {
   row: number;
   col: number;
   value: string | null;
