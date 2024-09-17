@@ -6,12 +6,14 @@ namespace GomokuServer.Core.Tests;
 public class GameTests
 {
 	private Game _game;
+	private Player _playerOne;
+	private Player _playerTwo;
 
 	[SetUp]
 	public void SetUp()
 	{
-		var playerOne = new Player("Player1");
-		var playerTwo = new Player("Player2");
+		_playerOne = new Player("Player1");
+		_playerTwo = new Player("Player2");
 		var gameBoard = new GameBoard(15);
 
 		_game = new Game
@@ -19,8 +21,8 @@ public class GameTests
 			GameBoard = gameBoard
 		};
 
-		_game.AddPlayer(playerOne);
-		_game.AddPlayer(playerTwo);
+		_game.AddPlayer(_playerOne);
+		_game.AddPlayer(_playerTwo);
 	}
 
 	[Test]
@@ -154,7 +156,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void PlaceTile_BeforeGameStarts_ShouldReturnGameNotStartedError()
+	public void PlaceTile_BeforePlayersJoin_ShouldReturnNotBothPlayerAreJoinedYetError()
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
@@ -168,7 +170,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.GameNotStartedYet);
+		result.ValidationError.Should().Be(TilePlacementValidationError.NotBothPlayerAreJoinedYet);
 	}
 
 	[Test]
@@ -239,7 +241,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void CreateGame_WhenBothPlayersAreAdded_GameStartedShouldBeTrue()
+	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
 	{
 		// Arrange
 		_game = new Game
@@ -250,6 +252,41 @@ public class GameTests
 		_game.AddPlayer(new Player("somePlayer2"));
 
 		// Assert
+		_game.HasBothPlayersJoined.Should().BeTrue();
+		_game.IsGameStarted.Should().BeFalse();
+	}
+
+	[Test]
+	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
+	{
+		// Arrange
+		_game = new Game
+		{
+			GameBoard = new GameBoard(15)
+		};
+		_game.AddPlayer(new Player("somePlayer1"));
+		_game.AddPlayer(new Player("somePlayer2"));
+
+		// Act
+		_game.PlaceTile(new Tile(0, 0), "somePlayer1");
+
+		// Assert
+		_game.HasBothPlayersJoined.Should().BeTrue();
 		_game.IsGameStarted.Should().BeTrue();
+	}
+
+	[Test]
+	public void MakeMoves_MovesNumbersShouldBeCorrect()
+	{
+		// Act
+		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
+		_game.PlaceTile(new Tile(0, 1), _playerTwo.Id);
+		_game.PlaceTile(new Tile(1, 1), _playerOne.Id);
+
+		// Assert
+		_game.PlayersMoves.Count.Should().Be(3);
+		_game.PlayersMoves[0].MoveNumber.Should().Be(1);
+		_game.PlayersMoves[1].MoveNumber.Should().Be(1);
+		_game.PlayersMoves[2].MoveNumber.Should().Be(2);
 	}
 }

@@ -137,7 +137,6 @@ public class GameSessionHandlerTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		game.PlayersMoves.Should().Contain(tile);
 		await _gameRepository.Received(1).SaveAsync(game);
 	}
 
