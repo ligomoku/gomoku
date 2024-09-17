@@ -1,18 +1,28 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Gomoku API v1.0",
+    "title": "Gomoku API v2.0",
     "description": "",
-    "version": "1.0"
+    "version": "2.0"
   },
   "paths": {
-    "/api/v1/Game": {
+    "/api/v2/game/{gameId}": {
       "get": {
         "tags": ["Game"],
         "parameters": [
           {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "X-Version",
             "in": "header",
+            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -21,33 +31,40 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameInfo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameInfo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameInfo"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
-      },
+      }
+    },
+    "/api/v2/games": {
+      "get": {
+        "tags": ["Game"],
+        "parameters": [
+          {
+            "name": "X-Version",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v2/game": {
       "post": {
         "tags": ["Game"],
         "parameters": [
           {
             "name": "X-Version",
             "in": "header",
+            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -58,47 +75,30 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Move"
+                "$ref": "#/components/schemas/CreateGameRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Move"
+                "$ref": "#/components/schemas/CreateGameRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Move"
+                "$ref": "#/components/schemas/CreateGameRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
     },
-    "/api/v1/Game/{gameId}": {
-      "get": {
+    "/api/v2/game/{gameId}/join/{playerId}": {
+      "post": {
         "tags": ["Game"],
         "parameters": [
           {
@@ -107,13 +107,22 @@
             "required": true,
             "style": "simple",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
+            }
+          },
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
             }
           },
           {
             "name": "X-Version",
             "in": "header",
+            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -122,24 +131,105 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Move"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Move"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Move"
-                }
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v2/game/{gameId}/make-move/{playerId}": {
+      "post": {
+        "tags": ["Game"],
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "playerId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MakeMoveRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MakeMoveRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MakeMoveRequest"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v2/players": {
+      "post": {
+        "tags": ["Players"],
+        "parameters": [
+          {
+            "name": "X-Version",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlayerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -147,35 +237,34 @@
   },
   "components": {
     "schemas": {
-      "GameInfo": {
+      "CreateGameRequest": {
         "type": "object",
         "properties": {
-          "gameId": {
+          "boardSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "yourTurn": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
       },
-      "Move": {
+      "CreatePlayerRequest": {
         "type": "object",
         "properties": {
-          "gameId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "player": {
+          "id": {
             "type": "string",
             "nullable": true
-          },
-          "row": {
+          }
+        },
+        "additionalProperties": false
+      },
+      "MakeMoveRequest": {
+        "type": "object",
+        "properties": {
+          "x": {
             "type": "integer",
             "format": "int32"
           },
-          "column": {
+          "y": {
             "type": "integer",
             "format": "int32"
           }
