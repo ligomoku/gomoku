@@ -65,7 +65,7 @@
 .navicon::before,
 .navicon::after {
   background: #333;
-  content: '';
+  content: "";
   display: block;
   height: 100%;
   position: absolute;
@@ -137,12 +137,12 @@
 }
 
 @media (max-width: 48em) {
-    .header {
-      flex-direction: column;
-    }
+  .header {
+    flex-direction: column;
+  }
 
-    .button {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+  .button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
