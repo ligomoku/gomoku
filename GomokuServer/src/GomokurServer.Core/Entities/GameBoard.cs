@@ -48,39 +48,55 @@ public class GameBoard
 		_board[tile.X, tile.Y] = playerId;
 		LastPlacementById = playerId;
 
-		return new()
+		var winnerCalculationResult = CalculateWinner(tile, playerId);
+
+		return winnerCalculationResult == null 
+		? new()
 		{
-			WinnerId = CalculateWinner(tile, playerId),
 			IsValid = true,
+		} 
+		: new()
+		{
+			IsValid = true,
+			WinnerId = winnerCalculationResult.WinnerId,
+			WinningRow = winnerCalculationResult.WinningRow
 		};
 	}
 
-	private string? CalculateWinner(Tile lastMove, string playerId)
+	private WinnerCalculationResult? CalculateWinner(Tile lastMove, string playerId)
 	{
-		if (CheckDirection(lastMove.X, lastMove.Y, 1, 0, playerId) ||
-			CheckDirection(lastMove.X, lastMove.Y, 0, 1, playerId) ||
-			CheckDirection(lastMove.X, lastMove.Y, 1, 1, playerId) ||
-			CheckDirection(lastMove.X, lastMove.Y, 1, -1, playerId))
+		List<Tile>? winningTiles;
+
+		if ((winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, 0, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 0, 1, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, 1, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, -1, playerId))?.Count >= 5)
 		{
-			return playerId;
+			return new WinnerCalculationResult
+			{
+				WinnerId = playerId,
+				WinningRow = winningTiles
+			};
 		}
 
 		return null;
 	}
 
-	private bool CheckDirection(int startX, int startY, int xDirection, int yDirection, string playerId)
+	private List<Tile>? GetWinningRowInDirection(int startX, int startY, int xDirection, int yDirection, string playerId)
 	{
-		int consecutiveCount = 1;
+		List<Tile> winningRow =
+		[
+			new Tile(startX, startY),
+			.. CollectConsecutiveTiles(startX, startY, xDirection, yDirection, playerId),
+			.. CollectConsecutiveTiles(startX, startY, -xDirection, -yDirection, playerId),
+		];
 
-		consecutiveCount += CountConsecutiveTiles(startX, startY, xDirection, yDirection, playerId);
-		consecutiveCount += CountConsecutiveTiles(startX, startY, -xDirection, -yDirection, playerId);
-
-		return consecutiveCount >= 5;
+		return winningRow.Count >= 5 ? winningRow : null;
 	}
 
-	private int CountConsecutiveTiles(int startX, int startY, int xDirection, int yDirection, string playerId)
+	private List<Tile> CollectConsecutiveTiles(int startX, int startY, int xDirection, int yDirection, string playerId)
 	{
-		int consecutiveCount = 0;
+		List<Tile> tiles = [];
 		int currentX = startX + xDirection;
 		int currentY = startY + yDirection;
 
@@ -88,11 +104,11 @@ public class GameBoard
 			   currentY >= 0 && currentY < _boardSize &&
 			   _board[currentX, currentY] == playerId)
 		{
-			consecutiveCount++;
+			tiles.Add(new Tile(currentX, currentY));
 			currentX += xDirection;
 			currentY += yDirection;
 		}
 
-		return consecutiveCount;
+		return tiles;
 	}
 }
