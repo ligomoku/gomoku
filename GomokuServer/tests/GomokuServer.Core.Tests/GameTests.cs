@@ -300,4 +300,15 @@ public class GameTests
 		_game.PlayersMoves[1].MoveNumber.Should().Be(1);
 		_game.PlayersMoves[2].MoveNumber.Should().Be(2);
 	}
+
+	[Test]
+	public void EachPlayerMakeMoves_NextMovePlayerIdShouldBeCorrect()
+	{
+		// Assert 
+		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
+		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
+		_game.NextMoveShouldMakePlayerId.Should().Be(_playerTwo.Id);
+		_game.PlaceTile(new Tile(1, 1), _playerTwo.Id);
+		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
+	}
 }
