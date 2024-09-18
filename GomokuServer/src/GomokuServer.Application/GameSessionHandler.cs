@@ -32,10 +32,7 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE}"));
 		}
 
-		var game = new Game
-		{
-			GameBoard = new GameBoard(boardSize),
-		};
+		var game = new Game(new GameBoard(boardSize));
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)

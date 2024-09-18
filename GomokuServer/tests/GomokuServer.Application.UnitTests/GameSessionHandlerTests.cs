@@ -51,7 +51,7 @@ public class GameSessionHandlerTests
 		// Arrange
 		var gameId = "game1";
 		var playerId = "player1";
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 		var player = new Player(playerId);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
@@ -74,7 +74,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerOneId = "player1";
 		var playerTwoId = "player2";
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 		game.AddPlayer(new Player(playerOneId));
 
 		var playerTwo = new Player(playerTwoId);
@@ -101,7 +101,7 @@ public class GameSessionHandlerTests
 		var playerTwo = new Player("player2");
 		var newPlayer = new Player("player3");
 
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 		game.AddPlayer(playerOne);
 		game.AddPlayer(playerTwo);
 
@@ -125,7 +125,7 @@ public class GameSessionHandlerTests
 		var tile = new Tile(0, 0);
 		var player = new Player(playerId);
 
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 		game.AddPlayer(player);
 		game.AddPlayer(new Player("player2"));
 
@@ -147,7 +147,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerId = "player1";
 		var tile = new Tile(0, 0);
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 
@@ -167,7 +167,7 @@ public class GameSessionHandlerTests
 		var playerOneId = "player1";
 		var playerTwoId = "player2";
 		var tile = new Tile(0, 0);
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15));
 		game.AddPlayer(new Player(playerOneId));
 		game.AddPlayer(new Player(playerTwoId));
 

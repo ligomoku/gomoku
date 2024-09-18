@@ -16,10 +16,7 @@ public class GameTests
 		_playerTwo = new Player("Player2");
 		var gameBoard = new GameBoard(15);
 
-		_game = new Game
-		{
-			GameBoard = gameBoard
-		};
+		_game = new Game(gameBoard);
 
 		_game.AddPlayer(_playerOne);
 		_game.AddPlayer(_playerTwo);
@@ -181,10 +178,7 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game
-		{
-			GameBoard = gameBoard
-		};
+		_game = new Game(gameBoard);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(7, 7), "nonExistentPlayerId");
@@ -233,10 +227,8 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game
-		{
-			GameBoard = gameBoard
-		};
+		_game = new Game(gameBoard);
+		
 		var player = new Player("somePlayer");
 		_game.AddPlayer(player);
 
@@ -252,10 +244,7 @@ public class GameTests
 	public void CreateGame_WhenPlayersNotAdded_GameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game
-		{
-			GameBoard = new GameBoard(15)
-		};
+		_game = new Game(new GameBoard(15));
 
 		// Assert
 		_game.IsGameStarted.Should().BeFalse();
@@ -265,10 +254,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game
-		{
-			GameBoard = new GameBoard(15)
-		};
+		_game = new Game(new GameBoard(15));
 		_game.AddPlayer(new Player("somePlayer1"));
 		_game.AddPlayer(new Player("somePlayer2"));
 
@@ -281,10 +267,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
 	{
 		// Arrange
-		_game = new Game
-		{
-			GameBoard = new GameBoard(15)
-		};
+		_game = new Game(new GameBoard(15));
 		_game.AddPlayer(new Player("somePlayer1"));
 		_game.AddPlayer(new Player("somePlayer2"));
 

@@ -6,10 +6,14 @@ namespace GomokuServer.Core.Entities;
 public class Game
 {
 	private readonly List<GameMove> _playersMoves = new();
+	private readonly GameBoard _gameBoard;
+
+	public Game(GameBoard gameBoard)
+	{
+		_gameBoard = gameBoard;
+	}
 
 	public string GameId { get; } = Guid.NewGuid().ToString();
-
-	public required GameBoard GameBoard { get; init; }
 
 	public IReadOnlyList<GameMove> PlayersMoves => _playersMoves.AsReadOnly();
 
@@ -91,7 +95,7 @@ public class Game
 			};
 		}
 
-		var tilePlacementResult = GameBoard.PlaceTile(tile, playerId);
+		var tilePlacementResult = _gameBoard.PlaceTile(tile, playerId);
 
 		if (tilePlacementResult.IsValid)
 		{
