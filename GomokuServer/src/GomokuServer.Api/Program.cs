@@ -47,6 +47,7 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();

@@ -1,4 +1,5 @@
-﻿using GomokuServer.Core.Results;
+﻿using GomokuServer.Core.Interfaces;
+using GomokuServer.Core.Results;
 using GomokuServer.Core.Validation;
 
 namespace GomokuServer.Core.Entities;
@@ -6,10 +7,16 @@ namespace GomokuServer.Core.Entities;
 public class Game
 {
 	private readonly List<GameMove> _playersMoves = new();
+	private readonly GameBoard _gameBoard;
+	private readonly IRandomProvider _randomProvider;
+
+	public Game(GameBoard gameBoard, IRandomProvider randomProvider)
+	{
+		_gameBoard = gameBoard;
+		_randomProvider = randomProvider;
+	}
 
 	public string GameId { get; } = Guid.NewGuid().ToString();
-
-	public required GameBoard GameBoard { get; init; }
 
 	public IReadOnlyList<GameMove> PlayersMoves => _playersMoves.AsReadOnly();
 
@@ -17,23 +24,15 @@ public class Game
 
 	public Player? PlayerTwo { get; private set; }
 
-	public bool HasBothPlayersJoined
-	{
-		get
-		{
-			return PlayerOne != null && PlayerTwo != null;
-		}
-	}
+	public bool HasBothPlayersJoined => PlayerOne != null && PlayerTwo != null;
 
-	public bool IsGameStarted
-	{
-		get
-		{
-			return PlayerOne != null && PlayerTwo != null && _playersMoves.Count > 0;
-		}
-	}
+	public bool IsGameStarted => HasBothPlayersJoined && _playersMoves.Count > 0;
 
-	public string? WinnerId { get; set; }
+	public string? NextMoveShouldMakePlayerId { get; private set; }
+
+	public string? WinnerId { get; private set; }
+
+	public List<Tile>? WinningSequence { get; private set; }
 
 	public PlayerAddingResult AddPlayer(Player player)
 	{
@@ -65,6 +64,9 @@ public class Game
 		}
 
 		PlayerTwo = player;
+
+		NextMoveShouldMakePlayerId = _randomProvider.GetInt(0, 2) == 0 ? PlayerOne.Id : PlayerTwo.Id;
+
 		return new()
 		{
 			IsValid = true,
@@ -101,7 +103,16 @@ public class Game
 			};
 		}
 
-		var tilePlacementResult = GameBoard.PlaceTile(tile, playerId);
+		if (playerId != NextMoveShouldMakePlayerId)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
+			};
+		}
+
+		var tilePlacementResult = _gameBoard.PlaceTile(tile, playerId);
 
 		if (tilePlacementResult.IsValid)
 		{
@@ -112,11 +123,14 @@ public class Game
 				Tile = tile,
 			};
 			_playersMoves.Add(move);
+
+			NextMoveShouldMakePlayerId = playerId != PlayerOne.Id ? PlayerOne.Id : PlayerTwo!.Id;
 		}
 
 		if (tilePlacementResult.WinnerId != null)
 		{
 			WinnerId = tilePlacementResult.WinnerId;
+			WinningSequence = tilePlacementResult.WinningSequence;
 		}
 
 		return tilePlacementResult;

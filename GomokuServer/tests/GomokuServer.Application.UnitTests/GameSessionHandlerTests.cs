@@ -1,3 +1,5 @@
+using GomokuServer.Core.Interfaces;
+
 namespace GomokuServer.Application.UnitTests;
 
 public class GameSessionHandlerTests
@@ -5,13 +7,16 @@ public class GameSessionHandlerTests
 	private IGameRepository _gameRepository;
 	private IPlayersRepository _playersRepository;
 	private GameSessionHandler _gameSessionHandler;
+	private IRandomProvider _randomProvider;
 
 	[SetUp]
 	public void Setup()
 	{
 		_gameRepository = Substitute.For<IGameRepository>();
 		_playersRepository = Substitute.For<IPlayersRepository>();
-		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository);
+		_randomProvider = Substitute.For<IRandomProvider>();
+		_randomProvider.GetInt(0, 2).Returns(0);
+		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository, _randomProvider);
 	}
 
 	[Test]
@@ -51,7 +56,7 @@ public class GameSessionHandlerTests
 		// Arrange
 		var gameId = "game1";
 		var playerId = "player1";
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15), _randomProvider);
 		var player = new Player(playerId);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
@@ -74,7 +79,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerOneId = "player1";
 		var playerTwoId = "player2";
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15), _randomProvider);
 		game.AddPlayer(new Player(playerOneId));
 
 		var playerTwo = new Player(playerTwoId);
@@ -101,7 +106,7 @@ public class GameSessionHandlerTests
 		var playerTwo = new Player("player2");
 		var newPlayer = new Player("player3");
 
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15), _randomProvider);
 		game.AddPlayer(playerOne);
 		game.AddPlayer(playerTwo);
 
@@ -125,7 +130,7 @@ public class GameSessionHandlerTests
 		var tile = new Tile(0, 0);
 		var player = new Player(playerId);
 
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15), _randomProvider);
 		game.AddPlayer(player);
 		game.AddPlayer(new Player("player2"));
 
@@ -147,7 +152,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerId = "player1";
 		var tile = new Tile(0, 0);
-		var game = new Game { GameBoard = new GameBoard(15) };
+		var game = new Game(new GameBoard(15), _randomProvider);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 
@@ -164,17 +169,27 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerId = "player1";
+		var playerOneId = "player1";
+		var playerTwoId = "player2";
 		var tile = new Tile(0, 0);
-		var game = new Game { GameBoard = new GameBoard(15), WinnerId = "player2" };
+		var game = new Game(new GameBoard(15), _randomProvider);
+		game.AddPlayer(new Player(playerOneId));
+		game.AddPlayer(new Player(playerTwoId));
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+
+		for (int i = 0; i < 4; i++)
+		{
+			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 7), game.PlayerOne!.Id);
+			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 8), game.PlayerTwo!.Id);
+		}
+		var winningMove = await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(4, 7), game.PlayerOne!.Id);
 
 		// Act
-		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerId);
+		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerOneId);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 }
