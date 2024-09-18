@@ -235,7 +235,7 @@ public class GameTests
 		// Arrange
 		var gameBoard = new GameBoard(15);
 		_game = new Game(gameBoard, _randomProvider);
-		
+
 		var player = new Player("somePlayer");
 		_game.AddPlayer(player);
 
