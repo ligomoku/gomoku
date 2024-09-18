@@ -405,6 +405,3 @@ insert_final_newline = true
 #
 # CS8618: Non-nullable member is uninitialized
 dotnet_diagnostic.CS8618.severity = error
-#
-# IDE1006: Record parameters names should start with uppercase
-dotnet_diagnostic.IDE1006.severity = error
