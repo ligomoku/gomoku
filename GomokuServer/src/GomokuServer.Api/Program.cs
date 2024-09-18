@@ -1,6 +1,3 @@
-using GomokuServer.Core.Interfaces;
-using GomokuServer.Core.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
