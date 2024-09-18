@@ -23,7 +23,7 @@ public class Game
 
 	public string? WinnerId { get; private set; }
 
-	public List<Tile>? WinningRow { get; private set; }
+	public List<Tile>? WinningSequence { get; private set; }
 
 	public PlayerAddingResult AddPlayer(Player player)
 	{
@@ -107,7 +107,7 @@ public class Game
 		if (tilePlacementResult.WinnerId != null)
 		{
 			WinnerId = tilePlacementResult.WinnerId;
-			WinningRow = tilePlacementResult.WinningRow;
+			WinningSequence = tilePlacementResult.WinningSequence;
 		}
 
 		return tilePlacementResult;

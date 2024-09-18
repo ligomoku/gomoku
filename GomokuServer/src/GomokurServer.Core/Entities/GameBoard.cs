@@ -59,7 +59,7 @@ public class GameBoard
 		{
 			IsValid = true,
 			WinnerId = winnerCalculationResult.WinnerId,
-			WinningRow = winnerCalculationResult.WinningRow
+			WinningSequence = winnerCalculationResult.WinningSequence
 		};
 	}
 
@@ -67,31 +67,31 @@ public class GameBoard
 	{
 		List<Tile>? winningTiles;
 
-		if ((winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, 0, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 0, 1, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, 1, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningRowInDirection(lastMove.X, lastMove.Y, 1, -1, playerId))?.Count >= 5)
+		if ((winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 0, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 0, 1, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 1, playerId))?.Count >= 5 ||
+			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, -1, playerId))?.Count >= 5)
 		{
 			return new WinnerCalculationResult
 			{
 				WinnerId = playerId,
-				WinningRow = winningTiles
+				WinningSequence = winningTiles
 			};
 		}
 
 		return null;
 	}
 
-	private List<Tile>? GetWinningRowInDirection(int startX, int startY, int xDirection, int yDirection, string playerId)
+	private List<Tile>? GetWinningSequenceInDirection(int startX, int startY, int xDirection, int yDirection, string playerId)
 	{
-		List<Tile> winningRow =
+		List<Tile> winningSequence =
 		[
 			new Tile(startX, startY),
 			.. CollectConsecutiveTiles(startX, startY, xDirection, yDirection, playerId),
 			.. CollectConsecutiveTiles(startX, startY, -xDirection, -yDirection, playerId),
 		];
 
-		return winningRow.Count >= 5 ? winningRow : null;
+		return winningSequence.Count >= 5 ? winningSequence : null;
 	}
 
 	private List<Tile> CollectConsecutiveTiles(int startX, int startY, int xDirection, int yDirection, string playerId)

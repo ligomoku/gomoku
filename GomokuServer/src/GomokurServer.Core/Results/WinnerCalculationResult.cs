@@ -6,5 +6,5 @@ public class WinnerCalculationResult
 {
 	public required string WinnerId { get; set; }
 
-	public required List<Tile> WinningRow { get; set; }
+	public required List<Tile> WinningSequence { get; set; }
 }

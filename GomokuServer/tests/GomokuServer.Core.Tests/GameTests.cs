@@ -101,7 +101,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
-		result.WinningRow.Should().BeEquivalentTo(new[] {
+		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 7),
 			new Tile(1, 7),
 			new Tile(2, 7),
@@ -126,7 +126,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
-		result.WinningRow.Should().BeEquivalentTo(new[] {
+		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(7, 0),
 			new Tile(7, 1),
 			new Tile(7, 2),
@@ -154,7 +154,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinnerId.Should().Be(_game.PlayerOne.Id);
-		result.WinningRow.Should().BeEquivalentTo(new[] {
+		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 0),
 			new Tile(1, 1),
 			new Tile(2, 2),
