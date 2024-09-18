@@ -28,7 +28,7 @@ public class GameController : Controller
 
 	[HttpGet()]
 	[Route("/api/v2/games")]
-	[ProducesResponseType(typeof(IEnumerable<Game>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames()
 	{
 		var getAvailableGames = await _gameSessionHandler.GetAvailableGamesAsync();
@@ -37,7 +37,7 @@ public class GameController : Controller
 	}
 
 	[HttpPost]
-	[ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
@@ -55,7 +55,7 @@ public class GameController : Controller
 	}
 
 	[HttpPost("{gameId}/make-move/{playerId}")]
-	[ProducesResponseType(typeof(TilePlacementResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status200OK)]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
 	{
 		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(request.X, request.Y), playerId);

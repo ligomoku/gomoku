@@ -1,6 +1,6 @@
-﻿using GomokuServer.Core.Entities;
+﻿using GomokuServer.Application.Responses;
+using GomokuServer.Core.Entities;
 using GomokuServer.Core.Interfaces;
-using GomokuServer.Core.Results;
 
 namespace GomokuServer.Application;
 
@@ -24,12 +24,20 @@ public class GameSessionHandler : IGameSessionHandler
 		return _gameRepository.GetAsync(gameId);
 	}
 
-	public Task<Result<IEnumerable<Game>>> GetAvailableGamesAsync()
+	public async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync()
 	{
-		return _gameRepository.GetAvailableGamesAsync();
+		var getAvailableGamesResult = await _gameRepository.GetAvailableGamesAsync();
+
+		if (!getAvailableGamesResult.IsSuccess)
+		{
+			return getAvailableGamesResult.Map(_ => Enumerable.Empty<GetAvailableGamesResponse>());
+		}
+
+		var availableGames = getAvailableGamesResult.Value.Select(game => new GetAvailableGamesResponse(game.GameId));
+		return Result.Success(availableGames);
 	}
 
-	public async Task<Result<Game>> CreateAsync(int boardSize)
+	public async Task<Result<CreateGameResponse>> CreateAsync(int boardSize)
 	{
 		if (boardSize < BOARD_MIN_SIZE || boardSize > BOARD_MAX_SIZE)
 		{
@@ -44,7 +52,7 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Error();
 		}
 
-		return Result.Success(game);
+		return Result.Success(new CreateGameResponse(game.GameId));
 	}
 
 	public async Task<Result> AddPlayerToGameAsync(string gameId, string playerId)
@@ -85,7 +93,7 @@ public class GameSessionHandler : IGameSessionHandler
 		return Result.Success();
 	}
 
-	public async Task<Result<TilePlacementResult>> PlaceTileAsync(string gameId, Tile tile, string playerId)
+	public async Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, Tile tile, string playerId)
 	{
 		var getGameResult = await _gameRepository.GetAsync(gameId);
 		if (getGameResult.Status == ResultStatus.NotFound)
@@ -107,6 +115,6 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Error();
 		}
 
-		return Result.Success(tilePlacementResult);
+		return Result.Success(new PlaceTileResponse(tilePlacementResult.WinningSequence));
 	}
 }
