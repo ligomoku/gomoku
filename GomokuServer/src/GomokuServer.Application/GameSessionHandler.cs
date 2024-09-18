@@ -7,6 +7,7 @@ namespace GomokuServer.Application;
 public class GameSessionHandler : IGameSessionHandler
 {
 	private const int BOARD_MIN_SIZE = 13;
+	private const int BOARD_MAX_SIZE = 19;
 	private readonly IGameRepository _gameRepository;
 	private readonly IPlayersRepository _playersRepository;
 	private readonly IRandomProvider _randomProvider;
@@ -30,9 +31,9 @@ public class GameSessionHandler : IGameSessionHandler
 
 	public async Task<Result<Game>> CreateAsync(int boardSize)
 	{
-		if (boardSize < BOARD_MIN_SIZE)
+		if (boardSize < BOARD_MIN_SIZE || boardSize > BOARD_MAX_SIZE)
 		{
-			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE}"));
+			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
 		var game = new Game(new GameBoard(boardSize), _randomProvider);

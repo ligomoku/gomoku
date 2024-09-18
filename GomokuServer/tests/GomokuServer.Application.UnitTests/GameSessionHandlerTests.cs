@@ -36,10 +36,25 @@ public class GameSessionHandlerTests
 	}
 
 	[Test]
-	public async Task CreateAsync_WithInvalidBoardSize_ShouldReturnValidationError()
+	public async Task CreateAsync_WithBoardSizeLessThanAllowed_ShouldReturnValidationError()
 	{
 		// Arrange
-		int invalidBoardSize = 10;
+		int invalidBoardSize = 12;
+
+		// Act
+		var result = await _gameSessionHandler.CreateAsync(invalidBoardSize);
+
+		// Assert
+		result.Status.Should().Be(ResultStatus.Invalid);
+		result.ValidationErrors.Count().Should().Be(1);
+		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+	}
+
+	[Test]
+	public async Task CreateAsync_WithBoardSizeMoreThanAllowed_ShouldReturnValidationError()
+	{
+		// Arrange
+		int invalidBoardSize = 20;
 
 		// Act
 		var result = await _gameSessionHandler.CreateAsync(invalidBoardSize);
