@@ -1,0 +1,39 @@
+name: Contribution Guidelines Check
+
+on:
+  # The event `pull_request_target` is safe because the workflow does not use `action/checkout`,
+  # and does not run untrusted code.
+  # See: https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request_target:
+    branches:
+      - "**"
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+      - labeled
+      - unlabeled
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number }}"
+  cancel-in-progress: true
+
+jobs:
+  validate-pr-title:
+    name: Validate PR Title
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # These are regex patterns auto-wrapped in `^ $`.
+          scopes: |
+            client
+            server
+            client-server
+          requireScope: true
+          ignoreLabels: |
+            bot
