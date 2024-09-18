@@ -112,6 +112,7 @@ public class GameTests
 			new Tile(3, 7),
 			new Tile(4, 7)
 		});
+		_game.NextMoveShouldMakePlayerId.Should().BeNull();
 	}
 
 	[Test]
@@ -137,6 +138,7 @@ public class GameTests
 			new Tile(7, 3),
 			new Tile(7, 4)
 		});
+		_game.NextMoveShouldMakePlayerId.Should().BeNull();
 	}
 
 	[Test]
@@ -165,6 +167,7 @@ public class GameTests
 			new Tile(3, 3),
 			new Tile(4, 4)
 		});
+		_game.NextMoveShouldMakePlayerId.Should().BeNull();
 	}
 
 	[Test]

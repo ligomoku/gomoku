@@ -131,6 +131,7 @@ public class Game
 		{
 			WinnerId = tilePlacementResult.WinnerId;
 			WinningSequence = tilePlacementResult.WinningSequence;
+			NextMoveShouldMakePlayerId = null;
 		}
 
 		return tilePlacementResult;
