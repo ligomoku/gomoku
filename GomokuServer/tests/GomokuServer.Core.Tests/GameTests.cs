@@ -4,7 +4,7 @@ using GomokuServer.Core.Validation;
 
 using NSubstitute;
 
-namespace GomokuServer.Core.Tests;
+namespace GomokuServer.Core.UnitTests;
 
 public class GameTests
 {
