@@ -14,19 +14,8 @@ public class GameBoard
 		_board = new string[_boardSize, _boardSize];
 	}
 
-	public string? LastPlacementById { get; private set; }
-
 	public TilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
-		if (playerId == LastPlacementById)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
-			};
-		}
-
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
 			return new()
@@ -46,7 +35,6 @@ public class GameBoard
 		}
 
 		_board[tile.X, tile.Y] = playerId;
-		LastPlacementById = playerId;
 
 		var winnerCalculationResult = CalculateWinner(tile, playerId);
 

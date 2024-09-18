@@ -1,5 +1,8 @@
 using GomokuServer.Core.Entities;
+using GomokuServer.Core.Interfaces;
 using GomokuServer.Core.Validation;
+
+using NSubstitute;
 
 namespace GomokuServer.Core.Tests;
 
@@ -8,6 +11,7 @@ public class GameTests
 	private Game _game;
 	private Player _playerOne;
 	private Player _playerTwo;
+	private IRandomProvider _randomProvider;
 
 	[SetUp]
 	public void SetUp()
@@ -16,7 +20,10 @@ public class GameTests
 		_playerTwo = new Player("Player2");
 		var gameBoard = new GameBoard(15);
 
-		_game = new Game(gameBoard);
+		_randomProvider = Substitute.For<IRandomProvider>();
+		_randomProvider.GetInt(0, 2).Returns(0);
+
+		_game = new Game(gameBoard, _randomProvider);
 
 		_game.AddPlayer(_playerOne);
 		_game.AddPlayer(_playerTwo);
@@ -178,7 +185,7 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard);
+		_game = new Game(gameBoard, _randomProvider);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(7, 7), "nonExistentPlayerId");
@@ -227,7 +234,7 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard);
+		_game = new Game(gameBoard, _randomProvider);
 		
 		var player = new Player("somePlayer");
 		_game.AddPlayer(player);
@@ -244,7 +251,7 @@ public class GameTests
 	public void CreateGame_WhenPlayersNotAdded_GameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15));
+		_game = new Game(new GameBoard(15), _randomProvider);
 
 		// Assert
 		_game.IsGameStarted.Should().BeFalse();
@@ -254,7 +261,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15));
+		_game = new Game(new GameBoard(15), _randomProvider);
 		_game.AddPlayer(new Player("somePlayer1"));
 		_game.AddPlayer(new Player("somePlayer2"));
 
@@ -267,7 +274,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15));
+		_game = new Game(new GameBoard(15), _randomProvider);
 		_game.AddPlayer(new Player("somePlayer1"));
 		_game.AddPlayer(new Player("somePlayer2"));
 

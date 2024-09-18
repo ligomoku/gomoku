@@ -1,3 +1,6 @@
+using GomokuServer.Core.Interfaces;
+using GomokuServer.Core.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -47,6 +50,7 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();

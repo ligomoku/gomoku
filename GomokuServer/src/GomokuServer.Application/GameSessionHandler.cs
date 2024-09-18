@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Core.Entities;
+using GomokuServer.Core.Interfaces;
 using GomokuServer.Core.Results;
 
 namespace GomokuServer.Application;
@@ -8,11 +9,13 @@ public class GameSessionHandler : IGameSessionHandler
 	private const int BOARD_MIN_SIZE = 13;
 	private readonly IGameRepository _gameRepository;
 	private readonly IPlayersRepository _playersRepository;
+	private readonly IRandomProvider _randomProvider;
 
-	public GameSessionHandler(IGameRepository gameRepository, IPlayersRepository playersRepository)
+	public GameSessionHandler(IGameRepository gameRepository, IPlayersRepository playersRepository, IRandomProvider randomProvider)
 	{
 		_gameRepository = gameRepository;
 		_playersRepository = playersRepository;
+		_randomProvider = randomProvider;
 	}
 
 	public Task<Result<Game>> GetAsync(string gameId)
@@ -32,7 +35,7 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE}"));
 		}
 
-		var game = new Game(new GameBoard(boardSize));
+		var game = new Game(new GameBoard(boardSize), _randomProvider);
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
