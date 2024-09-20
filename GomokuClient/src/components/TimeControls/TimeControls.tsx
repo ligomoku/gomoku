@@ -1,43 +1,43 @@
 import { Card, CardContent } from "@/components/ui/card.tsx";
-import { Link } from "@tanstack/react-router";
 
-interface TimeControlOption {
-  time: string;
-  type: string;
-}
+// const timeControls: TimeControlOption[] = [
+//   { time: "1+0", type: "Bullet" },
+//   { time: "2+1", type: "Bullet" },
+//   { time: "3+0", type: "Blitz" },
+//   { time: "3+2", type: "Blitz" },
+//   { time: "5+0", type: "Blitz" },
+//   { time: "5+3", type: "Blitz" },
+//   { time: "10+0", type: "Rapid" },
+//   { time: "10+5", type: "Rapid" },
+//   { time: "15+10", type: "Rapid" },
+//   { time: "30+0", type: "Classical" },
+//   { time: "30+20", type: "Classical" },
+//   { time: "Custom", type: "" },
+// ];
 
-const timeControls: TimeControlOption[] = [
-  { time: "1+0", type: "Bullet" },
-  { time: "2+1", type: "Bullet" },
-  { time: "3+0", type: "Blitz" },
-  { time: "3+2", type: "Blitz" },
+const gameTypes = [
   { time: "5+0", type: "Blitz" },
-  { time: "5+3", type: "Blitz" },
-  { time: "10+0", type: "Rapid" },
-  { time: "10+5", type: "Rapid" },
-  { time: "15+10", type: "Rapid" },
-  { time: "30+0", type: "Classical" },
-  { time: "30+20", type: "Classical" },
+  { time: "10+0", type: "Quick" },
+  { time: "15+5", type: "Standard" },
+  { time: "30+0", type: "Long" },
+  { time: "1 day", type: "Correspondence" },
   { time: "Custom", type: "" },
 ];
 
 export const TimeControls = () => (
-  <div className="container mx-auto p-4">
-    <h1 className="mb-4 text-2xl font-bold">Quick Pairing</h1>
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {timeControls.map((control, index) => (
-        <Card
-          key={index}
-          className="cursor-pointer bg-gray-800 transition-colors hover:bg-gray-700"
-        >
-          <CardContent className="p-4 text-center">
-            <Link to={`/game`} className="text-2xl font-bold text-white">
-              <h2 className="text-2xl font-bold text-white">{control.time}</h2>
-              <p className="text-gray-400">{control.type}</p>
-            </Link>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+    {gameTypes.map((game, index) => (
+      <Card
+        key={index}
+        className="cursor-pointer border-[#2b2b2b] bg-[#2b2b2b] transition-colors hover:bg-[#3e3e3e]"
+      >
+        <CardContent className="p-4 text-center sm:p-6">
+          <h3 className="text-xl font-bold text-[#bababa] sm:text-3xl">
+            {game.time}
+          </h3>
+          <p className="text-sm text-[#999999] sm:text-xl">{game.type}</p>
+        </CardContent>
+      </Card>
+    ))}
   </div>
 );
