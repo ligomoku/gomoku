@@ -29,7 +29,9 @@ export function GomokuHomepage() {
           <div className="col-span-3">
             <Card className="bg-[#2b2b2b] mb-4 border-[#2b2b2b]">
               <CardContent>
-                <h2 className="font-bold mb-2 text-[#bababa]">Tournaments</h2>
+                <h2 className="font-bold mb-2 text-[#bababa] pt-4">
+                  Tournaments
+                </h2>
                 <ul className="space-y-2 text-[#bababa]">
                   <li className="flex items-center">
                     <ShieldCheck className="mr-2 text-[#bababa]" />
