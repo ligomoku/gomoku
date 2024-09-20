@@ -1,10 +1,10 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { TimeControls } from "@/components/TimeControls";
+import { GomokuHomepage } from "@/components/Gomoku-homepage.tsx";
 
 export const Route = createLazyFileRoute("/")({
   component: Home,
 });
 
 function Home() {
-  return <TimeControls />;
+  return <GomokuHomepage />;
 }
