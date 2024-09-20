@@ -30,7 +30,7 @@ export const Chat = () => {
                 type="text"
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
-                className="flex-1 px-3 py-2 border rounded-md"
+                className="flex-1 rounded-md border px-3 py-2"
                 placeholder="Type a message..."
               />
               <Button onClick={handleSendMessage}>Send</Button>

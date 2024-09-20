@@ -23,12 +23,12 @@ const timeControls: TimeControlOption[] = [
 
 export const TimeControls = () => (
   <div className="container mx-auto p-4">
-    <h1 className="text-2xl font-bold mb-4">Quick Pairing</h1>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <h1 className="mb-4 text-2xl font-bold">Quick Pairing</h1>
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {timeControls.map((control, index) => (
         <Card
           key={index}
-          className="bg-gray-800 hover:bg-gray-700 transition-colors cursor-pointer"
+          className="cursor-pointer bg-gray-800 transition-colors hover:bg-gray-700"
         >
           <CardContent className="p-4 text-center">
             <Link to={`/game`} className="text-2xl font-bold text-white">

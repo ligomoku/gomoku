@@ -38,14 +38,14 @@ const App = () => {
   };
 
   return (
-    <div className="font-open-sans font-light p-4 flex flex-col items-center">
-      <div className="text-center mb-5">
+    <div className="font-open-sans flex flex-col items-center p-4 font-light">
+      <div className="mb-5 text-center">
         {winner && (
-          <div className="text-2xl mb-2">The Winner is: {winner}!</div>
+          <div className="mb-2 text-2xl">The Winner is: {winner}!</div>
         )}
       </div>
-      <div className="flex justify-center flex-wrap w-full mb-5">
-        <div className="grid grid-cols-19">
+      <div className="mb-5 flex w-full flex-wrap justify-center">
+        <div className="grid-cols-19 grid">
           {board.map((row, rowIndex) => (
             <div className="flex" key={rowIndex}>
               {row.map((col, colIndex) => (
@@ -61,9 +61,9 @@ const App = () => {
           ))}
         </div>
         <div className="ml-4 flex flex-col justify-between">
-          <Card className="p-4 bg-white">
-            <h2 className="text-2xl font-semibold mb-4">Timer</h2>
-            <div className="text-4xl font-mono mb-4">{formatTime(time)}</div>
+          <Card className="bg-white p-4">
+            <h2 className="mb-4 text-2xl font-semibold">Timer</h2>
+            <div className="mb-4 font-mono text-4xl">{formatTime(time)}</div>
             <div className="flex flex-col gap-2">
               <Button onClick={startTimer} disabled={isRunning}>
                 Start
