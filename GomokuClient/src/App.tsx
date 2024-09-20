@@ -6,6 +6,7 @@ import { Chat } from "@/components/Chat";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { TimeControls } from "@/components/TimeControls";
 
 client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
@@ -41,6 +42,7 @@ const App = () => {
   return (
     <>
       <Header />
+      <TimeControls />
       <div className="font-open-sans font-light p-4 flex flex-col items-center">
         <div className="text-center mb-5">
           {winner && (
