@@ -5,8 +5,13 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
+import { ReactNode } from "react";
 
-export const Header = () => (
+interface HeaderProps {
+  children?: ReactNode;
+}
+
+export const Header = ({ children }: HeaderProps) => (
   <header className={styles.header}>
     <a href="#" className={styles.logo}>
       Gomoku
@@ -16,6 +21,7 @@ export const Header = () => (
       <span className={styles.navicon}></span>
     </label>
     <ul className={styles.menu}>
+      <li className={styles.menuItem}>{children}</li>
       <li className={styles.menuItem}>
         <SignedOut>
           <SignInButton>

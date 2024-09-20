@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { findWinner, Winner } from "../utils";
+import { findWinner, Winner } from "@/utils";
 
 export type CellValue = "black" | "white" | null;
 
