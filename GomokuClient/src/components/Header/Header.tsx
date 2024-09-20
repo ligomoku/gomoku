@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input.tsx";
 
 export const Header = () => {
   return (
-    <header className="bg-[#2b2b2b] p-4">
+    <header className="bg-[#2b2b2b] p-4" style={{ zoom: "1.4" }}>
       <nav className="flex justify-between items-center">
         <div className="flex items-center space-x-4 text-[#bababa]">
           <Link to="/" className="text-[#dc9a3c]">

@@ -19,7 +19,11 @@ const timeControls = [
 
 export function GomokuHomepage() {
   return (
-    <div className="min-h-screen bg-[#161512] text-[#bababa]">
+    <div
+      className="min-h-screen bg-[#161512] text-[#bababa] pt-3 flex"
+      //ToDo: this is a hack we should remove
+      style={{ zoom: "1.4" }}
+    >
       <main className="container mx-auto p-4">
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-3">
