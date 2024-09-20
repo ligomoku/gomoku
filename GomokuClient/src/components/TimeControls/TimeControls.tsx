@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card.tsx";
+import { Link } from "@tanstack/react-router";
 
 interface TimeControlOption {
   time: string;
@@ -30,8 +31,10 @@ export const TimeControls = () => (
           className="bg-gray-800 hover:bg-gray-700 transition-colors cursor-pointer"
         >
           <CardContent className="p-4 text-center">
-            <h2 className="text-2xl font-bold text-white">{control.time}</h2>
-            <p className="text-gray-400">{control.type}</p>
+            <Link to={`/game`} className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold text-white">{control.time}</h2>
+              <p className="text-gray-400">{control.type}</p>
+            </Link>
           </CardContent>
         </Card>
       ))}
