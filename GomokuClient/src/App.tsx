@@ -1,6 +1,6 @@
 import { client } from "./api/client";
 import Square from "./components/Square/Square";
-import { CellValue, useBoard } from "./hooks/useBoardLocal";
+import { useBoard } from "./hooks/useBoardLocal";
 import { useSignalR } from "./hooks/useSignlarR.ts";
 import { Header } from "@/components/Header";
 
@@ -30,15 +30,15 @@ const App = () => {
           </button>
         </div>
         <div className="flex justify-center flex-wrap w-full mb-5">
-          <div className="flex flex-col w-full max-w-md mx-auto">
+          <div className="grid grid-cols-19">
             {board.map((row, rowIndex) => (
-              <div className="flex justify-center" key={rowIndex}>
-                {row.map((_col: CellValue, colIndex: number) => (
+              <div className="flex" key={rowIndex}>
+                {row.map((col, colIndex) => (
                   <Square
-                    key={colIndex}
-                    value={board[rowIndex][colIndex]}
+                    key={`${rowIndex}-${colIndex}`}
                     row={rowIndex}
                     col={colIndex}
+                    value={col}
                     onClick={handlePieceClick}
                   />
                 ))}
