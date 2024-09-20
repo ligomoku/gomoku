@@ -1,5 +1,4 @@
 import { memo } from "react";
-import styles from "./Square.module.scss";
 
 export interface SquareProps {
   row: number;
@@ -13,19 +12,23 @@ const Square = ({ row, col, value, onClick }: SquareProps) => {
     onClick(row, col, value);
   };
 
-  const cellClasses = [styles.cell];
-  if (row === 0) cellClasses.push(styles.row0);
-  if (row === 18) cellClasses.push(styles.row18);
-  if (col === 0) cellClasses.push(styles.col0);
-  if (col === 18) cellClasses.push(styles.col18);
+  const cellClasses = [
+    "relative bg-[#ba8c63] w-10 h-10 border border-black flex justify-center items-center",
+    row === 0 ? "border-t-4" : "",
+    row === 18 ? "border-b-4" : "",
+    col === 0 ? "border-l-4" : "",
+    col === 18 ? "border-r-4" : "",
+  ].join(" ");
 
-  const pieceClasses = [styles.piece];
-  if (value === "black") pieceClasses.push(styles.black);
-  if (value === "white") pieceClasses.push(styles.white);
+  const pieceClasses = [
+    "w-8 h-8 rounded-full",
+    value === "black" ? "bg-black" : "",
+    value === "white" ? "bg-white" : "",
+  ].join(" ");
 
   return (
-    <div className={cellClasses.join(" ")} onClick={handleSquareClick}>
-      <div className={pieceClasses.join(" ")} />
+    <div className={cellClasses} onClick={handleSquareClick}>
+      {value && <div className={pieceClasses} />}{" "}
     </div>
   );
 };
