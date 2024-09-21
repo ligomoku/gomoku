@@ -28,6 +28,9 @@ import type {
 
 export const client = createClient(createConfig());
 
+/**
+ * Get information about game by game id
+ */
 export const getApiV2GameByGameId = <ThrowOnError extends boolean = false>(
   options: Options<GetApiV2GameByGameIdData, ThrowOnError>,
 ) => {
@@ -41,6 +44,9 @@ export const getApiV2GameByGameId = <ThrowOnError extends boolean = false>(
   });
 };
 
+/**
+ * Get all games, which are available to join
+ */
 export const getApiV2Games = <ThrowOnError extends boolean = false>(
   options: Options<GetApiV2GamesData, ThrowOnError>,
 ) => {
@@ -54,6 +60,9 @@ export const getApiV2Games = <ThrowOnError extends boolean = false>(
   });
 };
 
+/**
+ * Create new game
+ */
 export const postApiV2Game = <ThrowOnError extends boolean = false>(
   options: Options<PostApiV2GameData, ThrowOnError>,
 ) => {
@@ -67,6 +76,9 @@ export const postApiV2Game = <ThrowOnError extends boolean = false>(
   });
 };
 
+/**
+ * Join game
+ */
 export const postApiV2GameByGameIdJoinByPlayerId = <
   ThrowOnError extends boolean = false,
 >(
@@ -82,6 +94,9 @@ export const postApiV2GameByGameIdJoinByPlayerId = <
   });
 };
 
+/**
+ * Make move in a game
+ */
 export const postApiV2GameByGameIdMakeMoveByPlayerId = <
   ThrowOnError extends boolean = false,
 >(
@@ -97,6 +112,9 @@ export const postApiV2GameByGameIdMakeMoveByPlayerId = <
   });
 };
 
+/**
+ * Create new player
+ */
 export const postApiV2Players = <ThrowOnError extends boolean = false>(
   options: Options<PostApiV2PlayersData, ThrowOnError>,
 ) => {
