@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card.tsx";
+import { Card, CardContent } from "@/shared/ui/card.tsx";
 
 export const FeaturedBoxes = () => (
   <div className="mt-8 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">

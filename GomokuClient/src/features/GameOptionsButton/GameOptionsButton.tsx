@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/shared/ui/button.tsx";
 
 export const GameOptionsButtons = () => (
   <div className="space-y-4 sm:space-y-6">

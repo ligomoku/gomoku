@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { Tournaments } from "./Tournaments";
+import { Tournaments } from "./Tournaments.tsx";
 
 export default {
   title: "Components/Tournaments",

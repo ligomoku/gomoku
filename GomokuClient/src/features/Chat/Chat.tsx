@@ -1,10 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
+import { Button } from "@/shared/ui/button.tsx";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useState } from "react";
 import { useSignalR } from "@/hooks/useSignlarR.ts";

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Input } from "@/components/ui/input.tsx";
+import { Input } from "@/shared/ui/input.tsx";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 

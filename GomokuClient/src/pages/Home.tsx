@@ -1,8 +1,8 @@
-import { Tournaments } from "@/components/Tournamets";
-import { TimeControls } from "@/components/TimeControls";
-import { FeaturedBoxes } from "@/components/FeaturedBoxes";
-import { GameOptionsButtons } from "@/components/GameOptionsButton";
-import { OnlinePlayersInfo } from "@/components/OnlinePlayersInfo";
+import { Tournaments } from "@/features/Tournamets";
+import { TimeControls } from "@/features/TimeControls";
+import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
+import { FeaturedBoxes } from "@/features/FeaturedBoxes";
+import { GameOptionsButtons } from "@/features/GameOptionsButton";
 
 export const Home = () => (
   <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">

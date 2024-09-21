@@ -1,9 +1,9 @@
-import Square from "../components/Square/Square.tsx";
+import Square from "@/features/Square/Square.tsx";
 import { useBoard } from "../hooks/useBoardLocal.ts";
-import { Chat } from "@/components/Chat";
+import { Chat } from "@/features/Chat";
 import { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Card } from "@/shared/ui/card.tsx";
+import { Button } from "@/shared/ui/button.tsx";
 
 const Game = () => {
   const { board, winner, handlePieceClick, playAgain } = useBoard();
