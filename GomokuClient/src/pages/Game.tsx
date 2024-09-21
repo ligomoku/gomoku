@@ -1,14 +1,11 @@
-import { client } from "./api/client";
-import Square from "./components/Square/Square";
-import { useBoard } from "./hooks/useBoardLocal";
+import Square from "../components/Square/Square.tsx";
+import { useBoard } from "../hooks/useBoardLocal.ts";
 import { Chat } from "@/components/Chat";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
 
-client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
-
-const App = () => {
+const Game = () => {
   const { board, winner, handlePieceClick, playAgain } = useBoard();
 
   const [time, setTime] = useState(0);
@@ -87,4 +84,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Game;

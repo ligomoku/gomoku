@@ -4,6 +4,7 @@ import "./styles/index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
+import { client } from "@/api/client";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -18,6 +19,8 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
+
+client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
