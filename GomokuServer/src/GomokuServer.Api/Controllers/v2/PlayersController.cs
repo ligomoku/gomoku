@@ -17,7 +17,9 @@ public class PlayersController : Controller
 		_playersRepository = playersRepository;
 	}
 
-
+	/// <summary>
+	/// Create new player
+	/// </summary>
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<IActionResult> CreateNewPlayer([FromBody] CreatePlayerRequest request)
