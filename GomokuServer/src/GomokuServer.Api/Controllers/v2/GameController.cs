@@ -1,5 +1,7 @@
 ﻿using System.Net.Mime;
 
+using GomokuServer.Application.Dto;
+
 namespace GomokuServer.Api.Controllers.v2;
 
 [ApiController]
@@ -23,7 +25,7 @@ public class GameController : Controller
 	/// <param name="gameId"></param>
 	/// <returns></returns>
 	[HttpGet("{gameId}")]
-	[ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(GetGameResponse), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetGameInfo([FromRoute] string gameId)
 	{
 		var getGameSessionResult = await _gameSessionHandler.GetAsync(gameId);
@@ -66,7 +68,7 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status200OK)]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
 	{
-		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(request.X, request.Y), playerId);
+		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
 
 		return placeTileResult.ToApiResponse();
 	}

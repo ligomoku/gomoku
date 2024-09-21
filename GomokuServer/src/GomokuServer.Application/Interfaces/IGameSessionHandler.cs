@@ -1,11 +1,10 @@
 ﻿using GomokuServer.Application.Responses;
-using GomokuServer.Core.Entities;
 
 namespace GomokuServer.Application.Interfaces;
 
 public interface IGameSessionHandler
 {
-	Task<Result<Game>> GetAsync(string gameId);
+	Task<Result<GetGameResponse>> GetAsync(string gameId);
 
 	Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync();
 
@@ -13,5 +12,5 @@ public interface IGameSessionHandler
 
 	Task<Result> AddPlayerToGameAsync(string gameId, string playerId);
 
-	Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, Tile tile, string playerId);
+	Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, TileDto tile, string playerId);
 }

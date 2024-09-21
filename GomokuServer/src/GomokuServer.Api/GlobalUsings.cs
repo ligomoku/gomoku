@@ -10,7 +10,6 @@ global using GomokuServer.Api.Hubs;
 global using GomokuServer.Application;
 global using GomokuServer.Application.Interfaces;
 global using GomokuServer.Application.Responses;
-global using GomokuServer.Core.Entities;
 global using GomokuServer.Core.Interfaces;
 global using GomokuServer.Core.Services;
 global using GomokuServer.Infrastructure;

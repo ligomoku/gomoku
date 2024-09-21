@@ -1,5 +1,4 @@
 ﻿using GomokuServer.Application.Responses;
-using GomokuServer.Core.Entities;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application;
@@ -19,22 +18,34 @@ public class GameSessionHandler : IGameSessionHandler
 		_randomProvider = randomProvider;
 	}
 
-	public Task<Result<Game>> GetAsync(string gameId)
+	public async Task<Result<GetGameResponse>> GetAsync(string gameId)
 	{
-		return _gameRepository.GetAsync(gameId);
+		var getGameResult = await _gameRepository.GetAsync(gameId);
+
+		return getGameResult.Map(game => new GetGameResponse
+		{
+			GameId = game.GameId,
+			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id) : null,
+			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id) : null,
+			HasBothPlayersJoined = game.HasBothPlayersJoined,
+			IsGameStarted = game.IsGameStarted,
+			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
+			WinnerId = game.WinnerId,
+			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),
+			PlayersMoves = game.PlayersMoves.Select(move => new GameMoveDto()
+			{
+				MoveNumber = move.MoveNumber,
+				PlayerId = move.PlayerId,
+				Tile = new TileDto(move.Tile.X, move.Tile.Y)
+			})
+		});
 	}
 
 	public async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync()
 	{
 		var getAvailableGamesResult = await _gameRepository.GetAvailableGamesAsync();
 
-		if (!getAvailableGamesResult.IsSuccess)
-		{
-			return getAvailableGamesResult.Map(_ => Enumerable.Empty<GetAvailableGamesResponse>());
-		}
-
-		var availableGames = getAvailableGamesResult.Value.Select(game => new GetAvailableGamesResponse(game.GameId));
-		return Result.Success(availableGames);
+		return getAvailableGamesResult.Map(games => games.Select(game => new GetAvailableGamesResponse(game.GameId)));
 	}
 
 	public async Task<Result<CreateGameResponse>> CreateAsync(int boardSize)
@@ -93,7 +104,7 @@ public class GameSessionHandler : IGameSessionHandler
 		return Result.Success();
 	}
 
-	public async Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, Tile tile, string playerId)
+	public async Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, TileDto tileDto, string playerId)
 	{
 		var getGameResult = await _gameRepository.GetAsync(gameId);
 		if (getGameResult.Status == ResultStatus.NotFound)
@@ -102,7 +113,7 @@ public class GameSessionHandler : IGameSessionHandler
 		}
 
 		var game = getGameResult.Value;
-		var tilePlacementResult = game.PlaceTile(tile, playerId);
+		var tilePlacementResult = game.PlaceTile(new Tile(tileDto.X, tileDto.Y), playerId);
 
 		if (!tilePlacementResult.IsValid)
 		{
@@ -115,6 +126,6 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Error();
 		}
 
-		return Result.Success(new PlaceTileResponse(tilePlacementResult.WinningSequence));
+		return Result.Success(new PlaceTileResponse(tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList()));
 	}
 }
