@@ -98,6 +98,8 @@ const Game = () => {
   );
 };
 
+Game.displayName = "Game";
+
 const useCreateGame = () =>
   useMutation<
     CreateGameResponse | undefined,
