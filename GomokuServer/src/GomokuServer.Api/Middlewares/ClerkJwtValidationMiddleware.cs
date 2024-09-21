@@ -5,10 +5,12 @@ namespace GomokuServer.Api.Middlewares;
 public class ClerkJwtValidationMiddleware
 {
 	private readonly RequestDelegate _next;
+	private readonly IClerkClientApi _clerkClientApi;
 
-	public ClerkJwtValidationMiddleware(RequestDelegate next)
+	public ClerkJwtValidationMiddleware(RequestDelegate next, IClerkClientApi clerkClientApi)
 	{
 		_next = next;
+		_clerkClientApi = clerkClientApi;
 	}
 
 	public async Task InvokeAsync(HttpContext context)
@@ -21,20 +23,19 @@ public class ClerkJwtValidationMiddleware
 		if (clerkAuthorizationAttribute == null)
 		{
 			await _next(context);
+			return;
 		}
 
 		var token = context.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
 
-		if (string.IsNullOrEmpty(token))
+		if (string.IsNullOrWhiteSpace(token))
 		{
 			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-			await context.Response.WriteAsync("Token is missing.");
+			await context.Response.WriteAsJsonAsync(GetUnauthorizedResponse("Token is missing"));
 			return;
 		}
 
-		using var httpClient = new HttpClient();
-		var clerkUrl = "https://allowed-muskrat-40.clerk.accounts.dev";
-		var jwksJson = await httpClient.GetStringAsync($"{clerkUrl}/.well-known/jwks.json");
+		var jwksJson = await _clerkClientApi.GetJwks();
 		var jsonWebKeySet = new JsonWebKeySet(jwksJson);
 
 		var tokenHandler = new JwtSecurityTokenHandler();
@@ -50,14 +51,24 @@ public class ClerkJwtValidationMiddleware
 
 		try
 		{
-			tokenHandler.ValidateToken(token, validationParameters, out _);
+			var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 			await _next(context);
 		}
 		catch (SecurityTokenException exception)
 		{
 			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-			await context.Response.WriteAsync("Token validation failed.");
+			await context.Response.WriteAsJsonAsync(GetUnauthorizedResponse("Token validation failed"));
 		}
+	}
+
+	private static ProblemDetails GetUnauthorizedResponse(string message)
+	{
+		return new ProblemDetails
+		{
+			Status = StatusCodes.Status401Unauthorized,
+			Title = "Unauthorized",
+			Detail = message
+		};
 	}
 }
 

@@ -2,7 +2,7 @@
 
 using GomokuServer.Core.Entities;
 
-namespace GomokuServer.Infrastructure;
+namespace GomokuServer.Infrastructure.Data;
 
 public class InMemoryPlayersRepository : IPlayersRepository
 {
