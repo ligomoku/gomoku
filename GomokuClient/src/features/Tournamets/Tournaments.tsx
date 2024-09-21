@@ -26,5 +26,3 @@ export const Tournaments = () => {
     </Card>
   );
 };
-
-Tournaments.displayName = "Tournaments";

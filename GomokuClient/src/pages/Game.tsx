@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Square from "@/features/Square/Square.tsx";
 import { useBoard } from "../hooks/useBoard.ts";
 import { Timer } from "@/features/Timer";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   CreateGameResponse,
-  getApiV2GameByGameId,
-  GetApiV2GameByGameIdError,
-  GetApiV2GameByGameIdResponse,
   postApiV2Game,
   PostApiV2GameError,
 } from "@/api/client";
@@ -18,23 +15,17 @@ const Game = () => {
   const [currentGameId, setCurrentGameId] = useState<string | null>(null);
 
   const createGame = useCreateGame();
-  const { data: gameData, isLoading: gameLoading } =
-    useFetchGame(currentGameId);
-
-  useEffect(() => {
-    if (gameData) {
-      console.log("Game data received: ", gameData);
-    }
-  }, [gameData]);
 
   const handleCreateGame = () => {
     createGame.mutate(
-      { boardSize: 19 },
+      {
+        //TODO: Add boardSize to Swagger schema as required parameter, otherwise API returns weird error
+        boardSize: 19,
+      },
       {
         onSuccess: (data) => {
           if (data?.gameId) {
             setCurrentGameId(data.gameId);
-            console.log("Game created with id: ", data.gameId);
           }
         },
       },
@@ -45,10 +36,6 @@ const Game = () => {
     if (winner || value) return;
     handlePieceClick(row, col, value);
   };
-
-  if (gameLoading) {
-    return <div>Loading game data...</div>;
-  }
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -98,10 +85,8 @@ const Game = () => {
   );
 };
 
-Game.displayName = "Game";
-
-const useCreateGame = () =>
-  useMutation<
+const useCreateGame = () => {
+  return useMutation<
     CreateGameResponse | undefined,
     PostApiV2GameError,
     { boardSize: number }
@@ -120,37 +105,6 @@ const useCreateGame = () =>
       return response.data;
     },
   });
-
-const useFetchGame = (gameId: string | null) =>
-  useQuery<
-    GetApiV2GameByGameIdResponse,
-    GetApiV2GameByGameIdError,
-    GetApiV2GameByGameIdResponse,
-    [string, string | null]
-  >({
-    queryKey: ["game", gameId],
-    queryFn: async () => {
-      if (!gameId) {
-        throw new Error("Game ID is required");
-      }
-      const response = await getApiV2GameByGameId({
-        path: { gameId },
-        headers: {
-          "X-Version": "2",
-          //TODO: Add the content type header to Swagger schema as required
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    enabled: !!gameId,
-  });
+};
 
 export default Game;
