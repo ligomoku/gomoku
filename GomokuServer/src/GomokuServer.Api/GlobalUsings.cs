@@ -1,4 +1,5 @@
-﻿global using System.IdentityModel.Tokens.Jwt;
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.IdentityModel.Tokens.Jwt;
 
 global using Asp.Versioning;
 global using Asp.Versioning.ApiExplorer;
