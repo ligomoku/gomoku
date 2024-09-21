@@ -93,7 +93,7 @@ const useCreateGame = () => {
   >({
     mutationFn: async ({ boardSize }) => {
       const response = await postApiV2Game({
-        body: { boardSize }, // Send the board size in the request body
+        body: { boardSize },
         headers: {
           "X-Version": "2",
           //TODO: Add the content type header to Swagger schema as required
