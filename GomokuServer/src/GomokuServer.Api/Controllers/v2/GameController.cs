@@ -1,7 +1,5 @@
 ﻿using System.Net.Mime;
 
-using GomokuServer.Api.Attributes;
-
 namespace GomokuServer.Api.Controllers.v2;
 
 [ApiController]
@@ -10,7 +8,6 @@ namespace GomokuServer.Api.Controllers.v2;
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
-[ClerkAuthorization]
 public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;

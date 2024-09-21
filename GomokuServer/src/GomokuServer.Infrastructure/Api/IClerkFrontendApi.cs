@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Infrastructure.Api;
 
-public interface IClerkClientApi
+public interface IClerkFrontendApi
 {
 	[Get("/.well-known/jwks.json")]
 	Task<string> GetJwks();

@@ -1,16 +1,21 @@
 ﻿using GomokuServer.Api.Attributes;
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace GomokuServer.Api.Middlewares;
 
 public class ClerkJwtValidationMiddleware
 {
 	private readonly RequestDelegate _next;
-	private readonly IClerkClientApi _clerkClientApi;
+	private readonly IClerkFrontendApi _clerkClientApi;
+	private readonly IMemoryCache _memoryCache;
+	private const string JWKS_CACHE_KEY = "ClerkJWKS";
 
-	public ClerkJwtValidationMiddleware(RequestDelegate next, IClerkClientApi clerkClientApi)
+	public ClerkJwtValidationMiddleware(RequestDelegate next, IClerkFrontendApi clerkClientApi, IMemoryCache memoryCache)
 	{
 		_next = next;
 		_clerkClientApi = clerkClientApi;
+		_memoryCache = memoryCache;
 	}
 
 	public async Task InvokeAsync(HttpContext context)
@@ -35,7 +40,11 @@ public class ClerkJwtValidationMiddleware
 			return;
 		}
 
-		var jwksJson = await _clerkClientApi.GetJwks();
+		var jwksJson = await _memoryCache.GetOrCreateAsync(JWKS_CACHE_KEY, async entry =>
+		{
+			entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+			return await _clerkClientApi.GetJwks();
+		});
 		var jsonWebKeySet = new JsonWebKeySet(jwksJson);
 
 		var tokenHandler = new JwtSecurityTokenHandler();

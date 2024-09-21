@@ -1,6 +1,9 @@
+using GomokuServer.Api.Configuration;
 using GomokuServer.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -49,18 +52,16 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();
 
-builder.Services.AddRefitHttpClient<IClerkClientApi>((_, client) =>
+builder.Services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
 {
-	//using var httpClient = new HttpClient();
-	//var clerkUrl = "https://allowed-muskrat-40.clerk.accounts.dev";
-	//var jwksJson = await httpClient.GetStringAsync($"{clerkUrl}/.well-known/jwks.json");
-	//client.BaseAddress = new Uri(builder.Configuration[""]!);
-	client.BaseAddress = new Uri("https://allowed-muskrat-40.clerk.accounts.dev");
+	httpClient.BaseAddress = new Uri(configuration.Clerk.FrontendApiBaseUrl);
 });
 
 var app = builder.Build();
