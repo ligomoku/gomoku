@@ -1,6 +1,6 @@
-using GomokuServer.Api.Examples;
-
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 
 builder.Services.AddSwaggerExamplesFromAssemblyOf<NotFoundErrorExample>();
 builder.Services.AddEndpointsApiExplorer();
@@ -56,10 +56,17 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();
+
+builder.Services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
+{
+	httpClient.BaseAddress = new Uri(configuration.Clerk.FrontendApiBaseUrl);
+});
 
 var app = builder.Build();
 
@@ -72,6 +79,8 @@ app.UseSwaggerUI(options =>
 		options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
 	}
 });
+
+app.UseClerkJwtValidation();
 
 app.UseCors(CorsPolicyName.GomokuClient);
 

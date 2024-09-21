@@ -1,6 +1,5 @@
 ﻿using System.Net.Mime;
 
-using GomokuServer.Api.Examples;
 using GomokuServer.Application.Dto;
 
 namespace GomokuServer.Api.Controllers.v2;
