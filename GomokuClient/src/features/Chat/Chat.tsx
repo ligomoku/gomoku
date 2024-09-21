@@ -1,10 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
+import { Button } from "@/shared/ui/button.tsx";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useState } from "react";
 import { useSignalR } from "@/hooks/useSignlarR.ts";
@@ -30,7 +25,7 @@ export const Chat = () => {
                 type="text"
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
-                className="flex-1 px-3 py-2 border rounded-md"
+                className="flex-1 rounded-md border px-3 py-2"
                 placeholder="Type a message..."
               />
               <Button onClick={handleSendMessage}>Send</Button>

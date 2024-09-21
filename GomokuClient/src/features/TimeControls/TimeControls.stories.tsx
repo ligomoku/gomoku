@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { TimeControls } from "./TimeControls";
+import { TimeControls } from "./TimeControls.tsx";
 
 export default {
   title: "Components/TimeControls",
