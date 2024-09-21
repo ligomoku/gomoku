@@ -1,10 +1,10 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import App from "@/App.tsx";
+import Game from "@/pages/Game.tsx";
 
 export const Route = createLazyFileRoute("/game")({
-  component: Game,
+  component: GamePage,
 });
 
-function Game() {
-  return <App />;
+function GamePage() {
+  return <Game />;
 }
