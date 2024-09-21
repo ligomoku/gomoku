@@ -14,6 +14,10 @@ builder.Services.AddSwaggerGen(options =>
 			Description = description.IsDeprecated ? "This API version is deprecated" : ""
 		});
 	}
+
+	var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+	var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+	options.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

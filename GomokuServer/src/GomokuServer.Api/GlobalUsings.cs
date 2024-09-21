@@ -1,4 +1,6 @@
-﻿global using Asp.Versioning;
+﻿global using System.ComponentModel.DataAnnotations;
+
+global using Asp.Versioning;
 global using Asp.Versioning.ApiExplorer;
 
 global using GomokuServer.Api.Constants;

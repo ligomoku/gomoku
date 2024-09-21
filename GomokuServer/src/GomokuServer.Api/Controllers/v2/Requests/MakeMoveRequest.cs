@@ -2,6 +2,9 @@
 
 public class MakeMoveRequest
 {
-	public required int X { get; set; }
-	public required int Y { get; set; }
+    [Required]
+    public required int X { get; set; }
+
+    [Required]
+    public required int Y { get; set; }
 }

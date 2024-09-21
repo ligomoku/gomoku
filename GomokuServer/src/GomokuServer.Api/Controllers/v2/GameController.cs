@@ -17,6 +17,11 @@ public class GameController : Controller
 		_gameSessionHandler = gameSessionHandler;
 	}
 
+	/// <summary>
+	/// Get information about game by game id
+	/// </summary>
+	/// <param name="gameId"></param>
+	/// <returns></returns>
 	[HttpGet("{gameId}")]
 	[ProducesResponseType(typeof(Game), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetGameInfo([FromRoute] string gameId)
@@ -26,6 +31,9 @@ public class GameController : Controller
 		return getGameSessionResult.ToApiResponse();
 	}
 
+	/// <summary>
+	/// Get all games, which are available to join
+	/// </summary>
 	[HttpGet()]
 	[Route("/api/v2/games")]
 	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
