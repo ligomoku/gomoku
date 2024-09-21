@@ -31,7 +31,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Game"
+                }
+              }
+            }
           }
         }
       }
@@ -52,7 +59,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAvailableGamesResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -77,22 +94,19 @@
               "schema": {
                 "$ref": "#/components/schemas/CreateGameRequest"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGameRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGameRequest"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGameResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -174,22 +188,19 @@
               "schema": {
                 "$ref": "#/components/schemas/MakeMoveRequest"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MakeMoveRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MakeMoveRequest"
-              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaceTileResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -211,16 +222,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePlayerRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePlayerRequest"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CreatePlayerRequest"
               }
@@ -247,6 +248,16 @@
         },
         "additionalProperties": false
       },
+      "CreateGameResponse": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreatePlayerRequest": {
         "type": "object",
         "properties": {
@@ -257,7 +268,126 @@
         },
         "additionalProperties": false
       },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "playersMoves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameMove"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "playerOne": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "playerTwo": {
+            "$ref": "#/components/schemas/Player"
+          },
+          "hasBothPlayersJoined": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isGameStarted": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "nextMoveShouldMakePlayerId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "winnerId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "winningSequence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tile"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GameMove": {
+        "type": "object",
+        "properties": {
+          "tile": {
+            "$ref": "#/components/schemas/Tile"
+          },
+          "playerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "moveNumber": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAvailableGamesResponse": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MakeMoveRequest": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "y": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlaceTileResponse": {
+        "type": "object",
+        "properties": {
+          "winningSequence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tile"
+            },
+            "nullable": true
+          },
+          "isWinningMove": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Tile": {
         "type": "object",
         "properties": {
           "x": {

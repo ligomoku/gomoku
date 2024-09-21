@@ -31,9 +31,6 @@ export const useBoard = () => {
   const lastCol = useRef<number | undefined>(undefined);
 
   const handlePieceClick = (row: number, col: number, value: string | null) => {
-    if (winner !== undefined) {
-      return;
-    }
     if (value !== null) return;
     lastRow.current = row;
     lastCol.current = col;
@@ -45,19 +42,21 @@ export const useBoard = () => {
 
   useEffect(() => {
     if (lastRow.current === undefined || lastCol.current === undefined) return;
-    // ToDo: check correct typing
     const result = findWinner(board, lastRow.current, lastCol.current);
     setWinner(result);
   }, [board]);
 
-  const playAgain = useCallback(() => {
-    window.location.reload();
-  }, []);
+  const setOpponentMove = useCallback(
+    (x: number, y: number, color: CellValue) => {
+      updateBoard(y, x, color);
+    },
+    [updateBoard],
+  );
 
   return {
     board,
     winner,
     handlePieceClick,
-    playAgain,
+    setOpponentMove,
   };
 };

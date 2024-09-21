@@ -11,6 +11,17 @@ export const CreateGameRequestSchema = {
   additionalProperties: false,
 } as const;
 
+export const CreateGameResponseSchema = {
+  type: "object",
+  properties: {
+    gameId: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const CreatePlayerRequestSchema = {
   type: "object",
   properties: {
@@ -22,7 +33,132 @@ export const CreatePlayerRequestSchema = {
   additionalProperties: false,
 } as const;
 
+export const GameSchema = {
+  type: "object",
+  properties: {
+    gameId: {
+      type: "string",
+      nullable: true,
+      readOnly: true,
+    },
+    playersMoves: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/GameMove",
+      },
+      nullable: true,
+      readOnly: true,
+    },
+    playerOne: {
+      $ref: "#/components/schemas/Player",
+    },
+    playerTwo: {
+      $ref: "#/components/schemas/Player",
+    },
+    hasBothPlayersJoined: {
+      type: "boolean",
+      readOnly: true,
+    },
+    isGameStarted: {
+      type: "boolean",
+      readOnly: true,
+    },
+    nextMoveShouldMakePlayerId: {
+      type: "string",
+      nullable: true,
+      readOnly: true,
+    },
+    winnerId: {
+      type: "string",
+      nullable: true,
+      readOnly: true,
+    },
+    winningSequence: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/Tile",
+      },
+      nullable: true,
+      readOnly: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GameMoveSchema = {
+  type: "object",
+  properties: {
+    tile: {
+      $ref: "#/components/schemas/Tile",
+    },
+    playerId: {
+      type: "string",
+      nullable: true,
+    },
+    moveNumber: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetAvailableGamesResponseSchema = {
+  type: "object",
+  properties: {
+    gameId: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const MakeMoveRequestSchema = {
+  type: "object",
+  properties: {
+    x: {
+      type: "integer",
+      format: "int32",
+    },
+    y: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const PlaceTileResponseSchema = {
+  type: "object",
+  properties: {
+    winningSequence: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/Tile",
+      },
+      nullable: true,
+    },
+    isWinningMove: {
+      type: "boolean",
+      readOnly: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const PlayerSchema = {
+  type: "object",
+  properties: {
+    id: {
+      type: "string",
+      nullable: true,
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const TileSchema = {
   type: "object",
   properties: {
     x: {

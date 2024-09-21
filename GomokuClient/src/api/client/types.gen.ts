@@ -4,11 +4,51 @@ export type CreateGameRequest = {
   boardSize?: number;
 };
 
+export type CreateGameResponse = {
+  gameId?: string | null;
+};
+
 export type CreatePlayerRequest = {
   id?: string | null;
 };
 
+export type Game = {
+  readonly gameId?: string | null;
+  readonly playersMoves?: Array<GameMove> | null;
+  playerOne?: Player;
+  playerTwo?: Player;
+  readonly hasBothPlayersJoined?: boolean;
+  readonly isGameStarted?: boolean;
+  readonly nextMoveShouldMakePlayerId?: string | null;
+  readonly winnerId?: string | null;
+  readonly winningSequence?: Array<Tile> | null;
+};
+
+export type GameMove = {
+  tile?: Tile;
+  playerId?: string | null;
+  moveNumber?: number;
+};
+
+export type GetAvailableGamesResponse = {
+  gameId?: string | null;
+};
+
 export type MakeMoveRequest = {
+  x?: number;
+  y?: number;
+};
+
+export type PlaceTileResponse = {
+  winningSequence?: Array<Tile> | null;
+  readonly isWinningMove?: boolean;
+};
+
+export type Player = {
+  id?: string | null;
+};
+
+export type Tile = {
   x?: number;
   y?: number;
 };
@@ -22,7 +62,7 @@ export type GetApiV2GameByGameIdData = {
   };
 };
 
-export type GetApiV2GameByGameIdResponse = unknown;
+export type GetApiV2GameByGameIdResponse = Game;
 
 export type GetApiV2GameByGameIdError = unknown;
 
@@ -32,7 +72,7 @@ export type GetApiV2GamesData = {
   };
 };
 
-export type GetApiV2GamesResponse = unknown;
+export type GetApiV2GamesResponse = Array<GetAvailableGamesResponse>;
 
 export type GetApiV2GamesError = unknown;
 
@@ -43,7 +83,7 @@ export type PostApiV2GameData = {
   };
 };
 
-export type PostApiV2GameResponse = unknown;
+export type PostApiV2GameResponse = CreateGameResponse;
 
 export type PostApiV2GameError = unknown;
 
@@ -72,7 +112,7 @@ export type PostApiV2GameByGameIdMakeMoveByPlayerIdData = {
   };
 };
 
-export type PostApiV2GameByGameIdMakeMoveByPlayerIdResponse = unknown;
+export type PostApiV2GameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
 
 export type PostApiV2GameByGameIdMakeMoveByPlayerIdError = unknown;
 

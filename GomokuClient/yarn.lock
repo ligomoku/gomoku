@@ -2172,10 +2172,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/eslint-plugin-query@npm:^5.57.0":
+  version: 5.57.0
+  resolution: "@tanstack/eslint-plugin-query@npm:5.57.0"
+  dependencies:
+    "@typescript-eslint/utils": "npm:^8.3.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+  checksum: 10c0/738f860df46b866eefe5e275f501fa92f2f449946cef84bfffbbefb862a7429eb2d75cae4755860f819184203a8ae46e8df912f2914dc0cf389fdf411123446e
+  languageName: node
+  linkType: hard
+
 "@tanstack/history@npm:1.57.6":
   version: 1.57.6
   resolution: "@tanstack/history@npm:1.57.6"
   checksum: 10c0/09f4ea4391527e73adfb5a4c9ad183fdcf1e5562d43f2f35bafffe12f61853bee8fbf64ccacd13c936c49cd9f153c971fd2f5208185924b17841f630507edf76
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.56.2":
+  version: 5.56.2
+  resolution: "@tanstack/query-core@npm:5.56.2"
+  checksum: 10c0/54ff55f02b01f6ba089f4965bfd46f430c18ce7e11d874de04c4d58cc8f698598b41e1c017ba029d08ae75e321e546b26f1ea7f788474db265eeba46e780f2f6
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.56.2":
+  version: 5.56.2
+  resolution: "@tanstack/react-query@npm:5.56.2"
+  dependencies:
+    "@tanstack/query-core": "npm:5.56.2"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/6e883b4ca1948f990215b7bce194251faf13a79c6ecf3f3c660af6c6788ed113ab629cefdafb496dfb04866f12dd48d7314e936b75c881b6749127b6496ac8fd
   languageName: node
   linkType: hard
 
@@ -2804,7 +2833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.6.0":
+"@typescript-eslint/utils@npm:8.6.0, @typescript-eslint/utils@npm:^8.3.0":
   version: 8.6.0
   resolution: "@typescript-eslint/utils@npm:8.6.0"
   dependencies:
@@ -5138,6 +5167,8 @@ __metadata:
     "@storybook/react": "npm:^8.3.1"
     "@storybook/react-vite": "npm:^8.3.1"
     "@storybook/test": "npm:^8.3.1"
+    "@tanstack/eslint-plugin-query": "npm:^5.57.0"
+    "@tanstack/react-query": "npm:^5.56.2"
     "@tanstack/react-router": "npm:^1.58.3"
     "@tanstack/router-devtools": "npm:^1.58.3"
     "@tanstack/router-plugin": "npm:^1.58.4"
