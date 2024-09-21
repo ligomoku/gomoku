@@ -45,7 +45,6 @@ public class ClerkJwtValidationMiddleware
 			ValidateAudience = false,
 			ValidateIssuerSigningKey = true,
 			ValidateLifetime = true,
-			ValidIssuer = "https://allowed-muskrat-40.clerk.dev",
 			IssuerSigningKeys = jsonWebKeySet.GetSigningKeys()
 		};
 
@@ -54,7 +53,7 @@ public class ClerkJwtValidationMiddleware
 			var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 			await _next(context);
 		}
-		catch (SecurityTokenException exception)
+		catch (SecurityTokenException)
 		{
 			context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 			await context.Response.WriteAsJsonAsync(GetUnauthorizedResponse("Token validation failed"));
