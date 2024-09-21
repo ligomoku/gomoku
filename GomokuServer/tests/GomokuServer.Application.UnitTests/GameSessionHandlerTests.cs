@@ -1,3 +1,4 @@
+using GomokuServer.Application.Dto;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests;
@@ -142,7 +143,7 @@ public class GameSessionHandlerTests
 		// Arrange
 		var gameId = "game1";
 		var playerId = "player1";
-		var tile = new Tile(0, 0);
+		var tile = new TileDto(0, 0);
 		var player = new Player(playerId);
 
 		var game = new Game(new GameBoard(15), _randomProvider);
@@ -167,7 +168,7 @@ public class GameSessionHandlerTests
 		// Arrange
 		var gameId = "game1";
 		var playerId = "player1";
-		var tile = new Tile(0, 0);
+		var tile = new TileDto(0, 0);
 		var game = new Game(new GameBoard(15), _randomProvider);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
@@ -187,7 +188,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerOneId = "player1";
 		var playerTwoId = "player2";
-		var tile = new Tile(0, 0);
+		var tile = new TileDto(0, 0);
 		var game = new Game(new GameBoard(15), _randomProvider);
 		game.AddPlayer(new Player(playerOneId));
 		game.AddPlayer(new Player(playerTwoId));
@@ -197,10 +198,10 @@ public class GameSessionHandlerTests
 
 		for (int i = 0; i < 4; i++)
 		{
-			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 7), game.PlayerOne!.Id);
-			await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(i, 8), game.PlayerTwo!.Id);
+			await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(i, 7), game.PlayerOne!.Id);
+			await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(i, 8), game.PlayerTwo!.Id);
 		}
-		var winningMove = await _gameSessionHandler.PlaceTileAsync(gameId, new Tile(4, 7), game.PlayerOne!.Id);
+		var winningMove = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(4, 7), game.PlayerOne!.Id);
 
 		// Act
 		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerOneId);

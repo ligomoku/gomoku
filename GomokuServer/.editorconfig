@@ -405,3 +405,12 @@ insert_final_newline = true
 #
 # CS8618: Non-nullable member is uninitialized
 dotnet_diagnostic.CS8618.severity = error
+#
+# CS1591: The DocumentationFile compiler option was specified, but one or more constructs did not have comments.
+dotnet_diagnostic.CS1591.severity = none
+#
+# CS8602: Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = error
+#
+# CS8604: Possible null reference argument for parameter.
+dotnet_diagnostic.CS8604.severity = error

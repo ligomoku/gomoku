@@ -1,4 +1,6 @@
-﻿global using Asp.Versioning;
+﻿global using System.ComponentModel.DataAnnotations;
+
+global using Asp.Versioning;
 global using Asp.Versioning.ApiExplorer;
 
 global using GomokuServer.Api.Constants;
@@ -8,10 +10,11 @@ global using GomokuServer.Api.Hubs;
 global using GomokuServer.Application;
 global using GomokuServer.Application.Interfaces;
 global using GomokuServer.Application.Responses;
-global using GomokuServer.Core.Entities;
 global using GomokuServer.Core.Interfaces;
 global using GomokuServer.Core.Services;
 global using GomokuServer.Infrastructure;
 
 global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Mvc;
+
+global using Swashbuckle.AspNetCore.Filters;
