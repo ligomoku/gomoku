@@ -2,5 +2,6 @@
 
 public class CreateGameRequest
 {
+	[Required]
 	public required int BoardSize { get; set; }
 }

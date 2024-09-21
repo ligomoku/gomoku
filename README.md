@@ -1,6 +1,10 @@
+<img src="https://avatars.githubusercontent.com/u/123968089?s=400&u=26b1b8e1c6a7852376a21fd0af32d71c6fd13fda&v=4" width="200">
+
+# Gomoku
+
 ## Setup Instructions
 
-Using Makefile
+Using Makefile (from the root directory)
 
 1. Run `make client` in one terminal tab.
 2. In a separate terminal tab, run `make server`.
@@ -15,11 +19,8 @@ Using Makefile
 
 1. Open "GomokuClient\src\app\userplay.service.ts" and replace "http://localhost:62411/api/game" with the URL where the C# service is running
 2. Open "GomokuClient" in console
-3. Run "npm install"
-4. Run "ng serve --open" for dev environment
+3. Run "yarn"
+4. Run "yarn dev" for dev environment
 
-Open 2 or more separate client windows with a browser to simulate 2 or more players, the back-end will pair the players.
-
-Each player takes turns against his opponent. The goal of the game is to occupy 5 consecutive squares in any direction. Squares that are occupied by the player are red. Squares occupied by the player opponent are blue.
-
-<img width="1292" alt="Screenshot 2024-09-14 at 15 20 10" src="https://github.com/user-attachments/assets/86d85dc2-48d5-4055-a720-13f24000dc19">
+#### License
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](./LICENSE) file for details.

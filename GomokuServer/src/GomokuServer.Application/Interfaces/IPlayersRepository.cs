@@ -1,6 +1,4 @@
-﻿using GomokuServer.Core.Entities;
-
-namespace GomokuServer.Application.Interfaces;
+﻿namespace GomokuServer.Application.Interfaces;
 
 public interface IPlayersRepository
 {

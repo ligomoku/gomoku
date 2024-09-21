@@ -24,7 +24,7 @@ public class InMemoryGameRepository : IGameRepository
 
 		return availableGames.Any()
 			? Task.FromResult(Result.Success(availableGames))
-			: Task.FromResult(Result<IEnumerable<Game>>.NotFound());
+			: Task.FromResult(Result.Success(Enumerable.Empty<Game>()));
 	}
 
 	public Task<Result> SaveAsync(Game game)

@@ -1,10 +1,14 @@
 using GomokuServer.Api.Configuration;
+using GomokuServer.Api.Examples;
 using GomokuServer.Infrastructure.Extensions;
+
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 
+builder.Services.AddSwaggerExamplesFromAssemblyOf<NotFoundErrorExample>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
