@@ -149,9 +149,6 @@ const useFetchGame = (gameId: string | null) =>
       return response.data;
     },
     enabled: !!gameId,
-    onError: (error: Error) => {
-      console.error("Error fetching game data: ", error);
-    },
   });
 
 export default Game;
