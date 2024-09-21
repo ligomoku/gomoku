@@ -1,11 +1,14 @@
 import { Card } from "@/shared/ui/card.tsx";
 import { Button } from "@/shared/ui/button.tsx";
-import { Chat } from "@/features/Chat";
 import { useEffect, useState } from "react";
-import { useBoard } from "@/hooks/useBoardLocal.ts";
+
+const playAgain = () => {
+  //ToDo: implement play again
+  window.location.reload();
+};
 
 export const Timer = () => {
-  const { playAgain } = useBoard();
+  // const { playAgain } = useBoard();
 
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -48,8 +51,6 @@ export const Timer = () => {
           Play again
         </Button>
       </div>
-      <br />
-      <Chat />
     </Card>
   );
 };
