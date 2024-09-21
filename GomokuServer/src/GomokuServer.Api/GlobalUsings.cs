@@ -1,17 +1,19 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.IdentityModel.Tokens.Jwt;
+global using System.Net.Mime;
 
 global using Asp.Versioning;
 global using Asp.Versioning.ApiExplorer;
 
 global using GomokuServer.Api.Configuration;
 global using GomokuServer.Api.Constants;
-global using GomokuServer.Api.Controllers.v2.Requests;
+global using GomokuServer.Api.Controllers.v1.Requests;
 global using GomokuServer.Api.Examples;
 global using GomokuServer.Api.Extensions;
 global using GomokuServer.Api.Hubs;
 global using GomokuServer.Api.Middlewares;
 global using GomokuServer.Application;
+global using GomokuServer.Application.Dto;
 global using GomokuServer.Application.Interfaces;
 global using GomokuServer.Application.Responses;
 global using GomokuServer.Core.Interfaces;
