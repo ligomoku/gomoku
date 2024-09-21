@@ -1,4 +1,6 @@
-﻿global using Asp.Versioning;
+﻿global using System.IdentityModel.Tokens.Jwt;
+
+global using Asp.Versioning;
 global using Asp.Versioning.ApiExplorer;
 
 global using GomokuServer.Api.Constants;
@@ -15,3 +17,4 @@ global using GomokuServer.Infrastructure;
 
 global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.IdentityModel.Tokens;

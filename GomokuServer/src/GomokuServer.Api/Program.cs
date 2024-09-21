@@ -1,3 +1,5 @@
+using GomokuServer.Api.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -47,6 +49,38 @@ builder.Services.AddApiVersioning(option =>
 	options.SubstituteApiVersionInUrl = true;
 });
 
+//var clerkUrl = "https://allowed-muskrat-40.clerk.accounts.dev";
+//var jwksUri = $"{clerkUrl}/.well-known/jwks.json";
+//var jwks = await GetJwksAsync(jwksUri);
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//	.AddJwtBearer(options =>
+//	{
+//		options.TokenValidationParameters = new TokenValidationParameters
+//		{
+//			ValidateIssuer = true,
+//			ValidIssuer = "https://allowed-muskrat-40.clerk.dev",
+//			ValidateAudience = false,
+//			ValidateIssuerSigningKey = true,
+//			IssuerSigningKeyResolver = (token, securityToken, kid, validationParameters) =>
+//			{
+//				var key = jwks.Keys.FirstOrDefault(k => k.Kid == kid);
+//				if (key == null)
+//				{
+//					throw new SecurityTokenException("Invalid key ID.");
+//				}
+
+//				var e = Base64UrlEncoder.DecodeBytes(key.E);
+//				var n = Base64UrlEncoder.DecodeBytes(key.N);
+//				var rsa = new RSACryptoServiceProvider();
+//				rsa.ImportParameters(new RSAParameters { Exponent = e, Modulus = n });
+//				return [new RsaSecurityKey(rsa)];
+//			},
+//			ValidateLifetime = true,
+//			ClockSkew = TimeSpan.Zero,
+//		};
+//	});
+
 builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
 builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
@@ -64,6 +98,10 @@ app.UseSwaggerUI(options =>
 	}
 });
 
+app.UseClerkJwtValidation();
+//app.UseAuthentication();
+//app.UseAuthorization();
+
 app.UseCors(CorsPolicyName.GomokuClient);
 
 app.MapControllers();
@@ -71,3 +109,11 @@ app.MapControllers();
 app.MapHub<GameHub>("/gamehub");
 
 app.Run();
+
+//static async Task<JsonWebKeySet> GetJwksAsync(string jwksUri)
+//{
+//	using var httpClient = new HttpClient();
+//	var response = await httpClient.GetStringAsync(jwksUri);
+//	var jwks = JsonSerializer.Deserialize<JsonWebKeySet>(response);
+//	return jwks;
+//}
