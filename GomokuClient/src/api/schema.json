@@ -9,6 +9,7 @@
     "/api/v2/game/{gameId}": {
       "get": {
         "tags": ["Game"],
+        "summary": "Get information about game by game id",
         "parameters": [
           {
             "name": "gameId",
@@ -31,11 +32,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Information about game",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Game"
+                  "$ref": "#/components/schemas/GetGameResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Game by id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
                 }
               }
             }
@@ -46,6 +62,7 @@
     "/api/v2/games": {
       "get": {
         "tags": ["Game"],
+        "summary": "Get all games, which are available to join",
         "parameters": [
           {
             "name": "X-Version",
@@ -59,7 +76,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Returns list of games which are available to join",
             "content": {
               "application/json": {
                 "schema": {
@@ -77,6 +94,7 @@
     "/api/v2/game": {
       "post": {
         "tags": ["Game"],
+        "summary": "Create new game",
         "parameters": [
           {
             "name": "X-Version",
@@ -99,11 +117,26 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Returns information about new created game",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateGameResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                  "title": "Bad Request",
+                  "status": 400
                 }
               }
             }
@@ -114,6 +147,7 @@
     "/api/v2/game/{gameId}/join/{playerId}": {
       "post": {
         "tags": ["Game"],
+        "summary": "Join game",
         "parameters": [
           {
             "name": "gameId",
@@ -145,7 +179,22 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Player with specified id successfully joined the game"
+          },
+          "404": {
+            "description": "Game or player with specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
+              }
+            }
           }
         }
       }
@@ -153,6 +202,7 @@
     "/api/v2/game/{gameId}/make-move/{playerId}": {
       "post": {
         "tags": ["Game"],
+        "summary": "Make move in a game",
         "parameters": [
           {
             "name": "gameId",
@@ -193,11 +243,41 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Move successfully made",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlaceTileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Required data is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                  "title": "Bad Request",
+                  "status": 400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Game or player with specified id not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
                 }
               }
             }
@@ -208,6 +288,7 @@
     "/api/v2/players": {
       "post": {
         "tags": ["Players"],
+        "summary": "Create new player",
         "parameters": [
           {
             "name": "X-Version",
@@ -239,6 +320,7 @@
   "components": {
     "schemas": {
       "CreateGameRequest": {
+        "required": ["boardSize"],
         "type": "object",
         "properties": {
           "boardSize": {
@@ -249,85 +331,37 @@
         "additionalProperties": false
       },
       "CreateGameResponse": {
+        "required": ["gameId"],
         "type": "object",
         "properties": {
           "gameId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "CreatePlayerRequest": {
+        "required": ["id"],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
-      "Game": {
-        "type": "object",
-        "properties": {
-          "gameId": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "playersMoves": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GameMove"
-            },
-            "nullable": true,
-            "readOnly": true
-          },
-          "playerOne": {
-            "$ref": "#/components/schemas/Player"
-          },
-          "playerTwo": {
-            "$ref": "#/components/schemas/Player"
-          },
-          "hasBothPlayersJoined": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isGameStarted": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "nextMoveShouldMakePlayerId": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "winnerId": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "winningSequence": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Tile"
-            },
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GameMove": {
+      "GameMoveDto": {
+        "required": ["moveNumber", "playerId", "tile"],
         "type": "object",
         "properties": {
           "tile": {
-            "$ref": "#/components/schemas/Tile"
+            "$ref": "#/components/schemas/TileDto"
           },
           "playerId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "moveNumber": {
             "type": "integer",
@@ -337,16 +371,67 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponse": {
+        "required": ["gameId"],
         "type": "object",
         "properties": {
           "gameId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGameResponse": {
+        "required": [
+          "gameId",
+          "hasBothPlayersJoined",
+          "isGameStarted",
+          "playersMoves"
+        ],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "playerOne": {
+            "$ref": "#/components/schemas/PlayerDto"
+          },
+          "playerTwo": {
+            "$ref": "#/components/schemas/PlayerDto"
+          },
+          "hasBothPlayersJoined": {
+            "type": "boolean"
+          },
+          "isGameStarted": {
+            "type": "boolean"
+          },
+          "nextMoveShouldMakePlayerId": {
             "type": "string",
             "nullable": true
+          },
+          "winnerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "winningSequence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TileDto"
+            },
+            "nullable": true
+          },
+          "playersMoves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameMoveDto"
+            }
           }
         },
         "additionalProperties": false
       },
       "MakeMoveRequest": {
+        "required": ["x", "y"],
         "type": "object",
         "properties": {
           "x": {
@@ -366,7 +451,7 @@
           "winningSequence": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Tile"
+              "$ref": "#/components/schemas/TileDto"
             },
             "nullable": true
           },
@@ -377,17 +462,46 @@
         },
         "additionalProperties": false
       },
-      "Player": {
+      "PlayerDto": {
+        "required": ["playerId"],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
+          "playerId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
-      "Tile": {
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {}
+      },
+      "TileDto": {
+        "required": ["x", "y"],
         "type": "object",
         "properties": {
           "x": {
