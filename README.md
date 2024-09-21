@@ -21,3 +21,6 @@ Using Makefile (from the root directory)
 2. Open "GomokuClient" in console
 3. Run "yarn"
 4. Run "yarn dev" for dev environment
+
+#### License
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](./LICENSE) file for details.
