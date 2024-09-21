@@ -44,6 +44,7 @@
     "@storybook/addon-links": "^8.3.1",
     "@storybook/addon-onboarding": "^8.3.1",
     "@storybook/addon-styling-webpack": "^1.0.0",
+    "@storybook/addons": "7.6.17",
     "@storybook/blocks": "^8.3.1",
     "@storybook/react": "^8.3.1",
     "@storybook/react-vite": "^8.3.1",
