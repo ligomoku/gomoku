@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Api.Controllers.v2.Requests;
+﻿namespace GomokuServer.Api.Controllers.v1.Requests;
 
 public class CreateGameRequest
 {

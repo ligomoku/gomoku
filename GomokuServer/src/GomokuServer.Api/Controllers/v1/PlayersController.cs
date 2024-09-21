@@ -1,10 +1,8 @@
-﻿using System.Net.Mime;
-
-namespace GomokuServer.Api.Controllers.v2;
+﻿namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
-[ApiVersion("2.0")]
-[Route("api/v2/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v1/[controller]")]
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
