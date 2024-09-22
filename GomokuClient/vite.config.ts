@@ -22,7 +22,7 @@ export default ({ mode }: { mode: string }) => {
       },
     },
     server: {
-      port: parseInt(env.VITE_LOCALHOST_PORT ?? "4500"),
+      port: parseInt(env.VITE_LOCALHOST_PORT),
     },
   });
 };

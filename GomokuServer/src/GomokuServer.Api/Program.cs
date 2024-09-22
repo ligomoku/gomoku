@@ -1,4 +1,32 @@
+using DotNetEnv;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables();
+
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+var envFileName = environment.ToLower() switch
+{
+	"development" => ".env.local",
+	"production" => ".env.prod",
+	_ => ".env.local"
+};
+
+var currentDirectory = Directory.GetCurrentDirectory();
+var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName;
+
+if (parentDirectory == null)
+{
+	throw new DirectoryNotFoundException("Parent directory not found. Ensure the directory structure is correct.");
+}
+
+var envFilePath = Path.Combine(parentDirectory,"..", "envs", envFileName);
+System.Console.WriteLine($"Env file path: {envFilePath}");
+
+DotNetEnv.Env.Load(envFilePath);
+var localhostPort = Environment.GetEnvironmentVariable("VITE_LOCALHOST_PORT");
+
 
 var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 
@@ -33,7 +61,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
-	const string localhostUrl = "http://localhost:4200";
+	var localhostUrl = $"http://localhost:{localhostPort}";
 
 	options.AddPolicy(CorsPolicyName.GomokuClient,
 		builder => builder

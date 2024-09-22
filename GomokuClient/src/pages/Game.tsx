@@ -5,11 +5,11 @@ import { Timer } from "@/features/Timer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   CreateGameResponse,
-  getApiV2GameByGameId,
-  GetApiV2GameByGameIdError,
-  GetApiV2GameByGameIdResponse,
-  postApiV2Game,
-  PostApiV2GameError,
+  getApiGameByGameId,
+  GetApiGameByGameIdError,
+  GetApiGameByGameIdResponse,
+  postApiGame,
+  PostApiGameError,
 } from "@/api/client";
 import { Chat } from "@/features/Chat";
 
@@ -103,14 +103,14 @@ Game.displayName = "Game";
 const useCreateGame = () =>
   useMutation<
     CreateGameResponse | undefined,
-    PostApiV2GameError,
+    PostApiGameError,
     { boardSize: number }
   >({
     mutationFn: async ({ boardSize }) => {
-      const response = await postApiV2Game({
+      const response = await postApiGame({
         body: { boardSize },
         headers: {
-          "X-Version": "2",
+          "X-Version": "1",
           //TODO: Add the content type header to Swagger schema as required
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-expect-error
@@ -123,9 +123,9 @@ const useCreateGame = () =>
 
 const useFetchGame = (gameId: string | null) =>
   useQuery<
-    GetApiV2GameByGameIdResponse,
-    GetApiV2GameByGameIdError,
-    GetApiV2GameByGameIdResponse,
+    GetApiGameByGameIdResponse,
+    GetApiGameByGameIdError,
+    GetApiGameByGameIdResponse,
     [string, string | null]
   >({
     queryKey: ["game", gameId],
@@ -133,10 +133,10 @@ const useFetchGame = (gameId: string | null) =>
       if (!gameId) {
         throw new Error("Game ID is required");
       }
-      const response = await getApiV2GameByGameId({
+      const response = await getApiGameByGameId({
         path: { gameId },
         headers: {
-          "X-Version": "2",
+          "X-Version": "1",
           //TODO: Add the content type header to Swagger schema as required
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-expect-error
