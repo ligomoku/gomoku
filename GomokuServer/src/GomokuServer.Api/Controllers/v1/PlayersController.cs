@@ -2,7 +2,7 @@
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
