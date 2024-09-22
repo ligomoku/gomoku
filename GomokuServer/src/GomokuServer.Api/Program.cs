@@ -1,5 +1,3 @@
-using DotNetEnv;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
@@ -21,7 +19,7 @@ if (parentDirectory == null)
 	throw new DirectoryNotFoundException("Parent directory not found. Ensure the directory structure is correct.");
 }
 
-var envFilePath = Path.Combine(parentDirectory,"..", "envs", envFileName);
+var envFilePath = Path.Combine(parentDirectory, "..", "envs", envFileName);
 System.Console.WriteLine($"Env file path: {envFilePath}");
 
 DotNetEnv.Env.Load(envFilePath);
