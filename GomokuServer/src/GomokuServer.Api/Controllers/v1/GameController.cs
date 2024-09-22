@@ -2,7 +2,7 @@
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
@@ -36,7 +36,7 @@ public class GameController : Controller
 	/// </summary>
 	/// <response code="200">Returns list of games which are available to join</response>
 	[HttpGet()]
-	[Route("/api/v2/games")]
+	[Route("/api/games")]
 	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames()
 	{

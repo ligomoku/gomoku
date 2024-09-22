@@ -34,11 +34,10 @@ builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
 	const string localhostUrl = "http://localhost:4200";
-	const string vercelUrl = "https://gomoku-ruddy.vercel.app";
 
 	options.AddPolicy(CorsPolicyName.GomokuClient,
 		builder => builder
-			.WithOrigins(localhostUrl, vercelUrl)
+			.WithOrigins(localhostUrl, configuration.GomokuClient.BaseUrl)
 			.WithMethods("GET", "POST", "PUT", "DELETE")
 			.AllowAnyHeader()
 			.AllowCredentials());
