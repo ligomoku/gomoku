@@ -16,15 +16,18 @@ var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName;
 
 if (parentDirectory == null)
 {
-	throw new DirectoryNotFoundException("Parent directory not found. Ensure the directory structure is correct.");
+	var envFilePathInDocker = Path.Combine(currentDirectory, "envs", envFileName);
+	System.Console.WriteLine($"Using alternative env file path: {envFilePathInDocker}");
+	DotNetEnv.Env.Load(envFilePathInDocker);
+}
+else
+{
+	var envFilePath = Path.Combine(parentDirectory, "..", "envs", envFileName);
+	System.Console.WriteLine($"Env file path: {envFilePath}");
+	DotNetEnv.Env.Load(envFilePath);
 }
 
-var envFilePath = Path.Combine(parentDirectory, "..", "envs", envFileName);
-System.Console.WriteLine($"Env file path: {envFilePath}");
-
-DotNetEnv.Env.Load(envFilePath);
 var localhostPort = Environment.GetEnvironmentVariable("VITE_LOCALHOST_PORT");
-
 
 var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 

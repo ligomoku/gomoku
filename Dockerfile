@@ -4,9 +4,10 @@ ARG DOTNET_SDK_VERSION=8.0
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}${DOTNET_OS_VERSION} AS build
 WORKDIR /src
 
-COPY GomokuServer.sln ./
-COPY src/ src/
-COPY tests/ tests/
+COPY GomokuServer/GomokuServer.sln ./
+COPY GomokuServer/src src/
+COPY GomokuServer/tests tests/
+COPY envs/ GomokuServer/envs/
 
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app
