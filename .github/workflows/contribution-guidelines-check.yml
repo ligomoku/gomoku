@@ -33,7 +33,7 @@ jobs:
           scopes: |
             client
             server
-            client-server
+            fullstack
             devops
           requireScope: true
           ignoreLabels: |
