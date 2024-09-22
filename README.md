@@ -9,5 +9,9 @@ Using Makefile (from the root directory)
 1. Run `make client` in one terminal tab.
 2. In a separate terminal tab, run `make server`.
 
+## Open API spec
+
+URL: https://gomoku-gi8o.onrender.com/swagger
+
 ## License
 This project is licensed under the AGPL-3.0 License - see the [LICENSE](./LICENSE) file for details.
