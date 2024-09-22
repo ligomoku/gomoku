@@ -13,6 +13,7 @@ export default defineConfig({
       },
     }),
   ],
+  envDir: path.resolve(__dirname, "../envs"),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
