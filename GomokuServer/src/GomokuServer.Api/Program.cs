@@ -14,8 +14,6 @@ var envFileName = environment.ToLower() switch
 var currentDirectory = Directory.GetCurrentDirectory();
 var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName;
 
-System.Console.WriteLine($"Parent directory: {parentDirectory}");
-
 if (parentDirectory == null)
 {
 	var envFilePathInDocker = Path.Combine(currentDirectory, "envs", envFileName);
