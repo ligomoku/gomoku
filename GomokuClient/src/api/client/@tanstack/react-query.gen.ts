@@ -3,29 +3,29 @@
 import type { Options } from "@hey-api/client-fetch";
 import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import type {
-  GetApiV2GameByGameIdData,
-  GetApiV2GamesData,
-  PostApiV2GameData,
-  PostApiV2GameError,
-  PostApiV2GameResponse,
-  PostApiV2GameByGameIdJoinByPlayerIdData,
-  PostApiV2GameByGameIdJoinByPlayerIdError,
-  PostApiV2GameByGameIdJoinByPlayerIdResponse,
-  PostApiV2GameByGameIdMakeMoveByPlayerIdData,
-  PostApiV2GameByGameIdMakeMoveByPlayerIdError,
-  PostApiV2GameByGameIdMakeMoveByPlayerIdResponse,
-  PostApiV2PlayersData,
-  PostApiV2PlayersError,
-  PostApiV2PlayersResponse,
+  GetApiGameByGameIdData,
+  GetApiGamesData,
+  PostApiGameData,
+  PostApiGameError,
+  PostApiGameResponse,
+  PostApiGameByGameIdJoinByPlayerIdData,
+  PostApiGameByGameIdJoinByPlayerIdError,
+  PostApiGameByGameIdJoinByPlayerIdResponse,
+  PostApiGameByGameIdMakeMoveByPlayerIdData,
+  PostApiGameByGameIdMakeMoveByPlayerIdError,
+  PostApiGameByGameIdMakeMoveByPlayerIdResponse,
+  PostApiPlayersData,
+  PostApiPlayersError,
+  PostApiPlayersResponse,
 } from "../types.gen";
 import {
   client,
-  getApiV2GameByGameId,
-  getApiV2Games,
-  postApiV2Game,
-  postApiV2GameByGameIdJoinByPlayerId,
-  postApiV2GameByGameIdMakeMoveByPlayerId,
-  postApiV2Players,
+  getApiGameByGameId,
+  getApiGames,
+  postApiGame,
+  postApiGameByGameIdJoinByPlayerId,
+  postApiGameByGameIdMakeMoveByPlayerId,
+  postApiPlayers,
 } from "../services.gen";
 
 type QueryKey<TOptions extends Options> = [
@@ -62,70 +62,70 @@ const createQueryKey = <TOptions extends Options>(
   return params;
 };
 
-export const getApiV2GameByGameIdQueryKey = (
-  options: Options<GetApiV2GameByGameIdData>,
-) => [createQueryKey("getApiV2GameByGameId", options)];
+export const getApiGameByGameIdQueryKey = (
+  options: Options<GetApiGameByGameIdData>,
+) => [createQueryKey("getApiGameByGameId", options)];
 
-export const getApiV2GameByGameIdOptions = (
-  options: Options<GetApiV2GameByGameIdData>,
+export const getApiGameByGameIdOptions = (
+  options: Options<GetApiGameByGameIdData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await getApiV2GameByGameId({
+      const { data } = await getApiGameByGameId({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getApiV2GameByGameIdQueryKey(options),
+    queryKey: getApiGameByGameIdQueryKey(options),
   });
 };
 
-export const getApiV2GamesQueryKey = (options: Options<GetApiV2GamesData>) => [
-  createQueryKey("getApiV2Games", options),
+export const getApiGamesQueryKey = (options?: Options<GetApiGamesData>) => [
+  createQueryKey("getApiGames", options),
 ];
 
-export const getApiV2GamesOptions = (options: Options<GetApiV2GamesData>) => {
+export const getApiGamesOptions = (options?: Options<GetApiGamesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await getApiV2Games({
+      const { data } = await getApiGames({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getApiV2GamesQueryKey(options),
+    queryKey: getApiGamesQueryKey(options),
   });
 };
 
-export const postApiV2GameQueryKey = (options: Options<PostApiV2GameData>) => [
-  createQueryKey("postApiV2Game", options),
+export const postApiGameQueryKey = (options?: Options<PostApiGameData>) => [
+  createQueryKey("postApiGame", options),
 ];
 
-export const postApiV2GameOptions = (options: Options<PostApiV2GameData>) => {
+export const postApiGameOptions = (options?: Options<PostApiGameData>) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await postApiV2Game({
+      const { data } = await postApiGame({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: postApiV2GameQueryKey(options),
+    queryKey: postApiGameQueryKey(options),
   });
 };
 
-export const postApiV2GameMutation = () => {
+export const postApiGameMutation = () => {
   const mutationOptions: UseMutationOptions<
-    PostApiV2GameResponse,
-    PostApiV2GameError,
-    Options<PostApiV2GameData>
+    PostApiGameResponse,
+    PostApiGameError,
+    Options<PostApiGameData>
   > = {
     mutationFn: async (options) => {
-      const { data } = await postApiV2Game({
+      const { data } = await postApiGame({
         ...options,
         throwOnError: true,
       });
@@ -135,34 +135,34 @@ export const postApiV2GameMutation = () => {
   return mutationOptions;
 };
 
-export const postApiV2GameByGameIdJoinByPlayerIdQueryKey = (
-  options: Options<PostApiV2GameByGameIdJoinByPlayerIdData>,
-) => [createQueryKey("postApiV2GameByGameIdJoinByPlayerId", options)];
+export const postApiGameByGameIdJoinByPlayerIdQueryKey = (
+  options: Options<PostApiGameByGameIdJoinByPlayerIdData>,
+) => [createQueryKey("postApiGameByGameIdJoinByPlayerId", options)];
 
-export const postApiV2GameByGameIdJoinByPlayerIdOptions = (
-  options: Options<PostApiV2GameByGameIdJoinByPlayerIdData>,
+export const postApiGameByGameIdJoinByPlayerIdOptions = (
+  options: Options<PostApiGameByGameIdJoinByPlayerIdData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await postApiV2GameByGameIdJoinByPlayerId({
+      const { data } = await postApiGameByGameIdJoinByPlayerId({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: postApiV2GameByGameIdJoinByPlayerIdQueryKey(options),
+    queryKey: postApiGameByGameIdJoinByPlayerIdQueryKey(options),
   });
 };
 
-export const postApiV2GameByGameIdJoinByPlayerIdMutation = () => {
+export const postApiGameByGameIdJoinByPlayerIdMutation = () => {
   const mutationOptions: UseMutationOptions<
-    PostApiV2GameByGameIdJoinByPlayerIdResponse,
-    PostApiV2GameByGameIdJoinByPlayerIdError,
-    Options<PostApiV2GameByGameIdJoinByPlayerIdData>
+    PostApiGameByGameIdJoinByPlayerIdResponse,
+    PostApiGameByGameIdJoinByPlayerIdError,
+    Options<PostApiGameByGameIdJoinByPlayerIdData>
   > = {
     mutationFn: async (options) => {
-      const { data } = await postApiV2GameByGameIdJoinByPlayerId({
+      const { data } = await postApiGameByGameIdJoinByPlayerId({
         ...options,
         throwOnError: true,
       });
@@ -172,34 +172,34 @@ export const postApiV2GameByGameIdJoinByPlayerIdMutation = () => {
   return mutationOptions;
 };
 
-export const postApiV2GameByGameIdMakeMoveByPlayerIdQueryKey = (
-  options: Options<PostApiV2GameByGameIdMakeMoveByPlayerIdData>,
-) => [createQueryKey("postApiV2GameByGameIdMakeMoveByPlayerId", options)];
+export const postApiGameByGameIdMakeMoveByPlayerIdQueryKey = (
+  options: Options<PostApiGameByGameIdMakeMoveByPlayerIdData>,
+) => [createQueryKey("postApiGameByGameIdMakeMoveByPlayerId", options)];
 
-export const postApiV2GameByGameIdMakeMoveByPlayerIdOptions = (
-  options: Options<PostApiV2GameByGameIdMakeMoveByPlayerIdData>,
+export const postApiGameByGameIdMakeMoveByPlayerIdOptions = (
+  options: Options<PostApiGameByGameIdMakeMoveByPlayerIdData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await postApiV2GameByGameIdMakeMoveByPlayerId({
+      const { data } = await postApiGameByGameIdMakeMoveByPlayerId({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: postApiV2GameByGameIdMakeMoveByPlayerIdQueryKey(options),
+    queryKey: postApiGameByGameIdMakeMoveByPlayerIdQueryKey(options),
   });
 };
 
-export const postApiV2GameByGameIdMakeMoveByPlayerIdMutation = () => {
+export const postApiGameByGameIdMakeMoveByPlayerIdMutation = () => {
   const mutationOptions: UseMutationOptions<
-    PostApiV2GameByGameIdMakeMoveByPlayerIdResponse,
-    PostApiV2GameByGameIdMakeMoveByPlayerIdError,
-    Options<PostApiV2GameByGameIdMakeMoveByPlayerIdData>
+    PostApiGameByGameIdMakeMoveByPlayerIdResponse,
+    PostApiGameByGameIdMakeMoveByPlayerIdError,
+    Options<PostApiGameByGameIdMakeMoveByPlayerIdData>
   > = {
     mutationFn: async (options) => {
-      const { data } = await postApiV2GameByGameIdMakeMoveByPlayerId({
+      const { data } = await postApiGameByGameIdMakeMoveByPlayerId({
         ...options,
         throwOnError: true,
       });
@@ -209,34 +209,34 @@ export const postApiV2GameByGameIdMakeMoveByPlayerIdMutation = () => {
   return mutationOptions;
 };
 
-export const postApiV2PlayersQueryKey = (
-  options: Options<PostApiV2PlayersData>,
-) => [createQueryKey("postApiV2Players", options)];
+export const postApiPlayersQueryKey = (
+  options?: Options<PostApiPlayersData>,
+) => [createQueryKey("postApiPlayers", options)];
 
-export const postApiV2PlayersOptions = (
-  options: Options<PostApiV2PlayersData>,
+export const postApiPlayersOptions = (
+  options?: Options<PostApiPlayersData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await postApiV2Players({
+      const { data } = await postApiPlayers({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: postApiV2PlayersQueryKey(options),
+    queryKey: postApiPlayersQueryKey(options),
   });
 };
 
-export const postApiV2PlayersMutation = () => {
+export const postApiPlayersMutation = () => {
   const mutationOptions: UseMutationOptions<
-    PostApiV2PlayersResponse,
-    PostApiV2PlayersError,
-    Options<PostApiV2PlayersData>
+    PostApiPlayersResponse,
+    PostApiPlayersError,
+    Options<PostApiPlayersData>
   > = {
     mutationFn: async (options) => {
-      const { data } = await postApiV2Players({
+      const { data } = await postApiPlayers({
         ...options,
         throwOnError: true,
       });

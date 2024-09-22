@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Gomoku API v2.0",
+    "title": "Gomoku API v1.0",
     "description": "",
-    "version": "2.0"
+    "version": "1.0"
   },
   "paths": {
-    "/api/v2/game/{gameId}": {
+    "/api/game/{gameId}": {
       "get": {
         "tags": ["Game"],
         "summary": "Get information about game by game id",
@@ -23,7 +23,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -59,7 +58,7 @@
         }
       }
     },
-    "/api/v2/games": {
+    "/api/games": {
       "get": {
         "tags": ["Game"],
         "summary": "Get all games, which are available to join",
@@ -67,7 +66,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -91,7 +89,7 @@
         }
       }
     },
-    "/api/v2/game": {
+    "/api/game": {
       "post": {
         "tags": ["Game"],
         "summary": "Create new game",
@@ -99,7 +97,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -144,7 +141,7 @@
         }
       }
     },
-    "/api/v2/game/{gameId}/join/{playerId}": {
+    "/api/game/{gameId}/join/{playerId}": {
       "post": {
         "tags": ["Game"],
         "summary": "Join game",
@@ -170,7 +167,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -199,7 +195,7 @@
         }
       }
     },
-    "/api/v2/game/{gameId}/make-move/{playerId}": {
+    "/api/game/{gameId}/make-move/{playerId}": {
       "post": {
         "tags": ["Game"],
         "summary": "Make move in a game",
@@ -225,7 +221,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"
@@ -285,7 +280,7 @@
         }
       }
     },
-    "/api/v2/players": {
+    "/api/players": {
       "post": {
         "tags": ["Players"],
         "summary": "Create new player",
@@ -293,7 +288,6 @@
           {
             "name": "X-Version",
             "in": "header",
-            "required": true,
             "style": "simple",
             "schema": {
               "type": "string"

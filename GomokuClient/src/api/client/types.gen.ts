@@ -62,43 +62,43 @@ export type TileDto = {
   y: number;
 };
 
-export type GetApiV2GameByGameIdData = {
-  headers: {
-    "X-Version": string;
+export type GetApiGameByGameIdData = {
+  headers?: {
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
   };
 };
 
-export type GetApiV2GameByGameIdResponse = GetGameResponse;
+export type GetApiGameByGameIdResponse = GetGameResponse;
 
-export type GetApiV2GameByGameIdError = ProblemDetails;
+export type GetApiGameByGameIdError = ProblemDetails;
 
-export type GetApiV2GamesData = {
-  headers: {
-    "X-Version": string;
+export type GetApiGamesData = {
+  headers?: {
+    "X-Version"?: string;
   };
 };
 
-export type GetApiV2GamesResponse = Array<GetAvailableGamesResponse>;
+export type GetApiGamesResponse = Array<GetAvailableGamesResponse>;
 
-export type GetApiV2GamesError = unknown;
+export type GetApiGamesError = unknown;
 
-export type PostApiV2GameData = {
+export type PostApiGameData = {
   body?: CreateGameRequest;
-  headers: {
-    "X-Version": string;
+  headers?: {
+    "X-Version"?: string;
   };
 };
 
-export type PostApiV2GameResponse = CreateGameResponse;
+export type PostApiGameResponse = CreateGameResponse;
 
-export type PostApiV2GameError = ProblemDetails;
+export type PostApiGameError = ProblemDetails;
 
-export type PostApiV2GameByGameIdJoinByPlayerIdData = {
-  headers: {
-    "X-Version": string;
+export type PostApiGameByGameIdJoinByPlayerIdData = {
+  headers?: {
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
@@ -106,14 +106,14 @@ export type PostApiV2GameByGameIdJoinByPlayerIdData = {
   };
 };
 
-export type PostApiV2GameByGameIdJoinByPlayerIdResponse = unknown;
+export type PostApiGameByGameIdJoinByPlayerIdResponse = unknown;
 
-export type PostApiV2GameByGameIdJoinByPlayerIdError = ProblemDetails;
+export type PostApiGameByGameIdJoinByPlayerIdError = ProblemDetails;
 
-export type PostApiV2GameByGameIdMakeMoveByPlayerIdData = {
+export type PostApiGameByGameIdMakeMoveByPlayerIdData = {
   body?: MakeMoveRequest;
-  headers: {
-    "X-Version": string;
+  headers?: {
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
@@ -121,17 +121,17 @@ export type PostApiV2GameByGameIdMakeMoveByPlayerIdData = {
   };
 };
 
-export type PostApiV2GameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
+export type PostApiGameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
 
-export type PostApiV2GameByGameIdMakeMoveByPlayerIdError = ProblemDetails;
+export type PostApiGameByGameIdMakeMoveByPlayerIdError = ProblemDetails;
 
-export type PostApiV2PlayersData = {
+export type PostApiPlayersData = {
   body?: CreatePlayerRequest;
-  headers: {
-    "X-Version": string;
+  headers?: {
+    "X-Version"?: string;
   };
 };
 
-export type PostApiV2PlayersResponse = unknown;
+export type PostApiPlayersResponse = unknown;
 
-export type PostApiV2PlayersError = unknown;
+export type PostApiPlayersError = unknown;
