@@ -7,16 +7,13 @@ namespace GomokuServer.Api.Configuration;
             var localhostPort = Environment.GetEnvironmentVariable("VITE_LOCALHOST_PORT");
             var configuration = builder.Configuration.GetSection<Configuration>("Configuration");
 
-            // Register other services like routing, controllers, etc.
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
             builder.Services.AddControllers();
             builder.Services.AddSignalR();
 
-            // Add Swagger services
             var swaggerConfigurator = new SwaggerConfigurator();
             swaggerConfigurator.ConfigureSwagger(builder.Services);
 
-            // Add CORS
             builder.Services.AddCors(options =>
             {
                 var localhostUrl = $"http://localhost:{localhostPort}";
@@ -27,7 +24,6 @@ namespace GomokuServer.Api.Configuration;
                     .AllowCredentials());
             });
 
-            // Add API versioning
             builder.Services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -40,14 +36,12 @@ namespace GomokuServer.Api.Configuration;
                 options.SubstituteApiVersionInUrl = true;
             });
 
-            // Add memory cache and repositories
             builder.Services.AddMemoryCache();
             builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
             builder.Services.AddSingleton<IGameRepository, InMemoryGameRepository>();
             builder.Services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
             builder.Services.AddScoped<IGameSessionHandler, GameSessionHandler>();
 
-            // Add Refit HTTP client
             builder.Services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
             {
                 httpClient.BaseAddress = new Uri(configuration.Clerk.FrontendApiBaseUrl);

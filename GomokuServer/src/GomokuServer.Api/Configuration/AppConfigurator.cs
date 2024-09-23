@@ -11,20 +11,14 @@ namespace GomokuServer.Api.Configuration;
 
 		public void ConfigureApp(WebApplication app)
 		{
-			// Use middleware for Swagger
 			ConfigureSwagger(app);
-
-			// Enable authentication and authorization middleware
 			ConfigureSecurity(app);
 
-			// Use CORS
 			app.UseCors(CorsPolicyName.GomokuClient);
 
-			// Map Controllers and SignalR Hubs
 			app.MapControllers();
 			app.MapHub<GameHub>("/gamehub");
 
-			// Start the application
 			app.Run();
 		}
 
@@ -35,11 +29,9 @@ namespace GomokuServer.Api.Configuration;
 
 		private void ConfigureSecurity(WebApplication app)
 		{
-			// Add authentication, authorization, or other security middleware
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-			// Custom JWT validation for Clerk
 			app.UseClerkJwtValidation();
 		}
 	}
