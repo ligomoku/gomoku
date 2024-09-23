@@ -2,7 +2,7 @@ namespace GomokuServer.Api.Configuration;
 
 public class SwaggerConfigurator
 {
-	public void ConfigureSwagger(IServiceCollection services)
+	public static void ConfigureSwagger(IServiceCollection services)
 	{
 		services.AddSwaggerExamplesFromAssemblyOf<NotFoundErrorExample>();
 		services.AddEndpointsApiExplorer();
@@ -28,7 +28,7 @@ public class SwaggerConfigurator
 		});
 	}
 
-	public void ConfigureSwaggerUI(IApplicationBuilder app)
+	public static void ConfigureSwaggerUi(IApplicationBuilder app)
 	{
 		app.UseSwagger();
 		app.UseSwaggerUI(options =>

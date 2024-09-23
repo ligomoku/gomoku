@@ -2,13 +2,6 @@ namespace GomokuServer.Api.Configuration;
 
 public class AppConfigurator
 {
-	private readonly SwaggerConfigurator _swaggerConfigurator;
-
-	public AppConfigurator()
-	{
-		_swaggerConfigurator = new SwaggerConfigurator();
-	}
-
 	public void ConfigureApp(WebApplication app)
 	{
 		ConfigureSwagger(app);
@@ -24,7 +17,7 @@ public class AppConfigurator
 
 	private void ConfigureSwagger(WebApplication app)
 	{
-		_swaggerConfigurator.ConfigureSwaggerUI(app);
+		SwaggerConfigurator.ConfigureSwaggerUi(app);
 	}
 
 	private void ConfigureSecurity(WebApplication app)

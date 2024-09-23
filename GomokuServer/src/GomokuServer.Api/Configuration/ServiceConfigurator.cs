@@ -11,8 +11,7 @@ public class ServiceConfigurator
 		builder.Services.AddControllers();
 		builder.Services.AddSignalR();
 
-		var swaggerConfigurator = new SwaggerConfigurator();
-		swaggerConfigurator.ConfigureSwagger(builder.Services);
+		SwaggerConfigurator.ConfigureSwagger(builder.Services);
 
 		builder.Services.AddCors(options =>
 		{

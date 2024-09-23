@@ -2,13 +2,6 @@ namespace GomokuServer.Api.Configuration;
 
 public class EnvironmentLoader
 {
-	private readonly IConfiguration _configuration;
-
-	public EnvironmentLoader(IConfiguration configuration)
-	{
-		_configuration = configuration;
-	}
-
 	public void LoadEnvironment()
 	{
 		var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";

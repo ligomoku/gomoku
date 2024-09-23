@@ -2,7 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
-var environmentLoader = new EnvironmentLoader(builder.Configuration);
+var environmentLoader = new EnvironmentLoader();
 environmentLoader.LoadEnvironment();
 
 var serviceConfigurator = new ServiceConfigurator();
