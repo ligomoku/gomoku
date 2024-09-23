@@ -1,6 +1,6 @@
 namespace GomokuServer.Api.Configuration;
 
-public class AppConfigurator
+public static class AppConfigurator
 {
 	public static void ConfigureApp(WebApplication app)
 	{

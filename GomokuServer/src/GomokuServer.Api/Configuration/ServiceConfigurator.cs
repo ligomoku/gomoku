@@ -1,6 +1,6 @@
 namespace GomokuServer.Api.Configuration;
 
-public class ServiceConfigurator
+public static class ServiceConfigurator
 {
 	public static void ConfigureServices(WebApplicationBuilder builder)
 	{
