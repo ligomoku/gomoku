@@ -1,10 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure environment variables
-builder.Host.ConfigureAppConfiguration((context, config) =>
-{
-	config.AddEnvironmentVariables();
-});
+builder.Configuration.AddEnvironmentVariables();
 
 // Load environment
 var environmentLoader = new EnvironmentLoader(builder.Configuration);
