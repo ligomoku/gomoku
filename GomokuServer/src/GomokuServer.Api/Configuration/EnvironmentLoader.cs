@@ -27,11 +27,11 @@ public static class EnvironmentLoader
 		{
 			GomokuClient = new()
 			{
-				BaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLIENT_APP_BASE_URL")! //TODO: .env.prod
+				BaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLIENT_APP_BASE_URL")!
 			},
 			Clerk = new()
 			{
-				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")! //TODO: .env.local, .env.prod
+				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")!
 			}
 		};
 
