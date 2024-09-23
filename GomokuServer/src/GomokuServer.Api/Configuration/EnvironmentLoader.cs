@@ -1,9 +1,11 @@
 namespace GomokuServer.Api.Configuration;
 
-public class EnvironmentLoader
+public static class EnvironmentLoader
 {
-	public void LoadEnvironment()
+	public static Config LoadEnvironment(WebApplicationBuilder builder)
 	{
+		builder.Configuration.AddEnvironmentVariables();
+
 		var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
 		var envFileName = environment.ToLower() switch
@@ -14,11 +16,54 @@ public class EnvironmentLoader
 		};
 
 		var envFilePath = GetEnvFilePath(envFileName);
-		Console.WriteLine($"Env file path: {envFilePath}");
 		DotNetEnv.Env.Load(envFilePath);
+
+		return GetAndValidateConfig();
 	}
 
-	private string GetEnvFilePath(string envFileName)
+	private static Config GetAndValidateConfig()
+	{
+		var config = new Config()
+		{
+			GomokuClient = new()
+			{
+				BaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLIENT_APP_BASE_URL")! //TODO: .env.prod
+			},
+			Clerk = new()
+			{
+				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")! //TODO: .env.local, .env.prod
+			}
+		};
+
+		ValidateConfig(config);
+
+		return config;
+	}
+
+	private static void ValidateConfig(object obj, string? parentName = null)
+	{
+		var properties = obj.GetType().GetProperties();
+
+		foreach (var property in properties)
+		{
+			var value = property.GetValue(obj);
+			var propertyName = parentName != null ? $"{parentName}.{property.Name}" : property.Name;
+
+			if (property.PropertyType == typeof(string))
+			{
+				if (string.IsNullOrWhiteSpace(value?.ToString()))
+				{
+					throw new InvalidOperationException($"Configuration error: {propertyName} is missing or empty.");
+				}
+			}
+			else if (property.PropertyType.IsClass && value != null)
+			{
+				ValidateConfig(value, propertyName);
+			}
+		}
+	}
+
+	private static string GetEnvFilePath(string envFileName)
 	{
 		var currentDirectory = Directory.GetCurrentDirectory();
 		var parentDirectory = Directory.GetParent(currentDirectory)?.Parent?.FullName;
