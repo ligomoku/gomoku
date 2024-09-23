@@ -2,7 +2,7 @@ namespace GomokuServer.Api.Configuration;
 
 public class ServiceConfigurator
 {
-	public void ConfigureServices(WebApplicationBuilder builder)
+	public static void ConfigureServices(WebApplicationBuilder builder)
 	{
 		var localhostPort = Environment.GetEnvironmentVariable("VITE_LOCALHOST_PORT");
 		var configuration = builder.Configuration.GetSection<Configuration>("Configuration");

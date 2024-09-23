@@ -1,6 +1,6 @@
 namespace GomokuServer.Api.Configuration;
 
-public class SwaggerConfigurator
+public static class SwaggerConfigurator
 {
 	public static void ConfigureSwagger(IServiceCollection services)
 	{
@@ -12,7 +12,7 @@ public class SwaggerConfigurator
 
 			foreach (var description in provider.ApiVersionDescriptions)
 			{
-				options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo()
+				options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
 				{
 					Title = $"Gomoku API v{description.ApiVersion}",
 					Version = description.ApiVersion.ToString(),

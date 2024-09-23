@@ -2,7 +2,7 @@ namespace GomokuServer.Api.Configuration;
 
 public class AppConfigurator
 {
-	public void ConfigureApp(WebApplication app)
+	public static void ConfigureApp(WebApplication app)
 	{
 		ConfigureSwagger(app);
 		ConfigureSecurity(app);
@@ -15,12 +15,12 @@ public class AppConfigurator
 		app.Run();
 	}
 
-	private void ConfigureSwagger(WebApplication app)
+	private static void ConfigureSwagger(WebApplication app)
 	{
 		SwaggerConfigurator.ConfigureSwaggerUi(app);
 	}
 
-	private void ConfigureSecurity(WebApplication app)
+	private static void ConfigureSecurity(WebApplication app)
 	{
 		app.UseAuthentication();
 		app.UseAuthorization();
