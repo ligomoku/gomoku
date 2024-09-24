@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using GomokuServer.Application.Dto;
 using GomokuServer.Core.Interfaces;
 
@@ -18,6 +20,39 @@ public class GameSessionHandlerTests
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
 		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository, _randomProvider);
+	}
+
+	[Test]
+	public async Task GetAvailableGamesAsync_WhenNoGamesAvailable_ShouldReturnSuccessWithEmptyList()
+	{
+		// Arrange
+		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
+
+		// Act
+		var result = await _gameSessionHandler.GetAvailableGamesAsync();
+
+		// Assert
+		result.Status.Should().Be(ResultStatus.Ok);
+		result.Value.Should().NotBeNull();
+		result.Value.Count().Should().Be(0);
+		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
+	}
+
+	[Test]
+	public async Task GetAvailableGamesAsync_WhenRepositoryFails_ShouldReturnFailure()
+	{
+		// Arrange
+		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
+
+		// Act
+		var result = await _gameSessionHandler.GetAvailableGamesAsync();
+
+		// Assert
+		result.Status.Should().Be(ResultStatus.Error);
+		result.Errors.First().Should().Be("Error fetching games");
+		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
 	}
 
 	[Test]

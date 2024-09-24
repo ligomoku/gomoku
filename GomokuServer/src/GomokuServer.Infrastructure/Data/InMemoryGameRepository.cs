@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 
 using GomokuServer.Core.Entities;
 
@@ -18,18 +19,18 @@ public class InMemoryGameRepository : IGameRepository
 		return Task.FromResult(Result<Game>.NotFound());
 	}
 
-	public Task<Result<IEnumerable<Game>>> GetAvailableGamesAsync()
-	{
-		var availableGames = _games.Values.Where(game => !game.IsGameStarted).AsEnumerable();
-
-		return availableGames.Any()
-			? Task.FromResult(Result.Success(availableGames))
-			: Task.FromResult(Result.Success(Enumerable.Empty<Game>()));
-	}
-
 	public Task<Result> SaveAsync(Game game)
 	{
 		_games[game.GameId] = game;
 		return Task.FromResult(Result.Success());
+	}
+
+	public Task<Result<IEnumerable<Game>>> GetByExpressionAsync(Expression<Func<Game, bool>> expression)
+	{
+		var filteredGames = _games.Values.AsQueryable().Where(expression).AsEnumerable();
+
+		return filteredGames.Any()
+			? Task.FromResult(Result.Success(filteredGames))
+			: Task.FromResult(Result.Success(Enumerable.Empty<Game>()));
 	}
 }

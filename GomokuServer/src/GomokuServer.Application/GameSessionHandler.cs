@@ -43,7 +43,7 @@ public class GameSessionHandler : IGameSessionHandler
 
 	public async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync()
 	{
-		var getAvailableGamesResult = await _gameRepository.GetAvailableGamesAsync();
+		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(game => !game.HasBothPlayersJoined);
 
 		return getAvailableGamesResult.Map(games => games.Select(game => new GetAvailableGamesResponse(game.GameId)));
 	}
