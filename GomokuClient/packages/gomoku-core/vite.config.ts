@@ -15,7 +15,7 @@ export default ({ mode }: { mode: string }) => {
         },
       }),
     ],
-    envDir: path.resolve(__dirname, "../envs"),
+    envDir: path.resolve(__dirname, "../../../envs"),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

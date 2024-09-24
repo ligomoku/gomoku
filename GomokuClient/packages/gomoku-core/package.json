@@ -1,7 +1,7 @@
 {
-  "name": "@gomoku/client",
-  "private": true,
+  "name": "@gomoku/core",
   "version": "0.0.0",
+  "description": "Gomoku core package with game logic, components, and theming",
   "type": "module",
   "apiVersion": "2",
   "scripts": {
