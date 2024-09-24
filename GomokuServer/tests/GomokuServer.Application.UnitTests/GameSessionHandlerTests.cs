@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using GomokuServer.Application.Dto;
 using GomokuServer.Core.Interfaces;
 
@@ -5,7 +7,7 @@ namespace GomokuServer.Application.UnitTests;
 
 public class GameSessionHandlerTests
 {
-	private IGameRepository _gameRepository;
+	private IGameRepository _mockGameRepository;
 	private IPlayersRepository _playersRepository;
 	private GameSessionHandler _gameSessionHandler;
 	private IRandomProvider _randomProvider;
@@ -13,11 +15,44 @@ public class GameSessionHandlerTests
 	[SetUp]
 	public void Setup()
 	{
-		_gameRepository = Substitute.For<IGameRepository>();
+		_mockGameRepository = Substitute.For<IGameRepository>();
 		_playersRepository = Substitute.For<IPlayersRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
-		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository, _randomProvider);
+		_gameSessionHandler = new GameSessionHandler(_mockGameRepository, _playersRepository, _randomProvider);
+	}
+
+	[Test]
+	public async Task GetAvailableGamesAsync_WhenNoGamesAvailable_ShouldReturnSuccessWithEmptyList()
+	{
+		// Arrange
+		_mockGameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
+
+		// Act
+		var result = await _gameSessionHandler.GetAvailableGamesAsync();
+
+		// Assert
+		result.Status.Should().Be(ResultStatus.Ok);
+		result.Value.Should().NotBeNull();
+		result.Value.Count().Should().Be(0);
+		await _mockGameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
+	}
+
+	[Test]
+	public async Task GetAvailableGamesAsync_WhenRepositoryFails_ShouldReturnFailure()
+	{
+		// Arrange
+		_mockGameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
+
+		// Act
+		var result = await _gameSessionHandler.GetAvailableGamesAsync();
+
+		// Assert
+		result.Status.Should().Be(ResultStatus.Error);
+		result.Errors.First().Should().Be("Error fetching games");
+		await _mockGameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
 	}
 
 	[Test]
@@ -25,7 +60,7 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		int validBoardSize = 15;
-		_gameRepository.SaveAsync(Arg.Any<Game>())
+		_mockGameRepository.SaveAsync(Arg.Any<Game>())
 			.Returns(Task.FromResult(Result.Success()));
 
 		// Act
@@ -33,7 +68,7 @@ public class GameSessionHandlerTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		await _gameRepository.Received(1).SaveAsync(Arg.Any<Game>());
+		await _mockGameRepository.Received(1).SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -48,7 +83,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
 		result.ValidationErrors.Count().Should().Be(1);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _mockGameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -63,7 +98,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
 		result.ValidationErrors.Count().Should().Be(1);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _mockGameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -75,9 +110,9 @@ public class GameSessionHandlerTests
 		var game = new Game(new GameBoard(15), _randomProvider);
 		var player = new Player(playerId);
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(playerId).Returns(Result.Success(player));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_mockGameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
 		var result = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerId);
@@ -85,7 +120,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		game.PlayerOne.Should().Be(player);
-		await _gameRepository.Received(1).SaveAsync(game);
+		await _mockGameRepository.Received(1).SaveAsync(game);
 	}
 
 	[Test]
@@ -100,9 +135,9 @@ public class GameSessionHandlerTests
 
 		var playerTwo = new Player(playerTwoId);
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(playerTwoId).Returns(Result.Success(playerTwo));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_mockGameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
 		var result = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerTwoId);
@@ -110,7 +145,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		game.PlayerTwo.Should().Be(playerTwo);
-		await _gameRepository.Received(1).SaveAsync(game);
+		await _mockGameRepository.Received(1).SaveAsync(game);
 	}
 
 	[Test]
@@ -126,7 +161,7 @@ public class GameSessionHandlerTests
 		game.AddPlayer(playerOne);
 		game.AddPlayer(playerTwo);
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(newPlayer.Id).Returns(Result.Success(newPlayer));
 
 		// Act
@@ -134,7 +169,7 @@ public class GameSessionHandlerTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
-		await _gameRepository.DidNotReceive().SaveAsync(game);
+		await _mockGameRepository.DidNotReceive().SaveAsync(game);
 	}
 
 	[Test]
@@ -150,8 +185,8 @@ public class GameSessionHandlerTests
 		game.AddPlayer(player);
 		game.AddPlayer(new Player("player2"));
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
 		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerId);
@@ -159,7 +194,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.IsWinningMove.Should().BeFalse();
-		await _gameRepository.Received(1).SaveAsync(game);
+		await _mockGameRepository.Received(1).SaveAsync(game);
 	}
 
 	[Test]
@@ -171,14 +206,14 @@ public class GameSessionHandlerTests
 		var tile = new TileDto(0, 0);
 		var game = new Game(new GameBoard(15), _randomProvider);
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
 
 		// Act
 		var result = await _gameSessionHandler.PlaceTileAsync(gameId, tile, playerId);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _mockGameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -193,8 +228,8 @@ public class GameSessionHandlerTests
 		game.AddPlayer(new Player(playerOneId));
 		game.AddPlayer(new Player(playerTwoId));
 
-		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_mockGameRepository.GetAsync(gameId).Returns(Result.Success(game));
+		_mockGameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		for (int i = 0; i < 4; i++)
 		{
