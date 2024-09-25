@@ -1063,62 +1063,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gomoku/client@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@gomoku/client@workspace:."
-  dependencies:
-    "@clerk/clerk-react": "npm:^5.9.0"
-    "@hey-api/client-fetch": "npm:^0.2.4"
-    "@hey-api/openapi-ts": "npm:^0.53.0"
-    "@lingui/cli": "npm:^4.11.4"
-    "@lingui/macro": "npm:^4.11.4"
-    "@lingui/react": "npm:^4.11.4"
-    "@lingui/vite-plugin": "npm:^4.11.4"
-    "@microsoft/signalr": "npm:^8.0.7"
-    "@radix-ui/react-icons": "npm:^1.3.0"
-    "@radix-ui/react-scroll-area": "npm:^1.1.0"
-    "@radix-ui/react-slot": "npm:^1.1.0"
-    "@storybook/addon-essentials": "npm:^8.3.1"
-    "@storybook/addon-interactions": "npm:^8.3.1"
-    "@storybook/addon-links": "npm:^8.3.1"
-    "@storybook/addon-onboarding": "npm:^8.3.1"
-    "@storybook/addon-styling-webpack": "npm:^1.0.0"
-    "@storybook/addons": "npm:7.6.17"
-    "@storybook/blocks": "npm:^8.3.1"
-    "@storybook/react": "npm:^8.3.1"
-    "@storybook/react-vite": "npm:^8.3.1"
-    "@storybook/test": "npm:^8.3.1"
-    "@tanstack/eslint-plugin-query": "npm:^5.57.0"
-    "@tanstack/react-query": "npm:^5.56.2"
-    "@tanstack/react-query-devtools": "npm:5.56.2"
-    "@tanstack/react-router": "npm:^1.58.3"
-    "@tanstack/router-devtools": "npm:^1.58.3"
-    "@tanstack/router-plugin": "npm:^1.58.4"
-    "@types/babel-plugin-macros": "npm:^3"
-    "@types/react": "npm:^18.3.6"
-    "@types/react-dom": "npm:^18.3.0"
-    "@vitejs/plugin-react": "npm:^4.3.1"
-    autoprefixer: "npm:^10.4.20"
-    babel-plugin-macros: "npm:^3.1.0"
-    class-variance-authority: "npm:^0.7.0"
-    clsx: "npm:^2.1.1"
-    globals: "npm:^15.9.0"
-    lucide-react: "npm:^0.441.0"
-    postcss: "npm:^8.4.47"
-    prettier: "npm:3.3.3"
-    prettier-plugin-tailwindcss: "npm:^0.6.6"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    sass-embedded: "npm:^1.78.0"
-    storybook: "npm:^8.3.1"
-    tailwind-merge: "npm:^2.5.2"
-    tailwindcss: "npm:^3.4.12"
-    tailwindcss-animate: "npm:^1.0.7"
-    typescript: "npm:^5.6.2"
-    vite: "npm:^5.4.7"
-  languageName: unknown
-  linkType: soft
-
 "@gomoku/core@workspace:packages/gomoku-core":
   version: 0.0.0-use.local
   resolution: "@gomoku/core@workspace:packages/gomoku-core"
@@ -7665,7 +7609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.3.3, prettier@npm:^3.3.3":
+"prettier@npm:3.3.3, prettier@npm:^3.1.0, prettier@npm:^3.3.3":
   version: 3.3.3
   resolution: "prettier@npm:3.3.3"
   bin:
@@ -8219,6 +8163,18 @@ __metadata:
   checksum: 10c0/1e2bfde5497ebec161e9fb6dd56cf1455454f3ccc8b104e4147c67a46a71fe123c6405cc1a79a49954729a91c1141b4e00ff49c4ae79523939b45137675b288e
   languageName: node
   linkType: hard
+
+"root-workspace-0b6124@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "root-workspace-0b6124@workspace:."
+  dependencies:
+    "@gomoku/eslint-config-custom": "workspace:^0.0.1"
+    "@gomoku/typescript-config": "workspace:^0.0.1"
+    prettier: "npm:^3.1.0"
+    prettier-plugin-tailwindcss: "npm:^0.6.6"
+    typescript: "npm:^5.2.2"
+  languageName: unknown
+  linkType: soft
 
 "run-async@npm:^2.4.0":
   version: 2.4.1

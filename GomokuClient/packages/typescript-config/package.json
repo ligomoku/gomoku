@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "description": "Shared TypeScript configuration for all frontend packages",
   "main": "tsconfig.json",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "scripts": {
+    "format": "prettier . --check"
+  }
 }

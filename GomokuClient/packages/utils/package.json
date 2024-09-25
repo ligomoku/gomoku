@@ -19,7 +19,9 @@
     "build": "vite build",
     "dev": "pnpm run build --watch",
     "format": "prettier . --check",
-    "format:fix": "prettier . --write"
+    "format:fix": "prettier . --write",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@gomoku/eslint-config-custom": "workspace:^0.0.1",
