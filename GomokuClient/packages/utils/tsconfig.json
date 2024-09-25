@@ -1,0 +1,15 @@
+{
+  "extends": "@gomoku/typescript-config",
+  "compilerOptions": {
+    "target": "es6",
+    "useDefineForClassFields": true,
+    "baseUrl": "src",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "declaration": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}
