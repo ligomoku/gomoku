@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "yarn workspace @gomoku/core dev",
-    "build": "yarn workspaces run build",
+    "build": "yarn workspace @gomoku/core build",
     "lint": "yarn workspace @gomoku/core lint",
     "typecheck": "yarn workspace @gomoku/core typecheck",
     "format": "prettier . --write",
