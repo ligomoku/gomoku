@@ -44,7 +44,7 @@ jobs:
       - name: Run Prettier
         run: |
           cd GomokuClient
-          yarn prettier:check
+          yarn format:check
 
       - name: Run typecheck
         run: |
