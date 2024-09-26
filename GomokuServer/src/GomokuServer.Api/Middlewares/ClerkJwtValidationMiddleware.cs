@@ -77,7 +77,7 @@ public class ClerkJwtValidationMiddleware
 				await context.Response.WriteAsJsonAsync(GetUnauthorizedResponse("Token validation failed"));
 			}
 		}
-		catch (ApiException exception)
+		catch (ApiException)
 		{
 			_logger.LogError("Unable to fetch jwks file from clerk. Check url in configuration");
 			context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
