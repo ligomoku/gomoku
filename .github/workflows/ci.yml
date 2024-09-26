@@ -63,7 +63,6 @@ jobs:
           name: production-artifacts
           path: GomokuClient/packages/gomoku-core/dist/
 
-  # C# build job
   build_csharp:
     runs-on: ubuntu-latest
     env:
