@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Api.Extensions;
+﻿using Microsoft.OpenApi.Models;
+
+namespace GomokuServer.Api.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -25,6 +27,31 @@ public static class ServiceCollectionExtensions
 			options.IncludeXmlComments(xmlPath);
 
 			options.ExampleFilters();
+
+			options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+			{
+				Name = "Authorization",
+				Type = SecuritySchemeType.Http,
+				Scheme = "Bearer",
+				BearerFormat = "JWT",
+				In = ParameterLocation.Header,
+				Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
+			});
+
+			options.AddSecurityRequirement(new OpenApiSecurityRequirement
+			{
+				{
+					new OpenApiSecurityScheme
+					{
+						Reference = new OpenApiReference
+						{
+							Type = ReferenceType.SecurityScheme,
+							Id = "Bearer"
+						}
+					},
+					Array.Empty<string>()
+				}
+			});
 		});
 
 		return services;

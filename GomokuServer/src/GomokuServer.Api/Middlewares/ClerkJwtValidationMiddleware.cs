@@ -68,6 +68,7 @@ public class ClerkJwtValidationMiddleware
 			try
 			{
 				var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+				context.User = principal;
 				await _next(context);
 			}
 			catch (SecurityTokenException)
@@ -80,6 +81,12 @@ public class ClerkJwtValidationMiddleware
 		{
 			_logger.LogError("Unable to fetch jwks file from clerk. Check url in configuration");
 			context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+		}
+		catch (SecurityTokenMalformedException exception)
+		{
+			_logger.LogError(exception, exception.Message);
+			context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+			await context.Response.WriteAsJsonAsync(new { ErrorMessage = "Incorrect JWT token" });
 		}
 		catch (Exception exception) 
 		{
