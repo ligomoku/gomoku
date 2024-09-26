@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Api.Attributes;
+using GomokuServer.Api.Controllers.v1.Responses;
 
 namespace GomokuServer.Api.Controllers.v1;
 
@@ -18,6 +19,15 @@ public class AuthController : Controller
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<IActionResult> AuthInfo()
 	{
-		return Ok();
+		var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
+		var fullNameClaim = User.Claims.FirstOrDefault(c => c.Type == "fullName")?.Value;
+
+		var response = new AuthInfoResponse()
+		{
+			UserName = usernameClaim,
+			FullName = fullNameClaim,
+		};
+
+		return Ok(response);
 	}
 }
