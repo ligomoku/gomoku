@@ -2,7 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { Input } from "@/shared/ui/input.tsx";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { SignedIn, SignedOut, SignOutButton, UserButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignOutButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,10 +44,10 @@ export const Header = () => {
             COMMUNITY
           </Link>
           <SignedIn>
-          <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
-            SIGN OUT
-            <SignOutButton />
-          </Link>
+            <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
+              SIGN OUT
+              <SignOutButton />
+            </Link>
           </SignedIn>
           <SignedOut>
             <a
