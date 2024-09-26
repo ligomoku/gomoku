@@ -17,7 +17,7 @@ public class AuthController : Controller
 	/// </summary>
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<IActionResult> AuthInfo()
+	public IActionResult AuthInfo()
 	{
 		var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
 		var fullNameClaim = User.Claims.FirstOrDefault(c => c.Type == "fullName")?.Value;
