@@ -4,7 +4,9 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import path from "path";
 
 export default ({ mode }: { mode: string }) => {
-  const env = loadEnv(mode, path.resolve(__dirname, "../envs"));
+  const envDirPath = path.resolve(__dirname, "../../../envs");
+  const srcPath = path.resolve(__dirname, "./src");
+  const env = loadEnv(mode, path.resolve(__dirname, envDirPath));
 
   return defineConfig({
     plugins: [
@@ -15,10 +17,10 @@ export default ({ mode }: { mode: string }) => {
         },
       }),
     ],
-    envDir: path.resolve(__dirname, "../../../envs"),
+    envDir: envDirPath,
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
+        "@": srcPath,
       },
     },
     server: {
