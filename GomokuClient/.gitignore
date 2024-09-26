@@ -50,3 +50,4 @@ Thumbs.db
 *.log
 
 *storybook.log
+.turbo
