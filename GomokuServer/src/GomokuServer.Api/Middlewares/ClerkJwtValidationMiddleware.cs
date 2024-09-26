@@ -76,7 +76,7 @@ public class ClerkJwtValidationMiddleware
 				context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 				await context.Response.WriteAsJsonAsync(GetUnauthorizedResponse("Token validation failed"));
 			}
-		} 
+		}
 		catch (ApiException exception)
 		{
 			_logger.LogError("Unable to fetch jwks file from clerk. Check url in configuration");
@@ -88,7 +88,7 @@ public class ClerkJwtValidationMiddleware
 			context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
 			await context.Response.WriteAsJsonAsync(new { ErrorMessage = "Incorrect JWT token" });
 		}
-		catch (Exception exception) 
+		catch (Exception exception)
 		{
 			_logger.LogError(exception, exception.Message);
 			context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
