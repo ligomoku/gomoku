@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
   SignedIn,
   SignedOut,
-  SignOutButton,
+  SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
 
@@ -43,27 +43,21 @@ export const Header = () => {
           <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             COMMUNITY
           </Link>
-          <SignedIn>
-            <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
-              SIGN OUT
-              <SignOutButton />
-            </Link>
-          </SignedIn>
-          <SignedOut>
-            <a
-              href="#"
-              className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
-            >
-              SIGN IN
-            </a>
-            <UserButton />
-          </SignedOut>
-          {/*<a*/}
-          {/*  href="#"*/}
-          {/*  className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"*/}
-          {/*>*/}
-          {/*  DONATE*/}
-          {/*</a>*/}
+          <header>
+            <SignedOut>
+              <SignInButton>
+                <Link
+                  href="/sign-in"
+                  className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
+                >
+                  SIGN IN
+                </Link>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
         </div>
         <Input
           className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
