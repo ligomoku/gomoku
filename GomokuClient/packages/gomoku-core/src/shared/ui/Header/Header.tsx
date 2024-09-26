@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Input } from "@/shared/ui/input.tsx";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { SignedIn, SignedOut, SignOutButton, UserButton } from "@clerk/clerk-react";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,21 +29,36 @@ export const Header = () => {
           <Link to="/game" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             PLAY
           </Link>
-          <a href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
+          <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             LEARN
-          </a>
-          <a href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
+          </Link>
+          <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             WATCH
-          </a>
-          <a href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
+          </Link>
+          <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             COMMUNITY
-          </a>
-          <a
-            href="#"
-            className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
-          >
-            DONATE
-          </a>
+          </Link>
+          <SignedIn>
+          <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
+            SIGN OUT
+            <SignOutButton />
+          </Link>
+          </SignedIn>
+          <SignedOut>
+            <a
+              href="#"
+              className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
+            >
+              SIGN IN
+            </a>
+            <UserButton />
+          </SignedOut>
+          {/*<a*/}
+          {/*  href="#"*/}
+          {/*  className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"*/}
+          {/*>*/}
+          {/*  DONATE*/}
+          {/*</a>*/}
         </div>
         <Input
           className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
