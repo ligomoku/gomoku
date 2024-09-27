@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "RobotoFont";
+    src: url("../asset/typeface/Roboto.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "PrismaFont";
+    src: url("../asset/typeface/Prisma.ttf") format("truetype");
+}

@@ -1,0 +1,195 @@
+@import "./font.css";
+
+:root {
+    /* Note: these CSS variables are now obtained form the configuration and
+       dynamically inserted. See the key-text `styleSheet.insertRule`. */
+
+    --first-color: #000;
+    --first-highlight-color: #0F0;
+    --second-color: #FFF;
+    --second-highlight-color: #0F0;
+
+    --foreground-color: #000000;
+    --background-color: #FFFFFF;
+    --board-color: #e0e0e0;
+
+    /* Layout variables */
+    --cross-side: calc(min(4.7lvh, 4.7lvw) - 2px);
+    --board-th-height: 21px;
+    --board-height: calc(19 * (var(--cross-side) + 2px) + 2 * var(--board-th-height));
+}
+
+html {
+    margin: 0 auto;
+    font-family: RobotoFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+}
+
+body {
+    margin-bottom: 0;
+}
+
+h1 {
+    font-family: PrismaFont;
+    font-size: 55px;
+    margin: 0;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+/* a */
+a.no-link-decoration {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/* cross */
+.cross {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+
+    background-color: #ccc;
+    border-color: #e3e3e3 #9a9a9a #9a9a9a #e3e3e3;
+}
+.cross--hover {
+    background-color: #e0e0e0;
+}
+html.dark .cross {
+    background-color: #444;
+}
+html.dark .cross--hover {
+    background-color: #666;
+}
+.cross--1, html.dark .cross--1 {
+    background-color: var(--first-color);
+}
+.cross--2, html.dark .cross--2 {
+    background-color: var(--second-color);
+}
+.cross--highlight.cross--1 {
+    border-color: var(--first-highlight-color);
+}
+.cross--highlight.cross--2 {
+    border-color: var(--second-highlight-color);
+}
+
+/* dark theme */
+html.dark {
+    --foreground-color: #FFF;
+    --background-color: #181a1b;
+    --board-color: #333;
+}
+html.dark button, html.dark textarea, html.dark select {
+    background-color: #181a1b;
+    border-color: #736b5e #4c473e #4c473e #736b5e;
+    color: white;
+}
+
+.field {
+    display: flex;
+    align-items: flex-start;
+}
+table {
+    display: inline-block;
+    border: none;
+    border-collapse: collapse;
+}
+
+/* Import-export textarea */
+
+.importExport textarea {
+    min-height: 28svh;
+}
+
+/* History table */
+.historyContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+table.history {
+    min-width: 220px;
+}
+table.history th {
+    padding-left: 2px;
+    padding-right: 2px;
+    border-bottom: black 1px solid;
+}
+table.history td + td, table.history th + th {
+    border-left: black 1px solid;
+}
+html.dark table.history th {
+    border-bottom-color: grey;
+}
+html.dark table.history td + td, html.dark table.history th + th {
+    border-left-color: grey;
+}
+/* header width */
+table.history th:nth-of-type(2) {
+    width: 124px;
+}
+table.history th:nth-of-type(3) {
+    width: 70px;
+}
+/* body width */
+table.history td:nth-of-type(2), table.history td:nth-of-type(3) {
+    width: 60px;
+}
+
+/* Scrolling table */
+table.history {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 2px solid black;
+}
+
+table.history-body {
+    border-top: 0;
+}
+
+/* general-info */
+.general-info {
+}
+
+/* play board */
+table.board {
+    background-color: var(--board-color);
+}
+table.board td {
+    line-height: 0;
+}
+table.board .cross {
+    width: var(--cross-side);
+    height: var(--cross-side);
+}
+table.board th {
+    height: var(--board-th-height);
+}
+
+.game-status-modal button {
+    min-width: 45px;
+    min-height: 45px;
+}
+
+.game-status-modal {
+    max-width: min(45svh, 45svw);
+    opacity: 0.8;
+}
+
+/* zoom area */
+html {
+    width: max-content;
+}
+
+.zoomArea {
+    overflow: hidden;
+    height: calc(100lvh - var(--board-height) - 12px);
+}
+
+.cursorCross {
+    transform: translate(calc(50% - 100px / 2), -405px);
+}
