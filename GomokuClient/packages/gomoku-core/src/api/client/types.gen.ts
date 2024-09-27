@@ -62,6 +62,16 @@ export type TileDto = {
   y: number;
 };
 
+export type GetApiAuthInfoData = {
+  headers?: {
+    "X-Version"?: string;
+  };
+};
+
+export type GetApiAuthInfoResponse = unknown;
+
+export type GetApiAuthInfoError = unknown;
+
 export type GetApiGameByGameIdData = {
   headers?: {
     "X-Version"?: string;
@@ -124,6 +134,16 @@ export type PostApiGameByGameIdMakeMoveByPlayerIdData = {
 export type PostApiGameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
 
 export type PostApiGameByGameIdMakeMoveByPlayerIdError = ProblemDetails;
+
+export type GetHealthData = {
+  headers?: {
+    "X-Version"?: string;
+  };
+};
+
+export type GetHealthResponse = unknown;
+
+export type GetHealthError = unknown;
 
 export type PostApiPlayersData = {
   body?: CreatePlayerRequest;
