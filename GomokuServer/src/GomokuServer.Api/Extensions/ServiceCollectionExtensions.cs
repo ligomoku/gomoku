@@ -1,4 +1,9 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using GomokuServer.Api.Attributes;
+
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace GomokuServer.Api.Extensions;
 
@@ -14,7 +19,7 @@ public static class ServiceCollectionExtensions
 
 			foreach (var description in provider.ApiVersionDescriptions)
 			{
-				options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
+				options.SwaggerDoc(description.GroupName, new OpenApiInfo
 				{
 					Title = $"Gomoku API v{description.ApiVersion}",
 					Version = description.ApiVersion.ToString(),
@@ -52,6 +57,8 @@ public static class ServiceCollectionExtensions
 					Array.Empty<string>()
 				}
 			});
+
+			options.OperationFilter<AddCustomerHeadersParametersOperationFilter>();
 		});
 
 		return services;
@@ -101,5 +108,42 @@ public static class ServiceCollectionExtensions
 		});
 
 		return services;
+	}
+}
+
+public class AddCustomerHeadersParametersOperationFilter : IOperationFilter
+{
+	public void Apply(OpenApiOperation operation, OperationFilterContext context)
+	{
+		var hasCustomHeaders = context.MethodInfo.GetCustomAttributes(true)
+								  .OfType<AddCustomHeadersAttribute>()
+								  .Any();
+
+		if (hasCustomHeaders)
+		{
+			operation.Parameters.Add(new OpenApiParameter
+			{
+				Name = "Authorization",
+				In = ParameterLocation.Header,
+				Required = true,
+				Schema = new OpenApiSchema
+				{
+					Type = "string",
+					Default = new OpenApiString("Bearer ")
+				}
+			});
+
+			operation.Parameters.Add(new OpenApiParameter
+			{
+				Name = "Content-Type",
+				In = ParameterLocation.Header,
+				Required = true,
+				Schema = new OpenApiSchema
+				{
+					Type = "string",
+					Default = new OpenApiString("application/json")
+				}
+			});
+		}
 	}
 }
