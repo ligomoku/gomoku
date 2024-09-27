@@ -1,25 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Gomoku</title>
     <script>
-        // Add the tag "dark" class right at the beginning of the loading of the
-        // page to avoid a white flash.
-        if (location.search.slice(1).split("&").includes("dark")) {
-            document.documentElement.classList.add("dark")
-        }
+      // Add the tag "dark" class right at the beginning of the loading of the
+      // page to avoid a white flash.
+      if (location.search.slice(1).split("&").includes("dark")) {
+        document.documentElement.classList.add("dark")
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root">
-        <h1>Gomoku</h1>
-        <p>
-            Fill a row, a column or a diagonal with five consecutive stones of your
-            color to win.
-        </p>
+      <h1>Gomoku</h1>
+      <p>
+        Fill a row, a column or a diagonal with five consecutive stones of your
+        color to win.
+      </p>
     </div>
     <script type="module" src="./main.ts"></script>
-</body>
+  </body>
 </html>

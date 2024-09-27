@@ -1,12 +1,12 @@
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 35px;
-    text-align: center;
-    padding: 15px 75px;
-    background-color: var(--background-color);
-    border: solid 10px #808080;
-    user-select: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 35px;
+  text-align: center;
+  padding: 15px 75px;
+  background-color: var(--background-color);
+  border: solid 10px #808080;
+  user-select: none;
 }
