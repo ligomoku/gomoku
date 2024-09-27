@@ -9,8 +9,11 @@ RUN dotnet publish ./GomokuServer.Api/GomokuServer.Api.csproj -c Release -o /app
 COPY envs/ /app/envs/
 
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}${DOTNET_OS_VERSION}
+
+# TODO: should be take from env file
 ENV ASPNETCORE_URLS http://+:8080
 ENV ASPNETCORE_ENVIRONMENT Production
+# TODO: should be take from env file
 EXPOSE 8080
 
 COPY --from=build /app .

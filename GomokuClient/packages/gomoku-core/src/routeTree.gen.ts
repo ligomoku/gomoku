@@ -16,10 +16,16 @@ import { Route as rootRoute } from "./routes/__root";
 
 // Create Virtual Routes
 
+const ProfileLazyImport = createFileRoute("/profile")();
 const GameLazyImport = createFileRoute("/game")();
 const IndexLazyImport = createFileRoute("/")();
 
 // Create/Update Routes
+
+const ProfileLazyRoute = ProfileLazyImport.update({
+  path: "/profile",
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/profile.lazy").then((d) => d.Route));
 
 const GameLazyRoute = GameLazyImport.update({
   path: "/game",
@@ -49,6 +55,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof GameLazyImport;
       parentRoute: typeof rootRoute;
     };
+    "/profile": {
+      id: "/profile";
+      path: "/profile";
+      fullPath: "/profile";
+      preLoaderRoute: typeof ProfileLazyImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
@@ -57,36 +70,41 @@ declare module "@tanstack/react-router" {
 export interface FileRoutesByFullPath {
   "/": typeof IndexLazyRoute;
   "/game": typeof GameLazyRoute;
+  "/profile": typeof ProfileLazyRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexLazyRoute;
   "/game": typeof GameLazyRoute;
+  "/profile": typeof ProfileLazyRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/": typeof IndexLazyRoute;
   "/game": typeof GameLazyRoute;
+  "/profile": typeof ProfileLazyRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/game";
+  fullPaths: "/" | "/game" | "/profile";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/game";
-  id: "__root__" | "/" | "/game";
+  to: "/" | "/game" | "/profile";
+  id: "__root__" | "/" | "/game" | "/profile";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute;
   GameLazyRoute: typeof GameLazyRoute;
+  ProfileLazyRoute: typeof ProfileLazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   GameLazyRoute: GameLazyRoute,
+  ProfileLazyRoute: ProfileLazyRoute,
 };
 
 export const routeTree = rootRoute
@@ -102,7 +120,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/game"
+        "/game",
+        "/profile"
       ]
     },
     "/": {
@@ -110,6 +129,9 @@ export const routeTree = rootRoute
     },
     "/game": {
       "filePath": "game.lazy.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.lazy.tsx"
     }
   }
 }

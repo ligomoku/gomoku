@@ -47,6 +47,7 @@ export const Header = () => {
             <SignedOut>
               <SignInButton>
                 <Link
+                  //TODO: check possibility to generate types from custom clerk UI routes
                   href="/sign-in"
                   className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
                 >
@@ -55,6 +56,7 @@ export const Header = () => {
               </SignInButton>
             </SignedOut>
             <SignedIn>
+              {/* TODO: check possibility to have just sign out text with custom clerk UI */}
               <UserButton />
             </SignedIn>
           </header>

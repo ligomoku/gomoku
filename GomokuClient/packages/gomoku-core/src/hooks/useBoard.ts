@@ -4,11 +4,21 @@ import { findWinner, Winner } from "@/utils";
 export type CellValue = "black" | "white" | null;
 
 export const useBoard = () => {
+  const [winner, setWinner] = useState<Winner>(undefined);
   const [board, setBoard] = useState(
     Array(19)
       .fill(null)
       .map(() => Array(19).fill(null)),
   );
+  const isBlackNext = useRef(true);
+  const lastRow = useRef<number | undefined>(undefined);
+  const lastCol = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (lastRow.current === undefined || lastCol.current === undefined) return;
+    const result = findWinner(board, lastRow.current, lastCol.current);
+    setWinner(result);
+  }, [board]);
 
   const updateBoard = useCallback(
     (y: number, x: number, newValue: CellValue) => {
@@ -26,10 +36,6 @@ export const useBoard = () => {
     [],
   );
 
-  const isBlackNext = useRef(true);
-  const lastRow = useRef<number | undefined>(undefined);
-  const lastCol = useRef<number | undefined>(undefined);
-
   const handlePieceClick = (row: number, col: number, value: string | null) => {
     if (value !== null) return;
     lastRow.current = row;
@@ -37,14 +43,6 @@ export const useBoard = () => {
     updateBoard(row, col, isBlackNext.current ? "black" : "white");
     isBlackNext.current = !isBlackNext.current;
   };
-
-  const [winner, setWinner] = useState<Winner>(undefined);
-
-  useEffect(() => {
-    if (lastRow.current === undefined || lastCol.current === undefined) return;
-    const result = findWinner(board, lastRow.current, lastCol.current);
-    setWinner(result);
-  }, [board]);
 
   const setOpponentMove = useCallback(
     (x: number, y: number, color: CellValue) => {

@@ -10,6 +10,8 @@
     "dev": {
       "persistent": true,
       "cache": false
-    }
+    },
+    "typecheck": {},
+    "lint": {}
   }
 }

@@ -1,0 +1,63 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'fix/*'
+      - 'feature/*'
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Docker Image
+        run: docker build -t gomoku-server .
+
+      - name: Run Docker Container
+        run: |
+          docker run -d --name gomoku-server -p 8080:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            -e ASPNETCORE_URLS=http://+:8080 \
+            -e ASPNETCORE_CLIENT_APP_BASE_URL=http://localhost:8080 \
+            -e ASPNETCORE_CLERK_FRONTEND_API_BASE_URL=https://your-production-clerk-url/ \
+            gomoku-server
+
+      - name: Check environment variables
+        run: |
+          docker inspect gomoku-server --format='{{json .Config.Env}}'
+
+      - name: Health Check
+        run: |
+          for i in {1..20}; do
+            echo "Checking if server is up (attempt $i)..."
+            response=$(curl -s -o /dev/null -w "%{http_code}" 'http://localhost:8080/health' || true)
+            echo "Response code: $response"
+            if [ "$response" -eq 200 ]; then
+              echo "Server is up"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Server did not start in time"
+          echo "Curl output:"
+          curl -v 'http://localhost:8080/health' || true
+          echo "Docker logs:"
+          docker logs gomoku-server
+          exit 1
+        shell: bash
+
+      - name: Stop and Remove Docker Container
+        if: always()
+        run: |
+          docker stop gomoku-server || true
+          docker rm gomoku-server || true
