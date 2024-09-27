@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Api.Controllers.v1;
+﻿using GomokuServer.Api.Attributes;
+
+namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -9,10 +11,12 @@
 public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
+	private readonly IPlayersRepository _playersRepository;
 
-	public GameController(IGameSessionHandler gameSessionHandler)
+	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository)
 	{
 		_gameSessionHandler = gameSessionHandler;
+		_playersRepository = playersRepository;
 	}
 
 	/// <summary>
@@ -53,8 +57,23 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
+	[ClerkAuthorization]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
+		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+		if (userId == null) 
+		{
+			return new BadRequestObjectResult(new { ErrorMessage = "Missing userId claim" });
+		}
+
+		var createPlayerResult = await _playersRepository.CreateAsync(userId);
+
+		if (!createPlayerResult.IsSuccess)
+		{
+			return createPlayerResult.ToApiResponse();
+		}
+
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
 
 		return createGameResult.ToApiResponse();
