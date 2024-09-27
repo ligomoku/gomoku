@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Gomoku core package with game logic, components, and theming",
   "type": "module",
-  "apiVersion": "2",
+  "apiVersion": "1",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

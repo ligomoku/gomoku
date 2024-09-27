@@ -6,6 +6,9 @@ import {
   type Options,
 } from "@hey-api/client-fetch";
 import type {
+  GetApiAuthInfoData,
+  GetApiAuthInfoError,
+  GetApiAuthInfoResponse,
   GetApiGameByGameIdData,
   GetApiGameByGameIdError,
   GetApiGameByGameIdResponse,
@@ -21,12 +24,31 @@ import type {
   PostApiGameByGameIdMakeMoveByPlayerIdData,
   PostApiGameByGameIdMakeMoveByPlayerIdError,
   PostApiGameByGameIdMakeMoveByPlayerIdResponse,
+  GetHealthData,
+  GetHealthError,
+  GetHealthResponse,
   PostApiPlayersData,
   PostApiPlayersError,
   PostApiPlayersResponse,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
+
+/**
+ * Get auth user information
+ */
+export const getApiAuthInfo = <ThrowOnError extends boolean = false>(
+  options?: Options<GetApiAuthInfoData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiAuthInfoResponse,
+    GetApiAuthInfoError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/auth/info",
+  });
+};
 
 /**
  * Get information about game by game id
@@ -109,6 +131,22 @@ export const postApiGameByGameIdMakeMoveByPlayerId = <
   >({
     ...options,
     url: "/api/game/{gameId}/make-move/{playerId}",
+  });
+};
+
+/**
+ * Health check endpoint
+ */
+export const getHealth = <ThrowOnError extends boolean = false>(
+  options?: Options<GetHealthData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetHealthResponse,
+    GetHealthError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/health",
   });
 };
 
