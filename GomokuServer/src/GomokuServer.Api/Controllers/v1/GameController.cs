@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Api.Controllers.v1;
+﻿using GomokuServer.Api.Attributes;
+
+namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -53,6 +55,7 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
+	[AddCustomHeaders]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);

@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using GomokuServer.Api.Attributes;
+
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -113,28 +115,35 @@ public class AddRequiredHeadersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
-		operation.Parameters.Add(new OpenApiParameter
-		{
-			Name = "Authorization",
-			In = ParameterLocation.Header,
-			Required = true,
-			Schema = new OpenApiSchema
-			{
-				Type = "string",
-				Default = new OpenApiString("Bearer ")
-			}
-		});
+		var hasCustomHeaders = context.MethodInfo.GetCustomAttributes(true)
+								  .OfType<AddCustomHeadersAttribute>()
+								  .Any();
 
-		operation.Parameters.Add(new OpenApiParameter
+		if (hasCustomHeaders)
 		{
-			Name = "Content-Type",
-			In = ParameterLocation.Header,
-			Required = true,
-			Schema = new OpenApiSchema
+			operation.Parameters.Add(new OpenApiParameter
 			{
-				Type = "string",
-				Default = new OpenApiString("application/json")
-			}
-		});
+				Name = "Authorization",
+				In = ParameterLocation.Header,
+				Required = true,
+				Schema = new OpenApiSchema
+				{
+					Type = "string",
+					Default = new OpenApiString("Bearer ")
+				}
+			});
+
+			operation.Parameters.Add(new OpenApiParameter
+			{
+				Name = "Content-Type",
+				In = ParameterLocation.Header,
+				Required = true,
+				Schema = new OpenApiSchema
+				{
+					Type = "string",
+					Default = new OpenApiString("application/json")
+				}
+			});
+		}
 	}
 }
