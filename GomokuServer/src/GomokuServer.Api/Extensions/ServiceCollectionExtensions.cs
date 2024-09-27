@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
 
 			foreach (var description in provider.ApiVersionDescriptions)
 			{
-				options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
+				options.SwaggerDoc(description.GroupName, new OpenApiInfo
 				{
 					Title = $"Gomoku API v{description.ApiVersion}",
 					Version = description.ApiVersion.ToString(),
