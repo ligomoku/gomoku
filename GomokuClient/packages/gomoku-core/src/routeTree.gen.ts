@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as GameGameIDImport } from "./routes/game/$gameID";
 
 // Create Virtual Routes
 
@@ -36,6 +37,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+
+const GameGameIDRoute = GameGameIDImport.update({
+  path: "/$gameID",
+  getParentRoute: () => GameLazyRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
@@ -62,48 +68,70 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProfileLazyImport;
       parentRoute: typeof rootRoute;
     };
+    "/game/$gameID": {
+      id: "/game/$gameID";
+      path: "/$gameID";
+      fullPath: "/game/$gameID";
+      preLoaderRoute: typeof GameGameIDImport;
+      parentRoute: typeof GameLazyImport;
+    };
   }
 }
 
 // Create and export the route tree
 
+interface GameLazyRouteChildren {
+  GameGameIDRoute: typeof GameGameIDRoute;
+}
+
+const GameLazyRouteChildren: GameLazyRouteChildren = {
+  GameGameIDRoute: GameGameIDRoute,
+};
+
+const GameLazyRouteWithChildren = GameLazyRoute._addFileChildren(
+  GameLazyRouteChildren,
+);
+
 export interface FileRoutesByFullPath {
   "/": typeof IndexLazyRoute;
-  "/game": typeof GameLazyRoute;
+  "/game": typeof GameLazyRouteWithChildren;
   "/profile": typeof ProfileLazyRoute;
+  "/game/$gameID": typeof GameGameIDRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexLazyRoute;
-  "/game": typeof GameLazyRoute;
+  "/game": typeof GameLazyRouteWithChildren;
   "/profile": typeof ProfileLazyRoute;
+  "/game/$gameID": typeof GameGameIDRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/": typeof IndexLazyRoute;
-  "/game": typeof GameLazyRoute;
+  "/game": typeof GameLazyRouteWithChildren;
   "/profile": typeof ProfileLazyRoute;
+  "/game/$gameID": typeof GameGameIDRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/game" | "/profile";
+  fullPaths: "/" | "/game" | "/profile" | "/game/$gameID";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/game" | "/profile";
-  id: "__root__" | "/" | "/game" | "/profile";
+  to: "/" | "/game" | "/profile" | "/game/$gameID";
+  id: "__root__" | "/" | "/game" | "/profile" | "/game/$gameID";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute;
-  GameLazyRoute: typeof GameLazyRoute;
+  GameLazyRoute: typeof GameLazyRouteWithChildren;
   ProfileLazyRoute: typeof ProfileLazyRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  GameLazyRoute: GameLazyRoute,
+  GameLazyRoute: GameLazyRouteWithChildren,
   ProfileLazyRoute: ProfileLazyRoute,
 };
 
@@ -128,10 +156,17 @@ export const routeTree = rootRoute
       "filePath": "index.lazy.tsx"
     },
     "/game": {
-      "filePath": "game.lazy.tsx"
+      "filePath": "game.lazy.tsx",
+      "children": [
+        "/game/$gameID"
+      ]
     },
     "/profile": {
       "filePath": "profile.lazy.tsx"
+    },
+    "/game/$gameID": {
+      "filePath": "game/$gameID.tsx",
+      "parent": "/game"
     }
   }
 }

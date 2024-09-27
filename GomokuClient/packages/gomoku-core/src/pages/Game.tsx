@@ -22,10 +22,9 @@ const Game = () => {
     useFetchGame(currentGameId);
 
   useEffect(() => {
-    if (gameData) {
-      console.log("Game data received: ", gameData);
-    }
-  }, [gameData]);
+    if (gameData) return;
+    handleCreateGame();
+  }, []);
 
   const handleCreateGame = () => {
     createGame.mutate(
@@ -53,14 +52,14 @@ const Game = () => {
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
-        {!currentGameId && (
-          <button
-            onClick={handleCreateGame}
-            className="mb-5 rounded bg-blue-500 px-4 py-2 text-white"
-          >
-            Create Game
-          </button>
-        )}
+        {/*{!currentGameId && (*/}
+        {/*  <button*/}
+        {/*    onClick={handleCreateGame}*/}
+        {/*    className="mb-5 rounded bg-blue-500 px-4 py-2 text-white"*/}
+        {/*  >*/}
+        {/*    Create Game*/}
+        {/*  </button>*/}
+        {/*)}*/}
 
         <div className="mb-5 text-center">
           {winner && (
