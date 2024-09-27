@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
+import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 
 export const useSignalR = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
-    null,
+      null,
   );
   const [messages, setMessages] = useState<string[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
-      .withAutomaticReconnect()
-      .build();
+        .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
+        .withHubProtocol(new MessagePackHubProtocol()) // Add this line
+        .withAutomaticReconnect()
+        .build();
 
     setConnection(newConnection);
   }, []);
@@ -20,20 +22,20 @@ export const useSignalR = () => {
   useEffect(() => {
     if (connection) {
       connection
-        .start()
-        .then(() => {
-          console.log("Connected to SignalR hub");
-          setIsConnected(true);
+          .start()
+          .then(() => {
+            console.log("Connected to SignalR hub");
+            setIsConnected(true);
 
-          connection.on("ReceiveMessage", (user: string, message: string) => {
-            setMessages((messages) => [...messages, `${user}: ${message}`]);
-          });
+            connection.on("ReceiveMessage", (user: string, message: string) => {
+              setMessages((messages) => [...messages, `${user}: ${message}`]);
+            });
 
-          connection.on("GameUpdate", (data) => {
-            console.log("Game update received:", data);
-          });
-        })
-        .catch((error) => console.error("Connection failed: ", error));
+            connection.on("GameUpdate", (data) => {
+              console.log("Game update received:", data);
+            });
+          })
+          .catch((error) => console.error("Connection failed: ", error));
 
       return () => {
         connection.stop();

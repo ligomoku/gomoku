@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Api.Controllers.v1;
+﻿using Microsoft.AspNetCore.SignalR;
+
+namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -9,10 +11,12 @@
 public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
+	private readonly IHubContext<GameHub> _hubContext;
 
-	public GameController(IGameSessionHandler gameSessionHandler)
+	public GameController(IGameSessionHandler gameSessionHandler, IHubContext<GameHub> hubContext)
 	{
 		_gameSessionHandler = gameSessionHandler;
+		_hubContext = hubContext;
 	}
 
 	/// <summary>
@@ -77,20 +81,39 @@ public class GameController : Controller
 	}
 
 	/// <summary>
-	/// Make move in a game
+	/// Makes a move in the specified game and broadcasts the updated game state to all connected clients.
 	/// </summary>
-	/// <response code="200">Move successfully made</response>
-	/// <response code="400">Required data is not provided</response>
-	/// <response code="404">Game or player with specified id not found</response>
+	/// <remarks>
+	/// This endpoint allows a player to make a move in an ongoing game. Upon a successful move,
+	/// the updated game state is broadcast to all connected clients in real-time using SignalR.
+	/// </remarks>
+	/// <param name="gameId">The ID of the game.</param>
+	/// <param name="playerId">The ID of the player making the move.</param>
+	/// <param name="request">The details of the move to be made.</param>
+	/// <response code="200">Move successfully made and game state updated.</response>
+	/// <response code="400">Invalid move or missing required data.</response>
+	/// <response code="404">Game or player not found.</response>
+	/// <response code="500">An internal server error occurred.</response>
 	[HttpPost("{gameId}/make-move/{playerId}")]
 	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
+	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+	public async Task<IActionResult> MakeMove(
+		[FromRoute] string gameId,
+		[FromRoute] string playerId,
+		[FromBody] MakeMoveRequest request)
 	{
-		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
+		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(
+			gameId,
+			new TileDto(request.X, request.Y),
+			playerId);
+
+		if (placeTileResult.IsSuccess)
+		{
+			// Broadcast the updated game state
+			await _hubContext.Clients.All.SendAsync("GameUpdate", placeTileResult.Value);
+		}
 
 		return placeTileResult.ToApiResponse();
 	}
