@@ -58,7 +58,7 @@ public static class ServiceCollectionExtensions
 				}
 			});
 
-			options.OperationFilter<AddRequiredHeadersOperationFilter>();
+			options.OperationFilter<AddCustomerHeadersParametersOperationFilter>();
 		});
 
 		return services;
@@ -111,7 +111,7 @@ public static class ServiceCollectionExtensions
 	}
 }
 
-public class AddRequiredHeadersOperationFilter : IOperationFilter
+public class AddCustomerHeadersParametersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
