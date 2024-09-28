@@ -24,18 +24,6 @@ export const CreateGameResponseSchema = {
   additionalProperties: false,
 } as const;
 
-export const CreatePlayerRequestSchema = {
-  required: ["id"],
-  type: "object",
-  properties: {
-    id: {
-      minLength: 1,
-      type: "string",
-    },
-  },
-  additionalProperties: false,
-} as const;
-
 export const GameMoveDtoSchema = {
   required: ["moveNumber", "playerId", "tile"],
   type: "object",
@@ -56,12 +44,15 @@ export const GameMoveDtoSchema = {
 } as const;
 
 export const GetAvailableGamesResponseSchema = {
-  required: ["gameId"],
+  required: ["gameId", "opponent"],
   type: "object",
   properties: {
     gameId: {
       minLength: 1,
       type: "string",
+    },
+    opponent: {
+      $ref: "#/components/schemas/PlayerDto",
     },
   },
   additionalProperties: false,
@@ -103,8 +94,8 @@ export const GetGameResponseSchema = {
       nullable: true,
     },
     playersMoves: {
-      type: "array",
-      items: {
+      type: "object",
+      additionalProperties: {
         $ref: "#/components/schemas/GameMoveDto",
       },
     },
@@ -147,10 +138,14 @@ export const PlaceTileResponseSchema = {
 } as const;
 
 export const PlayerDtoSchema = {
-  required: ["playerId"],
+  required: ["playerId", "userName"],
   type: "object",
   properties: {
     playerId: {
+      minLength: 1,
+      type: "string",
+    },
+    userName: {
       minLength: 1,
       type: "string",
     },

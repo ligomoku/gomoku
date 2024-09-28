@@ -61,9 +61,6 @@ const useFetchGames = () =>
         path: {},
         headers: {
           "X-Version": "1",
-          //TODO: Add the content type header to Swagger schema as required
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
           "Content-Type": "application/json",
         },
       });
