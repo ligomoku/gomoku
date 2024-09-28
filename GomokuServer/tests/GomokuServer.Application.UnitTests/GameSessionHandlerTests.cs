@@ -31,7 +31,7 @@ public class GameSessionHandlerTests
 	public async Task GetAvailableGamesAsync_WhenNoGamesAvailable_ShouldReturnSuccessWithEmptyList()
 	{
 		// Arrange
-		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
 		// Act
@@ -41,14 +41,14 @@ public class GameSessionHandlerTests
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.Should().NotBeNull();
 		result.Value.Count().Should().Be(0);
-		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
+		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 
 	[Test]
 	public async Task GetAvailableGamesAsync_WhenRepositoryFails_ShouldReturnFailure()
 	{
 		// Arrange
-		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>())
+		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
 
 		// Act
@@ -57,7 +57,7 @@ public class GameSessionHandlerTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Error);
 		result.Errors.First().Should().Be("Error fetching games");
-		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>());
+		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 
 	[Test]
