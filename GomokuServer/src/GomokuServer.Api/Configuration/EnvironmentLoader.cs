@@ -31,7 +31,9 @@ public static class EnvironmentLoader
 			},
 			Clerk = new()
 			{
-				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")!
+				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")!,
+				BackendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_BASE_URL")!,
+				BackendApiSecret = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_SECRET")!
 			}
 		};
 

@@ -1,4 +1,6 @@
-﻿using GomokuServer.Api.Attributes;
+﻿using System.Net.Http.Headers;
+
+using GomokuServer.Api.Attributes;
 
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -88,12 +90,17 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IRandomProvider, RandomProvider>();
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
-		services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
+		services.AddSingleton<IPlayersRepository, ClerkPlayersRepository>();
 		services.AddScoped<IGameSessionHandler, GameSessionHandler>();
 
 		services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
 		{
 			httpClient.BaseAddress = new Uri(config.Clerk.FrontendApiBaseUrl);
+		});
+		services.AddRefitHttpClient<IClerkBackendApi>((_, httpClient) =>
+		{
+			httpClient.BaseAddress = new Uri(config.Clerk.BackendApiBaseUrl);
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Clerk.BackendApiSecret);
 		});
 
 		return services;

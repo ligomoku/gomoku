@@ -62,21 +62,13 @@ public class GameController : Controller
 	[ClerkAuthorization]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-
-		if (userId == null)
-		{
-			return new BadRequestObjectResult(new { ErrorMessage = "Missing 'userId' claim" });
-		}
-
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
 
 		if (!createGameResult.IsSuccess)
 		{
 			return createGameResult.ToApiResponse();
 		}
-
-		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, userId);
+		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, User.Claims.First(c => c.Type == "userId").Value!);
 
 		return addPlayerResult.ToApiResponse();
 	}
