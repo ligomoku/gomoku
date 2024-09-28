@@ -90,10 +90,8 @@ const Game = () => {
 
 Game.displayName = "Game";
 
-const useCreateGame = (authToken: string) => {
-  console.log("Auth token: ", authToken);
-
-  return useMutation<
+const useCreateGame = (authToken: string) =>
+  useMutation<
     CreateGameResponse | undefined,
     PostApiGameError,
     { boardSize: number }
@@ -110,7 +108,6 @@ const useCreateGame = (authToken: string) => {
       return response.data;
     },
   });
-};
 
 const useFetchGame = (gameId: string | null) =>
   useQuery<
