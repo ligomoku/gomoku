@@ -1,1 +1,1 @@
-export * from "./FeaturedBoxes.tsx";
+export * from "./FeaturedBoxes";

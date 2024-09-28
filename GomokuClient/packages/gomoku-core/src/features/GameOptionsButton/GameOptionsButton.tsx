@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui/button.tsx";
+import { Button } from "@/shared/ui/button";
 import { Link } from "@tanstack/react-router";
 
 export const GameOptionsButtons = () => (

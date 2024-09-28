@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/shared/ui/card.tsx";
+import { Card, CardContent } from "@/shared/ui/card";
 import { useEffect, useState } from "react";
 import {
   getApiGames,

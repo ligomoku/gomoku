@@ -1,1 +1,1 @@
-export * from "./OnlinePlayersInfo.tsx";
+export * from "./OnlinePlayersInfo";

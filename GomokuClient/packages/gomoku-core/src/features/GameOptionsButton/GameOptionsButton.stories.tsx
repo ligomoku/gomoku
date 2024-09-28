@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { GameOptionsButtons } from "./GameOptionsButton.tsx";
+import { GameOptionsButtons } from "./GameOptionsButton";
 
 export default {
   title: "Components/GameOptionsButton",

@@ -1,1 +1,1 @@
-export * from "./Timer.tsx";
+export * from "./Timer";

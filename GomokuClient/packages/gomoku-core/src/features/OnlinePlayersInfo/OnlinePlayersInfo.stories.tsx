@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { OnlinePlayersInfo } from "./OnlinePlayersInfo.tsx";
+import { OnlinePlayersInfo } from "./OnlinePlayersInfo";
 
 export default {
   title: "Components/OnlinePlayersInfo",

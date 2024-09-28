@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { FeaturedBoxes } from "./FeaturedBoxes.tsx";
+import { FeaturedBoxes } from "./FeaturedBoxes";
 
 export default {
   title: "Components/FeaturedBoxes",
