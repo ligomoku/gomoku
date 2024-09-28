@@ -34,12 +34,15 @@ public class GameSessionHandler : IGameSessionHandler
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
 			WinnerId = game.WinnerId,
 			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),
-			PlayersMoves = game.PlayersMoves.Select(move => new GameMoveDto()
-			{
-				MoveNumber = move.MoveNumber,
-				PlayerId = move.PlayerId,
-				Tile = new TileDto(move.Tile.X, move.Tile.Y)
-			})
+			PlayersMoves = game.PlayersMoves.ToDictionary(
+				keyValuePair => keyValuePair.Key,
+				keyValuePair => new GameMoveDto
+				{
+					MoveNumber = keyValuePair.Value.MoveNumber,
+					PlayerId = keyValuePair.Value.PlayerId,
+					Tile = new TileDto(keyValuePair.Value.Tile.X, keyValuePair.Value.Tile.Y)
+				}
+			)
 		});
 	}
 

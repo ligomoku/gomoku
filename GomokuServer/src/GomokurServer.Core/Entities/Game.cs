@@ -6,7 +6,7 @@ namespace GomokuServer.Core.Entities;
 
 public class Game
 {
-	private readonly List<GameMove> _playersMoves = new();
+	private readonly Dictionary<string, GameMove> _playersMoves = new();
 	private readonly GameBoard _gameBoard;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
@@ -23,7 +23,7 @@ public class Game
 
 	public DateTime CreatedAt { get; private set; }
 
-	public IReadOnlyList<GameMove> PlayersMoves => _playersMoves.AsReadOnly();
+	public IReadOnlyDictionary<string, GameMove> PlayersMoves => _playersMoves.AsReadOnly();
 
 	public Player? PlayerOne { get; private set; }
 
@@ -137,7 +137,7 @@ public class Game
 				PlayerId = playerId,
 				Tile = tile,
 			};
-			_playersMoves.Add(move);
+			_playersMoves.Add($"{tile.X}.{tile.Y}", move);
 
 			NextMoveShouldMakePlayerId = playerId != PlayerOne.Id ? PlayerOne.Id : PlayerTwo!.Id;
 		}

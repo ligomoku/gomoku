@@ -22,5 +22,5 @@ public class GetGameResponse
 	public IEnumerable<TileDto>? WinningSequence { get; set; }
 
 	[Required]
-	public required IEnumerable<GameMoveDto> PlayersMoves { get; set; }
+	public required IReadOnlyDictionary<string, GameMoveDto> PlayersMoves { get; set; }
 }
