@@ -124,11 +124,11 @@ export const getApiGamesOptions = (options?: Options<GetApiGamesData>) => {
   });
 };
 
-export const postApiGameQueryKey = (options?: Options<PostApiGameData>) => [
+export const postApiGameQueryKey = (options: Options<PostApiGameData>) => [
   createQueryKey("postApiGame", options),
 ];
 
-export const postApiGameOptions = (options?: Options<PostApiGameData>) => {
+export const postApiGameOptions = (options: Options<PostApiGameData>) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
       const { data } = await postApiGame({

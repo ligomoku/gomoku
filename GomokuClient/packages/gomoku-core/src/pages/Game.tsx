@@ -17,7 +17,7 @@ const Game = () => {
   const { board, winner, handlePieceClick } = useBoard();
   const [currentGameId, setCurrentGameId] = useState<string | null>(null);
 
-  const createGame = useCreateGame();
+  const createGame = useCreateGame(localStorage.getItem("jwtToken") || "");
   const { data: gameData, isLoading: gameLoading } =
     useFetchGame(currentGameId);
 
@@ -52,15 +52,6 @@ const Game = () => {
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
-        {/*{!currentGameId && (*/}
-        {/*  <button*/}
-        {/*    onClick={handleCreateGame}*/}
-        {/*    className="mb-5 rounded bg-blue-500 px-4 py-2 text-white"*/}
-        {/*  >*/}
-        {/*    Create Game*/}
-        {/*  </button>*/}
-        {/*)}*/}
-
         <div className="mb-5 text-center">
           {winner && (
             <div className="mb-2 text-2xl">The Winner is: {winner}!</div>
@@ -99,7 +90,7 @@ const Game = () => {
 
 Game.displayName = "Game";
 
-const useCreateGame = () =>
+const useCreateGame = (authToken: string) =>
   useMutation<
     CreateGameResponse | undefined,
     PostApiGameError,
@@ -110,9 +101,7 @@ const useCreateGame = () =>
         body: { boardSize },
         headers: {
           "X-Version": "1",
-          //TODO: Add the content type header to Swagger schema as required
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
       });

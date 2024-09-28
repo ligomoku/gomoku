@@ -97,7 +97,9 @@ export type GetApiGamesError = unknown;
 
 export type PostApiGameData = {
   body?: CreateGameRequest;
-  headers?: {
+  headers: {
+    Authorization: string;
+    "Content-Type": string;
     "X-Version"?: string;
   };
 };
@@ -107,7 +109,9 @@ export type PostApiGameResponse = CreateGameResponse;
 export type PostApiGameError = ProblemDetails;
 
 export type PostApiGameByGameIdJoinByPlayerIdData = {
-  headers?: {
+  headers: {
+    Authorization: string;
+    "Content-Type": string;
     "X-Version"?: string;
   };
   path: {
@@ -122,7 +126,9 @@ export type PostApiGameByGameIdJoinByPlayerIdError = ProblemDetails;
 
 export type PostApiGameByGameIdMakeMoveByPlayerIdData = {
   body?: MakeMoveRequest;
-  headers?: {
+  headers: {
+    Authorization: string;
+    "Content-Type": string;
     "X-Version"?: string;
   };
   path: {
