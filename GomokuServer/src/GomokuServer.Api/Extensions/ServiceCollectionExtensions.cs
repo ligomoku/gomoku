@@ -119,11 +119,11 @@ public class AddAuthorizationHeadersParametersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
-		var hasCustomHeaders = context.MethodInfo.GetCustomAttributes(true)
-								  .OfType<AddAuthorizationHeaderSwaggerParameterAttribute>()
+		var hasAuthAttribute = context.MethodInfo.GetCustomAttributes(true)
+								  .OfType<ClerkAuthorizationAttribute>()
 								  .Any();
 
-		if (hasCustomHeaders)
+		if (hasAuthAttribute)
 		{
 			operation.Parameters.Add(new OpenApiParameter
 			{
