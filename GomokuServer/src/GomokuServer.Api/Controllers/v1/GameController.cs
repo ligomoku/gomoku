@@ -1,6 +1,4 @@
-﻿using GomokuServer.Api.Attributes;
-
-namespace GomokuServer.Api.Controllers.v1;
+﻿namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -12,11 +10,13 @@ public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
 	private readonly IPlayersRepository _playersRepository;
+	private readonly IHubContext<GameHub> _gameHubContext;
 
-	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository)
+	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository, IHubContext<GameHub> gameHubContext)
 	{
 		_gameSessionHandler = gameSessionHandler;
 		_playersRepository = playersRepository;
+		_gameHubContext = gameHubContext;
 	}
 
 	/// <summary>
@@ -57,8 +57,6 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[ClerkAuthorization]
-	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
@@ -82,10 +80,14 @@ public class GameController : Controller
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId, [FromRoute] string playerId)
 	{
 		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerId);
+
+		if (addPlayerToGameResult.IsSuccess)
+		{
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, playerId);
+		}
 
 		return addPlayerToGameResult.ToApiResponse();
 	}
@@ -102,10 +104,14 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
 	{
 		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
+
+		if (placeTileResult.IsSuccess)
+		{
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, playerId, request.X, request.Y);
+		}
 
 		return placeTileResult.ToApiResponse();
 	}
