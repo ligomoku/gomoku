@@ -18,6 +18,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
           }
         ],
         "responses": {
@@ -47,6 +57,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
             }
           }
         ],
@@ -90,6 +110,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
             }
           }
         ],
@@ -179,7 +209,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/game/{gameId}/join/{playerId}": {
@@ -253,7 +288,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/game/{gameId}/make-move/{playerId}": {
@@ -358,7 +398,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/health": {
@@ -372,6 +417,16 @@
             "style": "simple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
             }
           }
         ],
@@ -394,22 +449,78 @@
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePlayerRequest"
-              }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "Bearer "
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Success"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/gamehub/JoinGameGroup": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/gamehub/SendMessage": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
       }
     }
   },
@@ -437,17 +548,6 @@
         },
         "additionalProperties": false
       },
-      "CreatePlayerRequest": {
-        "required": ["id"],
-        "type": "object",
-        "properties": {
-          "id": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "GameMoveDto": {
         "required": ["moveNumber", "playerId", "tile"],
         "type": "object",
@@ -467,12 +567,15 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponse": {
-        "required": ["gameId"],
+        "required": ["gameId", "opponent"],
         "type": "object",
         "properties": {
           "gameId": {
             "minLength": 1,
             "type": "string"
+          },
+          "opponent": {
+            "$ref": "#/components/schemas/PlayerDto"
           }
         },
         "additionalProperties": false
@@ -518,8 +621,8 @@
             "nullable": true
           },
           "playersMoves": {
-            "type": "array",
-            "items": {
+            "type": "object",
+            "additionalProperties": {
               "$ref": "#/components/schemas/GameMoveDto"
             }
           }
@@ -559,10 +662,14 @@
         "additionalProperties": false
       },
       "PlayerDto": {
-        "required": ["playerId"],
+        "required": ["playerId", "userName"],
         "type": "object",
         "properties": {
           "playerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "userName": {
             "minLength": 1,
             "type": "string"
           }
@@ -621,9 +728,9 @@
       }
     }
   },
-  "security": [
+  "tags": [
     {
-      "Bearer": []
+      "name": "GameHub"
     }
   ]
 }

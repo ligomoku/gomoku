@@ -30,6 +30,8 @@ import type {
   PostApiPlayersData,
   PostApiPlayersError,
   PostApiPlayersResponse,
+  PostGamehubJoinGameGroupData,
+  PostGamehubSendMessageData,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -38,7 +40,7 @@ export const client = createClient(createConfig());
  * Get auth user information
  */
 export const getApiAuthInfo = <ThrowOnError extends boolean = false>(
-  options?: Options<GetApiAuthInfoData, ThrowOnError>,
+  options: Options<GetApiAuthInfoData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
     GetApiAuthInfoResponse,
@@ -70,7 +72,7 @@ export const getApiGameByGameId = <ThrowOnError extends boolean = false>(
  * Get all games, which are available to join
  */
 export const getApiGames = <ThrowOnError extends boolean = false>(
-  options?: Options<GetApiGamesData, ThrowOnError>,
+  options: Options<GetApiGamesData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
     GetApiGamesResponse,
@@ -138,7 +140,7 @@ export const postApiGameByGameIdMakeMoveByPlayerId = <
  * Health check endpoint
  */
 export const getHealth = <ThrowOnError extends boolean = false>(
-  options?: Options<GetHealthData, ThrowOnError>,
+  options: Options<GetHealthData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
     GetHealthResponse,
@@ -154,7 +156,7 @@ export const getHealth = <ThrowOnError extends boolean = false>(
  * Create new player
  */
 export const postApiPlayers = <ThrowOnError extends boolean = false>(
-  options?: Options<PostApiPlayersData, ThrowOnError>,
+  options: Options<PostApiPlayersData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
     PostApiPlayersResponse,
@@ -163,5 +165,23 @@ export const postApiPlayers = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/players",
+  });
+};
+
+export const postGamehubJoinGameGroup = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubJoinGameGroupData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/JoinGameGroup",
+  });
+};
+
+export const postGamehubSendMessage = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubSendMessageData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/SendMessage",
   });
 };

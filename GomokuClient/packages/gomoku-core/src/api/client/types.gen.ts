@@ -8,10 +8,6 @@ export type CreateGameResponse = {
   gameId: string;
 };
 
-export type CreatePlayerRequest = {
-  id: string;
-};
-
 export type GameMoveDto = {
   tile: TileDto;
   playerId: string;
@@ -20,6 +16,7 @@ export type GameMoveDto = {
 
 export type GetAvailableGamesResponse = {
   gameId: string;
+  opponent: PlayerDto;
 };
 
 export type GetGameResponse = {
@@ -31,7 +28,9 @@ export type GetGameResponse = {
   nextMoveShouldMakePlayerId?: string | null;
   winnerId?: string | null;
   winningSequence?: Array<TileDto> | null;
-  playersMoves: Array<GameMoveDto>;
+  playersMoves: {
+    [key: string]: GameMoveDto;
+  };
 };
 
 export type MakeMoveRequest = {
@@ -46,6 +45,7 @@ export type PlaceTileResponse = {
 
 export type PlayerDto = {
   playerId: string;
+  userName: string;
 };
 
 export type ProblemDetails = {
@@ -63,7 +63,8 @@ export type TileDto = {
 };
 
 export type GetApiAuthInfoData = {
-  headers?: {
+  headers: {
+    "Content-Type": string;
     "X-Version"?: string;
   };
 };
@@ -73,7 +74,8 @@ export type GetApiAuthInfoResponse = unknown;
 export type GetApiAuthInfoError = unknown;
 
 export type GetApiGameByGameIdData = {
-  headers?: {
+  headers: {
+    "Content-Type": string;
     "X-Version"?: string;
   };
   path: {
@@ -86,7 +88,8 @@ export type GetApiGameByGameIdResponse = GetGameResponse;
 export type GetApiGameByGameIdError = ProblemDetails;
 
 export type GetApiGamesData = {
-  headers?: {
+  headers: {
+    "Content-Type": string;
     "X-Version"?: string;
   };
 };
@@ -142,7 +145,8 @@ export type PostApiGameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
 export type PostApiGameByGameIdMakeMoveByPlayerIdError = ProblemDetails;
 
 export type GetHealthData = {
-  headers?: {
+  headers: {
+    "Content-Type": string;
     "X-Version"?: string;
   };
 };
@@ -152,8 +156,9 @@ export type GetHealthResponse = unknown;
 export type GetHealthError = unknown;
 
 export type PostApiPlayersData = {
-  body?: CreatePlayerRequest;
-  headers?: {
+  headers: {
+    Authorization: string;
+    "Content-Type": string;
     "X-Version"?: string;
   };
 };
@@ -161,3 +166,16 @@ export type PostApiPlayersData = {
 export type PostApiPlayersResponse = unknown;
 
 export type PostApiPlayersError = unknown;
+
+export type PostGamehubJoinGameGroupData = {
+  query?: {
+    gameId?: string;
+  };
+};
+
+export type PostGamehubSendMessageData = {
+  query?: {
+    message?: string;
+    user?: string;
+  };
+};
