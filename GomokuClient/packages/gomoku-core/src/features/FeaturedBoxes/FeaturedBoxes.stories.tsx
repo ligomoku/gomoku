@@ -1,6 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { FeaturedBoxes } from "./FeaturedBoxes";
 import { GetAvailableGamesResponse } from "@/api/client";
+import { FeaturedBoxes } from "./FeaturedBoxes";
+import type { FeaturedBoxesProps } from "./FeaturedBoxes";
 
 export default {
   title: "Components/FeaturedBoxes",
@@ -27,7 +28,7 @@ const mockedGames: GetAvailableGamesResponse[] = [
   },
 ];
 
-const Template: StoryFn<typeof FeaturedBoxes> = () => (
+const Template: StoryFn<FeaturedBoxesProps> = () => (
   <FeaturedBoxes
     games={mockedGames}
     onGameClick={() => alert("Game Clicked")}

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { GetAvailableGamesResponse } from "@/api/client";
 
-interface FeaturedBoxesProps {
+export interface FeaturedBoxesProps {
   games: GetAvailableGamesResponse[];
   onGameClick: (game: GetAvailableGamesResponse) => void;
 }
