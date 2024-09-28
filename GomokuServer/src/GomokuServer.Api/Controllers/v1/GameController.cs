@@ -110,7 +110,7 @@ public class GameController : Controller
 
 		if (placeTileResult.IsSuccess)
 		{
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, playerId, request.X, request.Y);
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerId, request.X, request.Y);
 		}
 
 		return placeTileResult.ToApiResponse();
