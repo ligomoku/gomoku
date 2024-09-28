@@ -12,11 +12,13 @@ public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
 	private readonly IPlayersRepository _playersRepository;
+	private readonly IHubContext<GameHub> _gameHubContext;
 
-	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository)
+	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository, IHubContext<GameHub> gameHubContext)
 	{
 		_gameSessionHandler = gameSessionHandler;
 		_playersRepository = playersRepository;
+		_gameHubContext = gameHubContext;
 	}
 
 	/// <summary>
@@ -69,7 +71,14 @@ public class GameController : Controller
 
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
 
-		return createGameResult.ToApiResponse();
+		if (!createGameResult.IsSuccess)
+		{
+			return createGameResult.ToApiResponse();
+		}
+
+		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, userId);
+
+		return addPlayerResult.ToApiResponse();
 	}
 
 	/// <summary>
@@ -85,6 +94,11 @@ public class GameController : Controller
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId, [FromRoute] string playerId)
 	{
 		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerId);
+
+		if (addPlayerToGameResult.IsSuccess)
+		{
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, playerId);
+		}
 
 		return addPlayerToGameResult.ToApiResponse();
 	}
@@ -105,6 +119,11 @@ public class GameController : Controller
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
 	{
 		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
+
+		if (placeTileResult.IsSuccess)
+		{
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerId, request.X, request.Y);
+		}
 
 		return placeTileResult.ToApiResponse();
 	}

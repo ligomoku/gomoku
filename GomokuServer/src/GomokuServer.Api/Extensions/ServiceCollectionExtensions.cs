@@ -43,23 +43,10 @@ public static class ServiceCollectionExtensions
 				Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
 			});
 
-			options.AddSecurityRequirement(new OpenApiSecurityRequirement
-			{
-				{
-					new OpenApiSecurityScheme
-					{
-						Reference = new OpenApiReference
-						{
-							Type = ReferenceType.SecurityScheme,
-							Id = "Bearer"
-						}
-					},
-					Array.Empty<string>()
-				}
-			});
+			options.OperationFilter<AuthorizationOperationFilter>();
+			options.OperationFilter<MandatoryHeadersParametersOperationFilter>();
 
-			options.OperationFilter<AddAuthorizationHeadersParametersOperationFilter>();
-			options.OperationFilter<AddContentTypeHeadersParametersOperationFilter>();
+			options.AddSignalRSwaggerGen();
 		});
 
 		return services;
@@ -113,7 +100,7 @@ public static class ServiceCollectionExtensions
 	}
 }
 
-public class AddAuthorizationHeadersParametersOperationFilter : IOperationFilter
+public class AuthorizationOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
@@ -134,11 +121,26 @@ public class AddAuthorizationHeadersParametersOperationFilter : IOperationFilter
 					Default = new OpenApiString("Bearer ")
 				}
 			});
+
+			operation.Security.Add(new OpenApiSecurityRequirement
+			{
+				{
+					new OpenApiSecurityScheme
+					{
+						Reference = new OpenApiReference
+						{
+							Type = ReferenceType.SecurityScheme,
+							Id = "Bearer"
+						}
+					},
+					Array.Empty<string>()
+				}
+			});
 		}
 	}
 }
 
-public class AddContentTypeHeadersParametersOperationFilter : IOperationFilter
+public class MandatoryHeadersParametersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
