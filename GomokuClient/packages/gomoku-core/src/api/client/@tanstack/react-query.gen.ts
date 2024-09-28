@@ -3,6 +3,7 @@
 import type { Options } from "@hey-api/client-fetch";
 import { queryOptions, type UseMutationOptions } from "@tanstack/react-query";
 import type {
+  GetApiAuthInfoData,
   GetApiGameByGameIdData,
   GetApiGamesData,
   PostApiGameData,
@@ -14,17 +15,20 @@ import type {
   PostApiGameByGameIdMakeMoveByPlayerIdData,
   PostApiGameByGameIdMakeMoveByPlayerIdError,
   PostApiGameByGameIdMakeMoveByPlayerIdResponse,
+  GetHealthData,
   PostApiPlayersData,
   PostApiPlayersError,
   PostApiPlayersResponse,
 } from "../types.gen";
 import {
   client,
+  getApiAuthInfo,
   getApiGameByGameId,
   getApiGames,
   postApiGame,
   postApiGameByGameIdJoinByPlayerId,
   postApiGameByGameIdMakeMoveByPlayerId,
+  getHealth,
   postApiPlayers,
 } from "../services.gen";
 
@@ -60,6 +64,26 @@ const createQueryKey = <TOptions extends Options>(
     params.query = options.query;
   }
   return params;
+};
+
+export const getApiAuthInfoQueryKey = (
+  options?: Options<GetApiAuthInfoData>,
+) => [createQueryKey("getApiAuthInfo", options)];
+
+export const getApiAuthInfoOptions = (
+  options?: Options<GetApiAuthInfoData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await getApiAuthInfo({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiAuthInfoQueryKey(options),
+  });
 };
 
 export const getApiGameByGameIdQueryKey = (
@@ -100,11 +124,11 @@ export const getApiGamesOptions = (options?: Options<GetApiGamesData>) => {
   });
 };
 
-export const postApiGameQueryKey = (options?: Options<PostApiGameData>) => [
+export const postApiGameQueryKey = (options: Options<PostApiGameData>) => [
   createQueryKey("postApiGame", options),
 ];
 
-export const postApiGameOptions = (options?: Options<PostApiGameData>) => {
+export const postApiGameOptions = (options: Options<PostApiGameData>) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
       const { data } = await postApiGame({
@@ -207,6 +231,24 @@ export const postApiGameByGameIdMakeMoveByPlayerIdMutation = () => {
     },
   };
   return mutationOptions;
+};
+
+export const getHealthQueryKey = (options?: Options<GetHealthData>) => [
+  createQueryKey("getHealth", options),
+];
+
+export const getHealthOptions = (options?: Options<GetHealthData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await getHealth({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getHealthQueryKey(options),
+  });
 };
 
 export const postApiPlayersQueryKey = (
