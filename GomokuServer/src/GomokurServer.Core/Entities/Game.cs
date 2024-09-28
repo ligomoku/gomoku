@@ -75,7 +75,7 @@ public class Game
 		PlayerTwo = player;
 
 		var (firstPlayer, secondPlayer) = _randomProvider.GetInt(0, 2) == 0 ? (PlayerOne, PlayerTwo) : (PlayerTwo, PlayerOne);
-		
+
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
 
 		// In gomoku first move makes black player :D
