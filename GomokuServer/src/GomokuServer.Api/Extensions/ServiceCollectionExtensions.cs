@@ -60,6 +60,8 @@ public static class ServiceCollectionExtensions
 
 			options.OperationFilter<AddAuthorizationHeadersParametersOperationFilter>();
 			options.OperationFilter<AddContentTypeHeadersParametersOperationFilter>();
+
+			options.AddSignalRSwaggerGen();
 		});
 
 		return services;

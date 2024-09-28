@@ -26,6 +26,6 @@ app.UseCors(CorsPolicyName.GomokuClient);
 app.UseClerkJwtValidation();
 
 app.MapControllers();
-app.MapHub<GameHub>("/gamehub");
+app.MapHub<GameHub>(HubRoute.GameHub);
 
 app.Run();

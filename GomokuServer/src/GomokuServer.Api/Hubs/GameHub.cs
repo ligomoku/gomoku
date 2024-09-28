@@ -2,6 +2,9 @@ namespace GomokuServer.Api.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
 
+using SignalRSwaggerGen.Attributes;
+
+[SignalRHub(HubRoute.GameHub)]
 public class GameHub : Hub
 {
 	public async Task JoinGameGroup(string gameId)
