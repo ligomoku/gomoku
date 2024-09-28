@@ -1,28 +1,35 @@
-import { useEffect, useState, createContext, ReactElement } from "react";
+import { useEffect, useState, createContext, ReactNode } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
-const AuthTokenContext = createContext<string | null>(null);
+export const AuthTokenContext = createContext<string | null>(null);
 
-export const AuthTokenProvider = ({ children }: { children: ReactElement }) => {
-  const authToken = useAuth();
-
+export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
+  const { isLoaded, getToken } = useAuth();
   const [jwtToken, setJwtToken] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const getToken = async () => await authToken.getToken();
+    let isMounted = true;
 
-      if (authToken.isLoaded) {
-        getToken().then((token) => {
-          if (!token) return;
-          localStorage.setItem("jwtToken", token);
+    const fetchToken = async () => {
+      if (!isLoaded) return;
+
+      try {
+        const token = await getToken();
+        if (token && isMounted) {
           setJwtToken(token);
-        });
+          localStorage.setItem("jwtToken", token);
+        }
+      } catch (error) {
+        console.error("Error getting auth token:", error);
       }
-    } catch (error) {
-      console.error("Error getting auth token: ", error);
-    }
-  }, [authToken]);
+    };
+
+    fetchToken();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isLoaded, getToken]);
 
   return (
     <AuthTokenContext.Provider value={jwtToken}>
