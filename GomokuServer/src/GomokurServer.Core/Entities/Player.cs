@@ -1,3 +1,3 @@
 ﻿namespace GomokuServer.Core.Entities;
 
-public record Player(string Id);
+public record Player(string Id, string UserName);

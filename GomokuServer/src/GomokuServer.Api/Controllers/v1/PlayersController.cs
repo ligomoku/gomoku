@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Api.Controllers.v1;
+﻿using GomokuServer.Api.Attributes;
+
+namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -20,9 +22,18 @@ public class PlayersController : Controller
 	/// </summary>
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<IActionResult> CreateNewPlayer([FromBody] CreatePlayerRequest request)
+	[ClerkAuthorization]
+	public async Task<IActionResult> CreateNewPlayer()
 	{
-		var createPlayerResult = await _playersRepository.CreateAsync(request.Id);
+		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+		var userName = User.Claims.FirstOrDefault(c => c.Type == "userName")?.Value;
+
+		if (userId == null || userName == null)
+		{
+			return new BadRequestObjectResult(new { ErrorMessage = "Missing 'userId' or 'userName' claim" });
+		}
+
+		var createPlayerResult = await _playersRepository.CreateAsync(userId, userName);
 
 		return createPlayerResult.ToApiResponse();
 	}

@@ -91,6 +91,7 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection RegisterGomokuServices(this IServiceCollection services, Config config)
 	{
 		services.AddSingleton<IRandomProvider, RandomProvider>();
+		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 		services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 		services.AddScoped<IGameSessionHandler, GameSessionHandler>();

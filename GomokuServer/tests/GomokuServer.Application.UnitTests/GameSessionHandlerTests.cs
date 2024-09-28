@@ -11,15 +11,20 @@ public class GameSessionHandlerTests
 	private IPlayersRepository _playersRepository;
 	private GameSessionHandler _gameSessionHandler;
 	private IRandomProvider _randomProvider;
+	private IDateTimeProvider _dateTimeProvider;
 
 	[SetUp]
 	public void Setup()
 	{
 		_gameRepository = Substitute.For<IGameRepository>();
 		_playersRepository = Substitute.For<IPlayersRepository>();
+
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
-		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository, _randomProvider);
+
+		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
+
+		_gameSessionHandler = new GameSessionHandler(_gameRepository, _playersRepository, _randomProvider, _dateTimeProvider);
 	}
 
 	[Test]
@@ -106,9 +111,10 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerId = "player1";
-		var game = new Game(new GameBoard(15), _randomProvider);
-		var player = new Player(playerId);
+		var playerId = "playerId";
+		var userName = "userName";
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		var player = new Player(playerId, userName);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(playerId).Returns(Result.Success(player));
@@ -128,12 +134,14 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerOneId = "player1";
-		var playerTwoId = "player2";
-		var game = new Game(new GameBoard(15), _randomProvider);
-		game.AddPlayer(new Player(playerOneId));
+		var playerOneId = "player1Id";
+		var playerOneUserName = "player1Username";
+		var playerTwoId = "player2Id";
+		var playerTwoUserName = "player1Username";
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		game.AddPlayer(new Player(playerOneId, playerOneUserName));
 
-		var playerTwo = new Player(playerTwoId);
+		var playerTwo = new Player(playerTwoId, playerTwoUserName);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(playerTwoId).Returns(Result.Success(playerTwo));
@@ -153,11 +161,11 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerOne = new Player("player1");
-		var playerTwo = new Player("player2");
-		var newPlayer = new Player("player3");
+		var playerOne = new Player("player1Id", "player1UserName");
+		var playerTwo = new Player("player2Id", "player2UserName");
+		var newPlayer = new Player("player3Id", "player3UserName");
 
-		var game = new Game(new GameBoard(15), _randomProvider);
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 		game.AddPlayer(playerOne);
 		game.AddPlayer(playerTwo);
 
@@ -177,13 +185,14 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerId = "player1";
+		var playerId = "player1Id";
+		var userName = "player1UserName";
 		var tile = new TileDto(0, 0);
-		var player = new Player(playerId);
+		var player = new Player(playerId, userName);
 
-		var game = new Game(new GameBoard(15), _randomProvider);
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 		game.AddPlayer(player);
-		game.AddPlayer(new Player("player2"));
+		game.AddPlayer(new Player("player2", "player2UserName"));
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
@@ -204,7 +213,7 @@ public class GameSessionHandlerTests
 		var gameId = "game1";
 		var playerId = "player1";
 		var tile = new TileDto(0, 0);
-		var game = new Game(new GameBoard(15), _randomProvider);
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 
@@ -221,12 +230,14 @@ public class GameSessionHandlerTests
 	{
 		// Arrange
 		var gameId = "game1";
-		var playerOneId = "player1";
-		var playerTwoId = "player2";
+		var playerOneId = "player1Id";
+		var playerOneUserName = "player1UserName";
+		var playerTwoId = "player2Id";
+		var playerTwoUserName = "player1UserName";
 		var tile = new TileDto(0, 0);
-		var game = new Game(new GameBoard(15), _randomProvider);
-		game.AddPlayer(new Player(playerOneId));
-		game.AddPlayer(new Player(playerTwoId));
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		game.AddPlayer(new Player(playerOneId, playerOneUserName));
+		game.AddPlayer(new Player(playerTwoId, playerTwoUserName));
 
 		_gameRepository.GetAsync(gameId).Returns(Result.Success(game));
 		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());

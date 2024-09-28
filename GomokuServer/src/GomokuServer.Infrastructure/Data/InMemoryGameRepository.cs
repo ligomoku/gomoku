@@ -25,9 +25,16 @@ public class InMemoryGameRepository : IGameRepository
 		return Task.FromResult(Result.Success());
 	}
 
-	public Task<Result<IEnumerable<Game>>> GetByExpressionAsync(Expression<Func<Game, bool>> expression)
+	public Task<Result<IEnumerable<Game>>> GetByExpressionAsync(Expression<Func<Game, bool>> expression, Func<IQueryable<Game>, IOrderedQueryable<Game>>? orderBy = null)
 	{
-		var filteredGames = _games.Values.AsQueryable().Where(expression).AsEnumerable();
+		var query = _games.Values.AsQueryable().Where(expression);
+
+		if (orderBy != null)
+		{
+			query = orderBy(query);
+		}
+
+		var filteredGames = query.AsEnumerable();
 
 		return filteredGames.Any()
 			? Task.FromResult(Result.Success(filteredGames))

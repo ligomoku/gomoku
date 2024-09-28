@@ -9,14 +9,19 @@ public class Game
 	private readonly List<GameMove> _playersMoves = new();
 	private readonly GameBoard _gameBoard;
 	private readonly IRandomProvider _randomProvider;
+	private readonly IDateTimeProvider _dateTimeProvider;
 
-	public Game(GameBoard gameBoard, IRandomProvider randomProvider)
+	public Game(GameBoard gameBoard, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		_gameBoard = gameBoard;
 		_randomProvider = randomProvider;
+		_dateTimeProvider = dateTimeProvider;
+		CreatedAt = _dateTimeProvider.UtcNow;
 	}
 
 	public string GameId { get; } = Guid.NewGuid().ToString();
+
+	public DateTime CreatedAt { get; private set; }
 
 	public IReadOnlyList<GameMove> PlayersMoves => _playersMoves.AsReadOnly();
 

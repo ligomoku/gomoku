@@ -12,18 +12,21 @@ public class GameTests
 	private Player _playerOne;
 	private Player _playerTwo;
 	private IRandomProvider _randomProvider;
+	private IDateTimeProvider _dateTimeProvider;
 
 	[SetUp]
 	public void SetUp()
 	{
-		_playerOne = new Player("Player1");
-		_playerTwo = new Player("Player2");
+		_playerOne = new Player("Player1Id", "Player1UserName");
+		_playerTwo = new Player("Player2Id", "Player2UserName");
 		var gameBoard = new GameBoard(15);
 
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
 
-		_game = new Game(gameBoard, _randomProvider);
+		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
+
+		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
 
 		_game.AddPlayer(_playerOne);
 		_game.AddPlayer(_playerTwo);
@@ -188,7 +191,7 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard, _randomProvider);
+		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(7, 7), "nonExistentPlayerId");
@@ -222,7 +225,7 @@ public class GameTests
 	public void AddPlayer_WhenBothPlacesAreTaken_ShouldReturnError()
 	{
 		// Arrange
-		var playerThree = new Player("Player3");
+		var playerThree = new Player("Player3Id", "Player3UserName");
 
 		// Act
 		var result = _game.AddPlayer(playerThree);
@@ -237,9 +240,9 @@ public class GameTests
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard, _randomProvider);
+		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
 
-		var player = new Player("somePlayer");
+		var player = new Player("somePlayerId", "SomePlayerUserName");
 		_game.AddPlayer(player);
 
 		// Act
@@ -254,7 +257,7 @@ public class GameTests
 	public void CreateGame_WhenPlayersNotAdded_GameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider);
+		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 
 		// Assert
 		_game.IsGameStarted.Should().BeFalse();
@@ -264,9 +267,9 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider);
-		_game.AddPlayer(new Player("somePlayer1"));
-		_game.AddPlayer(new Player("somePlayer2"));
+		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
 
 		// Assert
 		_game.HasBothPlayersJoined.Should().BeTrue();
@@ -277,12 +280,12 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider);
-		_game.AddPlayer(new Player("somePlayer1"));
-		_game.AddPlayer(new Player("somePlayer2"));
+		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
 
 		// Act
-		_game.PlaceTile(new Tile(0, 0), "somePlayer1");
+		_game.PlaceTile(new Tile(0, 0), "somePlayer1Id");
 
 		// Assert
 		_game.HasBothPlayersJoined.Should().BeTrue();

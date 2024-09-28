@@ -64,14 +64,7 @@ public class GameController : Controller
 
 		if (userId == null) 
 		{
-			return new BadRequestObjectResult(new { ErrorMessage = "Missing userId claim" });
-		}
-
-		var createPlayerResult = await _playersRepository.CreateAsync(userId);
-
-		if (!createPlayerResult.IsSuccess)
-		{
-			return createPlayerResult.ToApiResponse();
+			return new BadRequestObjectResult(new { ErrorMessage = "Missing 'userId' claim" });
 		}
 
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);

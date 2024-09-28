@@ -8,5 +8,8 @@ public interface IGameRepository
 
 	Task<Result> SaveAsync(Game game);
 
-	Task<Result<IEnumerable<Game>>> GetByExpressionAsync(Expression<Func<Game, bool>> expression);
+	Task<Result<IEnumerable<Game>>> GetByExpressionAsync(
+		Expression<Func<Game, bool>> expression,
+		Func<IQueryable<Game>, IOrderedQueryable<Game>>? orderBy = null
+	);
 }
