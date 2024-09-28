@@ -10,12 +10,14 @@ public class GameSessionHandler : IGameSessionHandler
 	private readonly IGameRepository _gameRepository;
 	private readonly IPlayersRepository _playersRepository;
 	private readonly IRandomProvider _randomProvider;
+	private readonly IDateTimeProvider _dateTimeProvider;
 
-	public GameSessionHandler(IGameRepository gameRepository, IPlayersRepository playersRepository, IRandomProvider randomProvider)
+	public GameSessionHandler(IGameRepository gameRepository, IPlayersRepository playersRepository, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		_gameRepository = gameRepository;
 		_playersRepository = playersRepository;
 		_randomProvider = randomProvider;
+		_dateTimeProvider = dateTimeProvider;
 	}
 
 	public async Task<Result<GetGameResponse>> GetAsync(string gameId)
@@ -25,8 +27,8 @@ public class GameSessionHandler : IGameSessionHandler
 		return getGameResult.Map(game => new GetGameResponse
 		{
 			GameId = game.GameId,
-			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id) : null,
-			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id) : null,
+			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName) : null,
+			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id, game.PlayerTwo.UserName) : null,
 			HasBothPlayersJoined = game.HasBothPlayersJoined,
 			IsGameStarted = game.IsGameStarted,
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
@@ -43,9 +45,20 @@ public class GameSessionHandler : IGameSessionHandler
 
 	public async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync()
 	{
-		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(game => !game.HasBothPlayersJoined);
+		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(game => !game.HasBothPlayersJoined, query => query.OrderByDescending(game => game.CreatedAt));
 
-		return getAvailableGamesResult.Map(games => games.Select(game => new GetAvailableGamesResponse(game.GameId)));
+		var mappedResult =
+			getAvailableGamesResult.Map(games => games.Select(game =>
+			{
+				PlayerDto opponent = game.PlayerOne != null
+					? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName)
+					: new PlayerDto(game.PlayerTwo!.Id, game.PlayerTwo!.UserName);
+
+				return new GetAvailableGamesResponse(game.GameId, opponent);
+			}
+			));
+
+		return mappedResult;
 	}
 
 	public async Task<Result<CreateGameResponse>> CreateAsync(int boardSize)
@@ -55,7 +68,7 @@ public class GameSessionHandler : IGameSessionHandler
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		var game = new Game(new GameBoard(boardSize), _randomProvider);
+		var game = new Game(new GameBoard(boardSize), _randomProvider, _dateTimeProvider);
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)

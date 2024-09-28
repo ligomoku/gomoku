@@ -58,7 +58,8 @@ public static class ServiceCollectionExtensions
 				}
 			});
 
-			options.OperationFilter<AddCustomerHeadersParametersOperationFilter>();
+			options.OperationFilter<AddAuthorizationHeadersParametersOperationFilter>();
+			options.OperationFilter<AddContentTypeHeadersParametersOperationFilter>();
 		});
 
 		return services;
@@ -98,6 +99,7 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection RegisterGomokuServices(this IServiceCollection services, Config config)
 	{
 		services.AddSingleton<IRandomProvider, RandomProvider>();
+		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 		services.AddSingleton<IPlayersRepository, InMemoryPlayersRepository>();
 		services.AddScoped<IGameSessionHandler, GameSessionHandler>();
@@ -111,12 +113,12 @@ public static class ServiceCollectionExtensions
 	}
 }
 
-public class AddCustomerHeadersParametersOperationFilter : IOperationFilter
+public class AddAuthorizationHeadersParametersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
 		var hasCustomHeaders = context.MethodInfo.GetCustomAttributes(true)
-								  .OfType<AddCustomHeadersAttribute>()
+								  .OfType<AddAuthorizationHeaderSwaggerParameterAttribute>()
 								  .Any();
 
 		if (hasCustomHeaders)
@@ -132,18 +134,24 @@ public class AddCustomerHeadersParametersOperationFilter : IOperationFilter
 					Default = new OpenApiString("Bearer ")
 				}
 			});
-
-			operation.Parameters.Add(new OpenApiParameter
-			{
-				Name = "Content-Type",
-				In = ParameterLocation.Header,
-				Required = true,
-				Schema = new OpenApiSchema
-				{
-					Type = "string",
-					Default = new OpenApiString("application/json")
-				}
-			});
 		}
+	}
+}
+
+public class AddContentTypeHeadersParametersOperationFilter : IOperationFilter
+{
+	public void Apply(OpenApiOperation operation, OperationFilterContext context)
+	{
+		operation.Parameters.Add(new OpenApiParameter
+		{
+			Name = "Content-Type",
+			In = ParameterLocation.Header,
+			Required = true,
+			Schema = new OpenApiSchema
+			{
+				Type = "string",
+				Default = new OpenApiString("application/json")
+			}
+		});
 	}
 }

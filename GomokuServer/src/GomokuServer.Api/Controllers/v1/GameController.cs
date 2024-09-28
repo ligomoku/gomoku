@@ -11,10 +11,12 @@ namespace GomokuServer.Api.Controllers.v1;
 public class GameController : Controller
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
+	private readonly IPlayersRepository _playersRepository;
 
-	public GameController(IGameSessionHandler gameSessionHandler)
+	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository)
 	{
 		_gameSessionHandler = gameSessionHandler;
+		_playersRepository = playersRepository;
 	}
 
 	/// <summary>
@@ -55,9 +57,17 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[AddCustomHeaders]
+	[ClerkAuthorization]
+	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
+		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+		if (userId == null)
+		{
+			return new BadRequestObjectResult(new { ErrorMessage = "Missing 'userId' claim" });
+		}
+
 		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
 
 		return createGameResult.ToApiResponse();
@@ -72,7 +82,7 @@ public class GameController : Controller
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[AddCustomHeaders]
+	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId, [FromRoute] string playerId)
 	{
 		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerId);
@@ -92,7 +102,7 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[AddCustomHeaders]
+	[AddAuthorizationHeaderSwaggerParameter]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
 	{
 		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
