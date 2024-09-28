@@ -38,6 +38,6 @@ public static class ClerkJwtClaimsValidationMiddlewareExtensions
 	public static IApplicationBuilder UseClerkJwtClaimsValidation(
 		this IApplicationBuilder builder)
 	{
-		return builder.UseMiddleware<ClerkJwtValidationMiddleware>();
+		return builder.UseMiddleware<ClerkJwtClaimsValidationMiddleware>();
 	}
 }
