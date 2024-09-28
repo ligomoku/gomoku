@@ -41,6 +41,6 @@ public static class ArdalisResultExtensions
 			return new StatusCodeResult(503);
 		}
 
-		return new OkResult();
+		return new OkObjectResult(new { IsSuccess = true });
 	}
 }
