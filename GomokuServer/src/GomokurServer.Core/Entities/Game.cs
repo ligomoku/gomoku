@@ -35,6 +35,10 @@ public class Game
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
+	public string? BlackPlayerId { get; private set; }
+
+	public string? WhitePlayerId { get; private set; }
+
 	public string? WinnerId { get; private set; }
 
 	public List<Tile>? WinningSequence { get; private set; }
@@ -70,7 +74,13 @@ public class Game
 
 		PlayerTwo = player;
 
-		NextMoveShouldMakePlayerId = _randomProvider.GetInt(0, 2) == 0 ? PlayerOne.Id : PlayerTwo.Id;
+		var (firstPlayer, secondPlayer) = _randomProvider.GetInt(0, 2) == 0 ? (PlayerOne, PlayerTwo) : (PlayerTwo, PlayerOne);
+
+		NextMoveShouldMakePlayerId = firstPlayer.Id;
+
+		// In gomoku first move makes black player :D
+		BlackPlayerId = firstPlayer.Id;
+		WhitePlayerId = secondPlayer.Id;
 
 		return new()
 		{

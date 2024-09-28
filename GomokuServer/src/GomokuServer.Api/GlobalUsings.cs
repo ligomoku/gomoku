@@ -24,6 +24,7 @@ global using GomokuServer.Infrastructure.Extensions;
 
 global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.IdentityModel.Tokens;
 
 global using Swashbuckle.AspNetCore.Filters;
