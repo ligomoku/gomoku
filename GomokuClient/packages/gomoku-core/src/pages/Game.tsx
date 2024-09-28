@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Square from "@/features/Square/Square";
-import { useBoard } from "../hooks/useBoard.ts";
+import { useBoard } from "../hooks/useBoard";
 import { Timer } from "@/features/Timer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -15,7 +15,7 @@ import { Chat } from "@/features/Chat";
 
 const Game = () => {
   const { board, winner, handlePieceClick } = useBoard();
-  const [currentGameId, setCurrentGameId] = useState<number | null>(null);
+  const [currentGameId, setCurrentGameId] = useState<string | null>(null);
 
   const createGame = useCreateGame(localStorage.getItem("jwtToken") || "");
   const { data: gameData, isLoading: gameLoading } =
