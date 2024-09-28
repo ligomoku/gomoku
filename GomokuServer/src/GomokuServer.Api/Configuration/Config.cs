@@ -14,5 +14,6 @@ public record GomokuClient
 public record Clerk
 {
 	public required string FrontendApiBaseUrl { get; init; }
-
+	public required string BackendApiBaseUrl { get; init; }
+	public required string BackendApiSecret { get; set; }
 }

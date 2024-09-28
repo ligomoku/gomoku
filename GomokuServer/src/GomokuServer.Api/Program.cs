@@ -24,6 +24,7 @@ app.UseSwaggerPage();
 app.UseCors(CorsPolicyName.GomokuClient);
 
 app.UseClerkJwtValidation();
+app.UseClerkJwtClaimsValidation();
 
 app.MapControllers();
 app.MapHub<GameHub>(HubRoute.GameHub);

@@ -69,7 +69,7 @@ public class ClerkJwtValidationMiddleware
 			{
 				var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 				context.User = principal;
-				await _next(context);
+					await _next(context);
 			}
 			catch (SecurityTokenException)
 			{
