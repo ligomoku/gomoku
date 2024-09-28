@@ -63,7 +63,7 @@ public class GameController : Controller
 	{
 		var userId = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
 
-		if (userId == null) 
+		if (userId == null)
 		{
 			return new BadRequestObjectResult(new { ErrorMessage = "Missing 'userId' claim" });
 		}
