@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Square from "@/features/Square/Square.tsx";
-import { useBoard } from "../hooks/useBoard.ts";
+import Square from "@/features/Square/Square";
+import { useBoard } from "../hooks/useBoard";
 import { Timer } from "@/features/Timer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {

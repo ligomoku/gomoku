@@ -1,17 +1,33 @@
-import { Button } from "@/shared/ui/button.tsx";
-import { Link } from "@tanstack/react-router";
+import { Button } from "@/shared/ui/button";
 
-export const GameOptionsButtons = () => (
+interface GameOptionsButtonsProps {
+  onCreateGameClick?: () => void;
+  onPlayWithFriendClick?: () => void;
+  onPlayWithAIClick?: () => void;
+}
+
+export const GameOptionsButtons = ({
+  onCreateGameClick,
+  onPlayWithFriendClick,
+  onPlayWithAIClick,
+}: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
-    <Link to="/game">
-      <Button className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl">
-        CREATE A GAME
-      </Button>
-    </Link>
-    <Button className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl">
+    <Button
+      onClick={onCreateGameClick}
+      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
+    >
+      CREATE A GAME
+    </Button>
+    <Button
+      onClick={onPlayWithFriendClick}
+      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
+    >
       PLAY WITH A FRIEND
     </Button>
-    <Button className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl">
+    <Button
+      onClick={onPlayWithAIClick}
+      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
+    >
       PLAY WITH AI
     </Button>
   </div>

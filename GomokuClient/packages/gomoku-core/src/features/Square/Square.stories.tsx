@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import Square, { SquareProps } from "./Square.tsx";
+import Square, { SquareProps } from "./Square";
 
 const meta: Meta = {
   title: "Components/Square",

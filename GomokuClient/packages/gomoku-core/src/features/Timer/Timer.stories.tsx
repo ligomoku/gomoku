@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { Timer } from "./Timer.tsx";
+import { Timer } from "./Timer";
 
 export default {
   title: "Components/Timer",

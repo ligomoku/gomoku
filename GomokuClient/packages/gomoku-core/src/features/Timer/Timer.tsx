@@ -1,5 +1,5 @@
-import { Card } from "@/shared/ui/card.tsx";
-import { Button } from "@/shared/ui/button.tsx";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
 import { useEffect, useState } from "react";
 
 const playAgain = () => {

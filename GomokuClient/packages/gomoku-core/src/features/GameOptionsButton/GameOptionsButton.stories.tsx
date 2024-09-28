@@ -1,5 +1,5 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { GameOptionsButtons } from "./GameOptionsButton.tsx";
+import { Meta } from "@storybook/react";
+import { GameOptionsButtons } from "./GameOptionsButton";
 
 export default {
   title: "Components/GameOptionsButton",
@@ -9,10 +9,12 @@ export default {
   },
 } as Meta<typeof GameOptionsButtons>;
 
-const Template: StoryFn<typeof GameOptionsButtons> = () => (
-  <GameOptionsButtons />
+export const Default = () => (
+  <GameOptionsButtons
+    onCreateGameClick={() => alert("Create Game Clicked")}
+    onPlayWithFriendClick={() => alert("Play with Friend Clicked")}
+    onPlayWithAIClick={() => alert("Play with AI Clicked")}
+  />
 );
-
-export const Default = Template.bind({});
 
 Default.args = {};

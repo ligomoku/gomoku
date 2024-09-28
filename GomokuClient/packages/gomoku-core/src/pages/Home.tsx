@@ -32,7 +32,9 @@ export const Home = () => {
             <TimeControls />
           </div>
           <div className="lg:col-span-3">
-            <GameOptionsButtons />
+            <GameOptionsButtons
+              onCreateGameClick={() => navigate({ to: "/game" })}
+            />
             <OnlinePlayersInfo />
           </div>
         </div>

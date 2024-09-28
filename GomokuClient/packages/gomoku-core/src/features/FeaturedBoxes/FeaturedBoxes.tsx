@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { GetAvailableGamesResponse } from "@/api/client";
 
-interface FeaturedBoxesProps {
+export interface FeaturedBoxesProps {
   games: GetAvailableGamesResponse[];
   onGameClick: (game: GetAvailableGamesResponse) => void;
 }
@@ -12,7 +12,7 @@ export const FeaturedBoxes = ({
 }: FeaturedBoxesProps) => (
   <div className="mt-8 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
     {games.length > 0 ? (
-      games.map((game, index) => (
+      games.map((game) => (
         <div
           key={game.gameId}
           onClick={() => onGameClick(game)}
@@ -22,10 +22,10 @@ export const FeaturedBoxes = ({
             <CardContent className="p-4 sm:p-6">
               <div className="aspect-w-16 aspect-h-9 mb-4 bg-[#3e3e3e]"></div>
               <h3 className="text-xl font-bold text-[#bababa] sm:text-2xl">
-                Game {index + 1}
+                {game.opponent.userName}
               </h3>
               <p className="truncate text-base text-[#999999] sm:text-lg">
-                {game.gameId}
+                {game.opponent.playerId}
               </p>
             </CardContent>
           </Card>
