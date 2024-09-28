@@ -31,7 +31,7 @@ public class ClerkPlayersRepository : IPlayersRepository
 
 			return Result.Success(new Player(id, clerkUser!.Username));
 		}
-		catch (ApiException apiException) 
+		catch (ApiException apiException)
 		{
 			_logger.LogError(apiException, apiException.Message);
 			return Result.Error();
