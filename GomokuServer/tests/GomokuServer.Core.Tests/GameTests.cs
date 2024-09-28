@@ -301,10 +301,11 @@ public class GameTests
 		_game.PlaceTile(new Tile(1, 1), _playerOne.Id);
 
 		// Assert
-		_game.PlayersMoves.Count.Should().Be(3);
-		_game.PlayersMoves[0].MoveNumber.Should().Be(1);
-		_game.PlayersMoves[1].MoveNumber.Should().Be(1);
-		_game.PlayersMoves[2].MoveNumber.Should().Be(2);
+		var playerMoves = _game.PlayersMoves.Values.ToList();
+		playerMoves.Count.Should().Be(3);
+		playerMoves[0].MoveNumber.Should().Be(1);
+		playerMoves[1].MoveNumber.Should().Be(1);
+		playerMoves[2].MoveNumber.Should().Be(2);
 	}
 
 	[Test]
