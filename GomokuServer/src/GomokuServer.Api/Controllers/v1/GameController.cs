@@ -76,7 +76,7 @@ public class GameController : Controller
 			return createGameResult.ToApiResponse();
 		}
 
-		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, "1");
+		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, userId);
 
 		return addPlayerResult.ToApiResponse();
 	}
