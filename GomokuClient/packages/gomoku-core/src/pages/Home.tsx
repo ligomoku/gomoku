@@ -38,10 +38,6 @@ export const Home = () => {
             <OnlinePlayersInfo />
           </div>
         </div>
-            <GameOptionsButtons />
-            <OnlinePlayersInfo />
-          </div>
-        </div>
         <FeaturedBoxes
           games={gameData || []}
           onGameClick={(game) => navigate({ to: `/game/${game.gameId}` })}
