@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
-import { Button } from "@/shared/ui/button.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useState } from "react";
-import { useSignalR } from "@/hooks/useSignlarR.ts";
+import { useSignalR } from "@/hooks/useSignlarR";
 
 export const Chat = () => {
   const [messageInput, setMessageInput] = useState("");

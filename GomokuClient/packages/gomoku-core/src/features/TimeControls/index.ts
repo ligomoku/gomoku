@@ -1,1 +1,1 @@
-export * from "./TimeControls.tsx";
+export * from "./TimeControls";

@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "prettier:client": "cd GomokuClient && yarn prettier",
-    "prettier:client:check": "cd GomokuClient && yarn prettier:check",
+    "prettier:client": "cd GomokuClient && yarn format",
+    "prettier:client:check": "cd GomokuClient && yarn format:check",
     "prettier:server": "dotnet format ./GomokuServer/GomokuServer.sln",
     "prettier:server:check": "dotnet format --verify-no-changes ./GomokuServer/GomokuServer.sln",
     "format": "yarn prettier:client && yarn prettier:server",

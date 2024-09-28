@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/shared/ui/card.tsx";
+import { Card, CardContent } from "@/shared/ui/card";
 
 // const timeControls: TimeControlOption[] = [
 //   { time: "1+0", type: "Bullet" },

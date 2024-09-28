@@ -1,1 +1,1 @@
-export * from "./GameOptionsButton.tsx";
+export * from "./GameOptionsButton";

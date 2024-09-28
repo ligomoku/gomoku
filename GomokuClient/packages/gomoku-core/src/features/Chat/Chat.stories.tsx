@@ -1,5 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { Chat } from "./Chat.tsx";
+import { Chat } from "./Chat";
 
 export default {
   title: "Components/Chat",
