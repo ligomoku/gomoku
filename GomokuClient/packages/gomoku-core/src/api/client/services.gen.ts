@@ -86,7 +86,7 @@ export const getApiGames = <ThrowOnError extends boolean = false>(
  * Create new game
  */
 export const postApiGame = <ThrowOnError extends boolean = false>(
-  options?: Options<PostApiGameData, ThrowOnError>,
+  options: Options<PostApiGameData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
     PostApiGameResponse,
