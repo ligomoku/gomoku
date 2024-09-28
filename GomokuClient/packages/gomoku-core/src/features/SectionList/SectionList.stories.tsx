@@ -4,14 +4,17 @@ import { Trophy, Users, Zap } from "lucide-react";
 
 const mockItems = [
   {
+    id: "DailyGomokuChallenge",
     title: "Daily Gomoku Challenge",
     icon: <Trophy className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
   },
   {
+    id: "WeeklyOpenTournament",
     title: "Weekly Open Tournament",
     icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
   },
   {
+    id: "BlitzBonanza",
     title: "Blitz Bonanza",
     icon: <Zap className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
   },
