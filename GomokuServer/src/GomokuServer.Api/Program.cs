@@ -1,32 +1,46 @@
-var builder = WebApplication.CreateBuilder(args);
+//TODO: maybe move to SeviceCollectionExtensions ?
+public static class ServiceExtensions
+{
+	public static void AddCoreServices(this IServiceCollection services, Config config)
+	{
+		services.RegisterSwagger();
+		services.RegisterApiVersioning();
+		services.RegisterCors(CorsPolicyName.GomokuClient, config);
+		services.AddRouting(options => options.LowercaseUrls = true);
+		services.AddControllers();
+		services.AddSignalR();
+		services.AddMemoryCache();
+		services.RegisterGomokuServices(config);
+	}
+}
 
-var config = EnvironmentLoader.LoadEnvironment(builder);
+//TODO: maybe move to application builder extensions ?
+public static class ApplicationExtensions
+{
+	public static void UseCoreMiddlewares(this WebApplication app)
+	{
+		app.UseSwaggerPage();
+		app.UseCors(CorsPolicyName.GomokuClient);
+		app.UseClerkJwtValidation();
+		app.UseClerkJwtClaimsValidation();
+		app.MapControllers();
+		app.MapHub<GameHub>(HubRoute.GameHub);
+	}
+}
 
-builder.Services.RegisterSwagger();
+internal static class Program
+{
+	public static void Main(string[] args)
+	{
+		var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.RegisterApiVersioning();
+		var config = EnvironmentLoader.LoadEnvironment(builder);
 
-builder.Services.RegisterCors(CorsPolicyName.GomokuClient, config);
+		builder.Services.AddCoreServices(config);
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
+		var app = builder.Build();
 
-builder.Services.AddSignalR();
-
-builder.Services.AddMemoryCache();
-
-builder.Services.RegisterGomokuServices(config);
-
-var app = builder.Build();
-
-app.UseSwaggerPage();
-
-app.UseCors(CorsPolicyName.GomokuClient);
-
-app.UseClerkJwtValidation();
-app.UseClerkJwtClaimsValidation();
-
-app.MapControllers();
-app.MapHub<GameHub>(HubRoute.GameHub);
-
-app.Run();
+		app.UseCoreMiddlewares();
+		app.Run();
+	}
+}
