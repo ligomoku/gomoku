@@ -33,55 +33,77 @@ const JoinGame = () => {
     jwtToken || localStorage.getItem("jwtToken") || "",
   );
 
-  // Use the SignalR context to get the connection
   const { connection } = useSignalRConnection();
 
-  // Set up SignalR connection for game events
   useEffect(() => {
     if (!connection) return;
 
-    if (connection.state === signalR.HubConnectionState.Disconnected) {
-      // Setting up listeners for server messages
-      connection.on(
-        "PlayerJoinedGame",
-        (gameId: PlayerJoinedGameServerMessage) => {
-          console.log("Player joined game:", gameId);
-        },
-      );
+    const startConnection = async () => {
+      try {
+        if (connection.state === signalR.HubConnectionState.Disconnected) {
+          await connection.start();
+          console.log("Reconnected to SignalR hub");
+        }
+      } catch (error) {
+        console.error("Error starting connection:", error);
+      }
+    };
 
-      connection.on(
-        "PlayerMadeMove",
-        ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
-          console.log("Player made move:", playerId, tile);
-        },
-      );
+    connection.onclose(() => {
+      console.warn("Connection closed, attempting to reconnect...");
+      startConnection();
+    });
+
+    if (connection.state === signalR.HubConnectionState.Disconnected) {
+      startConnection();
     }
 
-    // Clean up when component unmounts or connection changes
+    connection.on(
+      "PlayerJoinedGame",
+      (gameId: PlayerJoinedGameServerMessage) => {
+        console.log("Player joined game:", gameId);
+      },
+    );
+
+    connection.on(
+      "PlayerMadeMove",
+      ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
+        console.log("Player made move:", playerId, tile);
+      },
+    );
+
     return () => {
       if (connection.state === signalR.HubConnectionState.Connected) {
         connection
           .stop()
-          .then(() => console.log("Disconnected from SignalR hub"));
+          .then(() => console.log("Disconnected from SignalR hub"))
+          .catch((error) => console.error("Error disconnecting:", error));
       }
     };
   }, [connection]);
 
-  // Join the game when gameID becomes available
   useEffect(() => {
     if (!gameID) return;
     joinGame.mutate(gameID);
   }, [gameID]);
 
-  // Notify user if there's a winner
   useEffect(() => {
     if (winner) alert(`The winner is: ${winner}`);
   }, [winner]);
 
-  // Handle user's piece move on the board
   const handleMove = (row: number, col: number, value: string | null) => {
+    if (!connection) return;
     if (winner || value) return;
-    handlePieceClick(row, col, value);
+
+    if (connection.state !== signalR.HubConnectionState.Connected) {
+      console.warn("Cannot make a move, SignalR connection is not connected.");
+      return;
+    }
+
+    connection
+      .invoke("PlayerMadeMove", gameID, row, col)
+      .then(() => handlePieceClick(row, col, value))
+      .catch((error) => console.error("Error making move:", error));
   };
 
   return (

@@ -14,21 +14,13 @@ export const Chat = () => {
 
   useEffect(() => {
     if (connection) {
-      connection
-        .start()
-        .then(() => {
-          console.log("Connected to SignalR hub");
-          setIsConnected(true);
+      console.log("Connected to SignalR hub");
+      setIsConnected(true);
 
-          //TODO: wait for backend implementation for ReceiveMessage event
-          connection.on("ReceiveMessage", (user: string, message: string) => {
-            setMessages((prevMessages) => [
-              ...prevMessages,
-              `${user}: ${message}`,
-            ]);
-          });
-        })
-        .catch((error) => console.error("Connection failed: ", error));
+      //TODO: wait for backend implementation for ReceiveMessage event
+      connection.on("ReceiveMessage", (user: string, message: string) => {
+        setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
+      });
 
       return () => {
         connection
