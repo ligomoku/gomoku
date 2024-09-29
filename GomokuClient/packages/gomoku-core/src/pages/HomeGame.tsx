@@ -19,7 +19,7 @@ import { AuthTokenContext } from "@/context";
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { data: gameData } = useFetchGames();
-  const jwtToken = useContext(AuthTokenContext);
+  const { jwtToken } = useContext(AuthTokenContext);
 
   const handleCreateGame = useCreateGameAndNavigate(
     jwtToken || localStorage.getItem("jwtToken") || "",

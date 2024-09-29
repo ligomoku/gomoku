@@ -13,7 +13,7 @@ import { AuthTokenContext } from "@/context";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const jwtToken = useContext(AuthTokenContext);
+  const { jwtToken } = useContext(AuthTokenContext);
   const handleCreateGame = useCreateGameAndNavigate(
     jwtToken || localStorage.getItem("jwtToken") || "",
   );
