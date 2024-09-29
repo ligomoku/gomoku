@@ -10,14 +10,26 @@ import { getDefaultHeaders } from "@/shared/lib/utils";
 import { AuthTokenContext } from "@/context";
 import { useCustomSignalR } from "@/hooks/useSignlarR";
 
+interface PlayerJoinedGameServerMessage {
+  gameId: string;
+}
+
+interface PlayerMadeMoveServerMessage {
+  playerId: string;
+  tile: TileItem;
+}
+
+interface TileItem {
+  x: number;
+  y: number;
+}
+
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
   //TODO: check for better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
-  const jwtToken = useContext(AuthTokenContext);
-  const joinGame = useJoinGame(
-    jwtToken || localStorage.getItem("jwtToken") || "",
-  );
+  const { jwtToken } = useContext(AuthTokenContext);
+  const joinGame = useJoinGame(jwtToken || "");
 
   const connection = useCustomSignalR();
 
@@ -25,14 +37,17 @@ const JoinGame = () => {
     if (!connection) return;
     connection.start();
 
-    connection.on("PlayerJoinedGame", (gameId: string) => {
-      console.log("Player joined game:", gameId);
-    });
+    connection.on(
+      "PlayerJoinedGame",
+      (gameId: PlayerJoinedGameServerMessage) => {
+        console.log("Player joined game:", gameId);
+      },
+    );
 
     connection.on(
       "PlayerMadeMove",
-      (gameId: string, playerId: string, x: number, y: number) => {
-        console.log("Player made move:", gameId, playerId, x, y);
+      ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
+        console.log("Player made move:", playerId, tile);
       },
     );
   }, [connection]);
