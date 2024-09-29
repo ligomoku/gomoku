@@ -4,7 +4,16 @@ import * as JWT from "jwt-decode";
 
 interface JwtTokenPayload {
   exp: number;
-  jwtDecodedInfo?: JwtTokenPayload & Record<string, string>;
+  userName?: string;
+  userId?: string;
+  fullName?: string;
+  username?: string;
+  azp?: string;
+  iat?: number;
+  iss?: string;
+  nbf?: number;
+  sid?: string;
+  sub?: string;
 }
 
 interface AuthTokenContextType {
