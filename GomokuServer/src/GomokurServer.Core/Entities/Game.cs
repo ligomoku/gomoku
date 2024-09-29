@@ -45,6 +45,14 @@ public class Game
 
 	public PlayerAddingResult AddPlayer(Player player)
 	{
+		if (PlayerOne?.Id == player.Id || PlayerTwo?.Id == player.Id)
+		{
+			return new()
+			{
+				IsValid = true,
+			};
+		}
+
 		if (PlayerOne != null && PlayerTwo != null)
 		{
 			return new()
@@ -60,15 +68,6 @@ public class Game
 			return new()
 			{
 				IsValid = true
-			};
-		}
-
-		if (PlayerOne.Id == player.Id)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
 			};
 		}
 

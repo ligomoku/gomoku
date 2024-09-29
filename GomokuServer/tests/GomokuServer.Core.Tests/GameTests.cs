@@ -236,7 +236,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnPlayerAlreadyAddedError()
+	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnSuccess()
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
@@ -249,8 +249,7 @@ public class GameTests
 		var result = _game.AddPlayer(player);
 
 		// Assert
-		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(PlayerAddingValidationError.PlayerAlreadyAddedToGame);
+		result.IsValid.Should().BeTrue();
 	}
 
 	[Test]
