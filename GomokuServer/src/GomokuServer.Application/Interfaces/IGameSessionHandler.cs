@@ -8,7 +8,7 @@ public interface IGameSessionHandler
 
 	Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetAvailableGamesAsync();
 
-	Task<Result<CreateGameResponse>> CreateAsync(int boardSize);
+	Task<Result<CreateGameResponse>> CreateAsync(int boardSize, string playerId);
 
 	Task<Result> AddPlayerToGameAsync(string gameId, string playerId);
 
