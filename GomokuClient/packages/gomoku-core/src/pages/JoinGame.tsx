@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { AuthTokenContext } from "@/context";
+import { useCustomSignalR } from "@/hooks/useSignlarR";
 
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
@@ -17,6 +18,24 @@ const JoinGame = () => {
   const joinGame = useJoinGame(
     jwtToken || localStorage.getItem("jwtToken") || "",
   );
+
+  const connection = useCustomSignalR();
+
+  useEffect(() => {
+    if (!connection) return;
+    connection.start();
+
+    connection.on("PlayerJoinedGame", (gameId: string) => {
+      console.log("Player joined game:", gameId);
+    });
+
+    connection.on(
+      "PlayerMadeMove",
+      (gameId: string, playerId: string, x: number, y: number) => {
+        console.log("Player made move:", gameId, playerId, x, y);
+      },
+    );
+  }, [connection]);
 
   useEffect(() => {
     if (!gameID) return;

@@ -55,3 +55,21 @@ export const useSignalR = () => {
 
   return { sendMessage, messages, isConnected };
 };
+
+export const useCustomSignalR = () => {
+  const [connection, setConnection] = useState<signalR.HubConnection | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const newConnection = new signalR.HubConnectionBuilder()
+      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
+      .withHubProtocol(new MessagePackHubProtocol())
+      .withAutomaticReconnect()
+      .build();
+
+    setConnection(newConnection);
+  }, []);
+
+  return connection;
+};
