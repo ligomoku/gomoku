@@ -2,22 +2,33 @@ import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 
-export const useSignalR = () => {
+export const useCustomSignalR = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
     null,
   );
-  const [messages, setMessages] = useState<string[]>([]);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
+      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
+        accessTokenFactory: () => {
+          const token = localStorage.getItem("authToken");
+          return token ? token : "";
+        },
+      })
       .withHubProtocol(new MessagePackHubProtocol())
       .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
   }, []);
+
+  return connection;
+};
+
+export const useChatSignalR = () => {
+  const connection = useCustomSignalR();
+  const [messages, setMessages] = useState<string[]>([]);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     if (connection) {
@@ -54,22 +65,4 @@ export const useSignalR = () => {
   };
 
   return { sendMessage, messages, isConnected };
-};
-
-export const useCustomSignalR = () => {
-  const [connection, setConnection] = useState<signalR.HubConnection | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
-      .withHubProtocol(new MessagePackHubProtocol())
-      .withAutomaticReconnect()
-      .build();
-
-    setConnection(newConnection);
-  }, []);
-
-  return connection;
 };
