@@ -10,6 +10,7 @@ import {
 } from "@/api/client";
 import { Chat } from "@/features/Chat";
 import { useParams } from "@tanstack/react-router";
+import { getDefaultHeaders } from "@/shared/lib/utils";
 
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
@@ -19,11 +20,12 @@ const JoinGame = () => {
   const createGame = useCreateGame(localStorage.getItem("jwtToken") || "");
 
   useEffect(() => {
-    if (!gameID) {
-      console.log("Game ID is not provided");
-      handleCreateGame();
-    }
-  }, []);
+    if (!gameID) handleCreateGame();
+  }, [gameID]);
+
+  useEffect(() => {
+    if (winner) alert(`The winner is: ${winner}`);
+  }, [winner]);
 
   const handleCreateGame = () => {
     createGame.mutate({ boardSize: 19 });
@@ -37,12 +39,6 @@ const JoinGame = () => {
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
-        <div className="mb-5 text-center">
-          {winner && (
-            <div className="mb-2 text-2xl">The Winner is: {winner}!</div>
-          )}
-        </div>
-
         {gameID && (
           <div className="mb-5 flex w-full flex-wrap justify-center">
             <div className="grid-cols-19 grid">
@@ -84,11 +80,7 @@ const useCreateGame = (authToken: string) =>
     mutationFn: async ({ boardSize }) => {
       const response = await postApiGame({
         body: { boardSize },
-        headers: {
-          "X-Version": "1",
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
+        headers: getDefaultHeaders(authToken),
       });
       return response.data;
     },

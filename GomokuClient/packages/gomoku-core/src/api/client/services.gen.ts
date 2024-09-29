@@ -18,18 +18,15 @@ import type {
   PostApiGameData,
   PostApiGameError,
   PostApiGameResponse,
-  PostApiGameByGameIdJoinByPlayerIdData,
-  PostApiGameByGameIdJoinByPlayerIdError,
-  PostApiGameByGameIdJoinByPlayerIdResponse,
-  PostApiGameByGameIdMakeMoveByPlayerIdData,
-  PostApiGameByGameIdMakeMoveByPlayerIdError,
-  PostApiGameByGameIdMakeMoveByPlayerIdResponse,
+  PostApiGameByGameIdJoinData,
+  PostApiGameByGameIdJoinError,
+  PostApiGameByGameIdJoinResponse,
+  PostApiGameByGameIdMakeMoveData,
+  PostApiGameByGameIdMakeMoveError,
+  PostApiGameByGameIdMakeMoveResponse,
   GetHealthData,
   GetHealthError,
   GetHealthResponse,
-  PostApiPlayersData,
-  PostApiPlayersError,
-  PostApiPlayersResponse,
   PostGamehubJoinGameGroupData,
   PostGamehubSendMessageData,
 } from "./types.gen";
@@ -103,36 +100,34 @@ export const postApiGame = <ThrowOnError extends boolean = false>(
 /**
  * Join game
  */
-export const postApiGameByGameIdJoinByPlayerId = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<PostApiGameByGameIdJoinByPlayerIdData, ThrowOnError>,
+export const postApiGameByGameIdJoin = <ThrowOnError extends boolean = false>(
+  options: Options<PostApiGameByGameIdJoinData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
-    PostApiGameByGameIdJoinByPlayerIdResponse,
-    PostApiGameByGameIdJoinByPlayerIdError,
+    PostApiGameByGameIdJoinResponse,
+    PostApiGameByGameIdJoinError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/game/{gameId}/join/{playerId}",
+    url: "/api/game/{gameId}/join",
   });
 };
 
 /**
  * Make move in a game
  */
-export const postApiGameByGameIdMakeMoveByPlayerId = <
+export const postApiGameByGameIdMakeMove = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<PostApiGameByGameIdMakeMoveByPlayerIdData, ThrowOnError>,
+  options: Options<PostApiGameByGameIdMakeMoveData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
-    PostApiGameByGameIdMakeMoveByPlayerIdResponse,
-    PostApiGameByGameIdMakeMoveByPlayerIdError,
+    PostApiGameByGameIdMakeMoveResponse,
+    PostApiGameByGameIdMakeMoveError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/game/{gameId}/make-move/{playerId}",
+    url: "/api/game/{gameId}/make-move",
   });
 };
 
@@ -149,22 +144,6 @@ export const getHealth = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/health",
-  });
-};
-
-/**
- * Create new player
- */
-export const postApiPlayers = <ThrowOnError extends boolean = false>(
-  options: Options<PostApiPlayersData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).post<
-    PostApiPlayersResponse,
-    PostApiPlayersError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/players",
   });
 };
 

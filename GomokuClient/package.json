@@ -16,6 +16,8 @@
     "format:check": "prettier . --check",
     "storybook": "yarn workspace @gomoku/core storybook",
     "preview": "yarn workspace @gomoku/core preview",
+    "download": "yarn workspace @gomoku/core download",
+    "codegen": "yarn workspace @gomoku/core codegen",
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name .turbo -type d -prune -exec rm -rf '{}' + && find . -name dist -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
