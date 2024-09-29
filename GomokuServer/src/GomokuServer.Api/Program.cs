@@ -11,7 +11,7 @@ builder.Services.RegisterCors(CorsPolicyName.GomokuClient, config);
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR().AddMessagePackProtocol();
 
 builder.Services.AddMemoryCache();
 
