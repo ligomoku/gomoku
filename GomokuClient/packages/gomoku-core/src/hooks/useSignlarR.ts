@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
+import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 
 export const useSignalR = () => {
   const [connection, setConnection] = useState<signalR.HubConnection | null>(
@@ -11,6 +12,7 @@ export const useSignalR = () => {
   useEffect(() => {
     const newConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
+      .withHubProtocol(new MessagePackHubProtocol())
       .withAutomaticReconnect()
       .build();
 
@@ -52,4 +54,22 @@ export const useSignalR = () => {
   };
 
   return { sendMessage, messages, isConnected };
+};
+
+export const useCustomSignalR = () => {
+  const [connection, setConnection] = useState<signalR.HubConnection | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const newConnection = new signalR.HubConnectionBuilder()
+      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`)
+      .withHubProtocol(new MessagePackHubProtocol())
+      .withAutomaticReconnect()
+      .build();
+
+    setConnection(newConnection);
+  }, []);
+
+  return connection;
 };
