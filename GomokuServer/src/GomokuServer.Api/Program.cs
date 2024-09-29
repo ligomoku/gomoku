@@ -1,3 +1,5 @@
+using GomokuServer.Api.Hubs.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var config = EnvironmentLoader.LoadEnvironment(builder);
@@ -11,10 +13,14 @@ builder.Services.RegisterCors(CorsPolicyName.GomokuClient, config);
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR().AddHubOptions<GameHub>(options =>
+{
+	options.AddFilter<ClerkJwtValidationHubFilter>();
+});
 
 builder.Services.AddMemoryCache();
 
+builder.Services.RegisterApiServices();
 builder.Services.RegisterGomokuServices(config);
 
 var app = builder.Build();
