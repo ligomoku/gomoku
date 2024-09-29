@@ -25,7 +25,7 @@ export const FeaturedBoxes = ({
                 {game.opponent.userName}
               </h3>
               <p className="truncate text-base text-[#999999] sm:text-lg">
-                {game.opponent.playerId}
+                {game.gameId}
               </p>
             </CardContent>
           </Card>

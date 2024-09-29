@@ -1,53 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Square from "@/features/Square/Square";
-import { useBoard } from "../hooks/useBoard";
+import { useBoard } from "@/hooks/useBoard";
 import { Timer } from "@/features/Timer";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   CreateGameResponse,
-  getApiGameByGameId,
-  GetApiGameByGameIdError,
-  GetApiGameByGameIdResponse,
   postApiGame,
   PostApiGameError,
 } from "@/api/client";
 import { Chat } from "@/features/Chat";
+import { useParams } from "@tanstack/react-router";
 
-const Game = () => {
+const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
-  const [currentGameId, setCurrentGameId] = useState<string | null>(null);
+  //TODO: check for better way to get gameID from url, should be considered routing file params loaders
+  const { gameID } = useParams({ strict: false });
 
   const createGame = useCreateGame(localStorage.getItem("jwtToken") || "");
-  const { data: gameData, isLoading: gameLoading } =
-    useFetchGame(currentGameId);
 
   useEffect(() => {
-    if (gameData) return;
-    handleCreateGame();
+    if (!gameID) {
+      console.log("Game ID is not provided");
+      handleCreateGame();
+    }
   }, []);
 
   const handleCreateGame = () => {
-    createGame.mutate(
-      { boardSize: 19 },
-      {
-        onSuccess: (data) => {
-          if (data?.gameId) {
-            setCurrentGameId(data.gameId);
-            console.log("Game created with id: ", data.gameId);
-          }
-        },
-      },
-    );
+    createGame.mutate({ boardSize: 19 });
   };
 
   const handleMove = (row: number, col: number, value: string | null) => {
     if (winner || value) return;
     handlePieceClick(row, col, value);
   };
-
-  if (gameLoading) {
-    return <div>Loading game data...</div>;
-  }
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -58,7 +43,7 @@ const Game = () => {
           )}
         </div>
 
-        {currentGameId && (
+        {gameID && (
           <div className="mb-5 flex w-full flex-wrap justify-center">
             <div className="grid-cols-19 grid">
               {board.map((row, rowIndex) => (
@@ -88,7 +73,7 @@ const Game = () => {
   );
 };
 
-Game.displayName = "Game";
+JoinGame.displayName = "JoinGame";
 
 const useCreateGame = (authToken: string) =>
   useMutation<
@@ -109,33 +94,4 @@ const useCreateGame = (authToken: string) =>
     },
   });
 
-const useFetchGame = (gameId: string | null) =>
-  useQuery<
-    GetApiGameByGameIdResponse,
-    GetApiGameByGameIdError,
-    GetApiGameByGameIdResponse,
-    [string, string | null]
-  >({
-    queryKey: ["game", gameId],
-    queryFn: async () => {
-      if (!gameId) {
-        throw new Error("Game ID is required");
-      }
-      const response = await getApiGameByGameId({
-        path: { gameId },
-        headers: {
-          "X-Version": "1",
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    enabled: !!gameId,
-  });
-
-export default Game;
+export default JoinGame;
