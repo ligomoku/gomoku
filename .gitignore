@@ -4,3 +4,4 @@ node_modules
 .yarn/
 .yarnrc.yml
 yarn.lock
+*.gz

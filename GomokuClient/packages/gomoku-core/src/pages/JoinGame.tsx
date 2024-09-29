@@ -1,35 +1,39 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Square from "@/features/Square/Square";
 import { useBoard } from "@/hooks/useBoard";
 import { Timer } from "@/features/Timer";
-import { useMutation } from "@tanstack/react-query";
-import {
-  CreateGameResponse,
-  postApiGame,
-  PostApiGameError,
-} from "@/api/client";
 import { Chat } from "@/features/Chat";
 import { useParams } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
+import { AuthTokenContext } from "@/context";
 
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
   //TODO: check for better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
-
-  const createGame = useCreateGame(localStorage.getItem("jwtToken") || "");
+  const jwtToken = useContext(AuthTokenContext);
+  const joinGame = useJoinGame(
+    jwtToken || localStorage.getItem("jwtToken") || "",
+  );
 
   useEffect(() => {
-    if (!gameID) handleCreateGame();
+    if (gameID) {
+      joinGame.mutate(gameID, {
+        onSuccess: () => {
+          console.log("Successfully joined the game!");
+        },
+        onError: (error) => {
+          alert(`Error joining the game: ${error.message}`);
+        },
+      });
+    }
   }, [gameID]);
 
   useEffect(() => {
     if (winner) alert(`The winner is: ${winner}`);
   }, [winner]);
-
-  const handleCreateGame = () => {
-    createGame.mutate({ boardSize: 19 });
-  };
 
   const handleMove = (row: number, col: number, value: string | null) => {
     if (winner || value) return;
@@ -71,18 +75,17 @@ const JoinGame = () => {
 
 JoinGame.displayName = "JoinGame";
 
-const useCreateGame = (authToken: string) =>
-  useMutation<
-    CreateGameResponse | undefined,
-    PostApiGameError,
-    { boardSize: number }
-  >({
-    mutationFn: async ({ boardSize }) => {
-      const response = await postApiGame({
-        body: { boardSize },
+const useJoinGame = (authToken: string) =>
+  useMutation<void, Error, string>({
+    mutationFn: async (gameId) => {
+      const response = await postApiGameByGameIdJoin({
+        path: { gameId },
         headers: getDefaultHeaders(authToken),
       });
-      return response.data;
+
+      if (!response.data) {
+        throw new Error("Invalid game data received");
+      }
     },
   });
 
