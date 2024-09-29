@@ -11,10 +11,19 @@ import {
   GetAvailableGamesResponse,
 } from "@/api/client";
 import { Users } from "lucide-react";
+import { getDefaultHeaders } from "@/shared/lib/utils";
+import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import { useContext } from "react";
+import { AuthTokenContext } from "@/context";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { data: gameData } = useFetchGames();
+  const jwtToken = useContext(AuthTokenContext);
+
+  const handleCreateGame = useCreateGameAndNavigate(
+    jwtToken || localStorage.getItem("jwtToken") || "",
+  );
 
   const transformGameData = (
     games: GetAvailableGamesResponse[] | undefined,
@@ -47,9 +56,7 @@ export const HomeGame = () => {
             <TimeControls />
           </div>
           <div className="lg:col-span-3">
-            <GameOptionsButtons
-              onCreateGameClick={() => navigate({ to: "/game/create" })}
-            />
+            <GameOptionsButtons onCreateGameClick={handleCreateGame} />
             <OnlinePlayersInfo />
           </div>
         </div>
@@ -68,11 +75,7 @@ const useFetchGames = () =>
     queryKey: ["games", null],
     queryFn: async () => {
       const response = await getApiGames({
-        path: {},
-        headers: {
-          "X-Version": "1",
-          "Content-Type": "application/json",
-        },
+        headers: getDefaultHeaders(),
       });
 
       if (!response.data) {

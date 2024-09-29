@@ -15,6 +15,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddMemoryCache();
 
+builder.Services.RegisterApiServices();
 builder.Services.RegisterGomokuServices(config);
 
 var app = builder.Build();

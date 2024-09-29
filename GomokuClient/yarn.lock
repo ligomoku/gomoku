@@ -962,6 +962,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.12"
     eslint-plugin-storybook: "npm:^0.9.0"
     globals: "npm:^15.9.0"
+    jwt-decode: "npm:^4.0.0"
     lucide-react: "npm:^0.446.0"
     postcss: "npm:^8.4.47"
     prettier: "npm:3.3.3"
@@ -6471,6 +6472,13 @@ __metadata:
     graceful-fs:
       optional: true
   checksum: 10c0/4f95b5e8a5622b1e9e8f33c96b7ef3158122f595998114d1e7f03985649ea99cb3cd99ce1ed1831ae94c8c8543ab45ebd044207612f31a56fd08462140e46865
+  languageName: node
+  linkType: hard
+
+"jwt-decode@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "jwt-decode@npm:4.0.0"
+  checksum: 10c0/de75bbf89220746c388cf6a7b71e56080437b77d2edb29bae1c2155048b02c6b8c59a3e5e8d6ccdfd54f0b8bda25226e491a4f1b55ac5f8da04cfbadec4e546c
   languageName: node
   linkType: hard
 

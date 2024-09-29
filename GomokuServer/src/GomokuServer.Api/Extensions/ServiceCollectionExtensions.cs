@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 
 using GomokuServer.Api.Attributes;
+using GomokuServer.Api.Services;
 
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -81,6 +82,13 @@ public static class ServiceCollectionExtensions
 				.AllowAnyHeader()
 				.AllowCredentials());
 		});
+
+		return services;
+	}
+
+	public static IServiceCollection RegisterApiServices(this IServiceCollection services)
+	{
+		services.AddSingleton<ClerkJwtValidator>();
 
 		return services;
 	}
