@@ -111,7 +111,7 @@ export type PostApiGameResponse = CreateGameResponse;
 
 export type PostApiGameError = ProblemDetails;
 
-export type PostApiGameByGameIdJoinByPlayerIdData = {
+export type PostApiGameByGameIdJoinData = {
   headers: {
     Authorization: string;
     "Content-Type": string;
@@ -119,15 +119,14 @@ export type PostApiGameByGameIdJoinByPlayerIdData = {
   };
   path: {
     gameId: string;
-    playerId: string;
   };
 };
 
-export type PostApiGameByGameIdJoinByPlayerIdResponse = unknown;
+export type PostApiGameByGameIdJoinResponse = unknown;
 
-export type PostApiGameByGameIdJoinByPlayerIdError = ProblemDetails;
+export type PostApiGameByGameIdJoinError = ProblemDetails;
 
-export type PostApiGameByGameIdMakeMoveByPlayerIdData = {
+export type PostApiGameByGameIdMakeMoveData = {
   body?: MakeMoveRequest;
   headers: {
     Authorization: string;
@@ -136,13 +135,12 @@ export type PostApiGameByGameIdMakeMoveByPlayerIdData = {
   };
   path: {
     gameId: string;
-    playerId: string;
   };
 };
 
-export type PostApiGameByGameIdMakeMoveByPlayerIdResponse = PlaceTileResponse;
+export type PostApiGameByGameIdMakeMoveResponse = PlaceTileResponse;
 
-export type PostApiGameByGameIdMakeMoveByPlayerIdError = ProblemDetails;
+export type PostApiGameByGameIdMakeMoveError = ProblemDetails;
 
 export type GetHealthData = {
   headers: {
@@ -154,18 +152,6 @@ export type GetHealthData = {
 export type GetHealthResponse = unknown;
 
 export type GetHealthError = unknown;
-
-export type PostApiPlayersData = {
-  headers: {
-    Authorization: string;
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-};
-
-export type PostApiPlayersResponse = unknown;
-
-export type PostApiPlayersError = unknown;
 
 export type PostGamehubJoinGameGroupData = {
   query?: {

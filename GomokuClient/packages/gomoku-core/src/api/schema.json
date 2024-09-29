@@ -217,22 +217,13 @@
         ]
       }
     },
-    "/api/game/{gameId}/join/{playerId}": {
+    "/api/game/{gameId}/join": {
       "post": {
         "tags": ["Game"],
         "summary": "Join game",
         "parameters": [
           {
             "name": "gameId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "playerId",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -296,22 +287,13 @@
         ]
       }
     },
-    "/api/game/{gameId}/make-move/{playerId}": {
+    "/api/game/{gameId}/make-move": {
       "post": {
         "tags": ["Game"],
         "summary": "Make move in a game",
         "parameters": [
           {
             "name": "gameId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "playerId",
             "in": "path",
             "required": true,
             "style": "simple",
@@ -435,52 +417,6 @@
             "description": "Server is running"
           }
         }
-      }
-    },
-    "/api/players": {
-      "post": {
-        "tags": ["Players"],
-        "summary": "Create new player",
-        "parameters": [
-          {
-            "name": "X-Version",
-            "in": "header",
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "Bearer "
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
       }
     },
     "/gamehub/JoinGameGroup": {
