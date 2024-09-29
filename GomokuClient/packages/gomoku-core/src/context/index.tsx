@@ -17,6 +17,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         const token = await getToken();
         if (token && isMounted) {
           setJwtToken(token);
+          //TODO: provide interval to refetch token with same interval as in claims of jtw token
           localStorage.setItem("jwtToken", token);
         }
       } catch (error) {

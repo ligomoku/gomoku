@@ -62,15 +62,10 @@ public class GameController : Controller
 	[ClerkAuthorization]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize);
+		var userId = User.Claims.First(c => c.Type == "userId").Value!;
+		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize, userId);
 
-		if (!createGameResult.IsSuccess)
-		{
-			return createGameResult.ToApiResponse();
-		}
-		var addPlayerResult = await _gameSessionHandler.AddPlayerToGameAsync(createGameResult.Value.GameId, User.Claims.First(c => c.Type == "userId").Value!);
-
-		return addPlayerResult.ToApiResponse();
+		return createGameResult.ToApiResponse();
 	}
 
 	/// <summary>
