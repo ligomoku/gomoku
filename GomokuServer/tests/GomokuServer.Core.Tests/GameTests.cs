@@ -236,7 +236,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnPlayerAlreadyAddedError()
+	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnSuccess()
 	{
 		// Arrange
 		var gameBoard = new GameBoard(15);
