@@ -13,12 +13,13 @@ export const Chat = () => {
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
-    if (!jwtDecodedInfo?.userName) {
+    console.log("JWT DECODED", jwtDecodedInfo);
+    if (!jwtDecodedInfo?.username) {
       console.error("User information is missing. Cannot send message.");
       return;
     }
 
-    sendMessage(jwtDecodedInfo.userName, messageInput);
+    sendMessage(jwtDecodedInfo.username, messageInput);
     setMessageInput("");
   };
 

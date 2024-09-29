@@ -4,10 +4,9 @@ import * as JWT from "jwt-decode";
 
 interface JwtTokenPayload {
   exp: number;
-  userName?: string;
+  username?: string;
   userId?: string;
   fullName?: string;
-  username?: string;
   azp?: string;
   iat?: number;
   iss?: string;
