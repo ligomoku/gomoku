@@ -1,16 +1,22 @@
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/shared/ui/input";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   SignedIn,
   SignedOut,
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
+import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import { AuthTokenContext } from "@/context";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const jwtToken = useContext(AuthTokenContext);
+  const handleCreateGame = useCreateGameAndNavigate(
+    jwtToken || localStorage.getItem("jwtToken") || "",
+  );
 
   return (
     <header className="bg-[#2b2b2b] p-4 sm:p-6">
@@ -31,12 +37,12 @@ export const Header = () => {
         <div
           className={`${isMenuOpen ? "flex" : "hidden"} absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
         >
-          <Link
-            to="/game/create"
+          <span
             className="text-lg hover:text-[#f0f0f0] sm:text-xl"
+            onClick={handleCreateGame}
           >
             PLAY
-          </Link>
+          </span>
           <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
             LEARN
           </Link>
