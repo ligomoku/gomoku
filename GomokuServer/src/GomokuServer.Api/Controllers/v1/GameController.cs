@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Api.Attributes;
+using GomokuServer.Api.Hubs.Messages.Server;
 
 namespace GomokuServer.Api.Controllers.v1;
 
@@ -111,7 +112,12 @@ public class GameController : Controller
 
 		if (placeTileResult.IsSuccess)
 		{
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, userId, request.X, request.Y);
+			var playerMadeMoveMessage = new PlayerMadeMoveServerMessage()
+			{
+				PlayerId = userId,
+				Tile = new TileDto(request.X, request.Y),
+			};
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
 		}
 
 		return placeTileResult.ToApiResponse();
