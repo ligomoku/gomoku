@@ -7,8 +7,8 @@ import { useParams } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
-import { useAuthToken } from "@/context";
-import { useCustomSignalR } from "@/hooks/useSignlarR";
+import { useAuthToken, useSignalRConnection } from "@/context";
+import * as signalR from "@microsoft/signalr";
 
 interface PlayerJoinedGameServerMessage {
   gameId: string;
@@ -26,41 +26,59 @@ interface TileItem {
 
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
-  //TODO: check for better way to get gameID from url, should be considered routing file params loaders
+  // TODO: check for a better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
-  const joinGame = useJoinGame(jwtToken || "");
+  const joinGame = useJoinGame(
+    jwtToken || localStorage.getItem("jwtToken") || "",
+  );
 
-  const connection = useCustomSignalR();
+  // Use the SignalR context to get the connection
+  const { connection } = useSignalRConnection();
 
+  // Set up SignalR connection for game events
   useEffect(() => {
     if (!connection) return;
-    connection.start();
 
-    connection.on(
-      "PlayerJoinedGame",
-      (gameId: PlayerJoinedGameServerMessage) => {
-        console.log("Player joined game:", gameId);
-      },
-    );
+    if (connection.state === signalR.HubConnectionState.Disconnected) {
+      // Setting up listeners for server messages
+      connection.on(
+        "PlayerJoinedGame",
+        (gameId: PlayerJoinedGameServerMessage) => {
+          console.log("Player joined game:", gameId);
+        },
+      );
 
-    connection.on(
-      "PlayerMadeMove",
-      ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
-        console.log("Player made move:", playerId, tile);
-      },
-    );
+      connection.on(
+        "PlayerMadeMove",
+        ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
+          console.log("Player made move:", playerId, tile);
+        },
+      );
+    }
+
+    // Clean up when component unmounts or connection changes
+    return () => {
+      if (connection.state === signalR.HubConnectionState.Connected) {
+        connection
+          .stop()
+          .then(() => console.log("Disconnected from SignalR hub"));
+      }
+    };
   }, [connection]);
 
+  // Join the game when gameID becomes available
   useEffect(() => {
     if (!gameID) return;
     joinGame.mutate(gameID);
   }, [gameID]);
 
+  // Notify user if there's a winner
   useEffect(() => {
     if (winner) alert(`The winner is: ${winner}`);
   }, [winner]);
 
+  // Handle user's piece move on the board
   const handleMove = (row: number, col: number, value: string | null) => {
     if (winner || value) return;
     handlePieceClick(row, col, value);

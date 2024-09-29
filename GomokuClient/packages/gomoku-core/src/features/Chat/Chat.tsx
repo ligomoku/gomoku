@@ -20,6 +20,7 @@ export const Chat = () => {
           console.log("Connected to SignalR hub");
           setIsConnected(true);
 
+          //TODO: wait for backend implementation for ReceiveMessage event
           connection.on("ReceiveMessage", (user: string, message: string) => {
             setMessages((prevMessages) => [
               ...prevMessages,
@@ -46,6 +47,7 @@ export const Chat = () => {
 
     if (connection && isConnected) {
       connection
+        //TODO: wait for backend implementation for SendMessage event
         .send("SendMessage", jwtDecodedInfo.username, messageInput)
         .then(() => {
           setMessageInput("");
