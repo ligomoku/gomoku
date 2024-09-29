@@ -7,6 +7,7 @@ namespace GomokuServer.Application.UnitTests;
 
 public class GameSessionHandlerTests
 {
+	private Player _player;
 	private IGameRepository _gameRepository;
 	private IPlayersRepository _playersRepository;
 	private GameSessionHandler _gameSessionHandler;
@@ -16,8 +17,10 @@ public class GameSessionHandlerTests
 	[SetUp]
 	public void Setup()
 	{
+		_player = new Player("playerId", "username");
 		_gameRepository = Substitute.For<IGameRepository>();
 		_playersRepository = Substitute.For<IPlayersRepository>();
+		_playersRepository.GetAsync(_player.Id).Returns(_player);
 
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
@@ -69,7 +72,7 @@ public class GameSessionHandlerTests
 			.Returns(Task.FromResult(Result.Success()));
 
 		// Act
-		var result = await _gameSessionHandler.CreateAsync(validBoardSize);
+		var result = await _gameSessionHandler.CreateAsync(validBoardSize, _player.Id);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
@@ -83,7 +86,7 @@ public class GameSessionHandlerTests
 		int lessThanAllowedBoardSize = 12;
 
 		// Act
-		var result = await _gameSessionHandler.CreateAsync(lessThanAllowedBoardSize);
+		var result = await _gameSessionHandler.CreateAsync(lessThanAllowedBoardSize, _player.Id);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
@@ -98,7 +101,7 @@ public class GameSessionHandlerTests
 		int moreThanAllowedBoardSize = 20;
 
 		// Act
-		var result = await _gameSessionHandler.CreateAsync(moreThanAllowedBoardSize);
+		var result = await _gameSessionHandler.CreateAsync(moreThanAllowedBoardSize, _player.Id);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
