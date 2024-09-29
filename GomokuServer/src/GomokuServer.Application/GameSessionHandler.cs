@@ -64,14 +64,21 @@ public class GameSessionHandler : IGameSessionHandler
 		return mappedResult;
 	}
 
-	public async Task<Result<CreateGameResponse>> CreateAsync(int boardSize)
+	public async Task<Result<CreateGameResponse>> CreateAsync(int boardSize, string playerId)
 	{
 		if (boardSize < BOARD_MIN_SIZE || boardSize > BOARD_MAX_SIZE)
 		{
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
+		var getPlayerResult = await _playersRepository.GetAsync(playerId);
+		if (!getPlayerResult.IsSuccess)
+		{
+			return Result.Error("Cannot get user by id. See logs for more details");
+		}
+
 		var game = new Game(new GameBoard(boardSize), _randomProvider, _dateTimeProvider);
+		var addPlayerResult = game.AddPlayer(getPlayerResult.Value);
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
