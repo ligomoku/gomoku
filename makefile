@@ -23,6 +23,11 @@ clean:
 	@echo "Cleaning build artifacts..."
 	@cd GomokuServer && dotnet clean
 	@cd $(CLIENT_DIR) && yarn clean
+
 download:
 	@echo "Downloading JSON schema..."
 	@cd $(CLIENT_DIR) && yarn download
+
+codegen:
+	@echo "Generating API client..."
+	@cd $(CLIENT_DIR) && yarn codegen
