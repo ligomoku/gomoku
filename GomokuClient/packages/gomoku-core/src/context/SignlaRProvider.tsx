@@ -38,6 +38,35 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       .build();
 
     setConnection(newConnection);
+
+    // Start the connection immediately when it's built
+    const startConnection = async () => {
+      try {
+        await newConnection.start();
+        console.log("SignalR connection established");
+      } catch (error) {
+        console.error("Error starting SignalR connection:", error);
+      }
+    };
+
+    startConnection();
+
+    // Handle reconnection if the connection is closed
+    newConnection.onclose(() => {
+      console.warn("SignalR connection lost. Attempting to reconnect...");
+      startConnection();
+    });
+
+    return () => {
+      if (newConnection.state === signalR.HubConnectionState.Connected) {
+        newConnection
+          .stop()
+          .then(() => console.log("SignalR connection stopped"))
+          .catch((error) =>
+            console.error("Error stopping SignalR connection:", error),
+          );
+      }
+    };
   }, []);
 
   return (

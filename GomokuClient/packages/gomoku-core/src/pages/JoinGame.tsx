@@ -9,20 +9,7 @@ import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import * as signalR from "@microsoft/signalr";
-
-interface PlayerJoinedGameServerMessage {
-  gameId: string;
-}
-
-interface PlayerMadeMoveServerMessage {
-  playerId: string;
-  tile: TileItem;
-}
-
-interface TileItem {
-  x: number;
-  y: number;
-}
+import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 
 const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
@@ -35,52 +22,15 @@ const JoinGame = () => {
 
   const { connection } = useSignalRConnection();
 
-  useEffect(() => {
-    if (!connection) return;
-
-    const startConnection = async () => {
-      try {
-        if (connection.state === signalR.HubConnectionState.Disconnected) {
-          await connection.start();
-          console.log("Reconnected to SignalR hub");
-        }
-      } catch (error) {
-        console.error("Error starting connection:", error);
-      }
-    };
-
-    connection.onclose(() => {
-      console.warn("Connection closed, attempting to reconnect...");
-      startConnection();
-    });
-
-    if (connection.state === signalR.HubConnectionState.Disconnected) {
-      startConnection();
-    }
-
-    connection.on(
-      "PlayerJoinedGame",
-      (gameId: PlayerJoinedGameServerMessage) => {
-        console.log("Player joined game:", gameId);
-      },
-    );
-
-    connection.on(
-      "PlayerMadeMove",
-      ({ playerId, tile }: PlayerMadeMoveServerMessage) => {
-        console.log("Player made move:", playerId, tile);
-      },
-    );
-
-    return () => {
-      if (connection.state === signalR.HubConnectionState.Connected) {
-        connection
-          .stop()
-          .then(() => console.log("Disconnected from SignalR hub"))
-          .catch((error) => console.error("Error disconnecting:", error));
-      }
-    };
-  }, [connection]);
+  useSignalRReconnection({
+    connection,
+    onPlayerJoined: (message) => {
+      console.log("Player joined game:", message.gameId);
+    },
+    onPlayerMadeMove: ({ playerId, tile }) => {
+      console.log("Player made move:", playerId, tile);
+    },
+  });
 
   useEffect(() => {
     if (!gameID) return;

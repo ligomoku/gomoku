@@ -3,32 +3,22 @@ import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import { useAuthToken, useSignalRConnection } from "@/context";
+import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
+import * as signalR from "@microsoft/signalr";
 
 export const Chat = () => {
   const { jwtDecodedInfo } = useAuthToken();
   const { connection } = useSignalRConnection();
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [isConnected, setIsConnected] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (connection) {
-      console.log("Connected to SignalR hub");
-      setIsConnected(true);
-
-      //TODO: wait for backend implementation for ReceiveMessage event
-      connection.on("ReceiveMessage", (user: string, message: string) => {
-        setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
-      });
-
-      return () => {
-        connection
-          .stop()
-          .then(() => console.log("Disconnected from SignalR hub"));
-      };
-    }
-  }, [connection]);
+  useSignalRReconnection({
+    connection,
+    onReceiveMessage: (user, message) => {
+      setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
+    },
+  });
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
@@ -37,7 +27,10 @@ export const Chat = () => {
       return;
     }
 
-    if (connection && isConnected) {
+    if (
+      connection &&
+      connection.state === signalR.HubConnectionState.Connected
+    ) {
       connection
         //TODO: wait for backend implementation for SendMessage event
         .send("SendMessage", jwtDecodedInfo.username, messageInput)
@@ -66,7 +59,7 @@ export const Chat = () => {
         <CardTitle>Chat</CardTitle>
       </CardHeader>
       <CardContent>
-        {isConnected ? (
+        {connection ? (
           <div className="space-y-4">
             <div className="flex space-x-2">
               <input
