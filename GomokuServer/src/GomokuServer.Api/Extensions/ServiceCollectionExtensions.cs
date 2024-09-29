@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 
 using GomokuServer.Api.Attributes;
+using GomokuServer.Api.Hubs.Filters;
 using GomokuServer.Api.Services;
 
 using Microsoft.OpenApi.Any;
@@ -89,6 +90,16 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection RegisterApiServices(this IServiceCollection services)
 	{
 		services.AddSingleton<ClerkJwtValidator>();
+
+		return services;
+	}
+
+	public static IServiceCollection RegisterSignalR(this IServiceCollection services)
+	{
+		services
+			.AddSignalR()
+			.AddHubOptions<GameHub>(options => options.AddFilter<ClerkJwtValidationHubFilter>())
+			.AddMessagePackProtocol();
 
 		return services;
 	}
