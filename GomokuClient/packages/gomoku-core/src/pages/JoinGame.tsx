@@ -19,16 +19,8 @@ const JoinGame = () => {
   );
 
   useEffect(() => {
-    if (gameID) {
-      joinGame.mutate(gameID, {
-        onSuccess: () => {
-          console.log("Successfully joined the game!");
-        },
-        onError: (error) => {
-          alert(`Error joining the game: ${error.message}`);
-        },
-      });
-    }
+    if (!gameID) return;
+    joinGame.mutate(gameID);
   }, [gameID]);
 
   useEffect(() => {
