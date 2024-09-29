@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Square from "@/features/Square/Square";
 import { useBoard } from "@/hooks/useBoard";
 import { Timer } from "@/features/Timer";
@@ -7,7 +7,7 @@ import { useParams } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
-import { AuthTokenContext } from "@/context";
+import { useAuthToken } from "@/context";
 import { useCustomSignalR } from "@/hooks/useSignlarR";
 
 interface PlayerJoinedGameServerMessage {
@@ -28,7 +28,7 @@ const JoinGame = () => {
   const { board, winner, handlePieceClick } = useBoard();
   //TODO: check for better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
-  const { jwtToken } = useContext(AuthTokenContext);
+  const { jwtToken } = useAuthToken();
   const joinGame = useJoinGame(jwtToken || "");
 
   const connection = useCustomSignalR();

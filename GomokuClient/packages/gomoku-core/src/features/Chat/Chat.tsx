@@ -1,26 +1,57 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
-import { useChatSignalR } from "@/hooks/useSignlarR";
-import { AuthTokenContext } from "@/context";
+import { useEffect, useRef, useState, KeyboardEvent } from "react";
+import { useAuthToken, useSignalRConnection } from "@/context";
 
 export const Chat = () => {
-  const { jwtDecodedInfo } = useContext(AuthTokenContext);
+  const { jwtDecodedInfo } = useAuthToken();
+  const { connection } = useSignalRConnection();
   const [messageInput, setMessageInput] = useState("");
-  const { sendMessage, messages, isConnected } = useChatSignalR();
+  const [messages, setMessages] = useState<string[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (connection) {
+      connection
+        .start()
+        .then(() => {
+          console.log("Connected to SignalR hub");
+          setIsConnected(true);
+
+          connection.on("ReceiveMessage", (user: string, message: string) => {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              `${user}: ${message}`,
+            ]);
+          });
+        })
+        .catch((error) => console.error("Connection failed: ", error));
+
+      return () => {
+        connection
+          .stop()
+          .then(() => console.log("Disconnected from SignalR hub"));
+      };
+    }
+  }, [connection]);
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
-    console.log("JWT DECODED", jwtDecodedInfo);
     if (!jwtDecodedInfo?.username) {
       console.error("User information is missing. Cannot send message.");
       return;
     }
 
-    sendMessage(jwtDecodedInfo.username, messageInput);
-    setMessageInput("");
+    if (connection && isConnected) {
+      connection
+        .send("SendMessage", jwtDecodedInfo.username, messageInput)
+        .then(() => {
+          setMessageInput("");
+        })
+        .catch((error) => console.error("Sending message failed: ", error));
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

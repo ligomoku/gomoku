@@ -1,4 +1,10 @@
-import { useEffect, useState, createContext, ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  ReactNode,
+  useContext,
+} from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
 
@@ -80,4 +86,12 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthTokenContext.Provider>
   );
+};
+
+export const useAuthToken = () => {
+  const context = useContext(AuthTokenContext);
+  if (context === undefined) {
+    throw new Error("useAuthToken must be used within a AuthTokenProvider");
+  }
+  return context;
 };
