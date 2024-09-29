@@ -33,7 +33,7 @@ public class ClerkJwtValidationMiddleware
 
 		if (validationResult.IsValid)
 		{
-			context.User = validationResult.Claims!;
+			context.User = validationResult.ClaimsPrincipal!;
 			await _next(context);
 			return;
 		}

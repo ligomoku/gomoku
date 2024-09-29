@@ -20,7 +20,7 @@ public class ClerkJwtValidationHubFilter : IHubFilter
 
 		if (validationResult.IsValid)
 		{
-			invocationContext.Context.Items["User"] = validationResult.Claims;
+			invocationContext.Context.Items["User"] = validationResult.ClaimsPrincipal;
 			return await next(invocationContext);
 		}
 

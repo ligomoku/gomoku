@@ -73,18 +73,19 @@ public class GameController : Controller
 	/// </summary>
 	/// <response code="200">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
-	[HttpPost("{gameId}/join/{playerId}")]
+	[HttpPost("{gameId}/join")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	[ClerkAuthorization]
-	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId, [FromRoute] string playerId)
+	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, playerId);
+		var userId = User.Claims.First(c => c.Type == "userId").Value!;
+		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, userId);
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, playerId);
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, userId);
 		}
 
 		return addPlayerToGameResult.ToApiResponse();
@@ -96,20 +97,21 @@ public class GameController : Controller
 	/// <response code="200">Move successfully made</response>
 	/// <response code="400">Required data is not provided</response>
 	/// <response code="404">Game or player with specified id not found</response>
-	[HttpPost("{gameId}/make-move/{playerId}")]
+	[HttpPost("{gameId}/make-move")]
 	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	[ClerkAuthorization]
-	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromRoute] string playerId, [FromBody] MakeMoveRequest request)
+	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
 	{
-		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), playerId);
+		var userId = User.Claims.First(c => c.Type == "userId").Value!;
+		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), userId);
 
 		if (placeTileResult.IsSuccess)
 		{
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerId, request.X, request.Y);
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, userId, request.X, request.Y);
 		}
 
 		return placeTileResult.ToApiResponse();

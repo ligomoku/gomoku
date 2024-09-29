@@ -22,7 +22,7 @@ public class ClerkJwtValidator
 
 	public async Task<ClerkJwtValidationResult> ValidateAsync(string? token)
 	{
-		ClaimsPrincipal? claims = null;
+		ClaimsPrincipal? claimsPrincipal = null;
 		try
 		{
 			if (string.IsNullOrWhiteSpace(token))
@@ -54,7 +54,7 @@ public class ClerkJwtValidator
 
 			try
 			{
-				claims = tokenHandler.ValidateToken(token, validationParameters, out _);
+				claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out _);
 			}
 			catch (SecurityTokenException)
 			{
@@ -103,7 +103,7 @@ public class ClerkJwtValidator
 		return new()
 		{
 			IsValid = true,
-			Claims = claims,
+			ClaimsPrincipal = claimsPrincipal,
 			HttpStatusCode = StatusCodes.Status200OK,
 		};
 	}
@@ -113,7 +113,7 @@ public record ClerkJwtValidationResult
 {
 	public required bool IsValid { get; init; }
 
-	public ClaimsPrincipal? Claims { get; init; }
+	public ClaimsPrincipal? ClaimsPrincipal { get; init; }
 
 	public string? ErrorMessage { get; set; }
 
