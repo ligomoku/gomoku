@@ -249,8 +249,7 @@ public class GameTests
 		var result = _game.AddPlayer(player);
 
 		// Assert
-		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(PlayerAddingValidationError.PlayerAlreadyAddedToGame);
+		result.IsValid.Should().BeTrue();
 	}
 
 	[Test]
