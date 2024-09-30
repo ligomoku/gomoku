@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
+import { typedStorage } from "@/shared/lib/utils";
 
 interface JwtTokenPayload {
   exp: number;
@@ -49,7 +50,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         const token = await getToken();
         if (token && isMounted) {
           setJwtToken(token);
-          localStorage.setItem("jwtToken", token);
+          typedStorage.setItem("jwtToken", token);
 
           const decoded: JwtTokenPayload = JWT.jwtDecode(token);
           setJwtDecodedInfo(decoded);
