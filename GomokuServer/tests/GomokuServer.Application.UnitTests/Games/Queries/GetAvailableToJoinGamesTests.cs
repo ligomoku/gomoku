@@ -2,7 +2,6 @@
 
 using GomokuServer.Application.Games.Queries;
 using GomokuServer.Application.UnitTests.TestData;
-using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 
@@ -10,8 +9,6 @@ public class GetAvailableToJoinGamesTests
 {
 	private TestDataProvider _testDataProvider;
 	private IGameRepository _gameRepository;
-	private IRandomProvider _randomProvider;
-	private IDateTimeProvider _dateTimeProvider;
 	private GetAvailableToJoinGamesQueryHandler _handler;
 
 	[SetUp]
@@ -19,13 +16,11 @@ public class GetAvailableToJoinGamesTests
 	{
 		_testDataProvider = new TestDataProvider();
 		_gameRepository = Substitute.For<IGameRepository>();
-		_randomProvider = Substitute.For<IRandomProvider>();
-		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_handler = new GetAvailableToJoinGamesQueryHandler(_gameRepository);
 	}
 
 	[Test]
-	public async Task GetAvailableToJoinGamesAsync_WhenNoGamesFound_ShouldReturnEmptySuccess()
+	public async Task GetAvailableToJoinGames_WhenNoGamesFound_ShouldReturnEmptySuccess()
 	{
 		// Arrange
 		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
@@ -43,7 +38,7 @@ public class GetAvailableToJoinGamesTests
 	}
 
 	[Test]
-	public async Task GetAvailableToJoinGamesAsync_WhenGamesFound_ShouldReturnSuccessWithGames()
+	public async Task GetAvailableToJoinGames_WhenGamesFound_ShouldReturnSuccessWithGames()
 	{
 		// Arrange
 		var games = new List<Game>
@@ -67,7 +62,7 @@ public class GetAvailableToJoinGamesTests
 	}
 
 	[Test]
-	public async Task GetAvailableToJoinGamesAsync_WhenPlayerOneIsSet_ShouldReturnPlayerAsOpponentInResponse()
+	public async Task GetAvailableToJoinGames_WhenPlayerOneIsSet_ShouldReturnPlayerAsOpponentInResponse()
 	{
 		// Arrange
 		var games = new List<Game>
@@ -91,7 +86,7 @@ public class GetAvailableToJoinGamesTests
 	}
 
 	[Test]
-	public async Task GetAvailableToJoinGamesAsync_WhenRepositoryFails_ShouldReturnFailure()
+	public async Task GetAvailableToJoinGames_WhenRepositoryFails_ShouldReturnFailure()
 	{
 		// Arrange
 		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
