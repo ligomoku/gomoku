@@ -2,11 +2,15 @@
   "name": "@gomoku/node",
   "packageManager": "yarn@4.5.0",
   "scripts": {
-    "dev": "node src/index.js",
-    "dev:watch": "nodemon src/index.js"
+    "dev:send": "nodemon sendMessage.js",
+    "dev:receive": "nodemon receiveMessage.js",
+    "dev:multi": "concurrently -k -n send,receive \"yarn dev:send\" \"yarn dev:receive\""
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.7",
     "@msgpack/msgpack": "^3.0.0-beta2"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
   }
 }
