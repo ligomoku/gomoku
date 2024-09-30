@@ -43,8 +43,8 @@ public class GetAvailableToJoinGamesTests
 		// Arrange
 		var games = new List<Game>
 		{
-			_testDataProvider.GetGameWithOnePlayer(),
-			_testDataProvider.GetGameWithOnePlayer(),
+			_testDataProvider.GetGame_OnePlayerJoined(),
+			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
 		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
@@ -67,7 +67,7 @@ public class GetAvailableToJoinGamesTests
 		// Arrange
 		var games = new List<Game>
 		{
-			_testDataProvider.GetGameWithOnePlayer(),
+			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
 		_gameRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
