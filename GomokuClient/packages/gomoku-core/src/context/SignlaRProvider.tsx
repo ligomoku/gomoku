@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
-import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
+import { JsonHubProtocol } from "@microsoft/signalr";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
@@ -34,7 +34,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
           return token ? token : "";
         },
       })
-      .withHubProtocol(new MessagePackHubProtocol())
+      .withHubProtocol(new JsonHubProtocol())
       .withAutomaticReconnect()
       .build();
   }
