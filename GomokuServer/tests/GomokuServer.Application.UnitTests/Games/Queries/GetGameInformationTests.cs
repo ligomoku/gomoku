@@ -40,6 +40,10 @@ public class GetGameInformationTests
 		getGameResponse.NextMoveShouldMakePlayerId.Should().BeNull();
 		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
 		getGameResponse.PlayerTwo.Should().BeNull();
+		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
+		getGameResponse.PlayersMoves.Should().BeEmpty();
+		getGameResponse.WinnerId.Should().BeNull();
+		getGameResponse.WinningSequence.Should().BeNull();
 
 		await _gameRepository.Received(1).GetAsync(game.GameId);
 	}
