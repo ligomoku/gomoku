@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "run:server": "dotnet run --cofiguration Release --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj",
     "prettier:client": "cd GomokuClient && yarn format",
     "prettier:client:check": "cd GomokuClient && yarn format:check",
     "prettier:server": "dotnet format ./GomokuServer/GomokuServer.sln",

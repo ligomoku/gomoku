@@ -32,7 +32,7 @@ public class GameHub : Hub
 
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
-		_logger.LogDebug($"Calling make move. Message: {makeMoveMessage}");
+		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
 
 		if (Context.Items["User"] is ClaimsPrincipal user)
 		{
