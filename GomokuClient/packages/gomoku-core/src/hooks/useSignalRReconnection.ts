@@ -57,7 +57,6 @@ export const useSignalRReconnection = ({
       connection.on("ReceiveMessage", onReceiveMessage);
     }
 
-    // Clean up listeners on disconnection or unmount
     return () => {
       console.log("Cleaning up SignalR listeners...");
       if (onPlayerJoined) {
