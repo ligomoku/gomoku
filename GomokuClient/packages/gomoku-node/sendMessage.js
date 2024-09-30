@@ -18,7 +18,6 @@ async function startAndSendMessage() {
     await connection.start();
     console.log("SignalR connection established (Sender)");
 
-    // Send a message to the server using the 'SendMessage' method
     await connection.send("SendMessage", encoded);
     console.log("Message sent successfully");
   } catch (error) {
