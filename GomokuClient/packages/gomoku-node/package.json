@@ -6,6 +6,7 @@
     "dev:watch": "nodemon src/index.js"
   },
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@msgpack/msgpack": "^3.0.0-beta2"
   }
 }
