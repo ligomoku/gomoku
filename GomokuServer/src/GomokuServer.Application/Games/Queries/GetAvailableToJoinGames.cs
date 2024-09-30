@@ -1,4 +1,5 @@
-﻿using GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
