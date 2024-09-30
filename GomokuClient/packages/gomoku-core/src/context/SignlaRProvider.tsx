@@ -30,7 +30,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
     connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
         accessTokenFactory: () => {
-          const token = localStorage.getItem("authToken");
+          const token = localStorage.getItem("jwtToken"); // TODO: Should be extracted to constant maybe?
           return token ? token : "";
         },
       })
