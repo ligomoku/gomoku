@@ -99,7 +99,7 @@ public static class ServiceCollectionExtensions
 		services
 			.AddSignalR()
 			.AddHubOptions<GameHub>(options => options.AddFilter<ClerkJwtValidationHubFilter>())
-			.AddMessagePackProtocol();
+			.AddJsonProtocol();
 
 		return services;
 	}

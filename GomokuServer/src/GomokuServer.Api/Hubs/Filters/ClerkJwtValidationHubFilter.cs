@@ -14,7 +14,7 @@ public class ClerkJwtValidationHubFilter : IHubFilter
 	public async ValueTask<object?> InvokeMethodAsync(HubInvocationContext invocationContext, Func<HubInvocationContext, ValueTask<object?>> next)
 	{
 		var httpContext = invocationContext.Context.GetHttpContext();
-		var token = httpContext?.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+		var token = httpContext?.Request.Query["access_token"];
 
 		var validationResult = await _clerkJwtValidator.ValidateAsync(token);
 

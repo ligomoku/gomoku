@@ -8,6 +8,7 @@ using GomokuServer.Api.Hubs.Messages.Client;
 using GomokuServer.Api.Hubs.Messages.Server;
 
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 using SignalRSwaggerGen.Attributes;
 
@@ -15,10 +16,12 @@ using SignalRSwaggerGen.Attributes;
 public class GameHub : Hub
 {
 	private readonly IGameSessionHandler _gameSessionHandler;
+	private readonly ILogger<GameHub> _logger;
 
-	public GameHub(IGameSessionHandler gameSessionHandler)
+	public GameHub(IGameSessionHandler gameSessionHandler, ILogger<GameHub> logger)
 	{
 		_gameSessionHandler = gameSessionHandler;
+		_logger = logger;
 	}
 
 	public async Task JoinGameGroup(string gameId)
@@ -29,10 +32,11 @@ public class GameHub : Hub
 
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
-		Console.WriteLine($"MakeMove called with gameId: {makeMoveMessage.GameId}, x: {makeMoveMessage.X}, y: {makeMoveMessage.Y}");
+		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
+
 		if (Context.Items["User"] is ClaimsPrincipal user)
 		{
-			var userId = Context.User?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+			var userId = user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
 
 			var placeTileResult = await _gameSessionHandler.PlaceTileAsync(makeMoveMessage.GameId, new TileDto(makeMoveMessage.X, makeMoveMessage.Y), userId!);
 

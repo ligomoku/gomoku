@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
-import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
+import { JsonHubProtocol } from "@microsoft/signalr";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
@@ -30,11 +30,11 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
     connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
         accessTokenFactory: () => {
-          const token = localStorage.getItem("authToken");
+          const token = localStorage.getItem("jwtToken"); // TODO: Should be extracted to constant maybe?
           return token ? token : "";
         },
       })
-      .withHubProtocol(new MessagePackHubProtocol())
+      .withHubProtocol(new JsonHubProtocol())
       .withAutomaticReconnect()
       .build();
   }
