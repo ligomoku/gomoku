@@ -996,6 +996,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@gomoku/node@workspace:packages/gomoku-node":
+  version: 0.0.0-use.local
+  resolution: "@gomoku/node@workspace:packages/gomoku-node"
+  dependencies:
+    "@msgpack/msgpack": "npm:^3.0.0-beta2"
+  languageName: unknown
+  linkType: soft
+
 "@gomoku/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@gomoku/root@workspace:."
@@ -1409,6 +1417,13 @@ __metadata:
   version: 2.8.0
   resolution: "@msgpack/msgpack@npm:2.8.0"
   checksum: 10c0/5964ed3daad9ccf314238da81c91152dc693bca167b2469445c1d3ce0495443612e543d052281061a91ec48ed44a6a49dd3a334b5d0dbe2dc2db6ea6143e5787
+  languageName: node
+  linkType: hard
+
+"@msgpack/msgpack@npm:^3.0.0-beta2":
+  version: 3.0.0-beta2
+  resolution: "@msgpack/msgpack@npm:3.0.0-beta2"
+  checksum: 10c0/f4dc4c210bb722f0f7407214334dda728263cce8eb0d3f9af1a40a48e13ce175b599de35a757dce5f1d92a74d3ce4d0242feb67516f308a626058d0f98f01c70
   languageName: node
   linkType: hard
 

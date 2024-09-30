@@ -1,0 +1,11 @@
+{
+  "name": "@gomoku/node",
+  "packageManager": "yarn@4.5.0",
+  "scripts": {
+    "dev": "node src/index.js",
+    "dev:watch": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "@msgpack/msgpack": "^3.0.0-beta2"
+  }
+}

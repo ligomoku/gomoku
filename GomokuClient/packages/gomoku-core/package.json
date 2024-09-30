@@ -96,5 +96,9 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -26,14 +26,19 @@ export const Chat = () => {
       const myMessage = `${jwtDecodedInfo.username}: ${messageInput}`;
       setMessages((prevMessages) => [...prevMessages, myMessage]);
 
+      console.log(
+        "Sending message to server:",
+        jwtDecodedInfo.username,
+        messageInput,
+      );
+
       connection
         .send("ReceiveMessage", jwtDecodedInfo.username, messageInput)
         .then(() => {
-          console.log("Message sent to SignalR hub");
-          setMessageInput("");
+          console.log("Message sent successfully");
         })
         .catch((error) => {
-          console.error("Sending message failed: ", error);
+          console.error("Error sending message:", error);
         });
     }
   };
