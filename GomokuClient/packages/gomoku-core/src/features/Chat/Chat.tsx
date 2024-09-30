@@ -3,7 +3,6 @@ import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useRef, useState, KeyboardEvent } from "react";
 import { useAuthToken, useSignalRConnection } from "@/context";
-import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 import * as signalR from "@microsoft/signalr";
 
 export const Chat = () => {
@@ -12,13 +11,6 @@ export const Chat = () => {
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
-
-  useSignalRReconnection({
-    connection,
-    onReceiveMessage: (user, message) => {
-      setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
-    },
-  });
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
@@ -31,13 +23,18 @@ export const Chat = () => {
       connection &&
       connection.state === signalR.HubConnectionState.Connected
     ) {
+      const myMessage = `${jwtDecodedInfo.username}: ${messageInput}`;
+      setMessages((prevMessages) => [...prevMessages, myMessage]);
+
       connection
-        //TODO: wait for backend implementation for SendMessage event
-        .send("SendMessage", jwtDecodedInfo.username, messageInput)
+        .send("ReceiveMessage", jwtDecodedInfo.username, messageInput)
         .then(() => {
+          console.log("Message sent to SignalR hub");
           setMessageInput("");
         })
-        .catch((error) => console.error("Sending message failed: ", error));
+        .catch((error) => {
+          console.error("Sending message failed: ", error);
+        });
     }
   };
 

@@ -1,15 +1,17 @@
 import {
   createContext,
   useEffect,
-  useState,
+  useRef,
   ReactNode,
   useContext,
+  useState,
 } from "react";
 import * as signalR from "@microsoft/signalr";
 import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
+  isConnected: boolean;
 }
 
 export const SignalRContext = createContext<SignalRContextType | undefined>(
@@ -21,12 +23,11 @@ interface SignalRProviderProps {
 }
 
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {
-  const [connection, setConnection] = useState<signalR.HubConnection | null>(
-    null,
-  );
+  const connectionRef = useRef<signalR.HubConnection | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
 
-  useEffect(() => {
-    const newConnection = new signalR.HubConnectionBuilder()
+  if (!connectionRef.current) {
+    connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
         accessTokenFactory: () => {
           const token = localStorage.getItem("authToken");
@@ -36,30 +37,38 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       .withHubProtocol(new MessagePackHubProtocol())
       .withAutomaticReconnect()
       .build();
+  }
 
-    setConnection(newConnection);
+  useEffect(() => {
+    const connection = connectionRef.current;
 
-    // Start the connection immediately when it's built
     const startConnection = async () => {
-      try {
-        await newConnection.start();
-        console.log("SignalR connection established");
-      } catch (error) {
-        console.error("Error starting SignalR connection:", error);
+      if (connection?.state === signalR.HubConnectionState.Disconnected) {
+        try {
+          await connection.start();
+          console.log("SignalR connection established");
+          setIsConnected(true);
+        } catch (error) {
+          console.error("Error starting SignalR connection:", error);
+          setTimeout(startConnection, 5000);
+        }
       }
     };
 
     startConnection();
 
-    // Handle reconnection if the connection is closed
-    newConnection.onclose(() => {
+    connection?.onclose(() => {
       console.warn("SignalR connection lost. Attempting to reconnect...");
+      setIsConnected(false);
       startConnection();
     });
 
     return () => {
-      if (newConnection.state === signalR.HubConnectionState.Connected) {
-        newConnection
+      if (
+        connection &&
+        connection.state === signalR.HubConnectionState.Connected
+      ) {
+        connection
           .stop()
           .then(() => console.log("SignalR connection stopped"))
           .catch((error) =>
@@ -70,7 +79,9 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   }, []);
 
   return (
-    <SignalRContext.Provider value={{ connection }}>
+    <SignalRContext.Provider
+      value={{ connection: connectionRef.current, isConnected }}
+    >
       {children}
     </SignalRContext.Provider>
   );

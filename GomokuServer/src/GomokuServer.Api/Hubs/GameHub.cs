@@ -62,6 +62,7 @@ public class GameHub : Hub
 
 	public async Task SendMessage(string user, string message)
 	{
+		Console.WriteLine($"SendMessage called with user: {user}, message: {message}");
 		await Clients.All.SendAsync("ReceiveMessage", user, message);
 	}
 }

@@ -20,10 +20,11 @@ const JoinGame = () => {
     jwtToken || localStorage.getItem("jwtToken") || "",
   );
 
-  const { connection } = useSignalRConnection();
+  const { connection, isConnected } = useSignalRConnection();
 
   useSignalRReconnection({
     connection,
+    isConnected,
     onPlayerJoined: (message) => {
       console.log("Player joined game:", message.gameId);
     },
@@ -41,7 +42,7 @@ const JoinGame = () => {
     if (winner) alert(`The winner is: ${winner}`);
   }, [winner]);
 
-  const handleMove = (row: number, col: number, value: string | null) => {
+  const handleMove = async (row: number, col: number, value: string | null) => {
     if (!connection) return;
     if (winner || value) return;
 
@@ -50,10 +51,18 @@ const JoinGame = () => {
       return;
     }
 
-    connection
-      .invoke("PlayerMadeMove", gameID, row, col)
-      .then(() => handlePieceClick(row, col, value))
-      .catch((error) => console.error("Error making move:", error));
+    const makeMoveMessage = {
+      gameId: gameID,
+      x: row,
+      y: col,
+    };
+
+    try {
+      await connection.invoke("MakeMove", makeMoveMessage);
+      handlePieceClick(row, col, value);
+    } catch (error) {
+      console.error("Error making move:", error);
+    }
   };
 
   return (

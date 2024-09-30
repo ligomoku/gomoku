@@ -17,6 +17,7 @@ interface TileItem {
 
 interface UseSignalRReconnectionProps {
   connection: signalR.HubConnection | null;
+  isConnected: boolean;
   onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
   onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
   onReceiveMessage?: (user: string, message: string) => void;
@@ -24,32 +25,25 @@ interface UseSignalRReconnectionProps {
 
 export const useSignalRReconnection = ({
   connection,
+  isConnected,
   onPlayerJoined,
   onPlayerMadeMove,
   onReceiveMessage,
 }: UseSignalRReconnectionProps) => {
   useEffect(() => {
-    if (!connection) return;
-
-    const startConnection = async () => {
-      try {
-        if (connection.state === signalR.HubConnectionState.Disconnected) {
-          await connection.start();
-          console.log("Reconnected to SignalR hub");
-        }
-      } catch (error) {
-        console.error("Error starting connection:", error);
-      }
-    };
-
-    connection.onclose(() => {
-      console.warn("Connection closed, attempting to reconnect...");
-      startConnection();
-    });
-
-    if (connection.state === signalR.HubConnectionState.Disconnected) {
-      startConnection();
+    if (!connection) {
+      console.warn("No connection available for SignalR");
+      return;
     }
+
+    if (!isConnected) {
+      console.warn(
+        "SignalR connection is not established yet. Waiting to attach listeners...",
+      );
+      return;
+    }
+
+    console.log("Attaching SignalR listeners...");
 
     if (onPlayerJoined) {
       connection.on("PlayerJoinedGame", onPlayerJoined);
@@ -63,10 +57,24 @@ export const useSignalRReconnection = ({
       connection.on("ReceiveMessage", onReceiveMessage);
     }
 
+    // Clean up listeners on disconnection or unmount
     return () => {
-      connection.off("PlayerJoinedGame");
-      connection.off("PlayerMadeMove");
-      connection.off("ReceiveMessage");
+      console.log("Cleaning up SignalR listeners...");
+      if (onPlayerJoined) {
+        connection.off("PlayerJoinedGame", onPlayerJoined);
+      }
+      if (onPlayerMadeMove) {
+        connection.off("PlayerMadeMove", onPlayerMadeMove);
+      }
+      if (onReceiveMessage) {
+        connection.off("ReceiveMessage", onReceiveMessage);
+      }
     };
-  }, [connection, onPlayerJoined, onPlayerMadeMove, onReceiveMessage]);
+  }, [
+    connection,
+    isConnected,
+    onPlayerJoined,
+    onPlayerMadeMove,
+    onReceiveMessage,
+  ]);
 };
