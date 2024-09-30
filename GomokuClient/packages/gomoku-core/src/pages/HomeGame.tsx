@@ -11,7 +11,7 @@ import {
   GetAvailableGamesResponse,
 } from "@/api/client";
 import { Users } from "lucide-react";
-import { getDefaultHeaders } from "@/shared/lib/utils";
+import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { useAuthToken } from "@/context";
 
@@ -21,7 +21,7 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
 
   const handleCreateGame = useCreateGameAndNavigate(
-    jwtToken || localStorage.getItem("jwtToken") || "",
+    jwtToken || typedStorage.getItem("jwtToken") || "",
   );
 
   const transformGameData = (

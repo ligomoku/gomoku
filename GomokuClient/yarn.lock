@@ -976,6 +976,7 @@ __metadata:
     tailwind-merge: "npm:^2.5.2"
     tailwindcss: "npm:^3.4.13"
     tailwindcss-animate: "npm:^1.0.7"
+    typed-local-store: "npm:^2.0.2"
     typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.7.0"
     vite: "npm:^5.4.8"
@@ -9454,6 +9455,13 @@ __metadata:
     media-typer: "npm:0.3.0"
     mime-types: "npm:~2.1.24"
   checksum: 10c0/a23daeb538591b7efbd61ecf06b6feb2501b683ffdc9a19c74ef5baba362b4347e42f1b4ed81f5882a8c96a3bfff7f93ce3ffaf0cbbc879b532b04c97a55db9d
+  languageName: node
+  linkType: hard
+
+"typed-local-store@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "typed-local-store@npm:2.0.2"
+  checksum: 10c0/6e4e7987c079dad0939ac89c3a8c73e3762aed13f5b1dfa1dc94a042317b7defc4a9a4de71f93e3d0e12a5f7834be3c0c3b7abb44c8556900c9b00db62133282
   languageName: node
   linkType: hard
 

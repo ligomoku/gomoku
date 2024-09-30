@@ -43,6 +43,7 @@
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "typed-local-store": "^2.0.2",
     "vite": "^5.4.8"
   },
   "devDependencies": {

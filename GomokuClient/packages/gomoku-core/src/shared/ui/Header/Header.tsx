@@ -10,12 +10,13 @@ import {
 } from "@clerk/clerk-react";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { useAuthToken } from "@/context";
+import { typedStorage } from "@/shared/lib/utils";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { jwtToken } = useAuthToken();
   const handleCreateGame = useCreateGameAndNavigate(
-    jwtToken || localStorage.getItem("jwtToken") || "",
+    jwtToken || typedStorage.getItem("jwtToken") || "",
   );
 
   return (

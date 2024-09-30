@@ -6,7 +6,7 @@ import { Chat } from "@/features/Chat";
 import { useParams } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { postApiGameByGameIdJoin } from "@/api/client";
-import { getDefaultHeaders } from "@/shared/lib/utils";
+import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import * as signalR from "@microsoft/signalr";
 import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
@@ -17,7 +17,7 @@ const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
   const joinGame = useJoinGame(
-    jwtToken || localStorage.getItem("jwtToken") || "",
+    jwtToken || typedStorage.getItem("jwtToken") || "",
   );
 
   const { connection, isConnected } = useSignalRConnection();

@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import TypedLocalStore, { MemoryStorage } from "typed-local-store";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -31,3 +32,12 @@ export function getDefaultHeaders(
     };
   }
 }
+
+interface Schema {
+  jwtToken: string;
+}
+
+const memoryStorage = new MemoryStorage();
+export const typedStorage = new TypedLocalStore<Schema>({
+  fallbackStorage: memoryStorage,
+});
