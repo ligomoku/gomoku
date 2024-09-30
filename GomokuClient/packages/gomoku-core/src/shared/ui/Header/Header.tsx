@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/shared/ui/input";
 import { Menu, X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -9,11 +9,11 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { AuthTokenContext } from "@/context";
+import { useAuthToken } from "@/context";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { jwtToken } = useContext(AuthTokenContext);
+  const { jwtToken } = useAuthToken();
   const handleCreateGame = useCreateGameAndNavigate(
     jwtToken || localStorage.getItem("jwtToken") || "",
   );

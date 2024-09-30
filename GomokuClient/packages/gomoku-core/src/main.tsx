@@ -6,7 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { client } from "@/api/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthTokenProvider } from "@/context";
+import { AuthTokenProvider, SignalRProvider } from "@/context";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -31,7 +31,9 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <AuthTokenProvider>
-          <RouterProvider router={router} />
+          <SignalRProvider>
+            <RouterProvider router={router} />
+          </SignalRProvider>
         </AuthTokenProvider>
       </ClerkProvider>
     </QueryClientProvider>

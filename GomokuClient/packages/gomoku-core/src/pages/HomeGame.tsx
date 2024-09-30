@@ -13,13 +13,12 @@ import {
 import { Users } from "lucide-react";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { useContext } from "react";
-import { AuthTokenContext } from "@/context";
+import { useAuthToken } from "@/context";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { data: gameData } = useFetchGames();
-  const { jwtToken } = useContext(AuthTokenContext);
+  const { jwtToken } = useAuthToken();
 
   const handleCreateGame = useCreateGameAndNavigate(
     jwtToken || localStorage.getItem("jwtToken") || "",

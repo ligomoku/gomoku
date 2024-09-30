@@ -1,26 +1,46 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useContext, useEffect, useRef, useState, KeyboardEvent } from "react";
-import { useChatSignalR } from "@/hooks/useSignlarR";
-import { AuthTokenContext } from "@/context";
+import { useEffect, useRef, useState, KeyboardEvent } from "react";
+import { useAuthToken, useSignalRConnection } from "@/context";
+import * as signalR from "@microsoft/signalr";
 
 export const Chat = () => {
-  const { jwtDecodedInfo } = useContext(AuthTokenContext);
+  const { jwtDecodedInfo } = useAuthToken();
+  const { connection } = useSignalRConnection();
   const [messageInput, setMessageInput] = useState("");
-  const { sendMessage, messages, isConnected } = useChatSignalR();
+  const [messages, setMessages] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
-    console.log("JWT DECODED", jwtDecodedInfo);
     if (!jwtDecodedInfo?.username) {
       console.error("User information is missing. Cannot send message.");
       return;
     }
 
-    sendMessage(jwtDecodedInfo.username, messageInput);
-    setMessageInput("");
+    if (
+      connection &&
+      connection.state === signalR.HubConnectionState.Connected
+    ) {
+      const myMessage = `${jwtDecodedInfo.username}: ${messageInput}`;
+      setMessages((prevMessages) => [...prevMessages, myMessage]);
+
+      console.log(
+        "Sending message to server:",
+        jwtDecodedInfo.username,
+        messageInput,
+      );
+
+      connection
+        .send("ReceiveMessage", jwtDecodedInfo.username, messageInput)
+        .then(() => {
+          console.log("Message sent successfully");
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -41,7 +61,7 @@ export const Chat = () => {
         <CardTitle>Chat</CardTitle>
       </CardHeader>
       <CardContent>
-        {isConnected ? (
+        {connection ? (
           <div className="space-y-4">
             <div className="flex space-x-2">
               <input
