@@ -7,6 +7,8 @@ using System.Security.Claims;
 using GomokuServer.Api.Hubs.Messages.Client;
 using GomokuServer.Api.Hubs.Messages.Server;
 
+using MediatR;
+
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -15,12 +17,12 @@ using SignalRSwaggerGen.Attributes;
 [SignalRHub(HubRoute.GameHub)]
 public class GameHub : Hub
 {
-	private readonly IGameSessionHandler _gameSessionHandler;
+	private readonly IMediator _mediator;
 	private readonly ILogger<GameHub> _logger;
 
-	public GameHub(IGameSessionHandler gameSessionHandler, ILogger<GameHub> logger)
+	public GameHub(IMediator mediator, ILogger<GameHub> logger)
 	{
-		_gameSessionHandler = gameSessionHandler;
+		_mediator = mediator;
 		_logger = logger;
 	}
 
@@ -38,7 +40,8 @@ public class GameHub : Hub
 		{
 			var userId = user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
 
-			var placeTileResult = await _gameSessionHandler.PlaceTileAsync(makeMoveMessage.GameId, new TileDto(makeMoveMessage.X, makeMoveMessage.Y), userId!);
+			var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
+			var placeTileResult = await _mediator.Send(placeTileCommand);
 
 			if (placeTileResult.IsSuccess)
 			{
