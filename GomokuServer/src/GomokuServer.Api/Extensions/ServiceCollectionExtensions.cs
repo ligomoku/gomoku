@@ -3,6 +3,7 @@
 using GomokuServer.Api.Attributes;
 using GomokuServer.Api.Hubs.Filters;
 using GomokuServer.Api.Services;
+using GomokuServer.Application.Interfaces.Common;
 
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -110,7 +111,7 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
 		services.AddSingleton<IPlayersRepository, ClerkPlayersRepository>();
-		services.AddScoped<IGameSessionHandler, GameSessionHandler>();
+		services.RegisterCommandsAndQueries();
 
 		services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
 		{
@@ -120,6 +121,16 @@ public static class ServiceCollectionExtensions
 		{
 			httpClient.BaseAddress = new Uri(config.Clerk.BackendApiBaseUrl);
 			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Clerk.BackendApiSecret);
+		});
+
+		return services;
+	}
+
+	private static IServiceCollection RegisterCommandsAndQueries(this IServiceCollection services)
+	{
+		services.AddMediatR(config =>
+		{
+			config.RegisterServicesFromAssembly(typeof(IQuery<>).Assembly);
 		});
 
 		return services;
