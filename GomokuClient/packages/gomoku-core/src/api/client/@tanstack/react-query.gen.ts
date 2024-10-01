@@ -21,7 +21,9 @@ import type {
   PostApiGameByGameIdMakeMoveResponse,
   GetHealthData,
   PostGamehubJoinGameGroupData,
+  PostGamehubMakeMoveData,
   PostGamehubSendMessageData,
+  PostGamehubReceiveMessageData,
 } from "../types.gen";
 import {
   client,
@@ -33,7 +35,9 @@ import {
   postApiGameByGameIdMakeMove,
   getHealth,
   postGamehubJoinGameGroup,
+  postGamehubMakeMove,
   postGamehubSendMessage,
+  postGamehubReceiveMessage,
 } from "../services.gen";
 
 type QueryKey<TOptions extends Options> = [
@@ -290,6 +294,43 @@ export const postGamehubJoinGameGroupMutation = () => {
   return mutationOptions;
 };
 
+export const postGamehubMakeMoveQueryKey = (
+  options?: Options<PostGamehubMakeMoveData>,
+) => [createQueryKey("postGamehubMakeMove", options)];
+
+export const postGamehubMakeMoveOptions = (
+  options?: Options<PostGamehubMakeMoveData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await postGamehubMakeMove({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubMakeMoveQueryKey(options),
+  });
+};
+
+export const postGamehubMakeMoveMutation = () => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubMakeMoveData>
+  > = {
+    mutationFn: async (options) => {
+      const { data } = await postGamehubMakeMove({
+        ...options,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const postGamehubSendMessageQueryKey = (
   options?: Options<PostGamehubSendMessageData>,
 ) => [createQueryKey("postGamehubSendMessage", options)];
@@ -318,6 +359,43 @@ export const postGamehubSendMessageMutation = () => {
   > = {
     mutationFn: async (options) => {
       const { data } = await postGamehubSendMessage({
+        ...options,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubReceiveMessageQueryKey = (
+  options?: Options<PostGamehubReceiveMessageData>,
+) => [createQueryKey("postGamehubReceiveMessage", options)];
+
+export const postGamehubReceiveMessageOptions = (
+  options?: Options<PostGamehubReceiveMessageData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await postGamehubReceiveMessage({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubReceiveMessageQueryKey(options),
+  });
+};
+
+export const postGamehubReceiveMessageMutation = () => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubReceiveMessageData>
+  > = {
+    mutationFn: async (options) => {
+      const { data } = await postGamehubReceiveMessage({
         ...options,
         throwOnError: true,
       });

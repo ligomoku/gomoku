@@ -28,7 +28,9 @@ import type {
   GetHealthError,
   GetHealthResponse,
   PostGamehubJoinGameGroupData,
+  PostGamehubMakeMoveData,
   PostGamehubSendMessageData,
+  PostGamehubReceiveMessageData,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -156,11 +158,29 @@ export const postGamehubJoinGameGroup = <ThrowOnError extends boolean = false>(
   });
 };
 
+export const postGamehubMakeMove = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubMakeMoveData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/MakeMove",
+  });
+};
+
 export const postGamehubSendMessage = <ThrowOnError extends boolean = false>(
   options?: Options<PostGamehubSendMessageData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/SendMessage",
+  });
+};
+
+export const postGamehubReceiveMessage = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubReceiveMessageData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/ReceiveMessage",
   });
 };

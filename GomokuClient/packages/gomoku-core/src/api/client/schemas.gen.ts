@@ -103,6 +103,26 @@ export const GetGameResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const MakeMoveClientMessageSchema = {
+  required: ["gameId", "x", "y"],
+  type: "object",
+  properties: {
+    gameId: {
+      minLength: 1,
+      type: "string",
+    },
+    x: {
+      type: "integer",
+      format: "int32",
+    },
+    y: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const MakeMoveRequestSchema = {
   required: ["x", "y"],
   type: "object",
