@@ -37,7 +37,7 @@ export const useSignalRReconnection = ({
   onPlayerJoined,
   onPlayerMadeMove,
   onReceiveMessage,
-  onGameHubError
+  onGameHubError,
 }: UseSignalRReconnectionProps) => {
   useEffect(() => {
     if (!connection) {

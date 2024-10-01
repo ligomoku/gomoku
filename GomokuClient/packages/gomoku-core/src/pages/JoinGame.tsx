@@ -17,7 +17,7 @@ const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
   const joinGame = useJoinGame(
-    jwtToken || typedStorage.getItem("jwtToken") || ""
+    jwtToken || typedStorage.getItem("jwtToken") || "",
   );
 
   const { connection, isConnected } = useSignalRConnection();
@@ -36,11 +36,11 @@ const JoinGame = () => {
     },
     onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
       console.log("Player made move:", playerId, tile, placedTileColor);
-      addPiece(tile.y, tile.x, placedTileColor)
+      addPiece(tile.y, tile.x, placedTileColor);
     },
     onGameHubError: (error) => {
       console.warn("Error from game hub:", error);
-    }
+    },
   });
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const JoinGame = () => {
     const makeMoveMessage = {
       gameId: gameID,
       x: row,
-      y: col
+      y: col,
     };
 
     try {
@@ -114,13 +114,13 @@ const useJoinGame = (authToken: string) =>
     mutationFn: async (gameId) => {
       const response = await postApiGameByGameIdJoin({
         path: { gameId },
-        headers: getDefaultHeaders(authToken)
+        headers: getDefaultHeaders(authToken),
       });
 
       if (!response.data) {
         throw new Error("Invalid game data received");
       }
-    }
+    },
   });
 
 export default JoinGame;
