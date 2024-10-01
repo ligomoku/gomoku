@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --build --pretty",
     "download": "sh ./scripts/download-openapi-document.sh",
+    "download:localhost": "sh ./scripts/download-openapi-document.sh localhost",
     "codegen": "openapi-ts",
     "format": "prettier . --write src",
     "format:check": "prettier . --check src",
