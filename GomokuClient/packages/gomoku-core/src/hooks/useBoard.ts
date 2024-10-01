@@ -6,7 +6,6 @@ export type CellValue = "Black" | "White" | null;
 export const useBoard = () => {
   const [winner, setWinner] = useState<Winner>(undefined);
   const [board, setBoard] = useState(
-    // This data structure probably will work not optimal, when we will need to recover board state from backend history. My suggestion is to use Record<string, MoveData>, where record key will be "x.y" and it will be easy to access all data at any time.
     Array(19)
       .fill(null)
       .map(() => Array(19).fill(null)),
@@ -22,7 +21,6 @@ export const useBoard = () => {
   }, [board]);
 
   const updateBoard = useCallback(
-    // TODO: What point of using useCallback? Function is not passed as dependency or components props. No improvement at all.
     (y: number, x: number, newValue: CellValue) => {
       setBoard((prevBoard) =>
         prevBoard.map((row, currentY) => {
