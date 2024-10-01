@@ -30,6 +30,7 @@ download:
 
 download-localhost:
 	@echo "Download JSON schema from localhost..."
+	@cd $(CLIENT_DIR) && yarn download:localhost
 
 codegen:
 	@echo "Generating API client..."
