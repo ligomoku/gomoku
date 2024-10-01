@@ -25,8 +25,11 @@ clean:
 	@cd $(CLIENT_DIR) && yarn clean
 
 download:
-	@echo "Downloading JSON schema..."
+	@echo "Downloading JSON schema from server..."
 	@cd $(CLIENT_DIR) && yarn download
+
+download-localhost:
+	@echo "Download JSON schema from localhost..."
 
 codegen:
 	@echo "Generating API client..."
