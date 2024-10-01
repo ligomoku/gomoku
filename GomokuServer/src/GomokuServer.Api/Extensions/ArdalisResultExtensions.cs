@@ -4,6 +4,8 @@ using GomokuServer.Api.Hubs.Messages.Server;
 
 namespace GomokuServer.Api.Extensions;
 
+using IResult = Ardalis.Result.IResult;
+
 public static class ArdalisResultExtensions
 {
 	public static IActionResult ToApiResponse<T>(this Result<T> result)
@@ -46,22 +48,7 @@ public static class ArdalisResultExtensions
 		return new NoContentResult();
 	}
 
-	public static ErrorMessage GetHubError<T>(this Result<T> result)
-	{
-		if (result.IsNotFound())
-		{
-			return new ErrorMessage(string.Join(", ", result.Errors));
-		}
-
-		if (result.IsInvalid())
-		{
-			return new ErrorMessage(string.Join(", ", result.ValidationErrors.Select(error => error.ErrorMessage)));
-		}
-
-		return new ErrorMessage("Unexpected error occured");
-	}
-
-	public static ErrorMessage GetHubError(this Result result)
+	public static ErrorMessage GetHubError(this IResult result)
 	{
 		if (result.IsNotFound())
 		{
