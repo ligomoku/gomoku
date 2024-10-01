@@ -21,16 +21,12 @@ export function getDefaultHeaders(
 ): HeadersWithAuth | HeadersWithoutAuth {
   if (authToken) {
     return {
-      // @ts-ignore
-      "ngrok-skip-browser-warning": "true",
       "Content-Type": "application/json",
       "X-Version": "1",
       Authorization: `Bearer ${authToken}`,
     };
   } else {
     return {
-      // @ts-ignore
-      "ngrok-skip-browser-warning": "true",
       "Content-Type": "application/json",
       "X-Version": "1",
     };
