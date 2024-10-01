@@ -9,7 +9,7 @@ public class TilePlacementResult
 
 	public TilePlacementValidationError? ValidationError { get; init; }
 
-	public string? WinnerId { get; init; }
+	public Player? Winner { get; init; }
 
 	public List<Tile>? WinningSequence { get; init; }
 }

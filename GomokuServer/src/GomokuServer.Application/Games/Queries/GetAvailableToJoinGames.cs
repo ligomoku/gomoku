@@ -22,8 +22,8 @@ public class GetAvailableToJoinGamesQueryHandler : IQueryHandler<GetAvailableToJ
 			getAvailableGamesResult.Map(games => games.Select(game =>
 			{
 				PlayerDto opponent = game.PlayerOne != null
-					? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName)
-					: new PlayerDto(game.PlayerTwo!.Id, game.PlayerTwo!.UserName);
+					? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName, game.PlayerOne.Color?.ToString())
+					: new PlayerDto(game.PlayerTwo!.Id, game.PlayerTwo!.UserName, game.PlayerTwo.Color?.ToString());
 
 				return new GetAvailableGamesResponse(game.GameId, opponent);
 			}

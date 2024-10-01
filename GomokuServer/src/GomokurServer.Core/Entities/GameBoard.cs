@@ -14,7 +14,7 @@ public class GameBoard
 		_board = new string[_boardSize, _boardSize];
 	}
 
-	public TilePlacementResult PlaceTile(Tile tile, string playerId)
+	public TilePlacementResult PlaceTile(Tile tile, Player player)
 	{
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
@@ -34,9 +34,9 @@ public class GameBoard
 			};
 		}
 
-		_board[tile.X, tile.Y] = playerId;
+		_board[tile.X, tile.Y] = player.Id;
 
-		var winnerCalculationResult = CalculateWinner(tile, playerId);
+		var winnerCalculationResult = CalculateWinner(tile, player);
 
 		return winnerCalculationResult == null
 		? new()
@@ -46,13 +46,14 @@ public class GameBoard
 		: new()
 		{
 			IsValid = true,
-			WinnerId = winnerCalculationResult.WinnerId,
+			Winner = winnerCalculationResult.Winner,
 			WinningSequence = winnerCalculationResult.WinningSequence
 		};
 	}
 
-	private WinnerCalculationResult? CalculateWinner(Tile lastMove, string playerId)
+	private WinnerCalculationResult? CalculateWinner(Tile lastMove, Player player)
 	{
+		var playerId = player.Id;
 		List<Tile>? winningTiles;
 
 		if ((winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 0, playerId))?.Count >= 5 ||
@@ -62,7 +63,7 @@ public class GameBoard
 		{
 			return new WinnerCalculationResult
 			{
-				WinnerId = playerId,
+				Winner = player,
 				WinningSequence = winningTiles
 			};
 		}

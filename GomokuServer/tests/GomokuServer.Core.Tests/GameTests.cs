@@ -43,7 +43,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.WinnerId.Should().BeNull();
+		result.Winner.Should().BeNull();
 	}
 
 	[Test]
@@ -107,7 +107,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.Winner.Should().Be(_game.PlayerOne);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 7),
 			new Tile(1, 7),
@@ -133,7 +133,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.Winner.Should().Be(_game.PlayerOne);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(7, 0),
 			new Tile(7, 1),
@@ -162,7 +162,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.Winner.Should().Be(_game.PlayerOne);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 0),
 			new Tile(1, 1),
@@ -183,7 +183,7 @@ public class GameTests
 		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
 
 		// Assert
-		result.WinnerId.Should().BeNull();
+		result.Winner.Should().BeNull();
 	}
 
 	[Test]
@@ -218,7 +218,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
-		result.WinnerId.Should().Be(_game.PlayerOne.Id);
+		result.Winner.Should().Be(_game.PlayerOne);
 	}
 
 	[Test]
@@ -312,8 +312,8 @@ public class GameTests
 	{
 		// Assert 
 		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
-		_game.BlackPlayerId.Should().Be(_playerOne.Id);
-		_game.WhitePlayerId.Should().Be(_playerTwo.Id);
+		_game.PlayerOne!.Color.Should().Be(TileColor.Black);
+		_game.PlayerTwo!.Color.Should().Be(TileColor.White);
 
 		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
 		_game.NextMoveShouldMakePlayerId.Should().Be(_playerTwo.Id);
