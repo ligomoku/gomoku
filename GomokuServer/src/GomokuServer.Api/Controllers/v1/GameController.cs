@@ -62,7 +62,7 @@ public class GameController : Controller
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var userId = User.Claims.Get("userId");
-		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId });
+		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId! });
 
 		return createGameResult.ToApiResponse();
 	}
@@ -113,7 +113,7 @@ public class GameController : Controller
 	{
 		var userId = User.Claims.Get("userId");
 
-		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId });
+		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId! });
 
 		if (placeTileResult.IsSuccess)
 		{
