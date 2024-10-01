@@ -9,6 +9,8 @@ import {
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { typedStorage } from "@/shared/lib/utils";
+import { useAuthToken } from "@/context/AuthContext";
+import { useAuth } from "@clerk/clerk-react";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
@@ -24,14 +26,41 @@ interface SignalRProviderProps {
 }
 
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {
+  const { jwtToken, jwtDecodedInfo } = useAuthToken();
+  const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+
+  const startConnection = async (connection: signalR.HubConnection) => {
+    if (connection?.state === signalR.HubConnectionState.Disconnected) {
+      try {
+        await connection.start();
+        console.log("SignalR connection established");
+        setIsConnected(true);
+      } catch (error) {
+        console.error("Error starting SignalR connection:", error);
+        setTimeout(() => startConnection(connection), 5000);
+      }
+    }
+  };
 
   if (!connectionRef.current) {
     connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
-        accessTokenFactory: () => {
-          const token = typedStorage.getItem("jwtToken");
+        accessTokenFactory: async () => {
+          let token = typedStorage.getItem("jwtToken");
+          //TODO: place consistent token refresh logic in a single place
+          if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
+            console.log("JWT token expired, refreshing token...");
+            try {
+              token = await getToken({ skipCache: true });
+              if (token) {
+                typedStorage.setItem("jwtToken", token);
+              }
+            } catch (error) {
+              console.error("Error refreshing token:", error);
+            }
+          }
           return token ? token : "";
         },
       })
@@ -43,26 +72,30 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   useEffect(() => {
     const connection = connectionRef.current;
 
-    const startConnection = async () => {
-      if (connection?.state === signalR.HubConnectionState.Disconnected) {
-        try {
-          await connection.start();
-          console.log("SignalR connection established");
-          setIsConnected(true);
-        } catch (error) {
-          console.error("Error starting SignalR connection:", error);
-          setTimeout(startConnection, 5000);
-        }
-      }
-    };
-
-    startConnection();
-
-    connection?.onclose(() => {
+    const handleConnectionClose = async () => {
       console.warn("SignalR connection lost. Attempting to reconnect...");
       setIsConnected(false);
-      startConnection();
-    });
+
+      try {
+        if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
+          console.log("JWT token expired. Refreshing token...");
+          const token = await getToken({ skipCache: true });
+          if (token) {
+            typedStorage.setItem("jwtToken", token);
+          }
+        }
+      } catch (error) {
+        console.error("Error refreshing token on connection close:", error);
+      }
+
+      startConnection(connection!);
+    };
+
+    if (connection) {
+      startConnection(connection);
+
+      connection.onclose(handleConnectionClose);
+    }
 
     return () => {
       if (
@@ -77,7 +110,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
           );
       }
     };
-  }, []);
+  }, [jwtToken, jwtDecodedInfo]);
 
   return (
     <SignalRContext.Provider

@@ -13,6 +13,7 @@ import {
 import { Users } from "lucide-react";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+
 import { useAuthToken } from "@/context";
 
 export const HomeGame = () => {
@@ -83,4 +84,5 @@ const useFetchGames = () =>
 
       return response.data;
     },
+    refetchInterval: 1000,
   });

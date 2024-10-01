@@ -1,24 +1,54 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
+import { typedStorage } from "@/shared/lib/utils";
 
 export type CellValue = "Black" | "White" | null;
 
-export const useBoard = () => {
-  const [winner, setWinner] = useState<Winner>(undefined);
-  const [board, setBoard] = useState(
-    Array(19)
-      .fill(null)
-      .map(() => Array(19).fill(null)),
+//TODO: refactor on IndexDB approach
+export const useBoard = (gameID: string) => {
+  const BOARD_KEY = `gameBoard_${gameID}` as `gameBoard_${string}`;
+  const NEXT_TURN_KEY = `nextTurn_${gameID}` as `nextTurn_${string}`;
+
+  const [board, setBoard] = useState<CellValue[][]>(() => {
+    const savedBoard = typedStorage.getItem(BOARD_KEY);
+    return savedBoard
+      ? JSON.parse(savedBoard)
+      : Array(19)
+          .fill(null)
+          .map(() => Array(19).fill(null));
+  });
+
+  const isBlackNext = useRef<boolean>(
+    typedStorage.getItem(NEXT_TURN_KEY) !== null
+      ? JSON.parse(typedStorage.getItem(NEXT_TURN_KEY)!)
+      : true,
   );
-  const isBlackNext = useRef(true);
+
+  const [winner, setWinner] = useState<Winner>(undefined);
+
   const lastRow = useRef<number | undefined>(undefined);
   const lastCol = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (lastRow.current === undefined || lastCol.current === undefined) return;
-    const result = findWinner(board, lastRow.current, lastCol.current);
+
+    const convertedBoard = board.map((row) =>
+      row.map((cell) => (cell === null ? "" : cell)),
+    );
+
+    const result = findWinner(convertedBoard, lastRow.current, lastCol.current);
     setWinner(result);
   }, [board]);
+
+  useEffect(() => {
+    if (winner) {
+      typedStorage.removeItem(BOARD_KEY);
+      typedStorage.removeItem(NEXT_TURN_KEY);
+    } else {
+      typedStorage.setItem(BOARD_KEY, JSON.stringify(board));
+      typedStorage.setItem(NEXT_TURN_KEY, JSON.stringify(isBlackNext.current));
+    }
+  }, [board, winner]);
 
   const updateBoard = useCallback(
     (y: number, x: number, newValue: CellValue) => {
@@ -37,10 +67,13 @@ export const useBoard = () => {
   );
 
   const handlePieceClick = (row: number, col: number, value: string | null) => {
-    if (value !== null) return;
+    if (value !== null || winner) return;
+
     lastRow.current = row;
     lastCol.current = col;
+
     updateBoard(row, col, isBlackNext.current ? "Black" : "White");
+
     isBlackNext.current = !isBlackNext.current;
   };
 

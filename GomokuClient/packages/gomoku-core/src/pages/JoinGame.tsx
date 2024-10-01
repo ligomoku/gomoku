@@ -12,13 +12,23 @@ import * as signalR from "@microsoft/signalr";
 import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 
 const JoinGame = () => {
-  const { board, winner, addPiece } = useBoard();
-  // TODO: check for a better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
   const joinGame = useJoinGame(
     jwtToken || typedStorage.getItem("jwtToken") || "",
   );
+
+  useEffect(() => {
+    const previousGameID = typedStorage.getItem("currentGameID");
+    if (previousGameID && previousGameID !== gameID) {
+      //TODO: this logic should be improve by fetching if game was available and if is not remove data
+      typedStorage.removeItem(`gameBoard_${previousGameID}`);
+      typedStorage.removeItem(`nextTurn_${previousGameID}`);
+    }
+    typedStorage.setItem("currentGameID", gameID!);
+  }, [gameID]);
+
+  const { board, winner, addPiece } = useBoard(gameID!);
 
   const { connection, isConnected } = useSignalRConnection();
 
@@ -53,8 +63,7 @@ const JoinGame = () => {
   }, [winner]);
 
   const handleMove = async (row: number, col: number, value: string | null) => {
-    if (!connection) return;
-    if (winner || value) return;
+    if (!connection || winner || value) return;
 
     if (connection.state !== signalR.HubConnectionState.Connected) {
       console.warn("Cannot make a move, SignalR connection is not connected.");
