@@ -32,7 +32,10 @@ public class PlaceTileTests
 			PlayerId = "Player1",
 			Tile = new TileDto(0, 0)
 		};
-		var player = new Player(command.PlayerId, "player1UserName");
+		var player = new Player(command.PlayerId, "player1UserName")
+		{
+			Color = TileColor.Black
+		};
 
 		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 		game.AddPlayer(player);
@@ -47,6 +50,7 @@ public class PlaceTileTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.IsWinningMove.Should().BeFalse();
+		result.Value.PlacedTileColor.Should().Be("Black");
 		await _gameRepository.Received(1).SaveAsync(game);
 	}
 

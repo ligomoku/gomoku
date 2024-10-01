@@ -12,25 +12,35 @@ import * as signalR from "@microsoft/signalr";
 import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 
 const JoinGame = () => {
-  const { board, winner, handlePieceClick } = useBoard();
+  const { board, winner, addPiece } = useBoard();
   // TODO: check for a better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
   const joinGame = useJoinGame(
-    jwtToken || typedStorage.getItem("jwtToken") || "",
+    jwtToken || typedStorage.getItem("jwtToken") || ""
   );
 
   const { connection, isConnected } = useSignalRConnection();
 
+  useEffect(() => {
+    if (connection && isConnected && gameID) {
+      void connection.invoke("JoinGameGroup", gameID);
+    }
+  }, [connection, isConnected, gameID]);
+
   useSignalRReconnection({
     connection,
     isConnected,
-    onPlayerJoined: (message) => {
-      console.log("Player joined game:", message.gameId);
+    onPlayerJoined: ({ userName }) => {
+      console.log(`Player ${userName} joined game.`);
     },
-    onPlayerMadeMove: ({ playerId, tile }) => {
-      console.log("Player made move:", playerId, tile);
+    onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
+      console.log("Player made move:", playerId, tile, placedTileColor);
+      addPiece(tile.y, tile.x, placedTileColor)
     },
+    onGameHubError: (error) => {
+      console.warn("Error from game hub:", error);
+    }
   });
 
   useEffect(() => {
@@ -54,12 +64,11 @@ const JoinGame = () => {
     const makeMoveMessage = {
       gameId: gameID,
       x: row,
-      y: col,
+      y: col
     };
 
     try {
       await connection.invoke("MakeMove", makeMoveMessage);
-      handlePieceClick(row, col, value);
     } catch (error) {
       console.error("Error making move:", error);
     }
@@ -105,13 +114,13 @@ const useJoinGame = (authToken: string) =>
     mutationFn: async (gameId) => {
       const response = await postApiGameByGameIdJoin({
         path: { gameId },
-        headers: getDefaultHeaders(authToken),
+        headers: getDefaultHeaders(authToken)
       });
 
       if (!response.data) {
         throw new Error("Invalid game data received");
       }
-    },
+    }
   });
 
 export default JoinGame;

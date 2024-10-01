@@ -42,10 +42,12 @@ public class GameBoard
 		? new()
 		{
 			IsValid = true,
+			PlacedTileColor = player.Color,
 		}
 		: new()
 		{
 			IsValid = true,
+			PlacedTileColor = player.Color,
 			Winner = winnerCalculationResult.Winner,
 			WinningSequence = winnerCalculationResult.WinningSequence
 		};

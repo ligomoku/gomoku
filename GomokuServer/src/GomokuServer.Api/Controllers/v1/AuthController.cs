@@ -19,8 +19,8 @@ public class AuthController : Controller
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public IActionResult AuthInfo()
 	{
-		var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
-		var fullNameClaim = User.Claims.FirstOrDefault(c => c.Type == "fullName")?.Value;
+		var usernameClaim = User.Claims.Get("username");
+		var fullNameClaim = User.Claims.Get("fullName");
 
 		var response = new AuthInfoResponse()
 		{

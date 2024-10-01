@@ -22,8 +22,8 @@ const Square = ({ row, col, value, onClick }: SquareProps) => {
 
   const pieceClasses = [
     "w-8 h-8 rounded-full",
-    value === "black" ? "bg-black" : "",
-    value === "white" ? "bg-white" : "",
+    value === "Black" ? "bg-black" : "",
+    value === "White" ? "bg-white" : "",
   ].join(" ");
 
   return (
