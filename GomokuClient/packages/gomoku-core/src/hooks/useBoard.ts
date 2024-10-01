@@ -3,12 +3,6 @@ import { findWinner, Winner } from "@/utils";
 
 export type CellValue = "Black" | "White" | null;
 
-// TODO: This hook probably should be refactored.
-// Ideally it should be responsible just for keeping board state with possible add new pieces
-// And as well it should accept boardInitialState as incoming parameter to be able to recover game
-// when active game state received from server
-// Every other logic, like calculating winner and keeping in state what player color made move should be
-// removed and received from server
 export const useBoard = () => {
   const [winner, setWinner] = useState<Winner>(undefined);
   const [board, setBoard] = useState(
@@ -52,9 +46,6 @@ export const useBoard = () => {
     isBlackNext.current = !isBlackNext.current;
   };
 
-  // TODO: Currently function named with 'Piece' word as it was previously in this code. My suggestion is to align names how call stuff in FE and BE
-  // TODO: In backend I call one piece tile. Coordinates are x and y. For better and cleaner solution let's align on namings
-  // TODO: We can even write documentation and figure out how we call things.
   const addPiece = useCallback(
     (x: number, y: number, color: CellValue) => {
       updateBoard(y, x, color);

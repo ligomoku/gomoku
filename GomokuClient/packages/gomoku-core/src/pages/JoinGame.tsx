@@ -24,7 +24,7 @@ const JoinGame = () => {
 
   useEffect(() => {
     if (connection && isConnected && gameID) {
-      void connection.invoke("JoinGameGroup", gameID);
+      connection.invoke("JoinGameGroup", gameID);
     }
   }, [connection, isConnected, gameID]);
 

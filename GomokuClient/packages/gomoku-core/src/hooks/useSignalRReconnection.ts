@@ -30,7 +30,6 @@ interface UseSignalRReconnectionProps {
   onGameHubError?: (error: GameHubError) => void;
 }
 
-// TODO: Is it good name for this hook? Maybe useGameHub fits more to what it really does?
 export const useSignalRReconnection = ({
   connection,
   isConnected,
