@@ -1,5 +1,5 @@
-const signalR = require("@microsoft/signalr");
-const msgpack = require("@msgpack/msgpack");
+import * as signalR from "@microsoft/signalr";
+import * as msgpack from "@msgpack/msgpack";
 
 const data = {
   user: "meg",
