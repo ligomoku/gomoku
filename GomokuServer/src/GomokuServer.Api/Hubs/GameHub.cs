@@ -38,35 +38,28 @@ public class GameHub : Hub
 
 		if (Context.Items["User"] is ClaimsPrincipal user)
 		{
-			var userId = user.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+			var userId = user.Claims.Get("userId");
 
 			var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
 			var placeTileResult = await _mediator.Send(placeTileCommand);
 
 			if (placeTileResult.IsSuccess)
 			{
-				var playerMadeMoveMessage = new PlayerMadeMoveServerMessage()
+				var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 				{
 					PlayerId = userId!,
 					Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
+					PlacedTileColor = placeTileResult.Value.PlacedTileColor
 				};
 				await Clients.Group(makeMoveMessage.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
 				return;
 			}
 
-			var errorMessage = new ErrorServerMessage()
-			{
-				Message = "Error. Unable to make move"
-			};
-			await Clients.Caller.SendAsync(GameHubMethod.Error, errorMessage);
+			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 		}
 		else
 		{
-			var errorMessage = new ErrorServerMessage()
-			{
-				Message = "Error. Unable to parse JWT token"
-			};
-			await Clients.Caller.SendAsync(GameHubMethod.Error, errorMessage);
+			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Error. Unable to parse JWT token"));
 		}
 	}
 

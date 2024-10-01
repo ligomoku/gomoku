@@ -19,12 +19,13 @@ public class ClerkJwtClaimsValidationMiddleware
 
 		if (hasClerkAuthorization)
 		{
-			var userIdClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+			var userIdClaim = context.User.Claims.Get("userId");
+			var usernameClaim = context.User.Claims.Get("username");
 
-			if (string.IsNullOrEmpty(userIdClaim))
+			if (string.IsNullOrWhiteSpace(userIdClaim) || string.IsNullOrWhiteSpace(usernameClaim))
 			{
 				context.Response.StatusCode = StatusCodes.Status400BadRequest;
-				await context.Response.WriteAsJsonAsync(new { ErrorMessage = "Missing 'userId' claim" });
+				await context.Response.WriteAsJsonAsync(new { ErrorMessage = "Missing 'userId' or 'username' claim" });
 				return;
 			}
 		}

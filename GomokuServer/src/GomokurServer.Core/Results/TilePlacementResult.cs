@@ -7,6 +7,8 @@ public class TilePlacementResult
 {
 	public bool IsValid { get; init; }
 
+	public TileColor? PlacedTileColor { get; init; }
+
 	public TilePlacementValidationError? ValidationError { get; init; }
 
 	public Player? Winner { get; init; }

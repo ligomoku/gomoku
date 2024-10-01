@@ -61,8 +61,8 @@ public class GameController : Controller
 	[ClerkAuthorization]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var userId = User.Claims.First(c => c.Type == "userId").Value!;
-		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId });
+		var userId = User.Claims.Get("userId");
+		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId! });
 
 		return createGameResult.ToApiResponse();
 	}
@@ -79,12 +79,18 @@ public class GameController : Controller
 	[ClerkAuthorization]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var userId = User.Claims.First(c => c.Type == "userId").Value!;
-		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId });
+		var userId = User.Claims.Get("userId");
+		var userName = User.Claims.Get("username");
+
+		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId! });
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, userId);
+			var message = new PlayerJoinedGameMessage()
+			{
+				UserName = userName!
+			};
+			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, message);
 		}
 
 		return addPlayerToGameResult.ToApiResponse();
@@ -105,16 +111,17 @@ public class GameController : Controller
 	[ClerkAuthorization]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
 	{
-		var userId = User.Claims.First(c => c.Type == "userId").Value!;
+		var userId = User.Claims.Get("userId");
 
-		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId });
+		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId! });
 
 		if (placeTileResult.IsSuccess)
 		{
-			var playerMadeMoveMessage = new PlayerMadeMoveServerMessage()
+			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
-				PlayerId = userId,
+				PlayerId = userId!,
 				Tile = new TileDto(request.X, request.Y),
+				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};
 			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
 		}

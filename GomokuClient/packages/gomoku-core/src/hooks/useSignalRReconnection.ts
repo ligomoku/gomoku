@@ -1,18 +1,24 @@
 import { useEffect } from "react";
 import * as signalR from "@microsoft/signalr";
+import { CellValue } from "@/hooks/useBoard";
 
 interface PlayerJoinedGameServerMessage {
-  gameId: string;
+  userName: string;
 }
 
 interface PlayerMadeMoveServerMessage {
   playerId: string;
   tile: TileItem;
+  placedTileColor: CellValue;
 }
 
 interface TileItem {
   x: number;
   y: number;
+}
+
+interface GameHubError {
+  message: string;
 }
 
 interface UseSignalRReconnectionProps {
@@ -21,6 +27,7 @@ interface UseSignalRReconnectionProps {
   onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
   onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
   onReceiveMessage?: (user: string, message: string) => void;
+  onGameHubError?: (error: GameHubError) => void;
 }
 
 export const useSignalRReconnection = ({
@@ -29,6 +36,7 @@ export const useSignalRReconnection = ({
   onPlayerJoined,
   onPlayerMadeMove,
   onReceiveMessage,
+  onGameHubError,
 }: UseSignalRReconnectionProps) => {
   useEffect(() => {
     if (!connection) {
@@ -55,6 +63,10 @@ export const useSignalRReconnection = ({
 
     if (onReceiveMessage) {
       connection.on("ReceiveMessage", onReceiveMessage);
+    }
+
+    if (onGameHubError) {
+      connection.on("GameHubError", onGameHubError);
     }
 
     return () => {

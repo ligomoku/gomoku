@@ -46,6 +46,9 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 			return Result.Error();
 		}
 
-		return Result.Success(new PlaceTileResponse(tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList()));
+		var winningSequence = tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
+		var placedTileColor = tilePlacementResult.PlacedTileColor.ToString();
+
+		return Result.Success(new PlaceTileResponse(placedTileColor!, winningSequence));
 	}
 }

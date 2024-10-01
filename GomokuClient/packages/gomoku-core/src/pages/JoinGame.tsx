@@ -12,7 +12,7 @@ import * as signalR from "@microsoft/signalr";
 import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 
 const JoinGame = () => {
-  const { board, winner, handlePieceClick } = useBoard();
+  const { board, winner, addPiece } = useBoard();
   // TODO: check for a better way to get gameID from url, should be considered routing file params loaders
   const { gameID } = useParams({ strict: false });
   const { jwtToken } = useAuthToken();
@@ -22,14 +22,24 @@ const JoinGame = () => {
 
   const { connection, isConnected } = useSignalRConnection();
 
+  useEffect(() => {
+    if (connection && isConnected && gameID) {
+      connection.invoke("JoinGameGroup", gameID);
+    }
+  }, [connection, isConnected, gameID]);
+
   useSignalRReconnection({
     connection,
     isConnected,
-    onPlayerJoined: (message) => {
-      console.log("Player joined game:", message.gameId);
+    onPlayerJoined: ({ userName }) => {
+      console.log(`Player ${userName} joined game.`);
     },
-    onPlayerMadeMove: ({ playerId, tile }) => {
-      console.log("Player made move:", playerId, tile);
+    onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
+      console.log("Player made move:", playerId, tile, placedTileColor);
+      addPiece(tile.y, tile.x, placedTileColor);
+    },
+    onGameHubError: (error) => {
+      console.warn("Error from game hub:", error);
     },
   });
 
@@ -59,7 +69,6 @@ const JoinGame = () => {
 
     try {
       await connection.invoke("MakeMove", makeMoveMessage);
-      handlePieceClick(row, col, value);
     } catch (error) {
       console.error("Error making move:", error);
     }

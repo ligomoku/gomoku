@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
 
-export type CellValue = "black" | "white" | null;
+export type CellValue = "Black" | "White" | null;
 
 export const useBoard = () => {
   const [winner, setWinner] = useState<Winner>(undefined);
@@ -40,11 +40,11 @@ export const useBoard = () => {
     if (value !== null) return;
     lastRow.current = row;
     lastCol.current = col;
-    updateBoard(row, col, isBlackNext.current ? "black" : "white");
+    updateBoard(row, col, isBlackNext.current ? "Black" : "White");
     isBlackNext.current = !isBlackNext.current;
   };
 
-  const setOpponentMove = useCallback(
+  const addPiece = useCallback(
     (x: number, y: number, color: CellValue) => {
       updateBoard(y, x, color);
     },
@@ -55,6 +55,6 @@ export const useBoard = () => {
     board,
     winner,
     handlePieceClick,
-    setOpponentMove,
+    addPiece,
   };
 };
