@@ -17,7 +17,7 @@ public class GetGameResponse
 
 	public string? NextMoveShouldMakePlayerId { get; set; }
 
-	public string? WinnerId { get; set; }
+	public PlayerDto? Winner { get; set; }
 
 	public IEnumerable<TileDto>? WinningSequence { get; set; }
 

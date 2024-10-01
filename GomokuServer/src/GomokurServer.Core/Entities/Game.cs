@@ -35,11 +35,7 @@ public class Game
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
-	public string? BlackPlayerId { get; private set; }
-
-	public string? WhitePlayerId { get; private set; }
-
-	public string? WinnerId { get; private set; }
+	public Player? Winner { get; private set; }
 
 	public List<Tile>? WinningSequence { get; private set; }
 
@@ -78,8 +74,8 @@ public class Game
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
 
 		// In gomoku first move makes black player :D
-		BlackPlayerId = firstPlayer.Id;
-		WhitePlayerId = secondPlayer.Id;
+		PlayerOne.Color = TileColor.Black;
+		PlayerTwo.Color = TileColor.White;
 
 		return new()
 		{
@@ -89,13 +85,13 @@ public class Game
 
 	public TilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
-		if (WinnerId != null)
+		if (Winner != null)
 		{
 			return new()
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.GameIsOver,
-				WinnerId = WinnerId,
+				Winner = Winner,
 			};
 		}
 
@@ -126,7 +122,8 @@ public class Game
 			};
 		}
 
-		var tilePlacementResult = _gameBoard.PlaceTile(tile, playerId);
+		var player = playerId == PlayerOne.Id ? PlayerOne : PlayerTwo;
+		var tilePlacementResult = _gameBoard.PlaceTile(tile, player!);
 
 		if (tilePlacementResult.IsValid)
 		{
@@ -141,9 +138,9 @@ public class Game
 			NextMoveShouldMakePlayerId = playerId != PlayerOne.Id ? PlayerOne.Id : PlayerTwo!.Id;
 		}
 
-		if (tilePlacementResult.WinnerId != null)
+		if (tilePlacementResult.Winner != null)
 		{
-			WinnerId = tilePlacementResult.WinnerId;
+			Winner = tilePlacementResult.Winner;
 			WinningSequence = tilePlacementResult.WinningSequence;
 			NextMoveShouldMakePlayerId = null;
 		}

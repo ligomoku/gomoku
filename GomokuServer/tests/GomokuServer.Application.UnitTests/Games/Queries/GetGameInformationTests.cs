@@ -42,7 +42,7 @@ public class GetGameInformationTests
 		getGameResponse.PlayerTwo.Should().BeNull();
 		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
 		getGameResponse.PlayersMoves.Should().BeEmpty();
-		getGameResponse.WinnerId.Should().BeNull();
+		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
 		await _gameRepository.Received(1).GetAsync(game.GameId);
@@ -71,7 +71,7 @@ public class GetGameInformationTests
 		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
 		getGameResponse.PlayerTwo!.PlayerId.Should().Be(game.PlayerTwo!.Id);
 		getGameResponse.PlayersMoves.Should().BeEmpty();
-		getGameResponse.WinnerId.Should().BeNull();
+		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
 		await _gameRepository.Received(1).GetAsync(game.GameId);
@@ -97,7 +97,7 @@ public class GetGameInformationTests
 		getGameResponse.HasBothPlayersJoined.Should().BeTrue();
 		getGameResponse.IsGameStarted.Should().BeTrue();
 		getGameResponse.NextMoveShouldMakePlayerId.Should().BeNull();
-		getGameResponse.WinnerId.Should().Be(game.WinnerId);
+		getGameResponse.Winner?.PlayerId.Should().Be(game.Winner?.Id);
 		getGameResponse.WinningSequence.Should().NotBeNull();
 		getGameResponse.WinningSequence.Should().HaveCount(game.WinningSequence!.Count);
 		foreach (var tile in game.WinningSequence)

@@ -25,12 +25,12 @@ public class GetGameInformationQueryHandler : IQueryHandler<GetGameInformationQu
 		return getGameResult.Map(game => new GetGameResponse
 		{
 			GameId = game.GameId,
-			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName) : null,
-			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id, game.PlayerTwo.UserName) : null,
+			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName, game.PlayerOne.Color?.ToString()) : null,
+			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id, game.PlayerTwo.UserName, game.PlayerTwo.Color?.ToString()) : null,
 			HasBothPlayersJoined = game.HasBothPlayersJoined,
 			IsGameStarted = game.IsGameStarted,
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
-			WinnerId = game.WinnerId,
+			Winner = game.Winner != null ? new PlayerDto(game.Winner.Id, game.Winner.UserName, game.Winner.Color?.ToString()) : null,
 			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),
 			PlayersMoves = game.PlayersMoves.ToDictionary(
 				keyValuePair => keyValuePair.Key,
