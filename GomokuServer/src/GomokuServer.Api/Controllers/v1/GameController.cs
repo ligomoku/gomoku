@@ -11,14 +11,12 @@ namespace GomokuServer.Api.Controllers.v1;
 [Produces(MediaTypeNames.Application.Json)]
 public class GameController : Controller
 {
-	private readonly IGameSessionHandler _gameSessionHandler;
-	private readonly IPlayersRepository _playersRepository;
+	private readonly IMediator _mediator;
 	private readonly IHubContext<GameHub> _gameHubContext;
 
-	public GameController(IGameSessionHandler gameSessionHandler, IPlayersRepository playersRepository, IHubContext<GameHub> gameHubContext)
+	public GameController(IMediator mediator, IHubContext<GameHub> gameHubContext)
 	{
-		_gameSessionHandler = gameSessionHandler;
-		_playersRepository = playersRepository;
+		_mediator = mediator;
 		_gameHubContext = gameHubContext;
 	}
 
@@ -33,7 +31,7 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> GetGameInfo([FromRoute] string gameId)
 	{
-		var getGameSessionResult = await _gameSessionHandler.GetAsync(gameId);
+		var getGameSessionResult = await _mediator.Send(new GetGameInformationQuery() { GameId = gameId });
 
 		return getGameSessionResult.ToApiResponse();
 	}
@@ -47,7 +45,7 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames()
 	{
-		var getAvailableGames = await _gameSessionHandler.GetAvailableGamesAsync();
+		var getAvailableGames = await _mediator.Send(new GetAvailableToJoinGamesQuery());
 
 		return getAvailableGames.ToApiResponse();
 	}
@@ -64,7 +62,7 @@ public class GameController : Controller
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var userId = User.Claims.First(c => c.Type == "userId").Value!;
-		var createGameResult = await _gameSessionHandler.CreateAsync(request.BoardSize, userId);
+		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId });
 
 		return createGameResult.ToApiResponse();
 	}
@@ -82,7 +80,7 @@ public class GameController : Controller
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
 		var userId = User.Claims.First(c => c.Type == "userId").Value!;
-		var addPlayerToGameResult = await _gameSessionHandler.AddPlayerToGameAsync(gameId, userId);
+		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId });
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
@@ -108,7 +106,8 @@ public class GameController : Controller
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
 	{
 		var userId = User.Claims.First(c => c.Type == "userId").Value!;
-		var placeTileResult = await _gameSessionHandler.PlaceTileAsync(gameId, new TileDto(request.X, request.Y), userId);
+
+		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId });
 
 		if (placeTileResult.IsSuccess)
 		{

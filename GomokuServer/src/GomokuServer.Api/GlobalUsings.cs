@@ -12,8 +12,9 @@ global using GomokuServer.Api.Examples;
 global using GomokuServer.Api.Extensions;
 global using GomokuServer.Api.Hubs;
 global using GomokuServer.Api.Middlewares;
-global using GomokuServer.Application;
 global using GomokuServer.Application.Dto;
+global using GomokuServer.Application.Games.Commands;
+global using GomokuServer.Application.Games.Queries;
 global using GomokuServer.Application.Interfaces;
 global using GomokuServer.Application.Responses;
 global using GomokuServer.Core.Interfaces;
@@ -21,6 +22,8 @@ global using GomokuServer.Core.Services;
 global using GomokuServer.Infrastructure.Api;
 global using GomokuServer.Infrastructure.Data;
 global using GomokuServer.Infrastructure.Extensions;
+
+global using MediatR;
 
 global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Mvc;
