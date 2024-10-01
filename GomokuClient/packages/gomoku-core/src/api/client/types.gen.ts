@@ -33,6 +33,12 @@ export type GetGameResponse = {
   };
 };
 
+export type MakeMoveClientMessage = {
+  gameId: string;
+  x: number;
+  y: number;
+};
+
 export type MakeMoveRequest = {
   x: number;
   y: number;
@@ -159,7 +165,19 @@ export type PostGamehubJoinGameGroupData = {
   };
 };
 
+export type PostGamehubMakeMoveData = {
+  query?: {
+    makeMoveMessage?: MakeMoveClientMessage;
+  };
+};
+
 export type PostGamehubSendMessageData = {
+  query?: {
+    packedData?: string;
+  };
+};
+
+export type PostGamehubReceiveMessageData = {
   query?: {
     message?: string;
     user?: string;

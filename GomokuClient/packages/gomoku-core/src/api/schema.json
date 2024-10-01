@@ -435,7 +435,40 @@
         "responses": {}
       }
     },
+    "/gamehub/MakeMove": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "makeMoveMessage",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/MakeMoveClientMessage"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/gamehub/SendMessage": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "packedData",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/gamehub/ReceiveMessage": {
       "post": {
         "tags": ["GameHub"],
         "parameters": [
@@ -561,6 +594,25 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/GameMoveDto"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "MakeMoveClientMessage": {
+        "required": ["gameId", "x", "y"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "x": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "y": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
