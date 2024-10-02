@@ -18,6 +18,10 @@ interface PlayerJoinedGameServerMessage {
   userName: string;
 }
 
+interface GameStartedServerMessage {
+  isMyMoveFirst: boolean;
+}
+
 interface PlayerMadeMoveServerMessage {
   playerId: string;
   tile: TileItem;
@@ -49,6 +53,7 @@ interface SignalRContextType {
 
 interface SignalREventHandlers {
   onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
+  onGameStarted?: (message: GameStartedServerMessage) => void;
   onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
   onReceiveMessage?: (message: SendMessageServerMessage) => void;
   onGameHubError?: (error: GameHubError) => void;
@@ -171,6 +176,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       const eventMapping: [string, ((...args: never[]) => void) | undefined][] =
         [
           ["PlayerJoinedGame", handlers.onPlayerJoined],
+          ["GameStarted", handlers.onGameStarted],
           ["PlayerMadeMove", handlers.onPlayerMadeMove],
           ["SendMessage", handlers.onReceiveMessage],
           ["GameHubError", handlers.onGameHubError],

@@ -1,5 +1,4 @@
 ﻿global using System.ComponentModel.DataAnnotations;
-global using System.IdentityModel.Tokens.Jwt;
 global using System.Net.Mime;
 
 global using Asp.Versioning;
@@ -25,6 +24,7 @@ global using GomokuServer.Infrastructure.Extensions;
 
 global using MediatR;
 
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.SignalR;

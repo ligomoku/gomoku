@@ -1,10 +1,9 @@
 ﻿using System.Net.Http.Headers;
 
-using GomokuServer.Api.Attributes;
-using GomokuServer.Api.Hubs.Filters;
-using GomokuServer.Api.Services;
+using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Application.Interfaces.Common;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -88,19 +87,56 @@ public static class ServiceCollectionExtensions
 		return services;
 	}
 
-	public static IServiceCollection RegisterApiServices(this IServiceCollection services)
-	{
-		services.AddSingleton<ClerkJwtValidator>();
-
-		return services;
-	}
-
 	public static IServiceCollection RegisterSignalR(this IServiceCollection services)
 	{
 		services
 			.AddSignalR()
-			.AddHubOptions<GameHub>(options => options.AddFilter<ClerkJwtValidationHubFilter>())
 			.AddJsonProtocol();
+		services.AddSingleton<IUserIdProvider, UserIdFromJwtProvider>();
+
+		return services;
+	}
+
+	public static IServiceCollection RegisterAuthentication(this IServiceCollection services)
+	{
+		services.AddAuthentication(options =>
+		{
+			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		})
+		.AddJwtBearer(async options =>
+		{
+			var serviceProvider = services.BuildServiceProvider();
+			var clerkFrontendApi = serviceProvider.GetRequiredService<IClerkFrontendApi>();
+			var clerkJwksJson = await clerkFrontendApi.GetJwks();
+			var jwks = new JsonWebKeySet(clerkJwksJson);
+
+			options.TokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = false,
+				ValidateAudience = false,
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKeys = jwks.GetSigningKeys(),
+				ValidateLifetime = true
+			};
+
+			// This is important for SignalR: handle tokens from the query string (access_token)
+			options.Events = new JwtBearerEvents
+			{
+				OnMessageReceived = context =>
+				{
+					var accessToken = context.Request.Query["access_token"];
+
+					var path = context.HttpContext.Request.Path;
+					if (!string.IsNullOrEmpty(accessToken))
+					{
+						context.Token = accessToken;
+					}
+
+					return Task.CompletedTask;
+				}
+			};
+		});
 
 		return services;
 	}
@@ -142,7 +178,7 @@ public class AuthorizationOperationFilter : IOperationFilter
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
 		var hasAuthAttribute = context.MethodInfo.GetCustomAttributes(true)
-								  .OfType<ClerkAuthorizationAttribute>()
+								  .OfType<AuthorizeAttribute>()
 								  .Any();
 
 		if (hasAuthAttribute)

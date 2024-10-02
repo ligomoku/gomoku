@@ -1,18 +1,14 @@
-namespace GomokuServer.Api.Hubs;
-
-using System.Security.Claims;
-
 using GomokuServer.Api.Hubs.Messages.Client;
 using GomokuServer.Api.Hubs.Messages.Server;
 
-using MediatR;
-
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 using SignalRSwaggerGen.Attributes;
 
+namespace GomokuServer.Api.Hubs;
+
 [SignalRHub(HubRoute.GameHub)]
+[Authorize]
 public class GameHub : Hub
 {
 	private readonly IMediator _mediator;
@@ -28,42 +24,52 @@ public class GameHub : Hub
 	{
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 		await Clients.Caller.SendAsync(GameHubMethod.GameGroupJoined, gameId);
+
+		var getGameResult = await _mediator.Send(new GetGameInformationQuery() { GameId = gameId });
+
+		if (getGameResult.IsSuccess)
+		{
+			var game = getGameResult.Value;
+
+			if (game.HasBothPlayersJoined && !game.IsGameStarted)
+			{
+				var isPlayerOneMakingFirstMove = game.NextMoveShouldMakePlayerId == game!.PlayerOne!.PlayerId;
+				await Clients.User(game!.PlayerOne!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(isPlayerOneMakingFirstMove));
+
+				var isPlayerTwoMakingFirstMove = game.NextMoveShouldMakePlayerId == game!.PlayerTwo!.PlayerId;
+				await Clients.User(game!.PlayerTwo!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(isPlayerTwoMakingFirstMove));
+			}
+		}
 	}
 
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
 		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
 
-		if (Context.Items["User"] is ClaimsPrincipal user)
+		var userId = Context?.User?.Claims.Get(JwtClaims.UserId);
+
+		var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
+		var placeTileResult = await _mediator.Send(placeTileCommand);
+
+		if (placeTileResult.IsSuccess)
 		{
-			var userId = user.Claims.Get("userId");
-
-			var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
-			var placeTileResult = await _mediator.Send(placeTileCommand);
-
-			if (placeTileResult.IsSuccess)
+			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
-				var playerMadeMoveMessage = new PlayerMadeMoveMessage()
-				{
-					PlayerId = userId!,
-					Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
-					PlacedTileColor = placeTileResult.Value.PlacedTileColor
-				};
-				await Clients.Group(makeMoveMessage.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
-				return;
-			}
+				PlayerId = userId!,
+				Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
+				PlacedTileColor = placeTileResult.Value.PlacedTileColor
+			};
+			await Clients.Group(makeMoveMessage.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
+			return;
+		}
 
-			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
-		}
-		else
-		{
-			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Error. Unable to parse JWT token"));
-		}
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
-		Console.WriteLine($"SendMessage called with gameId: {messageRequest.GameId}, user: {messageRequest.User}, message: {messageRequest.Message}");
+		_logger.LogInformation($"SendMessage called. {messageRequest}");
+
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 }

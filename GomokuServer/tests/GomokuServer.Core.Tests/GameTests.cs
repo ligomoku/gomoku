@@ -89,7 +89,7 @@ public class GameTests
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
 		secondPlacement.IsValid.Should().BeFalse();
-		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.SamePlayerMadeSecondMoveInARow);
+		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.OtherPlayerTurnNow);
 	}
 
 	[Test]
