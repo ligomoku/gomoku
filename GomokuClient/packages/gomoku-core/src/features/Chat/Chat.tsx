@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useChat } from "@/hooks/useChat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
@@ -26,6 +26,16 @@ export const Chat = ({ gameID }: { gameID: string }) => {
     }
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!isSending && messageInput.trim()) {
+        handleSendMessage();
+      }
+    }
+  };
+
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
@@ -45,6 +55,7 @@ export const Chat = ({ gameID }: { gameID: string }) => {
                 type="text"
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
+                onKeyDown={handleKeyDown}
                 className="flex-1 rounded-md border px-3 py-2"
                 placeholder="Type a message..."
               />
@@ -57,7 +68,7 @@ export const Chat = ({ gameID }: { gameID: string }) => {
             </div>
             <ScrollArea
               ref={scrollAreaRef}
-              className="h-[200px] w-full overflow-y-auto rounded-md border p-4"
+              className="h-[300px] w-full overflow-y-auto rounded-md border p-4"
             >
               {messages.map((msg, index) => (
                 <div
@@ -74,7 +85,14 @@ export const Chat = ({ gameID }: { gameID: string }) => {
             </ScrollArea>
           </div>
         ) : (
-          <div>Connecting...</div>
+          <div>
+            Connecting
+            <div>
+              <div className="text-gray-500">
+                No messages yet. Start the conversation!
+              </div>
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
