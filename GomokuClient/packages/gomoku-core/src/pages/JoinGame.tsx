@@ -1,5 +1,4 @@
 import { useParams } from "@tanstack/react-router";
-import { Timer } from "@/features/Timer";
 import { Chat } from "@/features/Chat";
 import Square from "@/features/Square/Square";
 import { useJoinGame } from "@/hooks/useJoinGame";
@@ -30,7 +29,8 @@ const JoinGame = () => {
             </div>
 
             <div className="ml-4 flex flex-col justify-between">
-              <Timer />
+              {/*<Timer />*/}
+              <br />
               <br />
               <Chat gameID={gameID} />
             </div>
