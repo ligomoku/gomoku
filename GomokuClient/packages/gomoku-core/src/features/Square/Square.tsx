@@ -14,6 +14,7 @@ const Square = ({ row, col, value, onClick }: SquareProps) => {
 
   const cellClasses = [
     "relative bg-[#ba8c63] w-10 h-10 border border-black flex justify-center items-center",
+    "hover:bg-[#d4a66b]",
     row === 0 ? "border-t-4" : "",
     row === 18 ? "border-b-4" : "",
     col === 0 ? "border-l-4" : "",

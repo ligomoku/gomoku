@@ -6,7 +6,7 @@ export default {
   component: Chat,
 } as Meta<typeof Chat>;
 
-const Template: StoryFn<typeof Chat> = () => <Chat />;
+const Template: StoryFn<typeof Chat> = () => <Chat gameID={"123"} />;
 
 export const Default = Template.bind({});
 
