@@ -24,6 +24,12 @@ interface PlayerMadeMoveServerMessage {
   placedTileColor: CellValue;
 }
 
+interface SendMessageServerMessage {
+  gameId: string;
+  user: string;
+  message: string;
+}
+
 interface TileItem {
   x: number;
   y: number;
@@ -42,7 +48,7 @@ interface SignalRContextType {
 interface SignalREventHandlers {
   onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
   onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
-  onReceiveMessage?: (user: string, message: string) => void;
+  onReceiveMessage?: (message: SendMessageServerMessage) => void;
   onGameHubError?: (error: GameHubError) => void;
 }
 
@@ -153,7 +159,9 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         console.warn(
           "SignalR connection is not available for attaching event handlers.",
         );
-        return;
+
+        //TODO: check return a no-op function to maintain consistent return type
+        return () => {};
       }
 
       console.log("Attaching SignalR event handlers...");
@@ -162,7 +170,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         [
           ["PlayerJoinedGame", handlers.onPlayerJoined],
           ["PlayerMadeMove", handlers.onPlayerMadeMove],
-          ["ReceiveMessage", handlers.onReceiveMessage],
+          ["SendMessage", handlers.onReceiveMessage],
           ["GameHubError", handlers.onGameHubError],
         ];
 

@@ -32,7 +32,7 @@ const JoinGame = () => {
             <div className="ml-4 flex flex-col justify-between">
               <Timer />
               <br />
-              <Chat />
+              <Chat gameID={gameID} />
             </div>
           </div>
         )}

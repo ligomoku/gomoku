@@ -1,31 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useChat } from "@/hooks/useChat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useAuthToken } from "@/context";
 
-export const Chat = () => {
+export const Chat = ({ gameID }: { gameID: string }) => {
   const { jwtDecodedInfo } = useAuthToken();
   const [messageInput, setMessageInput] = useState("");
-  const { sendMessage, messages, isConnected, connection } = useChat();
+  const { sendMessage, messages, isConnected } = useChat();
 
-  useEffect(() => {
-    if (connection) {
-      connection.on("ReceiveMessage", (user, message) => {
-        console.log("Received message from:", user, message);
-      });
-
-      return () => {
-        connection.off("ReceiveMessage");
-      };
-    }
-  }, [connection]);
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (jwtDecodedInfo?.username && messageInput.trim()) {
-      await sendMessage(jwtDecodedInfo.username, messageInput);
-      setMessageInput("");
+      sendMessage(gameID, jwtDecodedInfo.username, messageInput).then(() => {
+        setMessageInput("");
+      });
     }
   };
 
@@ -52,7 +41,7 @@ export const Chat = () => {
                 Send
               </Button>
             </div>
-            <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+            <ScrollArea className="h-[200px] w-full overflow-y-auto rounded-md border p-4">
               {messages.map((msg, index) => (
                 <div key={index} className="mb-2">
                   {msg}

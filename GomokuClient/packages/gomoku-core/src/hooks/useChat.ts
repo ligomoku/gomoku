@@ -4,31 +4,42 @@ import { useSignalRConnection } from "@/context";
 export const useChat = () => {
   const { connection, isConnected, registerEventHandlers } =
     useSignalRConnection();
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
     if (isConnected && connection) {
       const unregister = registerEventHandlers({
-        onReceiveMessage: (user, message) => {
+        onReceiveMessage: ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+          console.log("Received message:", receivedMessage);
         },
       });
 
+      // Cleanup to prevent double registration
       return () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        if (unregister) unregister();
+        if (typeof unregister === "function") {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          unregister();
+        }
       };
     }
   }, [isConnected, connection, registerEventHandlers]);
 
-  const sendMessage = async (user: string, message: string) => {
+  useEffect(() => {
+    console.log("Chat messages:", messages);
+  }, [messages]);
+
+  const sendMessage = async (gameId: string, user: string, message: string) => {
     if (connection && isConnected) {
       try {
-        await connection.invoke("ReceiveMessage", user, message);
+        const messageRequest = {
+          gameId,
+          user,
+          message,
+        };
+        await connection.invoke("SendMessage", messageRequest);
       } catch (error) {
         console.error("Sending message failed: ", error);
       }

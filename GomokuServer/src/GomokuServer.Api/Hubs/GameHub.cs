@@ -61,9 +61,9 @@ public class GameHub : Hub
 		}
 	}
 
-	public async Task ReceiveMessage(string user, string message)
+	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
-		Console.WriteLine($"ReceiveMessage called with user: {user}, message: {message}");
-		await Clients.All.SendAsync(GameHubMethod.ReceiveMessage, user, message);
+		Console.WriteLine($"SendMessage called with gameId: {messageRequest.GameId}, user: {messageRequest.User}, message: {messageRequest.Message}");
+		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 }
