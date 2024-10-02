@@ -143,9 +143,11 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   //TODO: refactor to iterate over handlers that were passed to the context provider instead of predefined statements
   const registerEventHandlers = useCallback(
     (handlers: SignalREventHandlers) => {
+      const { current: connection } = connectionRef;
+
       if (
-        !connectionRef.current ||
-        connectionRef.current.state !== signalR.HubConnectionState.Connected
+        !connection ||
+        connection.state !== signalR.HubConnectionState.Connected
       ) {
         console.warn(
           "SignalR connection is not available for attaching event handlers.",
@@ -153,40 +155,31 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         return;
       }
 
-      const connection = connectionRef.current;
-
       console.log("Attaching SignalR event handlers...");
 
-      if (handlers.onPlayerJoined) {
-        connection.on("PlayerJoinedGame", handlers.onPlayerJoined);
-      }
+      const eventMapping: [string, ((...args: never[]) => void) | undefined][] =
+        [
+          ["PlayerJoinedGame", handlers.onPlayerJoined],
+          ["PlayerMadeMove", handlers.onPlayerMadeMove],
+          ["ReceiveMessage", handlers.onReceiveMessage],
+          ["GameHubError", handlers.onGameHubError],
+        ];
 
-      if (handlers.onPlayerMadeMove) {
-        connection.on("PlayerMadeMove", handlers.onPlayerMadeMove);
-      }
-
-      if (handlers.onReceiveMessage) {
-        connection.on("ReceiveMessage", handlers.onReceiveMessage);
-      }
-
-      if (handlers.onGameHubError) {
-        connection.on("GameHubError", handlers.onGameHubError);
-      }
+      eventMapping.forEach(([eventName, handler]) => {
+        if (handler) {
+          connection.on(eventName, handler);
+        }
+      });
 
       return () => {
         console.log("Cleaning up SignalR event handlers...");
-        if (handlers.onPlayerJoined) {
-          connection.off("PlayerJoinedGame", handlers.onPlayerJoined);
-        }
-        if (handlers.onPlayerMadeMove) {
-          connection.off("PlayerMadeMove", handlers.onPlayerMadeMove);
-        }
-        if (handlers.onReceiveMessage) {
-          connection.off("ReceiveMessage", handlers.onReceiveMessage);
-        }
-        if (handlers.onGameHubError) {
-          connection.off("GameHubError", handlers.onGameHubError);
-        }
+        eventMapping.forEach(([eventName, handler]) => {
+          if (handler) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
+            connection.off(eventName, handler);
+          }
+        });
       };
     },
     [],
