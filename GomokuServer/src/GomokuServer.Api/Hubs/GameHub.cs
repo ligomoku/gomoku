@@ -1,5 +1,3 @@
-using MessagePack;
-
 namespace GomokuServer.Api.Hubs;
 
 using System.Security.Claims;
@@ -63,16 +61,9 @@ public class GameHub : Hub
 		}
 	}
 
-	public async Task SendMessage(byte[] packedData)
-	{
-		var decodedMessage = MessagePackSerializer.Deserialize<ChatMessageClientMessage>(packedData);
-		Console.WriteLine($"SendMessage called with user: {decodedMessage.User}, message: {decodedMessage.Message}");
-		await Clients.All.SendAsync("ReceiveMessage", decodedMessage.User, decodedMessage.Message);
-	}
-
 	public async Task ReceiveMessage(string user, string message)
 	{
 		Console.WriteLine($"ReceiveMessage called with user: {user}, message: {message}");
-		await Clients.Caller.SendAsync(GameHubMethod.ReceiveMessage, user, message);
+		await Clients.All.SendAsync(GameHubMethod.ReceiveMessage, user, message);
 	}
 }
