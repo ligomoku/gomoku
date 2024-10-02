@@ -16,20 +16,13 @@ export const useChat = () => {
         },
       });
 
-      // Cleanup to prevent double registration
       return () => {
         if (typeof unregister === "function") {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
           unregister();
         }
       };
     }
   }, [isConnected, connection, registerEventHandlers]);
-
-  useEffect(() => {
-    console.log("Chat messages:", messages);
-  }, [messages]);
 
   const sendMessage = async (gameId: string, user: string, message: string) => {
     if (connection && isConnected) {

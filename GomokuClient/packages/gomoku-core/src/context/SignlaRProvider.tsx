@@ -42,7 +42,9 @@ interface GameHubError {
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
   isConnected: boolean;
-  registerEventHandlers: (handlers: SignalREventHandlers) => void;
+  registerEventHandlers: (
+    handlers: SignalREventHandlers,
+  ) => void | (() => void);
 }
 
 interface SignalREventHandlers {
