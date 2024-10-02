@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useEffect, useRef, useState, KeyboardEvent } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useAuthToken, useSignalRConnection } from "@/context";
-import * as signalR from "@microsoft/signalr";
 
 export const Chat = () => {
   const { jwtDecodedInfo } = useAuthToken();
-  const { connection } = useSignalRConnection();
+  const { connection, isConnected, registerEventHandlers } =
+    useSignalRConnection();
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
@@ -19,10 +19,7 @@ export const Chat = () => {
       return;
     }
 
-    if (
-      connection &&
-      connection.state === signalR.HubConnectionState.Connected
-    ) {
+    if (connection && isConnected) {
       const myMessage = `${jwtDecodedInfo.username}: ${messageInput}`;
       setMessages((prevMessages) => [...prevMessages, myMessage]);
 
@@ -33,13 +30,16 @@ export const Chat = () => {
       );
 
       connection
-        .send("ReceiveMessage", jwtDecodedInfo.username, messageInput)
+        .send("SendMessage", jwtDecodedInfo.username, messageInput)
         .then(() => {
           console.log("Message sent successfully");
+          setMessageInput("");
         })
         .catch((error) => {
           console.error("Error sending message:", error);
         });
+    } else {
+      console.warn("Cannot send message, SignalR connection is not connected.");
     }
   };
 
@@ -48,6 +48,17 @@ export const Chat = () => {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    if (isConnected) {
+      return registerEventHandlers({
+        onReceiveMessage: (user: string, message: string) => {
+          const receivedMessage = `${user}: ${message}`;
+          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        },
+      });
+    }
+  }, [isConnected, registerEventHandlers]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -61,7 +72,7 @@ export const Chat = () => {
         <CardTitle>Chat</CardTitle>
       </CardHeader>
       <CardContent>
-        {connection ? (
+        {isConnected ? (
           <div className="space-y-4">
             <div className="flex space-x-2">
               <input

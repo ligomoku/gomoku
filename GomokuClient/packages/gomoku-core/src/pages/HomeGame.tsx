@@ -84,5 +84,5 @@ const useFetchGames = () =>
 
       return response.data;
     },
-    refetchInterval: 1000,
+    refetchInterval: 5000,
   });

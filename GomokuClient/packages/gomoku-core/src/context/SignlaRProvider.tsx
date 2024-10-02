@@ -5,16 +5,45 @@ import {
   ReactNode,
   useContext,
   useState,
+  useCallback,
 } from "react";
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { typedStorage } from "@/shared/lib/utils";
 import { useAuthToken } from "@/context/AuthContext";
 import { useAuth } from "@clerk/clerk-react";
+import { CellValue } from "@/hooks/useBoard";
+
+interface PlayerJoinedGameServerMessage {
+  userName: string;
+}
+
+interface PlayerMadeMoveServerMessage {
+  playerId: string;
+  tile: TileItem;
+  placedTileColor: CellValue;
+}
+
+interface TileItem {
+  x: number;
+  y: number;
+}
+
+interface GameHubError {
+  message: string;
+}
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
   isConnected: boolean;
+  registerEventHandlers: (handlers: SignalREventHandlers) => void;
+}
+
+interface SignalREventHandlers {
+  onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
+  onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
+  onReceiveMessage?: (user: string, message: string) => void;
+  onGameHubError?: (error: GameHubError) => void;
 }
 
 export const SignalRContext = createContext<SignalRContextType | undefined>(
@@ -49,7 +78,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
         accessTokenFactory: async () => {
           let token = typedStorage.getItem("jwtToken");
-          //TODO: place consistent token refresh logic in a single place
+          // TODO: place consistent token refresh logic in a single place
           if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
             console.log("JWT token expired, refreshing token...");
             try {
@@ -75,7 +104,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
     const handleConnectionClose = async () => {
       console.warn("SignalR connection lost. Attempting to reconnect...");
       setIsConnected(false);
-
       try {
         if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
           console.log("JWT token expired. Refreshing token...");
@@ -112,9 +140,65 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
     };
   }, [jwtToken, jwtDecodedInfo]);
 
+  //TODO: refactor to iterate over handlers that were passed to the context provider instead of predefined statements
+  const registerEventHandlers = useCallback(
+    (handlers: SignalREventHandlers) => {
+      if (
+        !connectionRef.current ||
+        connectionRef.current.state !== signalR.HubConnectionState.Connected
+      ) {
+        console.warn(
+          "SignalR connection is not available for attaching event handlers.",
+        );
+        return;
+      }
+
+      const connection = connectionRef.current;
+
+      console.log("Attaching SignalR event handlers...");
+
+      if (handlers.onPlayerJoined) {
+        connection.on("PlayerJoinedGame", handlers.onPlayerJoined);
+      }
+
+      if (handlers.onPlayerMadeMove) {
+        connection.on("PlayerMadeMove", handlers.onPlayerMadeMove);
+      }
+
+      if (handlers.onReceiveMessage) {
+        connection.on("ReceiveMessage", handlers.onReceiveMessage);
+      }
+
+      if (handlers.onGameHubError) {
+        connection.on("GameHubError", handlers.onGameHubError);
+      }
+
+      return () => {
+        console.log("Cleaning up SignalR event handlers...");
+        if (handlers.onPlayerJoined) {
+          connection.off("PlayerJoinedGame", handlers.onPlayerJoined);
+        }
+        if (handlers.onPlayerMadeMove) {
+          connection.off("PlayerMadeMove", handlers.onPlayerMadeMove);
+        }
+        if (handlers.onReceiveMessage) {
+          connection.off("ReceiveMessage", handlers.onReceiveMessage);
+        }
+        if (handlers.onGameHubError) {
+          connection.off("GameHubError", handlers.onGameHubError);
+        }
+      };
+    },
+    [],
+  );
+
   return (
     <SignalRContext.Provider
-      value={{ connection: connectionRef.current, isConnected }}
+      value={{
+        connection: connectionRef.current,
+        isConnected,
+        registerEventHandlers,
+      }}
     >
       {children}
     </SignalRContext.Provider>

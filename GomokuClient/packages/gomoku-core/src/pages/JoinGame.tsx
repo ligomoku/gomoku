@@ -9,7 +9,6 @@ import { postApiGameByGameIdJoin } from "@/api/client";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import * as signalR from "@microsoft/signalr";
-import { useSignalRReconnection } from "@/hooks/useSignalRReconnection";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
@@ -21,7 +20,7 @@ const JoinGame = () => {
   useEffect(() => {
     const previousGameID = typedStorage.getItem("currentGameID");
     if (previousGameID && previousGameID !== gameID) {
-      //TODO: this logic should be improve by fetching if game was available and if is not remove data
+      // TODO: Improve this logic by fetching if the game is available and if not, remove data
       typedStorage.removeItem(`gameBoard_${previousGameID}`);
       typedStorage.removeItem(`nextTurn_${previousGameID}`);
     }
@@ -30,33 +29,32 @@ const JoinGame = () => {
 
   const { board, winner, addPiece } = useBoard(gameID!);
 
-  const { connection, isConnected } = useSignalRConnection();
+  const { connection, isConnected, registerEventHandlers } =
+    useSignalRConnection();
 
   useEffect(() => {
-    if (connection && isConnected && gameID) {
-      connection.invoke("JoinGameGroup", gameID);
-    }
-  }, [connection, isConnected, gameID]);
+    if (isConnected && gameID) {
+      connection?.invoke("JoinGameGroup", gameID);
 
-  useSignalRReconnection({
-    connection,
-    isConnected,
-    onPlayerJoined: ({ userName }) => {
-      console.log(`Player ${userName} joined game.`);
-    },
-    onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
-      console.log("Player made move:", playerId, tile, placedTileColor);
-      addPiece(tile.y, tile.x, placedTileColor);
-    },
-    onGameHubError: (error) => {
-      console.warn("Error from game hub:", error);
-    },
-  });
+      return registerEventHandlers({
+        onPlayerJoined: ({ userName }) => {
+          console.log(`Player ${userName} joined game.`);
+        },
+        onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
+          console.log("Player made move:", playerId, tile, placedTileColor);
+          addPiece(tile.y, tile.x, placedTileColor);
+        },
+        onGameHubError: (error) => {
+          console.warn("Error from game hub:", error.message);
+        },
+      });
+    }
+  }, [connection, isConnected, gameID, registerEventHandlers, addPiece]);
 
   useEffect(() => {
     if (!gameID) return;
     joinGame.mutate(gameID);
-  }, [gameID]);
+  }, [gameID]); //TODO: should be extra dependency but without recursion
 
   useEffect(() => {
     if (winner) alert(`The winner is: ${winner}`);
