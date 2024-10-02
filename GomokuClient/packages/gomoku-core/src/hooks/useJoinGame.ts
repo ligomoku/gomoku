@@ -27,11 +27,11 @@ export const useJoinGame = (gameID: string) => {
         onPlayerJoined: ({ userName }) => {
           console.log(`Player ${userName} joined game.`);
         },
-        onGameStarted: ({isMyMoveFirst}) => {
+        onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
-            alert("It's your turn. Place your tile")
+            alert("It's your turn. Place your tile");
           } else {
-            alert("Wait for your opponent move")
+            alert("Wait for your opponent move");
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
