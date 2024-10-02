@@ -105,6 +105,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       console.warn("SignalR connection lost. Attempting to reconnect...");
       setIsConnected(false);
       try {
+        console.log(jwtDecodedInfo); //TODO: remove latter check jwt expired format on different env's
         if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
           console.log("JWT token expired. Refreshing token...");
           const token = await getToken({ skipCache: true });
