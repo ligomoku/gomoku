@@ -118,7 +118,7 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
+				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow
 			};
 		}
 
