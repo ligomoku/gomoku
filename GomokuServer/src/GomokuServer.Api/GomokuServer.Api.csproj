@@ -27,4 +27,8 @@
     <ProjectReference Include="..\GomokuServer.Infrastructure\GomokuServer.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
-﻿using GomokuServer.Api.Attributes;
-using GomokuServer.Api.Hubs.Messages.Server;
+﻿using GomokuServer.Api.Hubs.Messages.Server;
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace GomokuServer.Api.Controllers.v1;
 
@@ -58,10 +59,10 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[ClerkAuthorization]
+	[Authorize]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var userId = User.Claims.Get("userId");
+		var userId = User.Claims.Get(JwtClaims.UserId);
 		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId! });
 
 		return createGameResult.ToApiResponse();
@@ -70,17 +71,17 @@ public class GameController : Controller
 	/// <summary>
 	/// Join game
 	/// </summary>
-	/// <response code="200">Player with specified id successfully joined the game</response>
+	/// <response code="204">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/join")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[ClerkAuthorization]
+	[Authorize]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var userId = User.Claims.Get("userId");
-		var userName = User.Claims.Get("username");
+		var userId = User.Claims.Get(JwtClaims.UserId);
+		var userName = User.Claims.Get(JwtClaims.UserName);
 
 		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId! });
 
@@ -99,19 +100,19 @@ public class GameController : Controller
 	/// <summary>
 	/// Make move in a game
 	/// </summary>
-	/// <response code="200">Move successfully made</response>
+	/// <response code="204">Move successfully made</response>
 	/// <response code="400">Required data is not provided</response>
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/make-move")]
-	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status204NoContent)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[ClerkAuthorization]
+	[Authorize]
 	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
 	{
-		var userId = User.Claims.Get("userId");
+		var userId = User.Claims.Get(JwtClaims.UserId);
 
 		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId! });
 

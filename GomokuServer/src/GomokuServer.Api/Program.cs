@@ -11,11 +11,12 @@ builder.Services.RegisterCors(CorsPolicyName.GomokuClient, config);
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 
+builder.Services.RegisterAuthentication();
+
 builder.Services.RegisterSignalR();
 
 builder.Services.AddMemoryCache();
 
-builder.Services.RegisterApiServices();
 builder.Services.RegisterGomokuServices(config);
 
 var app = builder.Build();
@@ -24,10 +25,12 @@ app.UseSwaggerPage();
 
 app.UseCors(CorsPolicyName.GomokuClient);
 
-app.UseClerkJwtValidation();
-app.UseClerkJwtClaimsValidation();
-
 app.MapControllers();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseJwtClaimsValidation();
+
 app.MapHub<GameHub>(HubRoute.GameHub);
 
 app.Run();
