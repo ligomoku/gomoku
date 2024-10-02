@@ -4,18 +4,12 @@ import { useBoard } from "@/hooks/useBoard";
 import { Timer } from "@/features/Timer";
 import { Chat } from "@/features/Chat";
 import { useParams } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
-import { postApiGameByGameIdJoin } from "@/api/client";
-import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
-import { useAuthToken, useSignalRConnection } from "@/context";
+import { typedStorage } from "@/shared/lib/utils";
+import { useSignalRConnection } from "@/context";
 import * as signalR from "@microsoft/signalr";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
-  const { jwtToken } = useAuthToken();
-  const joinGame = useJoinGame(
-    jwtToken || typedStorage.getItem("jwtToken") || "",
-  );
 
   useEffect(() => {
     const previousGameID = typedStorage.getItem("currentGameID");
@@ -50,11 +44,6 @@ const JoinGame = () => {
       });
     }
   }, [connection, isConnected, gameID, registerEventHandlers, addPiece]);
-
-  useEffect(() => {
-    if (!gameID) return;
-    joinGame.mutate(gameID);
-  }, [gameID]); //TODO: should be extra dependency but without recursion
 
   useEffect(() => {
     if (winner) alert(`The winner is: ${winner}`);
@@ -115,19 +104,5 @@ const JoinGame = () => {
 };
 
 JoinGame.displayName = "JoinGame";
-
-const useJoinGame = (authToken: string) =>
-  useMutation<void, Error, string>({
-    mutationFn: async (gameId) => {
-      const response = await postApiGameByGameIdJoin({
-        path: { gameId },
-        headers: getDefaultHeaders(authToken),
-      });
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-    },
-  });
 
 export default JoinGame;
