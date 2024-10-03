@@ -2,7 +2,7 @@
 
 public enum TilePlacementValidationError
 {
-	SamePlayerMadeSecondMoveInARow = 0,
+	OtherPlayerTurnNow = 0,
 	TileAlreadyOcupied = 1,
 	TileIndexOutOfTheBoardRange = 2,
 	GameNotStartedYet = 3,

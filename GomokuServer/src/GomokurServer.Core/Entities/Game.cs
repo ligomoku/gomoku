@@ -74,8 +74,8 @@ public class Game
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
 
 		// In gomoku first move makes black player :D
-		PlayerOne.Color = TileColor.Black;
-		PlayerTwo.Color = TileColor.White;
+		firstPlayer.Color = TileColor.Black;
+		secondPlayer.Color = TileColor.White;
 
 		return new()
 		{
@@ -118,7 +118,7 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.SamePlayerMadeSecondMoveInARow
+				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow
 			};
 		}
 

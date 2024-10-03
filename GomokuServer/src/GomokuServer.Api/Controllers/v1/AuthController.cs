@@ -1,5 +1,6 @@
-﻿using GomokuServer.Api.Attributes;
-using GomokuServer.Api.Controllers.v1.Responses;
+﻿using GomokuServer.Api.Controllers.v1.Responses;
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace GomokuServer.Api.Controllers.v1;
 
@@ -9,7 +10,7 @@ namespace GomokuServer.Api.Controllers.v1;
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
-[ClerkAuthorization]
+[Authorize]
 public class AuthController : Controller
 {
 	/// <summary>
@@ -19,12 +20,13 @@ public class AuthController : Controller
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public IActionResult AuthInfo()
 	{
-		var usernameClaim = User.Claims.Get("username");
-		var fullNameClaim = User.Claims.Get("fullName");
+		var usernameClaim = User.Claims.Get(JwtClaims.UserName);
+		var fullNameClaim = User.Claims.Get(JwtClaims.FullName);
 
 		var response = new AuthInfoResponse()
 		{
 			UserName = usernameClaim,
+
 			FullName = fullNameClaim,
 		};
 
