@@ -48,7 +48,7 @@ export const useBoard = (gameID: string) => {
       typedStorage.setItem(BOARD_KEY, JSON.stringify(board));
       typedStorage.setItem(NEXT_TURN_KEY, JSON.stringify(isBlackNext.current));
     }
-  }, [board, winner]);
+  }, [BOARD_KEY, NEXT_TURN_KEY, board, winner]);
 
   const updateBoard = useCallback(
     (y: number, x: number, newValue: CellValue) => {

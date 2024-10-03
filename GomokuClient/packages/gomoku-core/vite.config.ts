@@ -1,9 +1,8 @@
 import { defineConfig, loadEnv } from "vite";
 import viteReact from "@vitejs/plugin-react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
 // @ts-expect-error
 import path from "path";
 

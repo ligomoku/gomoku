@@ -68,18 +68,21 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  const startConnection = async (connection: signalR.HubConnection) => {
-    if (connection?.state === signalR.HubConnectionState.Disconnected) {
-      try {
-        await connection.start();
-        console.log("SignalR connection established");
-        setIsConnected(true);
-      } catch (error) {
-        console.error("Error starting SignalR connection:", error);
-        setTimeout(() => startConnection(connection), 5000);
+  const startConnection = useCallback(
+    async (connection: signalR.HubConnection) => {
+      if (connection?.state === signalR.HubConnectionState.Disconnected) {
+        try {
+          await connection.start();
+          console.log("SignalR connection established");
+          setIsConnected(true);
+        } catch (error) {
+          console.error("Error starting SignalR connection:", error);
+          setTimeout(() => startConnection(connection), 5000);
+        }
       }
-    }
-  };
+    },
+    [],
+  );
 
   if (!connectionRef.current) {
     connectionRef.current = new signalR.HubConnectionBuilder()
@@ -147,7 +150,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
           );
       }
     };
-  }, [jwtToken, jwtDecodedInfo]);
+  }, [jwtToken, jwtDecodedInfo, startConnection, getToken]);
 
   //TODO: refactor to iterate over handlers that were passed to the context provider instead of predefined statements
   const registerEventHandlers = useCallback(
@@ -186,7 +189,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         console.log("Cleaning up SignalR event handlers...");
         eventMapping.forEach(([eventName, handler]) => {
           if (handler) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-expect-error
             connection.off(eventName, handler);
           }

@@ -9,7 +9,7 @@ export const useMobileDesign = (mobileWidth = 768): boolean => {
     const handleResize = (): void => setIsMobile(mediaQuery.matches);
     window.addEventListener("resize", handleResize);
     return (): void => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [mobileWidth]);
 
   return isMobile;
 };
