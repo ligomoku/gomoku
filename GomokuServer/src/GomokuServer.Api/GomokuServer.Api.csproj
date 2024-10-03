@@ -10,13 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Attributes\**" />
-    <Content Remove="Attributes\**" />
-    <EmbeddedResource Remove="Attributes\**" />
-    <None Remove="Attributes\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
