@@ -22,6 +22,8 @@ export const useChat = () => {
         }
       };
     }
+
+    return undefined;
   }, [isConnected, connection, registerEventHandlers]);
 
   const sendMessage = async (gameId: string, user: string, message: string) => {
