@@ -1,13 +1,11 @@
 ﻿using System.Net.Http.Headers;
 
 using GomokuServer.Api.Hubs.Providers;
+using GomokuServer.Api.Swagger.Examples;
+using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Interfaces.Common;
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace GomokuServer.Api.Extensions;
 
@@ -170,63 +168,5 @@ public static class ServiceCollectionExtensions
 		});
 
 		return services;
-	}
-}
-
-public class AuthorizationOperationFilter : IOperationFilter
-{
-	public void Apply(OpenApiOperation operation, OperationFilterContext context)
-	{
-		var hasAuthAttribute = context.MethodInfo.GetCustomAttributes(true)
-								  .OfType<AuthorizeAttribute>()
-								  .Any();
-
-		if (hasAuthAttribute)
-		{
-			operation.Parameters.Add(new OpenApiParameter
-			{
-				Name = "Authorization",
-				In = ParameterLocation.Header,
-				Required = true,
-				Schema = new OpenApiSchema
-				{
-					Type = "string",
-					Default = new OpenApiString("Bearer ")
-				}
-			});
-
-			operation.Security.Add(new OpenApiSecurityRequirement
-			{
-				{
-					new OpenApiSecurityScheme
-					{
-						Reference = new OpenApiReference
-						{
-							Type = ReferenceType.SecurityScheme,
-							Id = "Bearer"
-						}
-					},
-					Array.Empty<string>()
-				}
-			});
-		}
-	}
-}
-
-public class MandatoryHeadersParametersOperationFilter : IOperationFilter
-{
-	public void Apply(OpenApiOperation operation, OperationFilterContext context)
-	{
-		operation.Parameters.Add(new OpenApiParameter
-		{
-			Name = "Content-Type",
-			In = ParameterLocation.Header,
-			Required = true,
-			Schema = new OpenApiSchema
-			{
-				Type = "string",
-				Default = new OpenApiString("application/json")
-			}
-		});
 	}
 }
