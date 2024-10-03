@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
 
-namespace GomokuServer.Api.Examples;
+namespace GomokuServer.Api.Swagger.Examples;
 
 public class NotFoundErrorExample : IExamplesProvider<ProblemDetails>
 {
