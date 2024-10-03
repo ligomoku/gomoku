@@ -7,7 +7,6 @@ global using Asp.Versioning.ApiExplorer;
 global using GomokuServer.Api.Configuration;
 global using GomokuServer.Api.Constants;
 global using GomokuServer.Api.Controllers.v1.Requests;
-global using GomokuServer.Api.Examples;
 global using GomokuServer.Api.Extensions;
 global using GomokuServer.Api.Hubs;
 global using GomokuServer.Api.Middlewares;
