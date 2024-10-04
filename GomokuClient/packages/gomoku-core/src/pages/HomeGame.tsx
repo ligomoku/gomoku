@@ -8,7 +8,7 @@ import {
   getApiGamesAvailableToJoin,
   GetApiGamesAvailableToJoinError,
   GetApiGamesAvailableToJoinResponse,
-  GetAvailableGamesResponse
+  GetAvailableGamesResponse,
 } from "@/api/client";
 import { Users } from "lucide-react";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";

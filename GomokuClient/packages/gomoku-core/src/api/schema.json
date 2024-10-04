@@ -8,9 +8,7 @@
   "paths": {
     "/api/game/{gameId}/history": {
       "get": {
-        "tags": [
-          "Game"
-        ],
+        "tags": ["Game"],
         "summary": "Get game history by game id",
         "parameters": [
           {
@@ -59,7 +57,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
               }
             }
           }
@@ -68,9 +70,7 @@
     },
     "/api/games/available-to-join": {
       "get": {
-        "tags": [
-          "Game"
-        ],
+        "tags": ["Game"],
         "summary": "Get all games, which are available to join",
         "parameters": [
           {
@@ -111,9 +111,7 @@
     },
     "/api/game": {
       "post": {
-        "tags": [
-          "Game"
-        ],
+        "tags": ["Game"],
         "summary": "Create new game",
         "parameters": [
           {
@@ -172,23 +170,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"Bad Request","status":400}
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                  "title": "Bad Request",
+                  "status": 400
+                }
               }
             }
           }
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Bearer": []
           }
         ]
       }
     },
     "/api/game/{gameId}/join": {
       "post": {
-        "tags": [
-          "Game"
-        ],
+        "tags": ["Game"],
         "summary": "Join game",
         "parameters": [
           {
@@ -240,23 +240,25 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
               }
             }
           }
         },
         "security": [
           {
-            "Bearer": [ ]
+            "Bearer": []
           }
         ]
       }
     },
     "/health": {
       "get": {
-        "tags": [
-          "Health"
-        ],
+        "tags": ["Health"],
         "summary": "Health check endpoint",
         "parameters": [
           {
@@ -287,9 +289,7 @@
     },
     "/gamehub/JoinGameGroup": {
       "post": {
-        "tags": [
-          "GameHub"
-        ],
+        "tags": ["GameHub"],
         "parameters": [
           {
             "name": "gameId",
@@ -300,14 +300,12 @@
             }
           }
         ],
-        "responses": { }
+        "responses": {}
       }
     },
     "/gamehub/MakeMove": {
       "post": {
-        "tags": [
-          "GameHub"
-        ],
+        "tags": ["GameHub"],
         "parameters": [
           {
             "name": "makeMoveMessage",
@@ -318,14 +316,12 @@
             }
           }
         ],
-        "responses": { }
+        "responses": {}
       }
     },
     "/gamehub/SendMessage": {
       "post": {
-        "tags": [
-          "GameHub"
-        ],
+        "tags": ["GameHub"],
         "parameters": [
           {
             "name": "messageRequest",
@@ -336,18 +332,14 @@
             }
           }
         ],
-        "responses": { }
+        "responses": {}
       }
     }
   },
   "components": {
     "schemas": {
       "ChatMessageClientMessage": {
-        "required": [
-          "gameId",
-          "message",
-          "user"
-        ],
+        "required": ["gameId", "message", "user"],
         "type": "object",
         "properties": {
           "gameId": {
@@ -366,9 +358,7 @@
         "additionalProperties": false
       },
       "CreateGameRequest": {
-        "required": [
-          "boardSize"
-        ],
+        "required": ["boardSize"],
         "type": "object",
         "properties": {
           "boardSize": {
@@ -379,9 +369,7 @@
         "additionalProperties": false
       },
       "CreateGameResponse": {
-        "required": [
-          "gameId"
-        ],
+        "required": ["gameId"],
         "type": "object",
         "properties": {
           "gameId": {
@@ -392,10 +380,7 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponse": {
-        "required": [
-          "gameId",
-          "opponent"
-        ],
+        "required": ["gameId", "opponent"],
         "type": "object",
         "properties": {
           "gameId": {
@@ -409,12 +394,7 @@
         "additionalProperties": false
       },
       "GetGameHistoryResponse": {
-        "required": [
-          "boardSize",
-          "movesCount",
-          "movesHistory",
-          "players"
-        ],
+        "required": ["boardSize", "movesCount", "movesHistory", "players"],
         "type": "object",
         "properties": {
           "boardSize": {
@@ -438,11 +418,7 @@
         "additionalProperties": false
       },
       "MakeMoveClientMessage": {
-        "required": [
-          "gameId",
-          "x",
-          "y"
-        ],
+        "required": ["gameId", "x", "y"],
         "type": "object",
         "properties": {
           "gameId": {
@@ -461,10 +437,7 @@
         "additionalProperties": false
       },
       "PlayerDto": {
-        "required": [
-          "playerId",
-          "userName"
-        ],
+        "required": ["playerId", "userName"],
         "type": "object",
         "properties": {
           "playerId": {
@@ -507,13 +480,10 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "TileDto": {
-        "required": [
-          "x",
-          "y"
-        ],
+        "required": ["x", "y"],
         "type": "object",
         "properties": {
           "x": {
