@@ -289,7 +289,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void MakeMoves_MovesNumbersShouldBeCorrect()
+	public void MakeMoves_MovesHistoryShouldBeCorrect()
 	{
 		// Act
 		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
@@ -297,11 +297,13 @@ public class GameTests
 		_game.PlaceTile(new Tile(1, 1), _playerOne.Id);
 
 		// Assert
-		var playerMoves = _game.PlayersMoves.Values.ToList();
-		playerMoves.Count.Should().Be(3);
-		playerMoves[0].MoveNumber.Should().Be(1);
-		playerMoves[1].MoveNumber.Should().Be(1);
-		playerMoves[2].MoveNumber.Should().Be(2);
+		_game.MovesHistory.Count.Should().Be(3);
+		_game.MovesHistory[1].X.Should().Be(0);
+		_game.MovesHistory[1].Y.Should().Be(0);
+		_game.MovesHistory[2].X.Should().Be(0);
+		_game.MovesHistory[2].Y.Should().Be(1);
+		_game.MovesHistory[3].X.Should().Be(1);
+		_game.MovesHistory[3].Y.Should().Be(1);
 	}
 
 	[Test]

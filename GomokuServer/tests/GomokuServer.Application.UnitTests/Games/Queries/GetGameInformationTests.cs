@@ -41,7 +41,7 @@ public class GetGameInformationTests
 		getGameResponse.Players!.Black!.Should().BeNull();
 		getGameResponse.Players!.White.Should().BeNull();
 		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
-		getGameResponse.PlayersMoves.Should().BeEmpty();
+		getGameResponse.MovesHistory.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
@@ -70,7 +70,7 @@ public class GetGameInformationTests
 		getGameResponse.NextMoveShouldMakePlayerId.Should().Be(game.NextMoveShouldMakePlayerId);
 		getGameResponse.Players!.Black!.PlayerId.Should().Be(game.Players!.Black!.Id);
 		getGameResponse.Players!.White!.PlayerId.Should().Be(game.Players!.White!.Id);
-		getGameResponse.PlayersMoves.Should().BeEmpty();
+		getGameResponse.MovesHistory.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 

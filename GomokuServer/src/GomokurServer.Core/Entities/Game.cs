@@ -6,7 +6,7 @@ namespace GomokuServer.Core.Entities;
 
 public class Game
 {
-	private readonly Dictionary<string, GameMove> _playersMoves = new();
+	private readonly Dictionary<int, Tile> _movesHistory = new();
 	private readonly GameBoard _gameBoard;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
@@ -29,7 +29,7 @@ public class Game
 
 	public DateTime CreatedAt { get; init; }
 
-	public IReadOnlyDictionary<string, GameMove> PlayersMoves => _playersMoves.AsReadOnly();
+	public IReadOnlyDictionary<int, Tile> MovesHistory => _movesHistory.AsReadOnly();
 
 	public List<Player> Opponents { get; init; }
 
@@ -37,7 +37,7 @@ public class Game
 
 	public bool HasBothPlayersJoined => Players.Black != null && Players.Black != null;
 
-	public bool IsGameStarted => HasBothPlayersJoined && _playersMoves.Count > 0;
+	public bool IsGameStarted => HasBothPlayersJoined && _movesHistory.Count > 0;
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
@@ -137,11 +137,11 @@ public class Game
 		{
 			var move = new GameMove()
 			{
-				MoveNumber = _playersMoves.Count / 2 + 1,
+				MoveNumber = _movesHistory.Count / 2 + 1,
 				PlayerId = playerId,
 				Tile = tile,
 			};
-			_playersMoves.Add($"{tile.X}.{tile.Y}", move);
+			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
 		}

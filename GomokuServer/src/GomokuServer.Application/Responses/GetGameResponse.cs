@@ -20,5 +20,8 @@ public class GetGameResponse
 	public IEnumerable<TileDto>? WinningSequence { get; set; }
 
 	[Required]
-	public required IReadOnlyDictionary<string, GameMoveDto> PlayersMoves { get; set; }
+	public required int MovesCount { get; set; }
+
+	[Required]
+	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; set; }
 }
