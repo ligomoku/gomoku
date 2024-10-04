@@ -2,7 +2,7 @@
 
 namespace GomokuServer.Application.Interfaces;
 
-public interface IPaginatedRepository
+public interface IPaginatedRepository<T>
 {
-	Task<int> CountAsync(Expression<Func<Game, bool>>? expression = null);
+	Task<int> CountAsync(Expression<Func<T, bool>>? expression = null);
 }
