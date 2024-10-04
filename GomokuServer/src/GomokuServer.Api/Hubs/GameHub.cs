@@ -25,7 +25,7 @@ public class GameHub : Hub
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 		await Clients.Caller.SendAsync(GameHubMethod.GameGroupJoined, gameId);
 
-		var getGameResult = await _mediator.Send(new GetGameInformationQuery() { GameId = gameId });
+		var getGameResult = await _mediator.Send(new GetGameCurrentStateQuery() { GameId = gameId });
 
 		if (getGameResult.IsSuccess)
 		{

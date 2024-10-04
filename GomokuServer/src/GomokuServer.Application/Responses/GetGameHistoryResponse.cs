@@ -9,7 +9,7 @@ public class GetGameHistoryResponse
 	public required int MovesCount { get; init; }
 
 	[Required]
-	public required PlayersDto Players { get; init; }
+	public required UsernamesDto Players { get; init; }
 
 	[Required]
 	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; init; }

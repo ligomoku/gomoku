@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Application.Responses;
 
-public class GetGameResponse
+public class GetGameCurrentStateResponse
 {
 	[Required]
 	public required string GameId { get; set; }

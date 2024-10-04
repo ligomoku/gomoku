@@ -57,8 +57,8 @@ public class GetGameHistoryTests
 		result.Status.Should().Be(ResultStatus.Ok);
 
 		var getGameResponse = result.Value;
-		getGameResponse.Players!.Black!.PlayerId.Should().Be(game.Players!.Black!.Id);
-		getGameResponse.Players!.White!.PlayerId.Should().Be(game.Players!.White!.Id);
+		getGameResponse.Players!.Black!.Should().Be(game.Players!.Black!.UserName);
+		getGameResponse.Players!.White!.Should().Be(game.Players!.White!.UserName);
 		getGameResponse.MovesHistory.Should().BeEmpty();
 
 		await _gameRepository.Received(1).GetAsync(game.GameId);

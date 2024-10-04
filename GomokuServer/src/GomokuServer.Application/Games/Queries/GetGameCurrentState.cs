@@ -4,26 +4,26 @@ using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
-public record GetGameInformationQuery : IQuery<GetGameResponse>
+public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 {
 	[Required]
 	public required string GameId { get; init; }
 }
 
-public class GetGameInformationQueryHandler : IQueryHandler<GetGameInformationQuery, GetGameResponse>
+public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
 {
 	private readonly IGameRepository _gameRepository;
 
-	public GetGameInformationQueryHandler(IGameRepository gameRepository)
+	public GetGameCurrentStateQueryHandler(IGameRepository gameRepository)
 	{
 		_gameRepository = gameRepository;
 	}
 
-	public async Task<Result<GetGameResponse>> Handle(GetGameInformationQuery request, CancellationToken cancellationToken)
+	public async Task<Result<GetGameCurrentStateResponse>> Handle(GetGameCurrentStateQuery request, CancellationToken cancellationToken)
 	{
 		var getGameResult = await _gameRepository.GetAsync(request.GameId);
 
-		return getGameResult.Map(game => new GetGameResponse
+		return getGameResult.Map(game => new GetGameCurrentStateResponse
 		{
 			GameId = game.GameId,
 			Players = game.GetPlayersDto(),

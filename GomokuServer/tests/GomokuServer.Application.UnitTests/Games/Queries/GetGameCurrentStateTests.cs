@@ -3,18 +3,18 @@ using GomokuServer.Application.UnitTests.TestData;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 
-public class GetGameInformationTests
+public class GetGameCurrentStateTests
 {
 	private TestDataProvider _testDataProvider;
 	private IGameRepository _gameRepository;
-	private GetGameInformationQueryHandler _handler;
+	private GetGameCurrentStateQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
 		_gameRepository = Substitute.For<IGameRepository>();
-		_handler = new GetGameInformationQueryHandler(_gameRepository);
+		_handler = new GetGameCurrentStateQueryHandler(_gameRepository);
 	}
 
 	[Test]
@@ -25,7 +25,7 @@ public class GetGameInformationTests
 
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -55,7 +55,7 @@ public class GetGameInformationTests
 		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -84,7 +84,7 @@ public class GetGameInformationTests
 		var game = _testDataProvider.GetGame_HasWinner();
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -115,7 +115,7 @@ public class GetGameInformationTests
 		var invalidGameId = "InvalidGameId";
 		_gameRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
 
-		var query = new GetGameInformationQuery { GameId = invalidGameId };
+		var query = new GetGameCurrentStateQuery { GameId = invalidGameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);

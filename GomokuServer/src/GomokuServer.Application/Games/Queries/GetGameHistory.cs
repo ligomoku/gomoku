@@ -1,5 +1,4 @@
-﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Application.Interfaces.Common;
+﻿using GomokuServer.Application.Interfaces.Common;
 using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
@@ -27,7 +26,7 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 		{
 			BoardSize = game.BoardSize,
 			MovesCount = game.MovesHistory.Count,
-			Players = game.GetPlayersDto(),
+			Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
 			MovesHistory = game.MovesHistory.ToDictionary(
 				keyValuePair => keyValuePair.Key,
 				keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)
