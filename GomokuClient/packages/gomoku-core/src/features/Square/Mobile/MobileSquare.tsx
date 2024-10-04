@@ -23,8 +23,8 @@ const MobileSquare = ({ row, col, value, onClick, size }: SquareProps) => {
 
   const pieceClasses = [
     "w-10 h-10 rounded-full",
-    value === "Black" ? "bg-black" : "",
-    value === "White" ? "bg-white" : "",
+    value === "black" ? "bg-black" : "",
+    value === "white" ? "bg-white" : "",
   ].join(" ");
 
   return (

@@ -88,8 +88,8 @@ export type GetApiGamesAvailableToJoinData = {
     "X-Version"?: string;
   };
   query?: {
-    Limit?: number;
-    Offset?: number;
+    limit?: number;
+    offset?: number;
   };
 };
 

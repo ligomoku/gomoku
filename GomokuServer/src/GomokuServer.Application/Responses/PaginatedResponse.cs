@@ -13,4 +13,7 @@ public class PaginationMetadata
 {
 	[Required]
 	public required bool HasMoreItems { get; init; }
+
+	[Required]
+	public required int TotalCount { get; set; }
 }

@@ -74,7 +74,7 @@
         "summary": "Get all games, which are available to join",
         "parameters": [
           {
-            "name": "Limit",
+            "name": "limit",
             "in": "query",
             "style": "form",
             "schema": {
@@ -83,7 +83,7 @@
             }
           },
           {
-            "name": "Offset",
+            "name": "offset",
             "in": "query",
             "style": "form",
             "schema": {

@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
 				Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
 			});
 
+			options.OperationFilter<LowerCaseParametersOperationFilter>();
 			options.OperationFilter<AuthorizationOperationFilter>();
 			options.OperationFilter<MandatoryHeadersParametersOperationFilter>();
 

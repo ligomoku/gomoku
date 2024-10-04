@@ -52,6 +52,7 @@ public class GetAvailableToJoinGamesQueryHandler
 				Metadata = new PaginationMetadata
 				{
 					HasMoreItems = hasMoreItems,
+					TotalCount = availableGamesCount
 				}
 			};
 		});
