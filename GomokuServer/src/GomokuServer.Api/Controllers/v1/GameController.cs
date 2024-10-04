@@ -97,37 +97,4 @@ public class GameController : Controller
 
 		return addPlayerToGameResult.ToApiResponse();
 	}
-
-	/// <summary>
-	/// Make move in a game
-	/// </summary>
-	/// <response code="204">Move successfully made</response>
-	/// <response code="400">Required data is not provided</response>
-	/// <response code="404">Game or player with specified id not found</response>
-	[HttpPost("{gameId}/make-move")]
-	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status204NoContent)]
-	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[Authorize]
-	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
-	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-
-		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId! });
-
-		if (placeTileResult.IsSuccess)
-		{
-			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
-			{
-				PlayerId = userId!,
-				Tile = new TileDto(request.X, request.Y),
-				PlacedTileColor = placeTileResult.Value.PlacedTileColor
-			};
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
-		}
-
-		return placeTileResult.ToApiResponse();
-	}
 }
