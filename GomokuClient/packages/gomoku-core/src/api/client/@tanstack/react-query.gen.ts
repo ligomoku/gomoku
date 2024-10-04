@@ -7,37 +7,29 @@ import {
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
-  GetApiAuthInfoData,
-  GetApiGameByGameIdData,
-  GetApiGamesData,
+  GetApiGameByGameIdHistoryData,
+  GetApiGamesAvailableToJoinData,
   PostApiGameData,
   PostApiGameError,
   PostApiGameResponse,
   PostApiGameByGameIdJoinData,
   PostApiGameByGameIdJoinError,
   PostApiGameByGameIdJoinResponse,
-  PostApiGameByGameIdMakeMoveData,
-  PostApiGameByGameIdMakeMoveError,
-  PostApiGameByGameIdMakeMoveResponse,
   GetHealthData,
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
   PostGamehubSendMessageData,
-  PostGamehubReceiveMessageData,
 } from "../types.gen";
 import {
   client,
-  getApiAuthInfo,
-  getApiGameByGameId,
-  getApiGames,
+  getApiGameByGameIdHistory,
+  getApiGamesAvailableToJoin,
   postApiGame,
   postApiGameByGameIdJoin,
-  postApiGameByGameIdMakeMove,
   getHealth,
   postGamehubJoinGameGroup,
   postGamehubMakeMove,
   postGamehubSendMessage,
-  postGamehubReceiveMessage,
 } from "../services.gen";
 
 type QueryKey<TOptions extends Options> = [
@@ -74,59 +66,43 @@ const createQueryKey = <TOptions extends Options>(
   return params;
 };
 
-export const getApiAuthInfoQueryKey = (
-  options: Options<GetApiAuthInfoData>,
-) => [createQueryKey("getApiAuthInfo", options)];
+export const getApiGameByGameIdHistoryQueryKey = (
+  options: Options<GetApiGameByGameIdHistoryData>,
+) => [createQueryKey("getApiGameByGameIdHistory", options)];
 
-export const getApiAuthInfoOptions = (options: Options<GetApiAuthInfoData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey }) => {
-      const { data } = await getApiAuthInfo({
-        ...options,
-        ...queryKey[0],
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getApiAuthInfoQueryKey(options),
-  });
-};
-
-export const getApiGameByGameIdQueryKey = (
-  options: Options<GetApiGameByGameIdData>,
-) => [createQueryKey("getApiGameByGameId", options)];
-
-export const getApiGameByGameIdOptions = (
-  options: Options<GetApiGameByGameIdData>,
+export const getApiGameByGameIdHistoryOptions = (
+  options: Options<GetApiGameByGameIdHistoryData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await getApiGameByGameId({
+      const { data } = await getApiGameByGameIdHistory({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getApiGameByGameIdQueryKey(options),
+    queryKey: getApiGameByGameIdHistoryQueryKey(options),
   });
 };
 
-export const getApiGamesQueryKey = (options: Options<GetApiGamesData>) => [
-  createQueryKey("getApiGames", options),
-];
+export const getApiGamesAvailableToJoinQueryKey = (
+  options: Options<GetApiGamesAvailableToJoinData>,
+) => [createQueryKey("getApiGamesAvailableToJoin", options)];
 
-export const getApiGamesOptions = (options: Options<GetApiGamesData>) => {
+export const getApiGamesAvailableToJoinOptions = (
+  options: Options<GetApiGamesAvailableToJoinData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey }) => {
-      const { data } = await getApiGames({
+      const { data } = await getApiGamesAvailableToJoin({
         ...options,
         ...queryKey[0],
         throwOnError: true,
       });
       return data;
     },
-    queryKey: getApiGamesQueryKey(options),
+    queryKey: getApiGamesAvailableToJoinQueryKey(options),
   });
 };
 
@@ -193,43 +169,6 @@ export const postApiGameByGameIdJoinMutation = () => {
   > = {
     mutationFn: async (options) => {
       const { data } = await postApiGameByGameIdJoin({
-        ...options,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const postApiGameByGameIdMakeMoveQueryKey = (
-  options: Options<PostApiGameByGameIdMakeMoveData>,
-) => [createQueryKey("postApiGameByGameIdMakeMove", options)];
-
-export const postApiGameByGameIdMakeMoveOptions = (
-  options: Options<PostApiGameByGameIdMakeMoveData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey }) => {
-      const { data } = await postApiGameByGameIdMakeMove({
-        ...options,
-        ...queryKey[0],
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: postApiGameByGameIdMakeMoveQueryKey(options),
-  });
-};
-
-export const postApiGameByGameIdMakeMoveMutation = () => {
-  const mutationOptions: UseMutationOptions<
-    PostApiGameByGameIdMakeMoveResponse,
-    PostApiGameByGameIdMakeMoveError,
-    Options<PostApiGameByGameIdMakeMoveData>
-  > = {
-    mutationFn: async (options) => {
-      const { data } = await postApiGameByGameIdMakeMove({
         ...options,
         throwOnError: true,
       });
@@ -359,43 +298,6 @@ export const postGamehubSendMessageMutation = () => {
   > = {
     mutationFn: async (options) => {
       const { data } = await postGamehubSendMessage({
-        ...options,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const postGamehubReceiveMessageQueryKey = (
-  options?: Options<PostGamehubReceiveMessageData>,
-) => [createQueryKey("postGamehubReceiveMessage", options)];
-
-export const postGamehubReceiveMessageOptions = (
-  options?: Options<PostGamehubReceiveMessageData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey }) => {
-      const { data } = await postGamehubReceiveMessage({
-        ...options,
-        ...queryKey[0],
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: postGamehubReceiveMessageQueryKey(options),
-  });
-};
-
-export const postGamehubReceiveMessageMutation = () => {
-  const mutationOptions: UseMutationOptions<
-    void,
-    DefaultError,
-    Options<PostGamehubReceiveMessageData>
-  > = {
-    mutationFn: async (options) => {
-      const { data } = await postGamehubReceiveMessage({
         ...options,
         throwOnError: true,
       });

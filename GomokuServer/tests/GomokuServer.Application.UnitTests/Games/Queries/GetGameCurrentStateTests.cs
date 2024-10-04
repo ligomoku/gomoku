@@ -3,18 +3,18 @@ using GomokuServer.Application.UnitTests.TestData;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 
-public class GetGameInformationTests
+public class GetGameCurrentStateTests
 {
 	private TestDataProvider _testDataProvider;
 	private IGameRepository _gameRepository;
-	private GetGameInformationQueryHandler _handler;
+	private GetGameCurrentStateQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
 		_gameRepository = Substitute.For<IGameRepository>();
-		_handler = new GetGameInformationQueryHandler(_gameRepository);
+		_handler = new GetGameCurrentStateQueryHandler(_gameRepository);
 	}
 
 	[Test]
@@ -25,7 +25,7 @@ public class GetGameInformationTests
 
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -38,10 +38,10 @@ public class GetGameInformationTests
 		getGameResponse.HasBothPlayersJoined.Should().BeFalse();
 		getGameResponse.IsGameStarted.Should().BeFalse();
 		getGameResponse.NextMoveShouldMakePlayerId.Should().BeNull();
-		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
-		getGameResponse.PlayerTwo.Should().BeNull();
+		getGameResponse.Players!.Black!.Should().BeNull();
+		getGameResponse.Players!.White.Should().BeNull();
 		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
-		getGameResponse.PlayersMoves.Should().BeEmpty();
+		getGameResponse.MovesHistory.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
@@ -55,7 +55,7 @@ public class GetGameInformationTests
 		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -68,9 +68,9 @@ public class GetGameInformationTests
 		getGameResponse.HasBothPlayersJoined.Should().BeTrue();
 		getGameResponse.IsGameStarted.Should().BeFalse(); // No moves have been made
 		getGameResponse.NextMoveShouldMakePlayerId.Should().Be(game.NextMoveShouldMakePlayerId);
-		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
-		getGameResponse.PlayerTwo!.PlayerId.Should().Be(game.PlayerTwo!.Id);
-		getGameResponse.PlayersMoves.Should().BeEmpty();
+		getGameResponse.Players!.Black!.PlayerId.Should().Be(game.Players!.Black!.Id);
+		getGameResponse.Players!.White!.PlayerId.Should().Be(game.Players!.White!.Id);
+		getGameResponse.MovesHistory.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
@@ -84,7 +84,7 @@ public class GetGameInformationTests
 		var game = _testDataProvider.GetGame_HasWinner();
 		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameInformationQuery { GameId = game.GameId };
+		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -115,7 +115,7 @@ public class GetGameInformationTests
 		var invalidGameId = "InvalidGameId";
 		_gameRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
 
-		var query = new GetGameInformationQuery { GameId = invalidGameId };
+		var query = new GetGameCurrentStateQuery { GameId = invalidGameId };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);

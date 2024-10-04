@@ -6,41 +6,10 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/auth/info": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "Get auth user information",
-        "parameters": [
-          {
-            "name": "X-Version",
-            "in": "header",
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/game/{gameId}": {
+    "/api/game/{gameId}/history": {
       "get": {
         "tags": ["Game"],
-        "summary": "Get information about game by game id",
+        "summary": "Get game history by game id",
         "parameters": [
           {
             "name": "gameId",
@@ -76,7 +45,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetGameResponse"
+                  "$ref": "#/components/schemas/GetGameHistoryResponse"
                 }
               }
             }
@@ -99,7 +68,7 @@
         }
       }
     },
-    "/api/games": {
+    "/api/games/available-to-join": {
       "get": {
         "tags": ["Game"],
         "summary": "Get all games, which are available to join",
@@ -261,109 +230,8 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Player with specified id successfully joined the game"
-          },
-          "404": {
-            "description": "Game or player with specified id not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/api/game/{gameId}/make-move": {
-      "post": {
-        "tags": ["Game"],
-        "summary": "Make move in a game",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Version",
-            "in": "header",
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "Bearer "
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MakeMoveRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Move successfully made",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PlaceTileResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Required data is not provided",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
-              }
-            }
           },
           "404": {
             "description": "Game or player with specified id not found",
@@ -456,36 +324,11 @@
         "tags": ["GameHub"],
         "parameters": [
           {
-            "name": "packedData",
+            "name": "messageRequest",
             "in": "query",
             "style": "form",
             "schema": {
-              "type": "string",
-              "format": "byte"
-            }
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/gamehub/ReceiveMessage": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "user",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "style": "form",
-            "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/ChatMessageClientMessage"
             }
           }
         ],
@@ -495,6 +338,25 @@
   },
   "components": {
     "schemas": {
+      "ChatMessageClientMessage": {
+        "required": ["gameId", "message", "user"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "user": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateGameRequest": {
         "required": ["boardSize"],
         "type": "object",
@@ -517,24 +379,6 @@
         },
         "additionalProperties": false
       },
-      "GameMoveDto": {
-        "required": ["moveNumber", "playerId", "tile"],
-        "type": "object",
-        "properties": {
-          "tile": {
-            "$ref": "#/components/schemas/TileDto"
-          },
-          "playerId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "moveNumber": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "GetAvailableGamesResponse": {
         "required": ["gameId", "opponent"],
         "type": "object",
@@ -549,50 +393,25 @@
         },
         "additionalProperties": false
       },
-      "GetGameResponse": {
-        "required": [
-          "gameId",
-          "hasBothPlayersJoined",
-          "isGameStarted",
-          "playersMoves"
-        ],
+      "GetGameHistoryResponse": {
+        "required": ["boardSize", "movesCount", "movesHistory", "players"],
         "type": "object",
         "properties": {
-          "gameId": {
-            "minLength": 1,
-            "type": "string"
+          "boardSize": {
+            "type": "integer",
+            "format": "int32"
           },
-          "playerOne": {
-            "$ref": "#/components/schemas/PlayerDto"
+          "movesCount": {
+            "type": "integer",
+            "format": "int32"
           },
-          "playerTwo": {
-            "$ref": "#/components/schemas/PlayerDto"
+          "players": {
+            "$ref": "#/components/schemas/UsernamesDto"
           },
-          "hasBothPlayersJoined": {
-            "type": "boolean"
-          },
-          "isGameStarted": {
-            "type": "boolean"
-          },
-          "nextMoveShouldMakePlayerId": {
-            "type": "string",
-            "nullable": true
-          },
-          "winnerId": {
-            "type": "string",
-            "nullable": true
-          },
-          "winningSequence": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TileDto"
-            },
-            "nullable": true
-          },
-          "playersMoves": {
+          "movesHistory": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/GameMoveDto"
+              "$ref": "#/components/schemas/TileDto"
             }
           }
         },
@@ -617,38 +436,6 @@
         },
         "additionalProperties": false
       },
-      "MakeMoveRequest": {
-        "required": ["x", "y"],
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "y": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "PlaceTileResponse": {
-        "type": "object",
-        "properties": {
-          "winningSequence": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TileDto"
-            },
-            "nullable": true
-          },
-          "isWinningMove": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "PlayerDto": {
         "required": ["playerId", "userName"],
         "type": "object",
@@ -660,6 +447,10 @@
           "userName": {
             "minLength": 1,
             "type": "string"
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -702,6 +493,20 @@
           "y": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UsernamesDto": {
+        "type": "object",
+        "properties": {
+          "black": {
+            "type": "string",
+            "nullable": true
+          },
+          "white": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

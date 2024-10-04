@@ -19,14 +19,13 @@ public class GameTests
 	{
 		_playerOne = new Player("Player1Id", "Player1UserName");
 		_playerTwo = new Player("Player2Id", "Player2UserName");
-		var gameBoard = new GameBoard(15);
 
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
 
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
-		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		_game.AddPlayer(_playerOne);
 		_game.AddPlayer(_playerTwo);
@@ -39,7 +38,7 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
+		var result = _game.PlaceTile(tile, _game.Players!.Black!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
@@ -53,7 +52,7 @@ public class GameTests
 		var tile = new Tile(20, 20);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
+		var result = _game.PlaceTile(tile, _game.Players!.Black!.Id);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
@@ -67,8 +66,8 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne!.Id);
-		var secondPlacement = _game.PlaceTile(tile, _game.PlayerTwo!.Id);
+		var firstPlacement = _game.PlaceTile(tile, _game.Players!.Black!.Id);
+		var secondPlacement = _game.PlaceTile(tile, _game.Players!.White!.Id);
 
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
@@ -83,8 +82,8 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var firstPlacement = _game.PlaceTile(tile, _game.PlayerOne!.Id);
-		var secondPlacement = _game.PlaceTile(tile, _game.PlayerOne.Id);
+		var firstPlacement = _game.PlaceTile(tile, _game.Players!.Black!.Id);
+		var secondPlacement = _game.PlaceTile(tile, _game.Players!.Black.Id);
 
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
@@ -98,16 +97,16 @@ public class GameTests
 		// Arrange
 		for (int i = 0; i < 4; i++)
 		{
-			_game.PlaceTile(new Tile(i, 7), _game.PlayerOne!.Id);
-			_game.PlaceTile(new Tile(i, 8), _game.PlayerTwo!.Id);
+			_game.PlaceTile(new Tile(i, 7), _game.Players!.Black!.Id);
+			_game.PlaceTile(new Tile(i, 8), _game.Players!.White!.Id);
 		}
 
 		// Act
-		var result = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne!.Id);
+		var result = _game.PlaceTile(new Tile(4, 7), _game.Players!.Black!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.PlayerOne);
+		result.Winner.Should().Be(_game.Players!.Black);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 7),
 			new Tile(1, 7),
@@ -124,16 +123,16 @@ public class GameTests
 		// Arrange
 		for (int i = 0; i < 4; i++)
 		{
-			_game.PlaceTile(new Tile(7, i), _game.PlayerOne!.Id);
-			_game.PlaceTile(new Tile(8, i), _game.PlayerTwo!.Id);
+			_game.PlaceTile(new Tile(7, i), _game.Players!.Black!.Id);
+			_game.PlaceTile(new Tile(8, i), _game.Players!.White!.Id);
 		}
 
 		// Act
-		var result = _game.PlaceTile(new Tile(7, 4), _game.PlayerOne!.Id);
+		var result = _game.PlaceTile(new Tile(7, 4), _game.Players!.Black!.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.PlayerOne);
+		result.Winner.Should().Be(_game.Players!.Black);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(7, 0),
 			new Tile(7, 1),
@@ -148,21 +147,21 @@ public class GameTests
 	public void PlaceTile_PlayerWinsDiagonally_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
-		_game.PlaceTile(new Tile(0, 0), _game.PlayerOne!.Id);
-		_game.PlaceTile(new Tile(5, 5), _game.PlayerTwo!.Id);
-		_game.PlaceTile(new Tile(1, 1), _game.PlayerOne.Id);
-		_game.PlaceTile(new Tile(6, 6), _game.PlayerTwo.Id);
-		_game.PlaceTile(new Tile(2, 2), _game.PlayerOne.Id);
-		_game.PlaceTile(new Tile(7, 7), _game.PlayerTwo.Id);
-		_game.PlaceTile(new Tile(3, 3), _game.PlayerOne.Id);
-		_game.PlaceTile(new Tile(8, 8), _game.PlayerTwo.Id);
+		_game.PlaceTile(new Tile(0, 0), _game.Players!.Black!.Id);
+		_game.PlaceTile(new Tile(5, 5), _game.Players!.White!.Id);
+		_game.PlaceTile(new Tile(1, 1), _game.Players!.Black.Id);
+		_game.PlaceTile(new Tile(6, 6), _game.Players!.White.Id);
+		_game.PlaceTile(new Tile(2, 2), _game.Players!.Black.Id);
+		_game.PlaceTile(new Tile(7, 7), _game.Players!.White.Id);
+		_game.PlaceTile(new Tile(3, 3), _game.Players!.Black.Id);
+		_game.PlaceTile(new Tile(8, 8), _game.Players!.White.Id);
 
 		// Act
-		var result = _game.PlaceTile(new Tile(4, 4), _game.PlayerOne.Id);
+		var result = _game.PlaceTile(new Tile(4, 4), _game.Players!.Black.Id);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.PlayerOne);
+		result.Winner.Should().Be(_game.Players!.Black);
 		result.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 0),
 			new Tile(1, 1),
@@ -180,7 +179,7 @@ public class GameTests
 		var tile = new Tile(7, 7);
 
 		// Act
-		var result = _game.PlaceTile(tile, _game.PlayerOne!.Id);
+		var result = _game.PlaceTile(tile, _game.Players!.Black!.Id);
 
 		// Assert
 		result.Winner.Should().BeNull();
@@ -190,8 +189,7 @@ public class GameTests
 	public void PlaceTile_BeforePlayersJoin_ShouldReturnNotBothPlayerAreJoinedYetError()
 	{
 		// Arrange
-		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(7, 7), "nonExistentPlayerId");
@@ -207,18 +205,18 @@ public class GameTests
 		// Arrange
 		for (int i = 0; i < 4; i++)
 		{
-			_game.PlaceTile(new Tile(i, 7), _game.PlayerOne!.Id);
-			_game.PlaceTile(new Tile(i, 8), _game.PlayerTwo!.Id);
+			_game.PlaceTile(new Tile(i, 7), _game.Players!.Black!.Id);
+			_game.PlaceTile(new Tile(i, 8), _game.Players!.White!.Id);
 		}
-		var winningMove = _game.PlaceTile(new Tile(4, 7), _game.PlayerOne!.Id);
+		var winningMove = _game.PlaceTile(new Tile(4, 7), _game.Players!.Black!.Id);
 
 		// Act
-		var result = _game.PlaceTile(new Tile(9, 9), _game.PlayerTwo!.Id);
+		var result = _game.PlaceTile(new Tile(9, 9), _game.Players!.White!.Id);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
-		result.Winner.Should().Be(_game.PlayerOne);
+		result.Winner.Should().Be(_game.Players!.Black);
 	}
 
 	[Test]
@@ -239,8 +237,7 @@ public class GameTests
 	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnSuccess()
 	{
 		// Arrange
-		var gameBoard = new GameBoard(15);
-		_game = new Game(gameBoard, _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		var player = new Player("somePlayerId", "SomePlayerUserName");
 		_game.AddPlayer(player);
@@ -256,7 +253,7 @@ public class GameTests
 	public void CreateGame_WhenPlayersNotAdded_GameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		// Assert
 		_game.IsGameStarted.Should().BeFalse();
@@ -266,7 +263,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
 		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
 
@@ -279,7 +276,7 @@ public class GameTests
 	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
 	{
 		// Arrange
-		_game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
 		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
 		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
 
@@ -292,7 +289,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void MakeMoves_MovesNumbersShouldBeCorrect()
+	public void MakeMoves_MovesHistoryShouldBeCorrect()
 	{
 		// Act
 		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
@@ -300,11 +297,13 @@ public class GameTests
 		_game.PlaceTile(new Tile(1, 1), _playerOne.Id);
 
 		// Assert
-		var playerMoves = _game.PlayersMoves.Values.ToList();
-		playerMoves.Count.Should().Be(3);
-		playerMoves[0].MoveNumber.Should().Be(1);
-		playerMoves[1].MoveNumber.Should().Be(1);
-		playerMoves[2].MoveNumber.Should().Be(2);
+		_game.MovesHistory.Count.Should().Be(3);
+		_game.MovesHistory[1].X.Should().Be(0);
+		_game.MovesHistory[1].Y.Should().Be(0);
+		_game.MovesHistory[2].X.Should().Be(0);
+		_game.MovesHistory[2].Y.Should().Be(1);
+		_game.MovesHistory[3].X.Should().Be(1);
+		_game.MovesHistory[3].Y.Should().Be(1);
 	}
 
 	[Test]
@@ -312,8 +311,8 @@ public class GameTests
 	{
 		// Assert 
 		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
-		_game.PlayerOne!.Color.Should().Be(TileColor.Black);
-		_game.PlayerTwo!.Color.Should().Be(TileColor.White);
+		_game.Players!.Black!.Color.Should().Be(TileColor.Black);
+		_game.Players!.White!.Color.Should().Be(TileColor.White);
 
 		_game.PlaceTile(new Tile(0, 0), _playerOne.Id);
 		_game.NextMoveShouldMakePlayerId.Should().Be(_playerTwo.Id);

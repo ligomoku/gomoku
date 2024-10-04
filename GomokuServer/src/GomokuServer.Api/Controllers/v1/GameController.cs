@@ -23,17 +23,17 @@ public class GameController : Controller
 	}
 
 	/// <summary>
-	/// Get information about game by game id
+	/// Get game history by game id
 	/// </summary>
 	/// <response code="200">Information about game </response>
 	/// <response code="404">Game by id not found</response>
-	[HttpGet("{gameId}")]
-	[ProducesResponseType(typeof(GetGameResponse), StatusCodes.Status200OK)]
+	[HttpGet("{gameId}/history")]
+	[ProducesResponseType(typeof(GetGameHistoryResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	public async Task<IActionResult> GetGameInfo([FromRoute] string gameId)
+	public async Task<IActionResult> GetGameHistory([FromRoute] string gameId)
 	{
-		var getGameSessionResult = await _mediator.Send(new GetGameInformationQuery() { GameId = gameId });
+		var getGameSessionResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = gameId });
 
 		return getGameSessionResult.ToApiResponse();
 	}
@@ -43,7 +43,7 @@ public class GameController : Controller
 	/// </summary>
 	/// <response code="200">Returns list of games which are available to join</response>
 	[HttpGet()]
-	[Route("/api/games")]
+	[Route("/api/games/available-to-join")]
 	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames()
 	{
@@ -96,38 +96,5 @@ public class GameController : Controller
 		}
 
 		return addPlayerToGameResult.ToApiResponse();
-	}
-
-	/// <summary>
-	/// Make move in a game
-	/// </summary>
-	/// <response code="204">Move successfully made</response>
-	/// <response code="400">Required data is not provided</response>
-	/// <response code="404">Game or player with specified id not found</response>
-	[HttpPost("{gameId}/make-move")]
-	[ProducesResponseType(typeof(PlaceTileResponse), StatusCodes.Status204NoContent)]
-	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[Authorize]
-	public async Task<IActionResult> MakeMove([FromRoute] string gameId, [FromBody] MakeMoveRequest request)
-	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-
-		var placeTileResult = await _mediator.Send(new PlaceTileCommand() { GameId = gameId, Tile = new TileDto(request.X, request.Y), PlayerId = userId! });
-
-		if (placeTileResult.IsSuccess)
-		{
-			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
-			{
-				PlayerId = userId!,
-				Tile = new TileDto(request.X, request.Y),
-				PlacedTileColor = placeTileResult.Value.PlacedTileColor
-			};
-			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
-		}
-
-		return placeTileResult.ToApiResponse();
 	}
 }

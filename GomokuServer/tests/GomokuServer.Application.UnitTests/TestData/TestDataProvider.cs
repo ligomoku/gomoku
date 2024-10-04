@@ -4,7 +4,7 @@ namespace GomokuServer.Application.UnitTests.TestData;
 
 public class TestDataProvider
 {
-	private readonly GameBoard _board = new(19);
+	private readonly int _boardSize = 19;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
@@ -18,7 +18,7 @@ public class TestDataProvider
 
 	public Game GetGame_OnePlayerJoined()
 	{
-		var game = new Game(_board, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
 		game.AddPlayer(new Player("player1Id", "player1Username"));
 
@@ -27,7 +27,7 @@ public class TestDataProvider
 
 	public Game GetGame_TwoPlayersJoined_NoMoves()
 	{
-		var game = new Game(_board, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
 		game.AddPlayer(new Player("PlayerOne", "Alice"));
 		game.AddPlayer(new Player("PlayerTwo", "Bob"));
@@ -37,7 +37,7 @@ public class TestDataProvider
 
 	public Game GetGame_HasWinner()
 	{
-		var game = new Game(_board, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
 		game.AddPlayer(new Player("PlayerOne", "Alice"));
 		game.AddPlayer(new Player("PlayerTwo", "Bob"));

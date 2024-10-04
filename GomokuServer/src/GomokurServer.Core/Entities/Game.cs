@@ -6,32 +6,38 @@ namespace GomokuServer.Core.Entities;
 
 public class Game
 {
-	private readonly Dictionary<string, GameMove> _playersMoves = new();
+	private readonly Dictionary<int, Tile> _movesHistory = new();
 	private readonly GameBoard _gameBoard;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
-	public Game(GameBoard gameBoard, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
+	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
-		_gameBoard = gameBoard;
+		_gameBoard = new GameBoard(boardSize);
 		_randomProvider = randomProvider;
 		_dateTimeProvider = dateTimeProvider;
+
+		BoardSize = boardSize;
+		Opponents = new();
+		Players = new();
 		CreatedAt = _dateTimeProvider.UtcNow;
 	}
 
+	public int BoardSize { get; init; }
+
 	public string GameId { get; } = Guid.NewGuid().ToString();
 
-	public DateTime CreatedAt { get; private set; }
+	public DateTime CreatedAt { get; init; }
 
-	public IReadOnlyDictionary<string, GameMove> PlayersMoves => _playersMoves.AsReadOnly();
+	public IReadOnlyDictionary<int, Tile> MovesHistory => _movesHistory.AsReadOnly();
 
-	public Player? PlayerOne { get; private set; }
+	public List<Player> Opponents { get; init; }
 
-	public Player? PlayerTwo { get; private set; }
+	public Players Players { get; init; }
 
-	public bool HasBothPlayersJoined => PlayerOne != null && PlayerTwo != null;
+	public bool HasBothPlayersJoined => Players.Black != null && Players.Black != null;
 
-	public bool IsGameStarted => HasBothPlayersJoined && _playersMoves.Count > 0;
+	public bool IsGameStarted => HasBothPlayersJoined && _movesHistory.Count > 0;
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
@@ -39,9 +45,9 @@ public class Game
 
 	public List<Tile>? WinningSequence { get; private set; }
 
-	public PlayerAddingResult AddPlayer(Player player)
+	public PlayerAddingResult AddPlayer(Player newPlayer)
 	{
-		if (PlayerOne?.Id == player.Id || PlayerTwo?.Id == player.Id)
+		if (Opponents.Any(player => player.Id == newPlayer.Id))
 		{
 			return new()
 			{
@@ -49,7 +55,7 @@ public class Game
 			};
 		}
 
-		if (PlayerOne != null && PlayerTwo != null)
+		if (Opponents.Count >= 2)
 		{
 			return new()
 			{
@@ -58,24 +64,26 @@ public class Game
 			};
 		}
 
-		if (PlayerOne == null)
+		if (Opponents.Count == 0)
 		{
-			PlayerOne = player;
+			Opponents.Add(newPlayer);
 			return new()
 			{
 				IsValid = true
 			};
 		}
 
-		PlayerTwo = player;
+		Opponents.Add(newPlayer);
 
-		var (firstPlayer, secondPlayer) = _randomProvider.GetInt(0, 2) == 0 ? (PlayerOne, PlayerTwo) : (PlayerTwo, PlayerOne);
+		var (firstPlayer, secondPlayer) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
+		firstPlayer.Color = TileColor.Black;
+		secondPlayer.Color = TileColor.White;
 
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
 
-		// In gomoku first move makes black player :D
-		firstPlayer.Color = TileColor.Black;
-		secondPlayer.Color = TileColor.White;
+		// In gomoku first move makes black newPlayer :D
+		Players.Black = firstPlayer;
+		Players.White = secondPlayer;
 
 		return new()
 		{
@@ -104,7 +112,7 @@ public class Game
 			};
 		}
 
-		if (PlayerOne!.Id != playerId && PlayerTwo!.Id != playerId)
+		if (Players.Black!.Id != playerId && Players.White!.Id != playerId)
 		{
 			return new()
 			{
@@ -122,20 +130,20 @@ public class Game
 			};
 		}
 
-		var player = playerId == PlayerOne.Id ? PlayerOne : PlayerTwo;
+		var player = playerId == Players.Black.Id ? Players.Black : Players.White;
 		var tilePlacementResult = _gameBoard.PlaceTile(tile, player!);
 
 		if (tilePlacementResult.IsValid)
 		{
 			var move = new GameMove()
 			{
-				MoveNumber = _playersMoves.Count / 2 + 1,
+				MoveNumber = _movesHistory.Count / 2 + 1,
 				PlayerId = playerId,
 				Tile = tile,
 			};
-			_playersMoves.Add($"{tile.X}.{tile.Y}", move);
+			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
-			NextMoveShouldMakePlayerId = playerId != PlayerOne.Id ? PlayerOne.Id : PlayerTwo!.Id;
+			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
 		}
 
 		if (tilePlacementResult.Winner != null)

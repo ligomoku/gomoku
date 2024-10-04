@@ -1,13 +1,11 @@
 ﻿namespace GomokuServer.Application.Responses;
 
-public class GetGameResponse
+public class GetGameCurrentStateResponse
 {
 	[Required]
 	public required string GameId { get; set; }
 
-	public PlayerDto? PlayerOne { get; set; }
-
-	public PlayerDto? PlayerTwo { get; set; }
+	public PlayersDto? Players { get; set; }
 
 	[Required]
 	public required bool HasBothPlayersJoined { get; set; }
@@ -22,5 +20,8 @@ public class GetGameResponse
 	public IEnumerable<TileDto>? WinningSequence { get; set; }
 
 	[Required]
-	public required IReadOnlyDictionary<string, GameMoveDto> PlayersMoves { get; set; }
+	public required int MovesCount { get; set; }
+
+	[Required]
+	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; set; }
 }
