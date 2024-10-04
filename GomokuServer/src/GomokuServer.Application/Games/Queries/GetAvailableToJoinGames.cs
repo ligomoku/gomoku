@@ -3,9 +3,15 @@ using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
-public record GetAvailableToJoinGamesQuery : IQuery<IEnumerable<GetAvailableGamesResponse>>;
+public record GetAvailableToJoinGamesQuery
+	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
+{
+	public int Limit { get; init; } = 5;
+	public int Offset { get; init; } = 0;
+}
 
-public class GetAvailableToJoinGamesQueryHandler : IQueryHandler<GetAvailableToJoinGamesQuery, IEnumerable<GetAvailableGamesResponse>>
+public class GetAvailableToJoinGamesQueryHandler
+	: IQueryHandler<GetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
 	private readonly IGameRepository _gameRepository;
 
@@ -14,20 +20,40 @@ public class GetAvailableToJoinGamesQueryHandler : IQueryHandler<GetAvailableToJ
 		_gameRepository = gameRepository;
 	}
 
-	public async Task<Result<IEnumerable<GetAvailableGamesResponse>>> Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
+	public async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>>
+	Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
 	{
-		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(game => !game.HasBothPlayersJoined, query => query.OrderByDescending(game => game.CreatedAt));
+		var availableGamesCount = await _gameRepository.CountAsync(game => !game.HasBothPlayersJoined);
 
-		var mappedResult =
-			getAvailableGamesResult.Map(games => games.Select(game =>
+		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(
+			game => !game.HasBothPlayersJoined,
+			query => query
+				.Skip(request.Offset)
+				.Take(request.Limit)
+				.OrderByDescending(game => game.CreatedAt)
+		);
+
+
+		return getAvailableGamesResult.Map(games =>
+		{
+			var availableGames = games.Select(game =>
 			{
 				var opponent = game.Opponents[0];
 				var opponentDto = new PlayerDto(opponent.Id, opponent.UserName, opponent.Color.ToString());
 
 				return new GetAvailableGamesResponse(game.GameId, opponentDto);
-			}
-			));
+			}).ToList();
 
-		return mappedResult;
+			bool hasMoreItems = request.Offset + request.Limit < availableGamesCount;
+
+			return new PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>()
+			{
+				Data = availableGames,
+				Metadata = new PaginationMetadata
+				{
+					HasMoreItem = hasMoreItems,
+				}
+			};
+		});
 	}
 }

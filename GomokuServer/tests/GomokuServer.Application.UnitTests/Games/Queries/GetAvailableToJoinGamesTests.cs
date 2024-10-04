@@ -33,7 +33,7 @@ public class GetAvailableToJoinGamesTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		result.Value.Should().BeEmpty();
+		result.Value.Data.Should().BeEmpty();
 		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 
@@ -57,7 +57,7 @@ public class GetAvailableToJoinGamesTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		result.Value.Should().HaveCount(2);
+		result.Value.Data.Should().HaveCount(2);
 		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 
@@ -80,8 +80,8 @@ public class GetAvailableToJoinGamesTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		result.Value.Should().HaveCount(1);
-		result.Value.First().Opponent.UserName.Should().Be(games[0].Opponents[0].UserName);
+		result.Value.Data.Should().HaveCount(1);
+		result.Value.Data.First().Opponent.UserName.Should().Be(games[0].Opponents[0].UserName);
 		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 
