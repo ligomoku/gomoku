@@ -2,7 +2,7 @@
 
 namespace GomokuServer.Application.Interfaces;
 
-public interface IGameRepository
+public interface IGameRepository : IPaginatedRepository<Game>
 {
 	Task<Result<Game>> GetAsync(string id);
 

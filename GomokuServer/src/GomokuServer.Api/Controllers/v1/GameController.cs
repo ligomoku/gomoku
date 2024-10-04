@@ -44,10 +44,11 @@ public class GameController : Controller
 	/// <response code="200">Returns list of games which are available to join</response>
 	[HttpGet()]
 	[Route("/api/games/available-to-join")]
-	[ProducesResponseType(typeof(IEnumerable<GetAvailableGamesResponse>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetAvailableGames()
+	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
 	{
-		var getAvailableGames = await _mediator.Send(new GetAvailableToJoinGamesQuery());
+		var query = new GetAvailableToJoinGamesQuery() { Limit = request.Limit, Offset = request.Offset };
+		var getAvailableGames = await _mediator.Send(query);
 
 		return getAvailableGames.ToApiResponse();
 	}

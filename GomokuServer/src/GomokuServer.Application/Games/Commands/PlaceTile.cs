@@ -1,4 +1,5 @@
-﻿using GomokuServer.Application.Interfaces.Common;
+﻿using GomokuServer.Application.Extensions;
+using GomokuServer.Application.Interfaces.Common;
 using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Commands;
@@ -47,7 +48,7 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 		}
 
 		var winningSequence = tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
-		var placedTileColor = tilePlacementResult.PlacedTileColor.ToString();
+		var placedTileColor = tilePlacementResult.PlacedTileColor.ToString()!.ToCamelCase();
 
 		return Result.Success(new PlaceTileResponse(placedTileColor!, winningSequence));
 	}

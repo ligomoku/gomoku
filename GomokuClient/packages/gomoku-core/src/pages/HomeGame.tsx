@@ -18,7 +18,7 @@ import { useAuthToken } from "@/context";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
-  const { data: gameData } = useFetchGames();
+  const { data: paginatedGames } = useFetchGames();
   const { jwtToken } = useAuthToken();
 
   const handleCreateGame = useCreateGameAndNavigate(
@@ -42,7 +42,7 @@ export const HomeGame = () => {
           <div className="lg:col-span-3">
             <SectionList
               title="Online games"
-              items={transformGameData(gameData)}
+              items={transformGameData(paginatedGames?.data)}
               onItemClick={(item) => navigate({ to: `/game/join/${item.id}` })}
             />
             <p className="text-base sm:text-lg">

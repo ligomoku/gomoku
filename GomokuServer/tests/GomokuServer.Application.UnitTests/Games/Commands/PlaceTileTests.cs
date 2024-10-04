@@ -50,7 +50,7 @@ public class PlaceTileTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.IsWinningMove.Should().BeFalse();
-		result.Value.PlacedTileColor.Should().Be("Black");
+		result.Value.PlacedTileColor.Should().Be("black");
 		await _gameRepository.Received(1).SaveAsync(game);
 	}
 

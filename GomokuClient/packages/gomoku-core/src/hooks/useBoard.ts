@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
 import { typedStorage } from "@/shared/lib/utils";
 
-export type CellValue = "Black" | "White" | null;
+export type CellValue = "black" | "white" | null;
 
 //TODO: refactor on IndexDB approach
 export const useBoard = (gameID: string) => {
@@ -72,7 +72,7 @@ export const useBoard = (gameID: string) => {
     lastRow.current = row;
     lastCol.current = col;
 
-    updateBoard(row, col, isBlackNext.current ? "Black" : "White");
+    updateBoard(row, col, isBlackNext.current ? "black" : "white");
 
     isBlackNext.current = !isBlackNext.current;
   };
