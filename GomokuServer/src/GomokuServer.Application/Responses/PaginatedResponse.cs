@@ -12,5 +12,5 @@ public record PaginatedResponse<T>
 public class PaginationMetadata
 {
 	[Required]
-	public required bool HasMoreItem { get; init; }
+	public required bool HasMoreItems { get; init; }
 }
