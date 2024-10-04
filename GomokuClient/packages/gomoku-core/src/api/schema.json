@@ -74,6 +74,24 @@
         "summary": "Get all games, which are available to join",
         "parameters": [
           {
+            "name": "Limit",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
             "name": "X-Version",
             "in": "header",
             "style": "simple",
@@ -98,10 +116,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetAvailableGamesResponse"
-                  }
+                  "$ref": "#/components/schemas/GetAvailableGamesResponseIEnumerablePaginatedResponse"
                 }
               }
             }
@@ -393,6 +408,22 @@
         },
         "additionalProperties": false
       },
+      "GetAvailableGamesResponseIEnumerablePaginatedResponse": {
+        "required": ["data", "metadata"],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetAvailableGamesResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
       "GetGameHistoryResponse": {
         "required": ["boardSize", "movesCount", "movesHistory", "players"],
         "type": "object",
@@ -432,6 +463,16 @@
           "y": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaginationMetadata": {
+        "required": ["hasMoreItem"],
+        "type": "object",
+        "properties": {
+          "hasMoreItem": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

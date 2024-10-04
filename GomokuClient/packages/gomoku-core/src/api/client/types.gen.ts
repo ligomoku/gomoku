@@ -19,6 +19,11 @@ export type GetAvailableGamesResponse = {
   opponent: PlayerDto;
 };
 
+export type GetAvailableGamesResponseIEnumerablePaginatedResponse = {
+  data: Array<GetAvailableGamesResponse>;
+  metadata: PaginationMetadata;
+};
+
 export type GetGameHistoryResponse = {
   boardSize: number;
   movesCount: number;
@@ -32,6 +37,10 @@ export type MakeMoveClientMessage = {
   gameId: string;
   x: number;
   y: number;
+};
+
+export type PaginationMetadata = {
+  hasMoreItem: boolean;
 };
 
 export type PlayerDto = {
@@ -78,10 +87,14 @@ export type GetApiGamesAvailableToJoinData = {
     "Content-Type": string;
     "X-Version"?: string;
   };
+  query?: {
+    Limit?: number;
+    Offset?: number;
+  };
 };
 
 export type GetApiGamesAvailableToJoinResponse =
-  Array<GetAvailableGamesResponse>;
+  GetAvailableGamesResponseIEnumerablePaginatedResponse;
 
 export type GetApiGamesAvailableToJoinError = unknown;
 

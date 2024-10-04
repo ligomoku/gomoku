@@ -59,6 +59,23 @@ export const GetAvailableGamesResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const GetAvailableGamesResponseIEnumerablePaginatedResponseSchema = {
+  required: ["data", "metadata"],
+  type: "object",
+  properties: {
+    data: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/GetAvailableGamesResponse",
+      },
+    },
+    metadata: {
+      $ref: "#/components/schemas/PaginationMetadata",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const GetGameHistoryResponseSchema = {
   required: ["boardSize", "movesCount", "movesHistory", "players"],
   type: "object",
@@ -99,6 +116,17 @@ export const MakeMoveClientMessageSchema = {
     y: {
       type: "integer",
       format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const PaginationMetadataSchema = {
+  required: ["hasMoreItem"],
+  type: "object",
+  properties: {
+    hasMoreItem: {
+      type: "boolean",
     },
   },
   additionalProperties: false,
