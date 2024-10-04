@@ -5,10 +5,10 @@ import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  getApiGames,
-  GetApiGamesError,
-  GetApiGamesResponse,
-  GetAvailableGamesResponse,
+  getApiGamesAvailableToJoin,
+  GetApiGamesAvailableToJoinError,
+  GetApiGamesAvailableToJoinResponse,
+  GetAvailableGamesResponse
 } from "@/api/client";
 import { Users } from "lucide-react";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
@@ -67,14 +67,14 @@ export const HomeGame = () => {
 
 const useFetchGames = () =>
   useQuery<
-    GetApiGamesResponse,
-    GetApiGamesError,
-    GetApiGamesResponse,
+    GetApiGamesAvailableToJoinResponse,
+    GetApiGamesAvailableToJoinError,
+    GetApiGamesAvailableToJoinResponse,
     [string, string | null]
   >({
     queryKey: ["games", null],
     queryFn: async () => {
-      const response = await getApiGames({
+      const response = await getApiGamesAvailableToJoin({
         headers: getDefaultHeaders(),
       });
 

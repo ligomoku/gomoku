@@ -6,80 +6,59 @@ import {
   type Options,
 } from "@hey-api/client-fetch";
 import type {
-  GetApiAuthInfoData,
-  GetApiAuthInfoError,
-  GetApiAuthInfoResponse,
-  GetApiGameByGameIdData,
-  GetApiGameByGameIdError,
-  GetApiGameByGameIdResponse,
-  GetApiGamesData,
-  GetApiGamesError,
-  GetApiGamesResponse,
+  GetApiGameByGameIdHistoryData,
+  GetApiGameByGameIdHistoryError,
+  GetApiGameByGameIdHistoryResponse,
+  GetApiGamesAvailableToJoinData,
+  GetApiGamesAvailableToJoinError,
+  GetApiGamesAvailableToJoinResponse,
   PostApiGameData,
   PostApiGameError,
   PostApiGameResponse,
   PostApiGameByGameIdJoinData,
   PostApiGameByGameIdJoinError,
   PostApiGameByGameIdJoinResponse,
-  PostApiGameByGameIdMakeMoveData,
-  PostApiGameByGameIdMakeMoveError,
-  PostApiGameByGameIdMakeMoveResponse,
   GetHealthData,
   GetHealthError,
   GetHealthResponse,
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
   PostGamehubSendMessageData,
-  PostGamehubReceiveMessageData,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
 
 /**
- * Get auth user information
+ * Get game history by game id
  */
-export const getApiAuthInfo = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiAuthInfoData, ThrowOnError>,
+export const getApiGameByGameIdHistory = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiGameByGameIdHistoryData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetApiAuthInfoResponse,
-    GetApiAuthInfoError,
+    GetApiGameByGameIdHistoryResponse,
+    GetApiGameByGameIdHistoryError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/auth/info",
-  });
-};
-
-/**
- * Get information about game by game id
- */
-export const getApiGameByGameId = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiGameByGameIdData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    GetApiGameByGameIdResponse,
-    GetApiGameByGameIdError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/game/{gameId}",
+    url: "/api/game/{gameId}/history",
   });
 };
 
 /**
  * Get all games, which are available to join
  */
-export const getApiGames = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiGamesData, ThrowOnError>,
+export const getApiGamesAvailableToJoin = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiGamesAvailableToJoinData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetApiGamesResponse,
-    GetApiGamesError,
+    GetApiGamesAvailableToJoinResponse,
+    GetApiGamesAvailableToJoinError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/games",
+    url: "/api/games/available-to-join",
   });
 };
 
@@ -112,24 +91,6 @@ export const postApiGameByGameIdJoin = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/api/game/{gameId}/join",
-  });
-};
-
-/**
- * Make move in a game
- */
-export const postApiGameByGameIdMakeMove = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<PostApiGameByGameIdMakeMoveData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).post<
-    PostApiGameByGameIdMakeMoveResponse,
-    PostApiGameByGameIdMakeMoveError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/game/{gameId}/make-move",
   });
 };
 
@@ -173,14 +134,5 @@ export const postGamehubSendMessage = <ThrowOnError extends boolean = false>(
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/SendMessage",
-  });
-};
-
-export const postGamehubReceiveMessage = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubReceiveMessageData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
-    ...options,
-    url: "/gamehub/ReceiveMessage",
   });
 };
