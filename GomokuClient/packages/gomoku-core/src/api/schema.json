@@ -468,10 +468,10 @@
         "additionalProperties": false
       },
       "PaginationMetadata": {
-        "required": ["hasMoreItem"],
+        "required": ["hasMoreItems"],
         "type": "object",
         "properties": {
-          "hasMoreItem": {
+          "hasMoreItems": {
             "type": "boolean"
           }
         },

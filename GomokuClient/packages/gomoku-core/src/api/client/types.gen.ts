@@ -40,7 +40,7 @@ export type MakeMoveClientMessage = {
 };
 
 export type PaginationMetadata = {
-  hasMoreItem: boolean;
+  hasMoreItems: boolean;
 };
 
 export type PlayerDto = {

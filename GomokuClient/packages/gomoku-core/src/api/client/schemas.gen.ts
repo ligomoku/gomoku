@@ -122,10 +122,10 @@ export const MakeMoveClientMessageSchema = {
 } as const;
 
 export const PaginationMetadataSchema = {
-  required: ["hasMoreItem"],
+  required: ["hasMoreItems"],
   type: "object",
   properties: {
-    hasMoreItem: {
+    hasMoreItems: {
       type: "boolean",
     },
   },
