@@ -33,11 +33,8 @@ public class GameHub : Hub
 
 			if (game.HasBothPlayersJoined && !game.IsGameStarted)
 			{
-				var isPlayerOneMakingFirstMove = game.NextMoveShouldMakePlayerId == game!.PlayerOne!.PlayerId;
-				await Clients.User(game!.PlayerOne!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(isPlayerOneMakingFirstMove));
-
-				var isPlayerTwoMakingFirstMove = game.NextMoveShouldMakePlayerId == game!.PlayerTwo!.PlayerId;
-				await Clients.User(game!.PlayerTwo!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(isPlayerTwoMakingFirstMove));
+				await Clients.User(game!.Players!.Black!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(true));
+				await Clients.User(game!.Players!.White!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(false));
 			}
 		}
 	}

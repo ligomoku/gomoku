@@ -5,9 +5,7 @@ public class GetGameResponse
 	[Required]
 	public required string GameId { get; set; }
 
-	public PlayerDto? PlayerOne { get; set; }
-
-	public PlayerDto? PlayerTwo { get; set; }
+	public PlayersDto? Players { get; set; }
 
 	[Required]
 	public required bool HasBothPlayersJoined { get; set; }

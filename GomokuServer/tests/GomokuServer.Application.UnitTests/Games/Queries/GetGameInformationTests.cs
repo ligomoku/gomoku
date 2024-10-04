@@ -38,8 +38,8 @@ public class GetGameInformationTests
 		getGameResponse.HasBothPlayersJoined.Should().BeFalse();
 		getGameResponse.IsGameStarted.Should().BeFalse();
 		getGameResponse.NextMoveShouldMakePlayerId.Should().BeNull();
-		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
-		getGameResponse.PlayerTwo.Should().BeNull();
+		getGameResponse.Players!.Black!.Should().BeNull();
+		getGameResponse.Players!.White.Should().BeNull();
 		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
 		getGameResponse.PlayersMoves.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
@@ -68,8 +68,8 @@ public class GetGameInformationTests
 		getGameResponse.HasBothPlayersJoined.Should().BeTrue();
 		getGameResponse.IsGameStarted.Should().BeFalse(); // No moves have been made
 		getGameResponse.NextMoveShouldMakePlayerId.Should().Be(game.NextMoveShouldMakePlayerId);
-		getGameResponse.PlayerOne!.PlayerId.Should().Be(game.PlayerOne!.Id);
-		getGameResponse.PlayerTwo!.PlayerId.Should().Be(game.PlayerTwo!.Id);
+		getGameResponse.Players!.Black!.PlayerId.Should().Be(game.Players!.Black!.Id);
+		getGameResponse.Players!.White!.PlayerId.Should().Be(game.Players!.White!.Id);
 		getGameResponse.PlayersMoves.Should().BeEmpty();
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();

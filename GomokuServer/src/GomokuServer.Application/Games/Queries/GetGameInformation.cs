@@ -1,4 +1,5 @@
-﻿using GomokuServer.Application.Interfaces.Common;
+﻿using GomokuServer.Application.Extensions;
+using GomokuServer.Application.Interfaces.Common;
 using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
@@ -25,8 +26,7 @@ public class GetGameInformationQueryHandler : IQueryHandler<GetGameInformationQu
 		return getGameResult.Map(game => new GetGameResponse
 		{
 			GameId = game.GameId,
-			PlayerOne = game.PlayerOne != null ? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName, game.PlayerOne.Color?.ToString()) : null,
-			PlayerTwo = game.PlayerTwo != null ? new PlayerDto(game.PlayerTwo.Id, game.PlayerTwo.UserName, game.PlayerTwo.Color?.ToString()) : null,
+			Players = game.GetPlayersDto(),
 			HasBothPlayersJoined = game.HasBothPlayersJoined,
 			IsGameStarted = game.IsGameStarted,
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
