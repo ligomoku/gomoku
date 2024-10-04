@@ -1,11 +1,11 @@
 ﻿using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class AddPlayerToGameTests
 {
-	private int _validBoardSize;
 	private IGameRepository _gameRepository;
 	private IPlayersRepository _playersRepository;
 	private AddPlayerToGameCommandHandler _handler;
@@ -13,7 +13,6 @@ public class AddPlayerToGameTests
 	[SetUp]
 	public void Setup()
 	{
-		_validBoardSize = 15;
 		_gameRepository = Substitute.For<IGameRepository>();
 		_playersRepository = Substitute.For<IPlayersRepository>();
 
@@ -34,7 +33,7 @@ public class AddPlayerToGameTests
 		};
 
 		var player = new Player(command.PlayerId, "Alice");
-		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
@@ -46,7 +45,7 @@ public class AddPlayerToGameTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		await _gameRepository.Received(1).SaveAsync(Arg.Is<Game>(g => g.Opponents[0]!.Id == command.PlayerId));
+		await _gameRepository.Received(1).SaveAsync(Arg.Is<Game>(g => g.PlayerOne!.Id == command.PlayerId));
 	}
 
 	[Test]
@@ -62,7 +61,7 @@ public class AddPlayerToGameTests
 		var playerOne = new Player("Player1", "Alice");
 		var playerTwo = new Player(command.PlayerId, "Alice");
 
-		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 		game.AddPlayer(playerOne);
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
@@ -75,7 +74,7 @@ public class AddPlayerToGameTests
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
-		await _gameRepository.Received(1).SaveAsync(Arg.Is<Game>(g => g.Players.White!.Id == command.PlayerId));
+		await _gameRepository.Received(1).SaveAsync(Arg.Is<Game>(g => g.PlayerTwo!.Id == command.PlayerId));
 	}
 
 	[Test]
@@ -107,7 +106,7 @@ public class AddPlayerToGameTests
 			PlayerId = "NonExistentPlayerId"
 		};
 
-		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(command.PlayerId).Returns(Result<Player>.NotFound());
@@ -130,7 +129,7 @@ public class AddPlayerToGameTests
 		};
 
 		var player = new Player(command.PlayerId, "Alice");
-		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 		_playersRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));

@@ -1,5 +1,6 @@
 ﻿using GomokuServer.Application.Extensions;
 using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;

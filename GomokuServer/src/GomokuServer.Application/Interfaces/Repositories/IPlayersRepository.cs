@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Interfaces;
+﻿namespace GomokuServer.Application.Interfaces.Repositories;
 
 public interface IPlayersRepository
 {

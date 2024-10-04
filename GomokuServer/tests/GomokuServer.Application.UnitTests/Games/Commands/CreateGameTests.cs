@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;

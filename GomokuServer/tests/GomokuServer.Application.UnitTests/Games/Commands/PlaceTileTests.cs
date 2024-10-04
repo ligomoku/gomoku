@@ -1,5 +1,6 @@
 ﻿using GomokuServer.Application.Dto;
 using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
@@ -15,7 +16,7 @@ public class PlaceTileTests
 	[SetUp]
 	public void Setup()
 	{
-		_game = Substitute.For<Game>(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		_game = Substitute.For<Game>(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 		_gameRepository = Substitute.For<IGameRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
@@ -37,7 +38,7 @@ public class PlaceTileTests
 			Color = TileColor.Black
 		};
 
-		var game = new Game(15, _randomProvider, _dateTimeProvider);
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 		game.AddPlayer(player);
 		game.AddPlayer(new Player("player2", "player2UserName"));
 
@@ -85,7 +86,7 @@ public class PlaceTileTests
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(15, _randomProvider, _dateTimeProvider);
+		var game = new Game(new GameBoard(15), _randomProvider, _dateTimeProvider);
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 
 		// Act
@@ -107,7 +108,7 @@ public class PlaceTileTests
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(new GameBoard(15), Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		game.AddPlayer(new Player("player1Id", "player1UserName"));
 		game.AddPlayer(new Player("player2Id", "player2UserName"));
@@ -117,11 +118,11 @@ public class PlaceTileTests
 
 		for (int i = 0; i < 4; i++)
 		{
-			game.PlaceTile(new Tile(i, 7), game.Players!.Black!.Id);
-			game.PlaceTile(new Tile(i, 8), game.Players!.White!.Id);
+			game.PlaceTile(new Tile(i, 7), game.PlayerOne!.Id);
+			game.PlaceTile(new Tile(i, 8), game.PlayerTwo!.Id);
 		}
 
-		var winningMove = game.PlaceTile(new Tile(4, 7), game.Players!.Black!.Id);
+		var winningMove = game.PlaceTile(new Tile(4, 7), game.PlayerOne!.Id);
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);

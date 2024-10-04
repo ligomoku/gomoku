@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Application.Games.Queries;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Application.UnitTests.TestData;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;

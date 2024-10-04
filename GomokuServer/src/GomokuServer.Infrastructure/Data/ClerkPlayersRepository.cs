@@ -1,4 +1,5 @@
-﻿using GomokuServer.Core.Entities;
+﻿using GomokuServer.Application.Interfaces.Repositories;
+using GomokuServer.Core.Entities;
 using GomokuServer.Infrastructure.Api;
 
 using Microsoft.Extensions.Caching.Memory;

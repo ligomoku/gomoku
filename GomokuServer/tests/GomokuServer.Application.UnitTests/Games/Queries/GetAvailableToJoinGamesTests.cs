@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using GomokuServer.Application.Games.Queries;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Application.UnitTests.TestData;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
@@ -81,7 +82,7 @@ public class GetAvailableToJoinGamesTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.Should().HaveCount(1);
-		result.Value.First().Opponent.UserName.Should().Be(games[0].Opponents[0].UserName);
+		result.Value.First().Opponent.UserName.Should().Be(games[0].PlayerOne!.UserName);
 		await _gameRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 

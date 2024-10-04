@@ -4,6 +4,7 @@ using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Application.Interfaces.Repositories;
 
 using Microsoft.OpenApi.Models;
 

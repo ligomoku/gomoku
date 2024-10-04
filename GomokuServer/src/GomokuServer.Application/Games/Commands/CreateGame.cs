@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Application.Responses;
 using GomokuServer.Core.Interfaces;
 
@@ -43,7 +44,7 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Error("Cannot get user by id. See logs for more details");
 		}
 
-		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
+		var game = new Game(new GameBoard(request.BoardSize), _randomProvider, _dateTimeProvider);
 		var addPlayerResult = game.AddPlayer(getPlayerResult.Value);
 
 		var saveResult = await _gameRepository.SaveAsync(game);

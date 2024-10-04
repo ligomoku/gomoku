@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
+using GomokuServer.Application.Interfaces.Repositories;
 using GomokuServer.Core.Entities;
 
 namespace GomokuServer.Infrastructure.Data;
@@ -39,5 +40,18 @@ public class InMemoryGameRepository : IGameRepository
 		return filteredGames.Any()
 			? Task.FromResult(Result.Success(filteredGames))
 			: Task.FromResult(Result.Success(Enumerable.Empty<Game>()));
+	}
+
+	public Task<int> CountAsync(Expression<Func<Game, bool>>? expression = null)
+	{
+		var query = _games.Values.AsQueryable();
+
+		if (expression != null)
+		{
+			query = query.Where(expression);
+		}
+
+		var count = query.Count();
+		return Task.FromResult(count);
 	}
 }
