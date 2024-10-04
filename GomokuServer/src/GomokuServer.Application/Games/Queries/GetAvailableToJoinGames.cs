@@ -37,11 +37,10 @@ public class GetAvailableToJoinGamesQueryHandler
 		{
 			var availableGames = games.Select(game =>
 			{
-				PlayerDto opponent = game.PlayerOne != null
-					? new PlayerDto(game.PlayerOne.Id, game.PlayerOne.UserName, game.PlayerOne.Color?.ToString())
-					: new PlayerDto(game.PlayerTwo!.Id, game.PlayerTwo!.UserName, game.PlayerTwo.Color?.ToString());
+				var opponent = game.Opponents[0];
+				var opponentDto = new PlayerDto(opponent.Id, opponent.UserName, opponent.Color.ToString());
 
-				return new GetAvailableGamesResponse(game.GameId, opponent);
+				return new GetAvailableGamesResponse(game.GameId, opponentDto);
 			}).ToList();
 
 			bool hasMoreItems = request.Offset + request.Limit < availableGamesCount;
