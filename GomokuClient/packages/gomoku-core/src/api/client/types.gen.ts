@@ -41,6 +41,7 @@ export type MakeMoveClientMessage = {
 
 export type PaginationMetadata = {
   hasMoreItems: boolean;
+  totalCount: number;
 };
 
 export type PlayerDto = {

@@ -3,12 +3,16 @@
 import type { Options } from "@hey-api/client-fetch";
 import {
   queryOptions,
+  infiniteQueryOptions,
+  type InfiniteData,
   type UseMutationOptions,
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
   GetApiGameByGameIdHistoryData,
   GetApiGamesAvailableToJoinData,
+  GetApiGamesAvailableToJoinError,
+  GetApiGamesAvailableToJoinResponse,
   PostApiGameData,
   PostApiGameError,
   PostApiGameResponse,
@@ -104,6 +108,79 @@ export const getApiGamesAvailableToJoinOptions = (
     },
     queryKey: getApiGamesAvailableToJoinQueryKey(options),
   });
+};
+
+export const getApiGamesAvailableToJoinInfiniteQueryKey = (
+  options: Options<GetApiGamesAvailableToJoinData>,
+): QueryKey<Options<GetApiGamesAvailableToJoinData>> => [
+  createQueryKey("getApiGamesAvailableToJoin", options, true),
+];
+
+export const getApiGamesAvailableToJoinInfiniteOptions = (
+  options: Options<GetApiGamesAvailableToJoinData>,
+) => {
+  return infiniteQueryOptions<
+    GetApiGamesAvailableToJoinResponse,
+    GetApiGamesAvailableToJoinError,
+    InfiniteData<GetApiGamesAvailableToJoinResponse>,
+    QueryKey<Options<GetApiGamesAvailableToJoinData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetApiGamesAvailableToJoinData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetApiGamesAvailableToJoinData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  offset: pageParam,
+                },
+              };
+        const params: Partial<Options<GetApiGamesAvailableToJoinData>> = {};
+        if (page.body) {
+          params.body = {
+            ...(queryKey[0].body as any),
+            ...(page.body as any),
+          };
+        }
+        if (page.headers) {
+          params.headers = {
+            ...queryKey[0].headers,
+            ...page.headers,
+          };
+        }
+        if (page.path) {
+          params.path = {
+            ...queryKey[0].path,
+            ...page.path,
+          };
+        }
+        if (page.query) {
+          params.query = {
+            ...queryKey[0].query,
+            ...page.query,
+          };
+        }
+        const { data } = await getApiGamesAvailableToJoin({
+          ...options,
+          ...queryKey[0],
+          ...params,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getApiGamesAvailableToJoinInfiniteQueryKey(options),
+    },
+  );
 };
 
 export const postApiGameQueryKey = (options: Options<PostApiGameData>) => [
