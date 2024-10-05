@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 
-interface ChatProps {
+export interface ChatProps {
   messages: string[];
   isConnected: boolean;
   sendMessage: (message: string) => Promise<void>;
