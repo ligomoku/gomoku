@@ -89,7 +89,7 @@ public class Game
 		};
 	}
 
-	public TilePlacementResult PlaceTile(Tile tile, string playerId)
+	public GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
 		if (Winner != null)
 		{
@@ -128,23 +128,30 @@ public class Game
 			};
 		}
 
-		var player = playerId == Players.Black.Id ? Players.Black : Players.White;
-		var tilePlacementResult = _gameBoard.PlaceTile(tile, player!.Color);
+		var currentPlayer = playerId == Players.Black.Id ? Players.Black : Players.White;
+		var boardTilePlacementResult = _gameBoard.PlaceTile(tile, currentPlayer!.Color);
 
-		if (tilePlacementResult.IsValid)
+		if (boardTilePlacementResult.IsValid)
 		{
 			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
 		}
 
-		if (tilePlacementResult.Winner != null)
+		if (boardTilePlacementResult.WinningSequence != null)
 		{
-			Winner = tilePlacementResult.Winner;
-			WinningSequence = tilePlacementResult.WinningSequence;
+			Winner = currentPlayer;
+			WinningSequence = boardTilePlacementResult.WinningSequence;
 			NextMoveShouldMakePlayerId = null;
 		}
 
-		return tilePlacementResult;
+		return new()
+		{
+			IsValid = boardTilePlacementResult.IsValid,
+			PlacedTileColor = boardTilePlacementResult.PlacedTileColor,
+			ValidationError = boardTilePlacementResult.ValidationError,
+			WinningSequence = boardTilePlacementResult.WinningSequence,
+			Winner = Winner,
+		};
 	}
 }

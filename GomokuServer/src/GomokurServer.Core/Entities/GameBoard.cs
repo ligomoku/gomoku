@@ -18,7 +18,7 @@ public class GameBoard
 
 	public TileColor NextTileColor { get; private set; }
 
-	public TilePlacementResult PlaceTile(Tile tile, TileColor newTileColor)
+	public BoardTilePlacementResult PlaceTile(Tile tile, TileColor newTileColor)
 	{
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
