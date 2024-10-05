@@ -55,10 +55,10 @@ export const Chat = ({
 
   return (
     <Card
+      className="border-[#2b2b2b] bg-[#2b2b2b]"
       style={{
         width: isMobile ? "100%" : "400px",
         maxWidth: isMobile ? "100%" : "400px",
-        backgroundColor: "#161512",
         color: "#bababa",
       }}
     >
