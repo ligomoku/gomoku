@@ -14,12 +14,12 @@ public record AddPlayerToGameCommand : ICommand
 public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameCommand>
 {
 	private readonly IGameRepository _gameRepository;
-	private readonly IPlayersRepository _playersRepository;
+	private readonly IOpponentsRepository _opponentsRepository;
 
-	public AddPlayerToGameCommandHandler(IGameRepository gameRepository, IPlayersRepository playersRepository)
+	public AddPlayerToGameCommandHandler(IGameRepository gameRepository, IOpponentsRepository opponentsRepository)
 	{
 		_gameRepository = gameRepository;
-		_playersRepository = playersRepository;
+		_opponentsRepository = opponentsRepository;
 	}
 
 	public async Task<Result> Handle(AddPlayerToGameCommand request, CancellationToken cancellationToken)
@@ -30,10 +30,10 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.NotFound();
 		}
 
-		var getPlayerResult = await _playersRepository.GetAsync(request.PlayerId);
-		if (getPlayerResult.Status != ResultStatus.Ok)
+		var getOpponentResult = await _opponentsRepository.GetAsync(request.PlayerId);
+		if (getOpponentResult.Status != ResultStatus.Ok)
 		{
-			if (getPlayerResult.IsNotFound())
+			if (getOpponentResult.IsNotFound())
 			{
 				return Result.NotFound($"Player with id {request.PlayerId} not found");
 			}
@@ -42,8 +42,7 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 		}
 
 		var game = getGameResult.Value;
-
-		var addingResult = game.AddPlayer(getPlayerResult.Value);
+		var addingResult = game.AddOpponent(getOpponentResult.Value);
 
 		if (!addingResult.IsValid)
 		{

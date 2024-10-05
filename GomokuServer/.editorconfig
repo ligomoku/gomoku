@@ -423,3 +423,6 @@ dotnet_diagnostic.CS1998.severity = error
 #
 # CS8601: Possible null reference assignment
 dotnet_diagnostic.CS8601.severity = error
+#
+# CS9113: Parameter 'x' is unread
+dotnet_diagnostic.CS9113.severity = error

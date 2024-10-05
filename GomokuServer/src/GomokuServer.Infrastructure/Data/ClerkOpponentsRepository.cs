@@ -6,20 +6,20 @@ using Microsoft.Extensions.Logging;
 
 namespace GomokuServer.Infrastructure.Data;
 
-public class ClerkPlayersRepository : IPlayersRepository
+public class ClerkOpponentsRepository : IOpponentsRepository
 {
 	private readonly IClerkBackendApi _clerkBackendApiHttpClient;
 	private readonly IMemoryCache _memoryCache;
-	private readonly ILogger<ClerkPlayersRepository> _logger;
+	private readonly ILogger<ClerkOpponentsRepository> _logger;
 
-	public ClerkPlayersRepository(IClerkBackendApi clerkBackendApiHttpClient, IMemoryCache memoryCache, ILogger<ClerkPlayersRepository> logger)
+	public ClerkOpponentsRepository(IClerkBackendApi clerkBackendApiHttpClient, IMemoryCache memoryCache, ILogger<ClerkOpponentsRepository> logger)
 	{
 		_clerkBackendApiHttpClient = clerkBackendApiHttpClient;
 		_memoryCache = memoryCache;
 		_logger = logger;
 	}
 
-	public async Task<Result<Player>> GetAsync(string id)
+	public async Task<Result<Opponent>> GetAsync(string id)
 	{
 		try
 		{
@@ -29,7 +29,7 @@ public class ClerkPlayersRepository : IPlayersRepository
 				return await _clerkBackendApiHttpClient.GetUserByIdAsync(id);
 			});
 
-			return Result.Success(new Player(id, clerkUser!.Username));
+			return Result.Success(new Opponent(id, clerkUser!.Username));
 		}
 		catch (ApiException apiException)
 		{

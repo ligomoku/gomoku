@@ -3,7 +3,7 @@ using GomokuServer.Core.Validation;
 
 namespace GomokuServer.Core.Results;
 
-public class TilePlacementResult
+public record TilePlacementResult
 {
 	public bool IsValid { get; init; }
 

@@ -1,6 +1,6 @@
-﻿namespace GomokuServer.Application.Extensions;
+﻿namespace GomokuServer.Utils.Extensions;
 
-public static class StringExtenstions
+public static class StringExtensions
 {
 	public static string ToCamelCase(this string str)
 	{

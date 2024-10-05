@@ -9,16 +9,16 @@ namespace GomokuServer.Core.UnitTests;
 public class GameTests
 {
 	private Game _game;
-	private Player _playerOne;
-	private Player _playerTwo;
+	private Opponent _playerOne;
+	private Opponent _playerTwo;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 
 	[SetUp]
 	public void SetUp()
 	{
-		_playerOne = new Player("Player1Id", "Player1UserName");
-		_playerTwo = new Player("Player2Id", "Player2UserName");
+		_playerOne = new Opponent("Player1Id", "Player1UserName");
+		_playerTwo = new Opponent("Player2Id", "Player2UserName");
 
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
@@ -27,8 +27,8 @@ public class GameTests
 
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
-		_game.AddPlayer(_playerOne);
-		_game.AddPlayer(_playerTwo);
+		_game.AddOpponent(_playerOne);
+		_game.AddOpponent(_playerTwo);
 	}
 
 	[Test]
@@ -223,10 +223,10 @@ public class GameTests
 	public void AddPlayer_WhenBothPlacesAreTaken_ShouldReturnError()
 	{
 		// Arrange
-		var playerThree = new Player("Player3Id", "Player3UserName");
+		var playerThree = new Opponent("Player3Id", "Player3UserName");
 
 		// Act
-		var result = _game.AddPlayer(playerThree);
+		var result = _game.AddOpponent(playerThree);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
@@ -239,11 +239,11 @@ public class GameTests
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
-		var player = new Player("somePlayerId", "SomePlayerUserName");
-		_game.AddPlayer(player);
+		var player = new Opponent("somePlayerId", "SomePlayerUserName");
+		_game.AddOpponent(player);
 
 		// Act
-		var result = _game.AddPlayer(player);
+		var result = _game.AddOpponent(player);
 
 		// Assert
 		result.IsValid.Should().BeTrue();
@@ -264,8 +264,8 @@ public class GameTests
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
-		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
-		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
+		_game.AddOpponent(new Opponent("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddOpponent(new Opponent("somePlayer2", "somePlayer2UserName"));
 
 		// Assert
 		_game.HasBothPlayersJoined.Should().BeTrue();
@@ -277,8 +277,8 @@ public class GameTests
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
-		_game.AddPlayer(new Player("somePlayer1Id", "somePlayer1UserName"));
-		_game.AddPlayer(new Player("somePlayer2", "somePlayer2UserName"));
+		_game.AddOpponent(new Opponent("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddOpponent(new Opponent("somePlayer2", "somePlayer2UserName"));
 
 		// Act
 		_game.PlaceTile(new Tile(0, 0), "somePlayer1Id");

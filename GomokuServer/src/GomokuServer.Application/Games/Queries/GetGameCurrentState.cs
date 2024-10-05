@@ -30,7 +30,7 @@ public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentState
 			HasBothPlayersJoined = game.HasBothPlayersJoined,
 			IsGameStarted = game.IsGameStarted,
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
-			Winner = game.Winner != null ? new PlayerDto(game.Winner.Id, game.Winner.UserName, game.Winner.Color?.ToString()) : null,
+			Winner = game.Winner != null ? new PlayerDto(game.Winner.Id, game.Winner.UserName, game.Winner.Color.ToString()) : null,
 			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),
 			MovesCount = game.MovesHistory.Count,
 			MovesHistory = game.MovesHistory.ToDictionary(
