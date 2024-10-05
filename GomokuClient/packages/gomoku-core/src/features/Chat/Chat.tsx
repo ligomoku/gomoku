@@ -85,11 +85,12 @@ export const Chat = ({
               <Button
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || isSending}
+                className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
               >
                 {isSending ? "Sending..." : "Send"}
               </Button>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-[#bababa]">
               {messageInput.length}/{MAX_MESSAGE_LENGTH} characters
             </div>
             <ScrollArea
