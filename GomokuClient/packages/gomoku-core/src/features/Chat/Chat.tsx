@@ -1,22 +1,31 @@
 import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useChat } from "@/hooks/useChat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { useAuthToken } from "@/context";
 
-export const Chat = ({ gameID }: { gameID: string }) => {
-  const { jwtDecodedInfo } = useAuthToken();
+interface ChatProps {
+  messages: string[];
+  isConnected: boolean;
+  sendMessage: (message: string) => Promise<void>;
+  username: string;
+}
+
+export const Chat = ({
+  messages,
+  isConnected,
+  sendMessage,
+  username,
+}: ChatProps) => {
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const { sendMessage, messages, isConnected } = useChat();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const MAX_MESSAGE_LENGTH = 50;
 
   const handleSendMessage = async () => {
-    if (jwtDecodedInfo?.username && messageInput.trim()) {
+    if (username && messageInput.trim()) {
       setIsSending(true);
       try {
-        await sendMessage(gameID, jwtDecodedInfo.username, messageInput);
+        await sendMessage(messageInput);
         setMessageInput("");
       } catch (error) {
         console.error("Failed to send message", error);
@@ -43,7 +52,7 @@ export const Chat = ({ gameID }: { gameID: string }) => {
   }, [messages]);
 
   return (
-    <Card>
+    <Card style={{ width: 400, maxWidth: 400 }}>
       <CardHeader>
         <CardTitle>Chat</CardTitle>
       </CardHeader>
@@ -54,10 +63,15 @@ export const Chat = ({ gameID }: { gameID: string }) => {
               <input
                 type="text"
                 value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length <= MAX_MESSAGE_LENGTH) {
+                    setMessageInput(e.target.value);
+                  }
+                }}
                 onKeyDown={handleKeyDown}
                 className="flex-1 rounded-md border px-3 py-2"
-                placeholder="Type a message..."
+                placeholder={"Type a message..."}
+                maxLength={MAX_MESSAGE_LENGTH}
               />
               <Button
                 onClick={handleSendMessage}
@@ -65,6 +79,9 @@ export const Chat = ({ gameID }: { gameID: string }) => {
               >
                 {isSending ? "Sending..." : "Send"}
               </Button>
+            </div>
+            <div className="text-sm text-gray-500">
+              {messageInput.length}/{MAX_MESSAGE_LENGTH} characters
             </div>
             <ScrollArea
               ref={scrollAreaRef}
@@ -74,10 +91,11 @@ export const Chat = ({ gameID }: { gameID: string }) => {
                 <div
                   key={index}
                   className={`mb-2 rounded p-2 ${
-                    msg.startsWith(`${jwtDecodedInfo?.username}:`)
+                    msg.startsWith(`${username}:`)
                       ? "bg-blue-100 text-blue-900"
                       : "bg-gray-100 text-gray-900"
                   }`}
+                  style={{ wordWrap: "break-word", maxWidth: "100%" }}
                 >
                   {msg}
                 </div>
@@ -86,11 +104,9 @@ export const Chat = ({ gameID }: { gameID: string }) => {
           </div>
         ) : (
           <div>
-            Connecting
-            <div>
-              <div className="text-gray-500">
-                No messages yet. Start the conversation!
-              </div>
+            Connecting...
+            <div className="text-gray-500">
+              No messages yet. Start the conversation!
             </div>
           </div>
         )}
