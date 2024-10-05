@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 interface ChatProps {
   messages: string[];
@@ -20,6 +21,7 @@ export const Chat = ({
   const [isSending, setIsSending] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const MAX_MESSAGE_LENGTH = 50;
+  const isMobile = useMobileDesign();
 
   const handleSendMessage = async () => {
     if (username && messageInput.trim()) {
@@ -52,7 +54,14 @@ export const Chat = ({
   }, [messages]);
 
   return (
-    <Card style={{ width: 400, maxWidth: 400 }}>
+    <Card
+      style={{
+        width: isMobile ? "100%" : "400px",
+        maxWidth: isMobile ? "100%" : "400px",
+        backgroundColor: "#161512",
+        color: "#bababa",
+      }}
+    >
       <CardHeader>
         <CardTitle>Chat</CardTitle>
       </CardHeader>
