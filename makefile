@@ -35,3 +35,7 @@ download-localhost:
 codegen:
 	@echo "Generating API client..."
 	@cd $(CLIENT_DIR) && yarn codegen
+
+codegen-sever:
+	@echo "Generating hub types..."
+	yarn generate-hub-types:server
