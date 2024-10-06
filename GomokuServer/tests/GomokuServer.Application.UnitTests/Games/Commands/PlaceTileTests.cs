@@ -32,10 +32,10 @@ public class PlaceTileTests
 			PlayerId = "Player1",
 			Tile = new TileDto(0, 0)
 		};
-		var ppponent = new Profile(command.PlayerId, "player1UserName");
+		var opponent = new Profile(command.PlayerId, "player1UserName");
 
 		var game = new Game(15, _randomProvider, _dateTimeProvider);
-		game.AddOpponent(ppponent);
+		game.AddOpponent(opponent);
 		game.AddOpponent(new Profile("player2", "player2UserName"));
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));

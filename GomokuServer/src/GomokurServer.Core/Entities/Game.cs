@@ -129,7 +129,7 @@ public class Game
 		}
 
 		var currentPlayer = playerId == Players.Black.Id ? Players.Black : Players.White;
-		var boardTilePlacementResult = _gameBoard.PlaceTile(tile, currentPlayer!.Color);
+		var boardTilePlacementResult = _gameBoard.PlaceNewTile(tile);
 
 		if (boardTilePlacementResult.IsValid)
 		{

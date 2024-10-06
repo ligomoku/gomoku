@@ -18,7 +18,7 @@ public class GameBoard
 
 	public TileColor NextTileColor { get; private set; }
 
-	public BoardTilePlacementResult PlaceTile(Tile tile, TileColor newTileColor)
+	public BoardTilePlacementResult PlaceNewTile(Tile tile)
 	{
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
@@ -38,15 +38,7 @@ public class GameBoard
 			};
 		}
 
-		if (newTileColor != NextTileColor)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow
-			};
-		}
-
+		var newTileColor = NextTileColor;
 		var colorString = newTileColor.ToString().ToCamelCase();
 		_board[tile.X, tile.Y] = colorString;
 
