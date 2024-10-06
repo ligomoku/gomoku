@@ -5,10 +5,12 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import pluginQuery from "@tanstack/eslint-plugin-query";
 
+import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
+
 export default tseslint.config(
   { ignores: ["dist"] },
   {
-    //TODO: extend: "plugin:storybook/recommended"
+    // TODO: extend: "plugin:storybook/recommended"
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
@@ -19,6 +21,12 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       "@tanstack/query": pluginQuery,
+      // Registering the custom plugin here
+      custom: {
+        rules: {
+          "naming-convention-types-gen": namingConventionTypesGen,
+        },
+      },
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -27,6 +35,9 @@ export default tseslint.config(
         "off",
         { allowConstantExport: true },
       ],
+      "custom/naming-convention-types-gen": [
+        "warn",
+      ],
     },
-  },
+  }
 );
