@@ -7,7 +7,7 @@ module.exports = {
     type: "suggestion",
     docs: {
       description:
-        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props' and 'Items'. Only analyzes .tsx files.",
+        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props' and 'Item/s'. Only analyzes .tsx files.",
       category: "Best Practices",
       recommended: false,
     },
@@ -70,6 +70,10 @@ module.exports = {
         }
 
         if (typeName.endsWith("Item")) {
+          return;
+        }
+
+        if (typeName.endsWith("Items")) {
           return;
         }
 
