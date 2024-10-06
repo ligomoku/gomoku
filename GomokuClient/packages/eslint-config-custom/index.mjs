@@ -35,9 +35,7 @@ export default tseslint.config(
         "off",
         { allowConstantExport: true },
       ],
-      "custom/naming-convention-types-gen": [
-        "warn",
-      ],
+      "custom/naming-convention-types-gen": ["warn"],
     },
-  }
+  },
 );
