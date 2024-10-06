@@ -7,7 +7,7 @@ module.exports = {
     type: "suggestion",
     docs: {
       description:
-        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics. Only analyzes .tsx files.",
+        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props' and 'Item/s'. Only analyzes .tsx files.",
       category: "Best Practices",
       recommended: false,
     },
@@ -19,10 +19,6 @@ module.exports = {
   },
   create(context) {
     const fileName = context.getFilename();
-
-    if (!fileName.endsWith(".tsx")) {
-      return {};
-    }
 
     const typesGenPath = path.resolve(
       __dirname,
@@ -63,23 +59,43 @@ module.exports = {
 
     return {
       TSTypeAliasDeclaration(node) {
-        if (node.id && !allowedWords.has(node.id.name)) {
+        const typeName = node.id.name;
+
+        if (typeName.endsWith("Props")) {
+          return;
+        }
+
+        if (typeName.endsWith("Item")) {
+          return;
+        }
+
+        if (typeName.endsWith("Items")) {
+          return;
+        }
+
+        if (!allowedWords.has(typeName)) {
           context.report({
             node: node.id,
             messageId: "invalidNaming",
             data: {
-              usedName: node.id.name,
+              usedName: typeName,
             },
           });
         }
       },
       TSInterfaceDeclaration(node) {
-        if (node.id && !allowedWords.has(node.id.name)) {
+        const interfaceName = node.id.name;
+
+        if (interfaceName.endsWith("Props")) {
+          return;
+        }
+
+        if (!allowedWords.has(interfaceName)) {
           context.report({
             node: node.id,
             messageId: "invalidNaming",
             data: {
-              usedName: node.id.name,
+              usedName: interfaceName,
             },
           });
         }
