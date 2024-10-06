@@ -12,5 +12,6 @@ export default defineConfig({
   types: {
     enums: "javascript",
     name: "PascalCase",
+    dates: "types+transform",
   },
 });
