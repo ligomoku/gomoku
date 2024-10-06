@@ -4,15 +4,10 @@ import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import {
-  getApiGamesAvailableToJoin,
-  GetApiGamesAvailableToJoinError,
-  GetApiGamesAvailableToJoinResponse,
-  GetAvailableGamesResponse,
-} from "@/api/client";
 import { Users } from "lucide-react";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import { SwaggerTypes, SwaggerServices } from "@/api";
 
 import { useAuthToken } from "@/context";
 
@@ -26,7 +21,7 @@ export const HomeGame = () => {
   );
 
   const transformGameData = (
-    games: GetAvailableGamesResponse[] | undefined,
+    games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
   ) => {
     return games?.map((game) => ({
       id: game.gameId,
@@ -67,14 +62,14 @@ export const HomeGame = () => {
 
 const useFetchGames = () =>
   useQuery<
-    GetApiGamesAvailableToJoinResponse,
-    GetApiGamesAvailableToJoinError,
-    GetApiGamesAvailableToJoinResponse,
+    SwaggerTypes.GetApiGamesAvailableToJoinResponse,
+    SwaggerTypes.GetApiGamesAvailableToJoinError,
+    SwaggerTypes.GetApiGamesAvailableToJoinResponse,
     [string, string | null]
   >({
     queryKey: ["games", null],
     queryFn: async () => {
-      const response = await getApiGamesAvailableToJoin({
+      const response = await SwaggerServices.getApiGamesAvailableToJoin({
         headers: getDefaultHeaders(),
       });
 

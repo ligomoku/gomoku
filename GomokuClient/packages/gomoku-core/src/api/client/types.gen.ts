@@ -19,7 +19,7 @@ export type GetAvailableGamesResponse = {
   opponent: PlayerDto;
 };
 
-export type GetAvailableGamesResponseIEnumerablePaginatedResponse = {
+export type GetAvailableGamesResponseIenumerablePaginatedResponse = {
   data: Array<GetAvailableGamesResponse>;
   metadata: PaginationMetadata;
 };
@@ -95,7 +95,7 @@ export type GetApiGamesAvailableToJoinData = {
 };
 
 export type GetApiGamesAvailableToJoinResponse =
-  GetAvailableGamesResponseIEnumerablePaginatedResponse;
+  GetAvailableGamesResponseIenumerablePaginatedResponse;
 
 export type GetApiGamesAvailableToJoinError = unknown;
 
