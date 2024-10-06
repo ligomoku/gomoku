@@ -12,35 +12,27 @@ import { JsonHubProtocol } from "@microsoft/signalr";
 import { typedStorage } from "@/shared/lib/utils";
 import { useAuthToken } from "@/context/AuthContext";
 import { useAuth } from "@clerk/clerk-react";
-import { CellValue } from "@/hooks/useBoard";
+import {
+  SignalClientMessages,
+  SignalHubInterfaces,
+  SignalRClientService,
+  SignalServerMessages,
+} from "@/api";
 
 interface PlayerJoinedGameServerMessage {
   userName: string;
 }
 
-interface GameStartedServerMessage {
-  isMyMoveFirst: boolean;
-}
-
-interface PlayerMadeMoveServerMessage {
-  playerId: string;
-  tile: TileItem;
-  placedTileColor: CellValue;
-}
-
-interface SendMessageServerMessage {
-  gameId: string;
-  user: string;
-  message: string;
-}
-
-interface TileItem {
-  x: number;
-  y: number;
-}
-
-interface GameHubError {
-  message: string;
+interface SignalREventHandlers {
+  onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
+  onGameStarted?: (message: SignalServerMessages.GameStartedMessage) => void;
+  onPlayerMadeMove?: (
+    message: SignalServerMessages.PlayerMadeMoveMessage,
+  ) => void;
+  onReceiveMessage?: (
+    message: SignalClientMessages.ChatMessageClientMessage,
+  ) => void;
+  onGameHubError?: (error: SignalServerMessages.ErrorMessage) => void;
 }
 
 interface SignalRContextType {
@@ -49,14 +41,7 @@ interface SignalRContextType {
   registerEventHandlers: (
     handlers: SignalREventHandlers,
   ) => void | (() => void);
-}
-
-interface SignalREventHandlers {
-  onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
-  onGameStarted?: (message: GameStartedServerMessage) => void;
-  onPlayerMadeMove?: (message: PlayerMadeMoveServerMessage) => void;
-  onReceiveMessage?: (message: SendMessageServerMessage) => void;
-  onGameHubError?: (error: GameHubError) => void;
+  hubProxy: SignalHubInterfaces.IGameHub | null;
 }
 
 export const SignalRContext = createContext<SignalRContextType | undefined>(
@@ -72,6 +57,9 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(
+    null,
+  );
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -94,7 +82,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
         accessTokenFactory: async () => {
           let token = typedStorage.getItem("jwtToken");
-          // TODO: place consistent token refresh logic in a single place
           if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
             console.log("JWT token expired, refreshing token...");
             try {
@@ -117,29 +104,35 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   useEffect(() => {
     const connection = connectionRef.current;
 
-    const handleConnectionClose = async () => {
-      console.warn("SignalR connection lost. Attempting to reconnect...");
-      setIsConnected(false);
-      try {
-        console.log(jwtDecodedInfo); //TODO: remove latter check jwt expired format on different env's
-        if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
-          console.log("JWT token expired. Refreshing token...");
-          const token = await getToken({ skipCache: true });
-          if (token) {
-            typedStorage.setItem("jwtToken", token);
-          }
-        }
-      } catch (error) {
-        console.error("Error refreshing token on connection close:", error);
-      }
-
-      startConnection(connection!);
-    };
-
     if (connection) {
       startConnection(connection);
 
-      connection.onclose(handleConnectionClose);
+      connection.onclose(async () => {
+        console.warn("SignalR connection lost. Attempting to reconnect...");
+        setIsConnected(false);
+        try {
+          if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
+            console.log("JWT token expired. Refreshing token...");
+            const token = await getToken({ skipCache: true });
+            if (token) {
+              typedStorage.setItem("jwtToken", token);
+            }
+          }
+        } catch (error) {
+          console.error("Error refreshing token on connection close:", error);
+        }
+
+        startConnection(connection!);
+      });
+
+      // Setup Hub Proxy after connection is available
+      const proxy =
+        SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(
+          connection,
+        );
+      if (proxy) {
+        setHubProxy(proxy);
+      }
     }
 
     return () => {
@@ -157,7 +150,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
     };
   }, [jwtToken, jwtDecodedInfo, startConnection, getToken]);
 
-  //TODO: refactor to iterate over handlers that were passed to the context provider instead of predefined statements
   const registerEventHandlers = useCallback(
     (handlers: SignalREventHandlers) => {
       const { current: connection } = connectionRef;
@@ -169,36 +161,44 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         console.warn(
           "SignalR connection is not available for attaching event handlers.",
         );
-
-        //TODO: check return a no-op function to maintain consistent return type
         return () => {};
       }
 
       console.log("Attaching SignalR event handlers...");
 
-      const eventMapping: [string, ((...args: never[]) => void) | undefined][] =
-        [
-          ["PlayerJoinedGame", handlers.onPlayerJoined],
-          ["GameStarted", handlers.onGameStarted],
-          ["PlayerMadeMove", handlers.onPlayerMadeMove],
-          ["SendMessage", handlers.onReceiveMessage],
-          ["GameHubError", handlers.onGameHubError],
-        ];
+      const receiver: SignalHubInterfaces.IGameHubReceiver = {
+        gameGroupJoined: async (gameId: string) => {
+          handlers.onPlayerJoined?.({ userName: gameId });
+        },
+        gameStarted: async (
+          message: SignalServerMessages.GameStartedMessage,
+        ) => {
+          handlers.onGameStarted?.(message);
+        },
+        playerMadeMove: async (
+          message: SignalServerMessages.PlayerMadeMoveMessage,
+        ) => {
+          handlers.onPlayerMadeMove?.(message);
+        },
+        sendMessage: async (
+          message: SignalClientMessages.ChatMessageClientMessage,
+        ) => {
+          handlers.onReceiveMessage?.(message);
+        },
+        gameHubError: async (error: SignalServerMessages.ErrorMessage) => {
+          handlers.onGameHubError?.(error);
+        },
+      };
 
-      eventMapping.forEach(([eventName, handler]) => {
-        if (handler) {
-          connection.on(eventName, handler);
-        }
-      });
+      const disposable = SignalRClientService.getReceiverRegister(
+        "IGameHubReceiver",
+      )?.register(connection, receiver);
 
       return () => {
-        console.log("Cleaning up SignalR event handlers...");
-        eventMapping.forEach(([eventName, handler]) => {
-          if (handler) {
-            //@ts-expect-error
-            connection.off(eventName, handler);
-          }
-        });
+        if (disposable) {
+          console.log("Cleaning up SignalR event handlers...");
+          disposable.dispose();
+        }
       };
     },
     [],
@@ -210,6 +210,7 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         connection: connectionRef.current,
         isConnected,
         registerEventHandlers,
+        hubProxy,
       }}
     >
       {children}

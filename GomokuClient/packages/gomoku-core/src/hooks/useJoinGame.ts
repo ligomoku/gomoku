@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useBoard } from "@/hooks/useBoard";
+import { CellValue, useBoard } from "@/hooks/useBoard";
 import { typedStorage } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
 import * as signalR from "@microsoft/signalr";
@@ -36,7 +36,7 @@ export const useJoinGame = (gameID: string) => {
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
           console.log("Player made move:", playerId, tile, placedTileColor);
-          addPiece(tile.y, tile.x, placedTileColor);
+          addPiece(tile.y, tile.x, placedTileColor as CellValue);
         },
         onGameHubError: (error) => {
           console.warn("Error from game hub:", error.message);
