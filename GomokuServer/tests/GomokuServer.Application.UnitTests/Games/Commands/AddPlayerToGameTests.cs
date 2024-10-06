@@ -7,7 +7,7 @@ public class AddPlayerToGameTests
 {
 	private int _validBoardSize;
 	private IGameRepository _gameRepository;
-	private IOpponentsRepository _opponentsRepository;
+	private IProfilesRepository _profilesRepository;
 	private AddPlayerToGameCommandHandler _handler;
 
 	[SetUp]
@@ -15,11 +15,11 @@ public class AddPlayerToGameTests
 	{
 		_validBoardSize = 15;
 		_gameRepository = Substitute.For<IGameRepository>();
-		_opponentsRepository = Substitute.For<IOpponentsRepository>();
+		_profilesRepository = Substitute.For<IProfilesRepository>();
 
 		_handler = new AddPlayerToGameCommandHandler(
 			_gameRepository,
-			_opponentsRepository
+			_profilesRepository
 		);
 	}
 
@@ -33,11 +33,11 @@ public class AddPlayerToGameTests
 			PlayerId = "Player1"
 		};
 
-		var player = new Opponent(command.PlayerId, "Alice");
+		var player = new Profile(command.PlayerId, "Alice");
 		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_opponentsRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
 
 		_gameRepository.SaveAsync(game).Returns(Result.Success());
 
@@ -59,14 +59,14 @@ public class AddPlayerToGameTests
 			PlayerId = "Player2"
 		};
 
-		var playerOne = new Opponent("Player1", "Alice");
-		var playerTwo = new Opponent(command.PlayerId, "Alice");
+		var playerOne = new Profile("Player1", "Alice");
+		var playerTwo = new Profile(command.PlayerId, "Alice");
 
 		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 		game.AddOpponent(playerOne);
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_opponentsRepository.GetAsync(command.PlayerId).Returns(Result.Success(playerTwo));
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(playerTwo));
 
 		_gameRepository.SaveAsync(game).Returns(Result.Success());
 
@@ -110,7 +110,7 @@ public class AddPlayerToGameTests
 		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_opponentsRepository.GetAsync(command.PlayerId).Returns(Result<Opponent>.NotFound());
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result<Profile>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -129,11 +129,11 @@ public class AddPlayerToGameTests
 			PlayerId = "Player1"
 		};
 
-		var player = new Opponent(command.PlayerId, "Alice");
+		var player = new Profile(command.PlayerId, "Alice");
 		var game = new Game(_validBoardSize, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_opponentsRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
 
 		_gameRepository.SaveAsync(game).Returns(Result.Error());
 

@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Application.Dto;
 
-public record OpponentDto(string PlayerId, string UserName)
+public record ProfileDto(string PlayerId, string UserName)
 {
 	[Required]
 	public string PlayerId { get; } = PlayerId;

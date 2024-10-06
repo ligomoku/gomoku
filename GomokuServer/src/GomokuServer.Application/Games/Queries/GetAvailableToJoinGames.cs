@@ -39,7 +39,7 @@ public class GetAvailableToJoinGamesQueryHandler
 			var availableGames = games.Select(game =>
 			{
 				var opponent = game.Opponents[0];
-				var opponentDto = new OpponentDto(opponent.Id, opponent.UserName);
+				var opponentDto = new ProfileDto(opponent.Id, opponent.UserName);
 
 				return new GetAvailableGamesResponse(game.GameId, opponentDto);
 			}).ToList();

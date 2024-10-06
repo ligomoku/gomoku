@@ -20,7 +20,7 @@ public class TestDataProvider
 	{
 		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
-		game.AddOpponent(new Opponent("player1Id", "player1Username"));
+		game.AddOpponent(new Profile("player1Id", "player1Username"));
 
 		return game;
 	}
@@ -29,8 +29,8 @@ public class TestDataProvider
 	{
 		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
-		game.AddOpponent(new Opponent("PlayerOne", "Alice"));
-		game.AddOpponent(new Opponent("PlayerTwo", "Bob"));
+		game.AddOpponent(new Profile("PlayerOne", "Alice"));
+		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
 
 		return game;
 	}
@@ -39,8 +39,8 @@ public class TestDataProvider
 	{
 		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
 
-		game.AddOpponent(new Opponent("PlayerOne", "Alice"));
-		game.AddOpponent(new Opponent("PlayerTwo", "Bob"));
+		game.AddOpponent(new Profile("PlayerOne", "Alice"));
+		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
 
 		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
 		game.PlaceTile(new Tile(0, 1), game.NextMoveShouldMakePlayerId!);

@@ -32,11 +32,11 @@ public class PlaceTileTests
 			PlayerId = "Player1",
 			Tile = new TileDto(0, 0)
 		};
-		var ppponent = new Opponent(command.PlayerId, "player1UserName");
+		var ppponent = new Profile(command.PlayerId, "player1UserName");
 
 		var game = new Game(15, _randomProvider, _dateTimeProvider);
 		game.AddOpponent(ppponent);
-		game.AddOpponent(new Opponent("player2", "player2UserName"));
+		game.AddOpponent(new Profile("player2", "player2UserName"));
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
@@ -106,8 +106,8 @@ public class PlaceTileTests
 
 		var game = new Game(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
-		game.AddOpponent(new Opponent("player1Id", "player1UserName"));
-		game.AddOpponent(new Opponent("player2Id", "player2UserName"));
+		game.AddOpponent(new Profile("player1Id", "player1UserName"));
+		game.AddOpponent(new Profile("player2Id", "player2UserName"));
 
 		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());

@@ -9,16 +9,16 @@ namespace GomokuServer.Core.UnitTests;
 public class GameTests
 {
 	private Game _game;
-	private Opponent _playerOne;
-	private Opponent _playerTwo;
+	private Profile _playerOne;
+	private Profile _playerTwo;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 
 	[SetUp]
 	public void SetUp()
 	{
-		_playerOne = new Opponent("Player1Id", "Player1UserName");
-		_playerTwo = new Opponent("Player2Id", "Player2UserName");
+		_playerOne = new Profile("Player1Id", "Player1UserName");
+		_playerTwo = new Profile("Player2Id", "Player2UserName");
 
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
@@ -223,7 +223,7 @@ public class GameTests
 	public void AddPlayer_WhenBothPlacesAreTaken_ShouldReturnError()
 	{
 		// Arrange
-		var playerThree = new Opponent("Player3Id", "Player3UserName");
+		var playerThree = new Profile("Player3Id", "Player3UserName");
 
 		// Act
 		var result = _game.AddOpponent(playerThree);
@@ -239,7 +239,7 @@ public class GameTests
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
-		var player = new Opponent("somePlayerId", "SomePlayerUserName");
+		var player = new Profile("somePlayerId", "SomePlayerUserName");
 		_game.AddOpponent(player);
 
 		// Act
@@ -264,8 +264,8 @@ public class GameTests
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
-		_game.AddOpponent(new Opponent("somePlayer1Id", "somePlayer1UserName"));
-		_game.AddOpponent(new Opponent("somePlayer2", "somePlayer2UserName"));
+		_game.AddOpponent(new Profile("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddOpponent(new Profile("somePlayer2", "somePlayer2UserName"));
 
 		// Assert
 		_game.HasBothPlayersJoined.Should().BeTrue();
@@ -277,8 +277,8 @@ public class GameTests
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
-		_game.AddOpponent(new Opponent("somePlayer1Id", "somePlayer1UserName"));
-		_game.AddOpponent(new Opponent("somePlayer2", "somePlayer2UserName"));
+		_game.AddOpponent(new Profile("somePlayer1Id", "somePlayer1UserName"));
+		_game.AddOpponent(new Profile("somePlayer2", "somePlayer2UserName"));
 
 		// Act
 		_game.PlaceTile(new Tile(0, 0), "somePlayer1Id");

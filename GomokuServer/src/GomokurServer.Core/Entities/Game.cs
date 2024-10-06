@@ -31,7 +31,7 @@ public class Game
 
 	public IReadOnlyDictionary<int, Tile> MovesHistory => _movesHistory.AsReadOnly();
 
-	public List<Opponent> Opponents { get; init; }
+	public List<Profile> Opponents { get; init; }
 
 	public Players Players { get; init; }
 
@@ -45,7 +45,7 @@ public class Game
 
 	public List<Tile>? WinningSequence { get; private set; }
 
-	public PlayerAddingResult AddOpponent(Opponent newOpponent)
+	public PlayerAddingResult AddOpponent(Profile newOpponent)
 	{
 		if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
 		{

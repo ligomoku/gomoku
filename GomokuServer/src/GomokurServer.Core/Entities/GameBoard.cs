@@ -50,6 +50,8 @@ public class GameBoard
 		var colorString = newTileColor.ToString().ToCamelCase();
 		_board[tile.X, tile.Y] = colorString;
 
+		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+
 		return new()
 		{
 			IsValid = true,
