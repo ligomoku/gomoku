@@ -1,5 +1,8 @@
-﻿namespace GomokuServer.Application.Dto;
+﻿using Tapper;
 
+namespace GomokuServer.Application.Dto;
+
+[TranspilationSource]
 public record TileDto(int X, int Y)
 {
 	[Required]

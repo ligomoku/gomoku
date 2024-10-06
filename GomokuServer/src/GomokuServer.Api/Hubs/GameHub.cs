@@ -1,3 +1,4 @@
+using GomokuServer.Api.Hubs.Interfaces;
 using GomokuServer.Api.Hubs.Messages.Client;
 using GomokuServer.Api.Hubs.Messages.Server;
 
@@ -9,7 +10,7 @@ namespace GomokuServer.Api.Hubs;
 
 [SignalRHub(HubRoute.GameHub)]
 [Authorize]
-public class GameHub : Hub
+public class GameHub : Hub, IGameHub
 {
 	private readonly IMediator _mediator;
 	private readonly ILogger<GameHub> _logger;

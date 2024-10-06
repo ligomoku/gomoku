@@ -9,6 +9,15 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.Result" Version="10.0.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Tapper.Analyzer" Version="1.12.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="TypedSignalR.Client.TypeScript.Analyzer" Version="1.14.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="TypedSignalR.Client.TypeScript.Attributes" Version="1.14.0" />
   </ItemGroup>
 
   <ItemGroup>

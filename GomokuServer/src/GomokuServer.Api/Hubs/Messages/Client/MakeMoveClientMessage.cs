@@ -1,5 +1,8 @@
-﻿namespace GomokuServer.Api.Hubs.Messages.Client;
+﻿using Tapper;
 
+namespace GomokuServer.Api.Hubs.Messages.Client;
+
+[TranspilationSource]
 public record MakeMoveClientMessage
 {
 	[Required]
