@@ -1,3 +1,4 @@
+// eslint-config-custom/rules/naming-allowed-words.js
 const fs = require("fs");
 const path = require("path");
 const ts = require("typescript");
@@ -7,7 +8,7 @@ module.exports = {
     type: "suggestion",
     docs: {
       description:
-        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics. Only analyzes .tsx files.",
+        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props'. Only analyzes .tsx files.",
       category: "Best Practices",
       recommended: false,
     },
@@ -63,23 +64,35 @@ module.exports = {
 
     return {
       TSTypeAliasDeclaration(node) {
-        if (node.id && !allowedWords.has(node.id.name)) {
+        const typeName = node.id.name;
+
+        if (typeName.endsWith("Props")) {
+          return;
+        }
+
+        if (!allowedWords.has(typeName)) {
           context.report({
             node: node.id,
             messageId: "invalidNaming",
             data: {
-              usedName: node.id.name,
+              usedName: typeName,
             },
           });
         }
       },
       TSInterfaceDeclaration(node) {
-        if (node.id && !allowedWords.has(node.id.name)) {
+        const interfaceName = node.id.name;
+
+        if (interfaceName.endsWith("Props")) {
+          return;
+        }
+
+        if (!allowedWords.has(interfaceName)) {
           context.report({
             node: node.id,
             messageId: "invalidNaming",
             data: {
-              usedName: node.id.name,
+              usedName: interfaceName,
             },
           });
         }
