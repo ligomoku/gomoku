@@ -1,11 +1,11 @@
-import { TileDto } from "@/api/client";
+import { SwaggerTypes } from "@/api";
 
 type Board = string[][];
 
 const countTotal = (
   board: Board,
-  currentTile: TileDto,
-  direction: TileDto,
+  currentTile: SwaggerTypes.TileDto,
+  direction: SwaggerTypes.TileDto,
 ): number => {
   const now = board[currentTile.y][currentTile.x];
   let total = 0;
@@ -28,7 +28,7 @@ const countTotal = (
 
 export type Winner = string | "draw" | undefined;
 
-export const findWinner = (board: Board, tile: TileDto): Winner => {
+export const findWinner = (board: Board, tile: SwaggerTypes.TileDto): Winner => {
   if (
     countTotal(board, tile, { y: 1, x: 0 }) +
       countTotal(board, tile, { y: -1, x: 0 }) >=

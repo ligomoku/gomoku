@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { GetAvailableGamesResponse } from "@/api/client";
 import { FeaturedBoxes } from "./FeaturedBoxes";
 import type { FeaturedBoxesProps } from "./FeaturedBoxes";
+import { SwaggerTypes } from "@/api";
 
 export default {
   title: "Components/FeaturedBoxes",
@@ -11,7 +11,7 @@ export default {
   },
 } as Meta<typeof FeaturedBoxes>;
 
-const mockedGames: GetAvailableGamesResponse[] = [
+const mockedGames: SwaggerTypes.GetAvailableGamesResponse[] = [
   {
     gameId: "123",
     opponent: {

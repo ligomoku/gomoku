@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/shared/ui/card";
-import { GetAvailableGamesResponse } from "@/api/client";
+import { SwaggerTypes } from "@/api";
 
 export interface FeaturedBoxesProps {
-  games: GetAvailableGamesResponse[];
-  onGameClick: (game: GetAvailableGamesResponse) => void;
+  games: SwaggerTypes.GetAvailableGamesResponse[];
+  onGameClick: (game: SwaggerTypes.GetAvailableGamesResponse) => void;
 }
 
 export const FeaturedBoxes = ({

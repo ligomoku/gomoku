@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import JoinGame from "@/pages/JoinGame";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
-import { postApiGameByGameIdJoin } from "@/api/client";
+import { SwaggerServices } from "@/api";
 
 export const Route = createFileRoute("/game/join/$gameID")({
   component: JoinGame,
@@ -21,7 +21,7 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
   }
 
   try {
-    await postApiGameByGameIdJoin({
+    await SwaggerServices.postApiGameByGameIdJoin({
       path: { gameId: gameID },
       headers: getDefaultHeaders(authToken),
     });
@@ -32,17 +32,3 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
 
   return { gameID };
 }
-
-// const useJoinGame = (authToken: string) =>
-//   useMutation<void, Error, string>({
-//     mutationFn: async (gameId) => {
-//       const response = await postApiGameByGameIdJoin({
-//         path: { gameId },
-//         headers: getDefaultHeaders(authToken),
-//       });
-//
-//       if (!response.data) {
-//         throw new Error("Invalid game data received");
-//       }
-//     },
-//   });
