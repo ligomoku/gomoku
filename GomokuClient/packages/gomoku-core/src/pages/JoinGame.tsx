@@ -3,11 +3,19 @@ import { Chat } from "@/features/Chat";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import MobileSquare from "@/features/Square/Mobile/MobileSquare";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { useChat } from "@/hooks/useChat";
+import { useAuthToken } from "@/context";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
   const { board, handleMove } = useJoinGame(gameID!);
   const isMobile = useMobileDesign();
+  const { jwtDecodedInfo } = useAuthToken();
+
+  const { sendMessage, messages, isConnected } = useChat(
+    gameID,
+    jwtDecodedInfo?.username,
+  );
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -35,7 +43,12 @@ const JoinGame = () => {
               <div className="ml-4 flex flex-col justify-between">
                 <br />
                 <br />
-                <Chat gameID={gameID} />
+                <Chat
+                  messages={messages}
+                  isConnected={isConnected}
+                  sendMessage={sendMessage}
+                  username={jwtDecodedInfo?.username || ""}
+                />
               </div>
             </div>
           </>
