@@ -53,7 +53,7 @@ export const GetAvailableGamesResponseSchema = {
       type: "string",
     },
     opponent: {
-      $ref: "#/components/schemas/PlayerDto",
+      $ref: "#/components/schemas/ProfileDto",
     },
   },
   additionalProperties: false,
@@ -136,26 +136,6 @@ export const PaginationMetadataSchema = {
   additionalProperties: false,
 } as const;
 
-export const PlayerDtoSchema = {
-  required: ["playerId", "userName"],
-  type: "object",
-  properties: {
-    playerId: {
-      minLength: 1,
-      type: "string",
-    },
-    userName: {
-      minLength: 1,
-      type: "string",
-    },
-    color: {
-      type: "string",
-      nullable: true,
-    },
-  },
-  additionalProperties: false,
-} as const;
-
 export const ProblemDetailsSchema = {
   type: "object",
   properties: {
@@ -182,6 +162,22 @@ export const ProblemDetailsSchema = {
     },
   },
   additionalProperties: {},
+} as const;
+
+export const ProfileDtoSchema = {
+  required: ["playerId", "userName"],
+  type: "object",
+  properties: {
+    playerId: {
+      minLength: 1,
+      type: "string",
+    },
+    userName: {
+      minLength: 1,
+      type: "string",
+    },
+  },
+  additionalProperties: false,
 } as const;
 
 export const TileDtoSchema = {
