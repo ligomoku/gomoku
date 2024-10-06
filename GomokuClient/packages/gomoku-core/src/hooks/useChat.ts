@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useSignalRConnection } from "@/context";
 
 export const useChat = (gameID?: string, username?: string) => {
-  const { connection, isConnected, registerEventHandlers } =
+  const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    if (isConnected && connection) {
+    if (isConnected && hubProxy) {
       const unregister = registerEventHandlers({
         onReceiveMessage: ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
@@ -24,17 +24,16 @@ export const useChat = (gameID?: string, username?: string) => {
     }
 
     return undefined;
-  }, [isConnected, connection, registerEventHandlers]);
+  }, [isConnected, hubProxy, registerEventHandlers]);
 
   const sendMessage = async (message: string) => {
-    if (connection && isConnected && gameID && username) {
+    if (hubProxy && isConnected && gameID && username) {
       try {
-        const messageRequest = {
+        await hubProxy.sendMessage({
           gameId: gameID,
           user: username,
           message,
-        };
-        await connection.invoke("SendMessage", messageRequest);
+        });
       } catch (error) {
         console.error("Sending message failed: ", error);
       }
