@@ -60,7 +60,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: production-artifacts
+          name: gomoku-client-artifacts
           path: GomokuClient/packages/gomoku-core/dist/
 
   build_csharp:
@@ -70,10 +70,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
