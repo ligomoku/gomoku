@@ -1,4 +1,3 @@
-// eslint-config-custom/rules/naming-allowed-words.js
 const fs = require("fs");
 const path = require("path");
 const ts = require("typescript");
@@ -8,7 +7,7 @@ module.exports = {
     type: "suggestion",
     docs: {
       description:
-        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props'. Only analyzes .tsx files.",
+        "Ensure that TypeScript type aliases and interfaces use only allowed words from the server types, ignoring generics and ignoring interfaces ending with 'Props' and 'Items'. Only analyzes .tsx files.",
       category: "Best Practices",
       recommended: false,
     },
