@@ -9,7 +9,9 @@ export default defineConfig({
     path: "src/api/client",
   },
   plugins: ["@tanstack/react-query"],
+
   types: {
     enums: "javascript",
+    dates: "types+transform",
   },
 });

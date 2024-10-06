@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSignalRConnection } from "@/context";
 
-export const useChat = () => {
+export const useChat = (gameID?: string, username?: string) => {
   const { connection, isConnected, registerEventHandlers } =
     useSignalRConnection();
   const [messages, setMessages] = useState<string[]>([]);
@@ -26,12 +26,12 @@ export const useChat = () => {
     return undefined;
   }, [isConnected, connection, registerEventHandlers]);
 
-  const sendMessage = async (gameId: string, user: string, message: string) => {
-    if (connection && isConnected) {
+  const sendMessage = async (message: string) => {
+    if (connection && isConnected && gameID && username) {
       try {
         const messageRequest = {
-          gameId,
-          user,
+          gameId: gameID,
+          user: username,
           message,
         };
         await connection.invoke("SendMessage", messageRequest);
@@ -41,5 +41,5 @@ export const useChat = () => {
     }
   };
 
-  return { sendMessage, messages, isConnected, connection };
+  return { sendMessage, messages, isConnected };
 };
