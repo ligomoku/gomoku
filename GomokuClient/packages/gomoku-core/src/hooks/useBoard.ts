@@ -36,7 +36,10 @@ export const useBoard = (gameID: string) => {
       row.map((cell) => (cell === null ? "" : cell)),
     );
 
-    const result = findWinner(convertedBoard, lastRow.current, lastCol.current);
+    const result = findWinner(convertedBoard, {
+      x: lastCol.current,
+      y: lastRow.current,
+    });
     setWinner(result);
   }, [board]);
 
