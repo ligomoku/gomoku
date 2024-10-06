@@ -20,6 +20,8 @@ public interface IGameHubReceiver
 {
 	Task GameGroupJoined(string gameId);
 
+	Task PlayerJoinedGame(PlayerJoinedGameMessage playerJoinedGameMessage);
+
 	Task GameStarted(GameStartedMessage gameStartedMessage);
 
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);

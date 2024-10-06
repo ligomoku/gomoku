@@ -8,6 +8,7 @@ import type {
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
+  PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
   ErrorMessage,
@@ -37,6 +38,13 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   gameGroupJoined(gameId: string): Promise<void>;
+  /**
+   * @param playerJoinedGameMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerJoinedGameMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  playerJoinedGame(
+    playerJoinedGameMessage: PlayerJoinedGameMessage,
+  ): Promise<void>;
   /**
    * @param gameStartedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage
    * @returns Transpiled from System.Threading.Tasks.Task
