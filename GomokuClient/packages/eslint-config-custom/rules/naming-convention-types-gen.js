@@ -20,10 +20,6 @@ module.exports = {
   create(context) {
     const fileName = context.getFilename();
 
-    if (!fileName.endsWith(".tsx")) {
-      return {};
-    }
-
     const typesGenPath = path.resolve(
       __dirname,
       "../../gomoku-core/src/api/client/types.gen.ts",
