@@ -28,7 +28,10 @@ const countTotal = (
 
 export type Winner = string | "draw" | undefined;
 
-export const findWinner = (board: Board, tile: SwaggerTypes.TileDto): Winner => {
+export const findWinner = (
+  board: Board,
+  tile: SwaggerTypes.TileDto,
+): Winner => {
   if (
     countTotal(board, tile, { y: 1, x: 0 }) +
       countTotal(board, tile, { y: -1, x: 0 }) >=
