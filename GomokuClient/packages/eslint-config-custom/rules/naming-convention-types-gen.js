@@ -70,6 +70,10 @@ module.exports = {
           return;
         }
 
+        if (typeName.endsWith("Item")) {
+          return;
+        }
+
         if (!allowedWords.has(typeName)) {
           context.report({
             node: node.id,
