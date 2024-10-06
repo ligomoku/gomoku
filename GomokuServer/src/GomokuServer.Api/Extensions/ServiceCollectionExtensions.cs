@@ -145,7 +145,7 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IRandomProvider, RandomProvider>();
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
-		services.AddSingleton<IPlayersRepository, ClerkPlayersRepository>();
+		services.AddSingleton<IProfilesRepository, ClerkProfilesRepository>();
 		services.RegisterCommandsAndQueries();
 
 		services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>

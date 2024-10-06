@@ -20,6 +20,7 @@ global using GomokuServer.Core.Services;
 global using GomokuServer.Infrastructure.Api;
 global using GomokuServer.Infrastructure.Data;
 global using GomokuServer.Infrastructure.Extensions;
+global using GomokuServer.Utils.Extensions;
 
 global using MediatR;
 

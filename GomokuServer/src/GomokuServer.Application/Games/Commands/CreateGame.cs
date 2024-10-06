@@ -18,11 +18,11 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 	private const int BOARD_MIN_SIZE = 13;
 	private const int BOARD_MAX_SIZE = 19;
 	private readonly IGameRepository _gameRepository;
-	private readonly IPlayersRepository _playersRepository;
+	private readonly IProfilesRepository _playersRepository;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
-	public CreateGameCommandHandler(IGameRepository gameRepository, IPlayersRepository playersRepository, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
+	public CreateGameCommandHandler(IGameRepository gameRepository, IProfilesRepository playersRepository, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		_gameRepository = gameRepository;
 		_playersRepository = playersRepository;
@@ -44,7 +44,7 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 		}
 
 		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-		var addPlayerResult = game.AddPlayer(getPlayerResult.Value);
+		var addPlayerResult = game.AddOpponent(getPlayerResult.Value);
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)

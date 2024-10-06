@@ -6,7 +6,7 @@ namespace GomokuServer.Application.UnitTests.Games.Commands;
 public class CreateGameTests
 {
 	private IGameRepository _gameRepository;
-	private IPlayersRepository _playersRepository;
+	private IProfilesRepository _profilesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 	private CreateGameCommandHandler _handler;
@@ -15,13 +15,13 @@ public class CreateGameTests
 	public void Setup()
 	{
 		_gameRepository = Substitute.For<IGameRepository>();
-		_playersRepository = Substitute.For<IPlayersRepository>();
+		_profilesRepository = Substitute.For<IProfilesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
 		_handler = new CreateGameCommandHandler(
 			_gameRepository,
-			_playersRepository,
+			_profilesRepository,
 			_randomProvider,
 			_dateTimeProvider);
 	}
@@ -36,7 +36,7 @@ public class CreateGameTests
 			PlayerId = "Player1"
 		};
 
-		_playersRepository.GetAsync(command.PlayerId).Returns(Result.Success(new Player(command.PlayerId, "Alice")));
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(new Profile(command.PlayerId, "Alice")));
 		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
@@ -97,7 +97,7 @@ public class CreateGameTests
 			PlayerId = "NonExistentPlayerId"
 		};
 
-		_playersRepository.GetAsync(command.PlayerId).Returns(Result<Player>.NotFound());
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result<Profile>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
