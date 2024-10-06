@@ -15,6 +15,12 @@ export type GameStartedMessage = {
   isMyMoveFirst: boolean;
 };
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerJoinedGameMessage */
+export type PlayerJoinedGameMessage = {
+  /** Transpiled from string */
+  userName: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerMadeMoveMessage */
 export type PlayerMadeMoveMessage = {
   /** Transpiled from string */

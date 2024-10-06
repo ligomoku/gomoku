@@ -12,6 +12,7 @@ import type {
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
+  PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
   ErrorMessage,
@@ -116,6 +117,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
   ): Disposable => {
     const __gameGroupJoined = (...args: [string]) =>
       receiver.gameGroupJoined(...args);
+    const __playerJoinedGame = (...args: [PlayerJoinedGameMessage]) =>
+      receiver.playerJoinedGame(...args);
     const __gameStarted = (...args: [GameStartedMessage]) =>
       receiver.gameStarted(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
@@ -126,6 +129,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameHubError(...args);
 
     connection.on("GameGroupJoined", __gameGroupJoined);
+    connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
     connection.on("PlayerMadeMove", __playerMadeMove);
     connection.on("SendMessage", __sendMessage);
@@ -133,6 +137,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
 
     const methodList: ReceiverMethod[] = [
       { methodName: "GameGroupJoined", method: __gameGroupJoined },
+      { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
       { methodName: "SendMessage", method: __sendMessage },

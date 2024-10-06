@@ -18,13 +18,12 @@ import {
   SignalRClientService,
   SignalServerMessages,
 } from "@/api";
-
-interface PlayerJoinedGameServerMessage {
-  userName: string;
-}
+import { PlayerJoinedGameMessage } from "@/api/hubs/GomokuServer.Api.Hubs.Messages.Server";
 
 interface SignalREventHandlers {
-  onPlayerJoined?: (message: PlayerJoinedGameServerMessage) => void;
+  onPlayerJoined?: (
+    message: SignalServerMessages.PlayerJoinedGameMessage,
+  ) => void;
   onGameStarted?: (message: SignalServerMessages.GameStartedMessage) => void;
   onPlayerMadeMove?: (
     message: SignalServerMessages.PlayerMadeMoveMessage,
@@ -166,6 +165,9 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       console.log("Attaching SignalR event handlers...");
 
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
+        playerJoinedGame: async (message: PlayerJoinedGameMessage) => {
+          handlers.onPlayerJoined?.(message);
+        },
         gameGroupJoined: async (gameId: string) => {
           handlers.onPlayerJoined?.({ userName: gameId });
         },
