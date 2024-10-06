@@ -3,6 +3,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { t } from "@lingui/macro";
 
 export interface ChatProps {
   messages: string[];
@@ -63,7 +64,7 @@ export const Chat = ({
       }}
     >
       <CardHeader>
-        <CardTitle>Chat</CardTitle>
+        <CardTitle>{t`Chat`}</CardTitle>
       </CardHeader>
       <CardContent>
         {isConnected ? (
@@ -87,11 +88,11 @@ export const Chat = ({
                 disabled={!messageInput.trim() || isSending}
                 className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
               >
-                {isSending ? "Sending..." : "Send"}
+                {isSending ? t`Sending...` : t`Send`}
               </Button>
             </div>
             <div className="text-sm text-[#bababa]">
-              {messageInput.length}/{MAX_MESSAGE_LENGTH} characters
+              {messageInput.length}/{MAX_MESSAGE_LENGTH} {t`characters`}
             </div>
             <ScrollArea
               ref={scrollAreaRef}
@@ -114,9 +115,9 @@ export const Chat = ({
           </div>
         ) : (
           <div>
-            Connecting...
+            {t`Connecting...`}
             <div className="text-gray-500">
-              No messages yet. Start the conversation!
+              {t`No messages yet. Start the conversation!`}
             </div>
           </div>
         )}

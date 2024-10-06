@@ -11,6 +11,7 @@ import {
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { useAuthToken } from "@/context";
 import { typedStorage } from "@/shared/lib/utils";
+import { t } from "@lingui/macro";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +26,7 @@ export const Header = () => {
         <div className="flex items-center">
           <Link to="/">
             <span className="mr-4 text-2xl font-bold text-[#bababa] sm:text-3xl">
-              ◯ gomoku.org
+              ◯ {t`gomoku.org`}
             </span>
           </Link>
           <button
@@ -44,16 +45,16 @@ export const Header = () => {
             className="text-lg hover:text-[#f0f0f0] sm:text-xl"
             onClick={handleCreateGame}
           >
-            PLAY
+            {t`PLAY`}
           </span>
           <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
-            LEARN
+            {t`LEARN`}
           </Link>
           <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
-            WATCH
+            {t`WATCH`}
           </Link>
           <Link href="#" className="text-lg hover:text-[#f0f0f0] sm:text-xl">
-            COMMUNITY
+            {t`COMMUNITY`}
           </Link>
           <header>
             <SignedOut>
@@ -63,7 +64,7 @@ export const Header = () => {
                   href="/sign-in"
                   className="text-lg text-[#dc9a3c] hover:underline sm:text-xl"
                 >
-                  SIGN IN
+                  {t`SIGN IN`}
                 </Link>
               </SignInButton>
             </SignedOut>

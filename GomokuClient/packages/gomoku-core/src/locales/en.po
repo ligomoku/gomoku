@@ -6,3 +6,165 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/features/OnlinePlayersInfo/OnlinePlayersInfo.tsx:6
+msgid "1,892 games in play"
+msgstr ""
+
+#: src/features/OnlinePlayersInfo/OnlinePlayersInfo.tsx:5
+msgid "5,247 players online"
+msgstr ""
+
+#: src/features/TimeControls/TimeControls.tsx:5
+msgid "Blitz"
+msgstr ""
+
+#: src/pages/Profile.tsx:31
+msgid "BLITZ"
+msgstr ""
+
+#: src/pages/Profile.tsx:70
+msgid "Blog Posts"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:95
+msgid "characters"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:67
+msgid "Chat"
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:57
+msgid "COMMUNITY"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:118
+msgid "Connecting..."
+msgstr ""
+
+#: src/features/TimeControls/TimeControls.tsx:9
+msgid "Correspondence"
+msgstr ""
+
+#: src/features/GameOptionsButton/GameOptionsButton.tsx:20
+msgid "CREATE A GAME"
+msgstr ""
+
+#: src/pages/Profile.tsx:66
+msgid "Forum Posts"
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:29
+msgid "gomoku.org"
+msgstr ""
+
+#: src/pages/HomeGame.tsx:45
+msgid "Gomoku.org is a free, open-source Five in a Row game platform."
+msgstr ""
+
+#: src/pages/Profile.tsx:53
+msgid "GomokuMaster"
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:51
+msgid "LEARN"
+msgstr ""
+
+#: src/pages/Profile.tsx:40
+msgid "LIGHTNING"
+msgstr ""
+
+#: src/features/TimeControls/TimeControls.tsx:8
+msgid "Long"
+msgstr ""
+
+#: src/features/FeaturedBoxes/FeaturedBoxes.tsx:36
+msgid "No games available"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:120
+msgid "No messages yet. Start the conversation!"
+msgstr ""
+
+#: src/features/SectionList/SectionList.tsx:41
+msgid "No online games were created"
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:48
+msgid "PLAY"
+msgstr ""
+
+#: src/features/Timer/Timer.tsx:52
+msgid "Play again"
+msgstr ""
+
+#: src/features/GameOptionsButton/GameOptionsButton.tsx:26
+msgid "PLAY WITH A FRIEND"
+msgstr ""
+
+#: src/features/GameOptionsButton/GameOptionsButton.tsx:32
+msgid "PLAY WITH AI"
+msgstr ""
+
+#: src/features/TimeControls/TimeControls.tsx:6
+msgid "Quick"
+msgstr ""
+
+#: src/pages/HomeGame.tsx:50
+msgid "Quick pairing"
+msgstr ""
+
+#: src/features/Timer/Timer.tsx:50
+msgid "Reset"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:91
+msgid "Send"
+msgstr ""
+
+#: src/features/Chat/Chat.tsx:91
+msgid "Sending..."
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:67
+msgid "SIGN IN"
+msgstr ""
+
+#: src/features/TimeControls/TimeControls.tsx:7
+msgid "Standard"
+msgstr ""
+
+#: src/pages/Profile.tsx:22
+msgid "STANDARD"
+msgstr ""
+
+#: src/features/Timer/Timer.tsx:45
+msgid "Start"
+msgstr ""
+
+#: src/features/Timer/Timer.tsx:48
+msgid "Stop"
+msgstr ""
+
+#: src/pages/Profile.tsx:62
+msgid "Study"
+msgstr ""
+
+#: src/features/Timer/Timer.tsx:41
+msgid "Timer"
+msgstr ""
+
+#: src/pages/Profile.tsx:58
+msgid "Tournament Points"
+msgstr ""
+
+#: src/shared/ui/Header/Header.tsx:54
+msgid "WATCH"
+msgstr ""
