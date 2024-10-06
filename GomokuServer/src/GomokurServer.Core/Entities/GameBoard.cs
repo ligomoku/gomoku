@@ -1,5 +1,6 @@
 ﻿using GomokuServer.Core.Results;
 using GomokuServer.Core.Validation;
+using GomokuServer.Utils.Extensions;
 
 namespace GomokuServer.Core.Entities;
 
@@ -12,9 +13,12 @@ public class GameBoard
 	{
 		_boardSize = boardSize;
 		_board = new string[_boardSize, _boardSize];
+		NextTileColor = TileColor.Black;
 	}
 
-	public TilePlacementResult PlaceTile(Tile tile, Player player)
+	public TileColor NextTileColor { get; private set; }
+
+	public BoardTilePlacementResult PlaceNewTile(Tile tile)
 	{
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
@@ -34,58 +38,48 @@ public class GameBoard
 			};
 		}
 
-		_board[tile.X, tile.Y] = player.Id;
+		var newTileColor = NextTileColor;
+		var colorString = newTileColor.ToString().ToCamelCase();
+		_board[tile.X, tile.Y] = colorString;
 
-		var winnerCalculationResult = CalculateWinner(tile, player);
+		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
 
-		return winnerCalculationResult == null
-		? new()
+		return new()
 		{
 			IsValid = true,
-			PlacedTileColor = player.Color,
-		}
-		: new()
-		{
-			IsValid = true,
-			PlacedTileColor = player.Color,
-			Winner = winnerCalculationResult.Winner,
-			WinningSequence = winnerCalculationResult.WinningSequence
+			PlacedTileColor = newTileColor,
+			WinningSequence = CalculateWinningSequence(tile, colorString)
 		};
 	}
 
-	private WinnerCalculationResult? CalculateWinner(Tile lastMove, Player player)
+	private List<Tile>? CalculateWinningSequence(Tile lastMove, string color)
 	{
-		var playerId = player.Id;
-		List<Tile>? winningTiles;
+		List<Tile>? winningSequence;
 
-		if ((winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 0, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 0, 1, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 1, playerId))?.Count >= 5 ||
-			(winningTiles = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, -1, playerId))?.Count >= 5)
+		if ((winningSequence = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 0, color))?.Count >= 5 ||
+			(winningSequence = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 0, 1, color))?.Count >= 5 ||
+			(winningSequence = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, 1, color))?.Count >= 5 ||
+			(winningSequence = GetWinningSequenceInDirection(lastMove.X, lastMove.Y, 1, -1, color))?.Count >= 5)
 		{
-			return new WinnerCalculationResult
-			{
-				Winner = player,
-				WinningSequence = winningTiles
-			};
+			return winningSequence;
 		}
 
 		return null;
 	}
 
-	private List<Tile>? GetWinningSequenceInDirection(int startX, int startY, int xDirection, int yDirection, string playerId)
+	private List<Tile>? GetWinningSequenceInDirection(int startX, int startY, int xDirection, int yDirection, string color)
 	{
 		List<Tile> winningSequence =
 		[
 			new Tile(startX, startY),
-			.. CollectConsecutiveTiles(startX, startY, xDirection, yDirection, playerId),
-			.. CollectConsecutiveTiles(startX, startY, -xDirection, -yDirection, playerId),
+			.. CollectConsecutiveTiles(startX, startY, xDirection, yDirection, color),
+			.. CollectConsecutiveTiles(startX, startY, -xDirection, -yDirection, color),
 		];
 
 		return winningSequence.Count >= 5 ? winningSequence : null;
 	}
 
-	private List<Tile> CollectConsecutiveTiles(int startX, int startY, int xDirection, int yDirection, string playerId)
+	private List<Tile> CollectConsecutiveTiles(int startX, int startY, int xDirection, int yDirection, string color)
 	{
 		List<Tile> tiles = [];
 		int currentX = startX + xDirection;
@@ -93,7 +87,7 @@ public class GameBoard
 
 		while (currentX >= 0 && currentX < _boardSize &&
 			   currentY >= 0 && currentY < _boardSize &&
-			   _board[currentX, currentY] == playerId)
+			   _board[currentX, currentY] == color)
 		{
 			tiles.Add(new Tile(currentX, currentY));
 			currentX += xDirection;

@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GomokuServer.Utils\GomokuServer.Utils.csproj" />
-  </ItemGroup>
-
 </Project>

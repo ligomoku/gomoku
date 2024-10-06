@@ -31,7 +31,7 @@ public class Game
 
 	public IReadOnlyDictionary<int, Tile> MovesHistory => _movesHistory.AsReadOnly();
 
-	public List<Player> Opponents { get; init; }
+	public List<Profile> Opponents { get; init; }
 
 	public Players Players { get; init; }
 
@@ -45,9 +45,9 @@ public class Game
 
 	public List<Tile>? WinningSequence { get; private set; }
 
-	public PlayerAddingResult AddPlayer(Player newPlayer)
+	public PlayerAddingResult AddOpponent(Profile newOpponent)
 	{
-		if (Opponents.Any(player => player.Id == newPlayer.Id))
+		if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
 		{
 			return new()
 			{
@@ -66,22 +66,20 @@ public class Game
 
 		if (Opponents.Count == 0)
 		{
-			Opponents.Add(newPlayer);
+			Opponents.Add(newOpponent);
 			return new()
 			{
 				IsValid = true
 			};
 		}
 
-		Opponents.Add(newPlayer);
+		Opponents.Add(newOpponent);
 
-		var (firstPlayer, secondPlayer) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
-		firstPlayer.Color = TileColor.Black;
-		secondPlayer.Color = TileColor.White;
+		var (firstOpponent, secondOpponent) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
+		var firstPlayer = new Player(firstOpponent.Id, firstOpponent.UserName, TileColor.Black);
+		var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
 
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
-
-		// In gomoku first move makes black newPlayer :D
 		Players.Black = firstPlayer;
 		Players.White = secondPlayer;
 
@@ -91,7 +89,7 @@ public class Game
 		};
 	}
 
-	public TilePlacementResult PlaceTile(Tile tile, string playerId)
+	public GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
 		if (Winner != null)
 		{
@@ -130,29 +128,30 @@ public class Game
 			};
 		}
 
-		var player = playerId == Players.Black.Id ? Players.Black : Players.White;
-		var tilePlacementResult = _gameBoard.PlaceTile(tile, player!);
+		var currentPlayer = playerId == Players.Black.Id ? Players.Black : Players.White;
+		var boardTilePlacementResult = _gameBoard.PlaceNewTile(tile);
 
-		if (tilePlacementResult.IsValid)
+		if (boardTilePlacementResult.IsValid)
 		{
-			var move = new GameMove()
-			{
-				MoveNumber = _movesHistory.Count / 2 + 1,
-				PlayerId = playerId,
-				Tile = tile,
-			};
 			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
 		}
 
-		if (tilePlacementResult.Winner != null)
+		if (boardTilePlacementResult.WinningSequence != null)
 		{
-			Winner = tilePlacementResult.Winner;
-			WinningSequence = tilePlacementResult.WinningSequence;
+			Winner = currentPlayer;
+			WinningSequence = boardTilePlacementResult.WinningSequence;
 			NextMoveShouldMakePlayerId = null;
 		}
 
-		return tilePlacementResult;
+		return new()
+		{
+			IsValid = boardTilePlacementResult.IsValid,
+			PlacedTileColor = boardTilePlacementResult.PlacedTileColor,
+			ValidationError = boardTilePlacementResult.ValidationError,
+			WinningSequence = boardTilePlacementResult.WinningSequence,
+			Winner = Winner,
+		};
 	}
 }
