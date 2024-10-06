@@ -125,7 +125,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
         startConnection(connection!);
       });
 
-      // Setup Hub Proxy after connection is available
       const proxy =
         SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(
           connection,
