@@ -2,17 +2,15 @@ import { useEffect } from "react";
 import { CellValue, useBoard } from "@/hooks/useBoard";
 import { typedStorage } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
-import * as signalR from "@microsoft/signalr";
 
 export const useJoinGame = (gameID: string) => {
   const { board, winner, addPiece } = useBoard(gameID);
-  const { connection, isConnected, registerEventHandlers } =
+  const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
   useEffect(() => {
     const previousGameID = typedStorage.getItem("currentGameID");
     if (previousGameID && previousGameID !== gameID) {
-      // TODO: Improve this logic by fetching if the game is available and if not, remove data
       typedStorage.removeItem(`gameBoard_${previousGameID}`);
       typedStorage.removeItem(`nextTurn_${previousGameID}`);
     }
@@ -20,8 +18,10 @@ export const useJoinGame = (gameID: string) => {
   }, [gameID]);
 
   useEffect(() => {
-    if (isConnected && gameID) {
-      connection?.invoke("JoinGameGroup", gameID);
+    if (isConnected && gameID && hubProxy) {
+      hubProxy.joinGameGroup(gameID).catch((error) => {
+        console.error("Error joining game group:", error);
+      });
 
       return registerEventHandlers({
         onPlayerJoined: ({ userName }) => {
@@ -31,7 +31,7 @@ export const useJoinGame = (gameID: string) => {
           if (isMyMoveFirst) {
             alert("It's your turn. Place your tile");
           } else {
-            alert("Wait for your opponent move");
+            alert("Wait for your opponent's move");
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
@@ -43,19 +43,16 @@ export const useJoinGame = (gameID: string) => {
         },
       });
     }
-  }, [connection, isConnected, gameID, registerEventHandlers, addPiece]);
+  }, [hubProxy, isConnected, gameID, registerEventHandlers, addPiece]);
 
   useEffect(() => {
-    if (winner) alert(`The winner is: ${winner}`);
+    if (winner) {
+      alert(`The winner is: ${winner}`);
+    }
   }, [winner]);
 
   const handleMove = async (row: number, col: number, value: string | null) => {
-    if (!connection || winner || value) return;
-
-    if (connection.state !== signalR.HubConnectionState.Connected) {
-      console.warn("Cannot make a move, SignalR connection is not connected.");
-      return;
-    }
+    if (!hubProxy || winner || value) return;
 
     const makeMoveMessage = {
       gameId: gameID,
@@ -64,7 +61,7 @@ export const useJoinGame = (gameID: string) => {
     };
 
     try {
-      await connection.invoke("MakeMove", makeMoveMessage);
+      await hubProxy.makeMove(makeMoveMessage);
     } catch (error) {
       console.error("Error making move:", error);
     }
