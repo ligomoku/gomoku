@@ -11,6 +11,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint --filter=@gomoku/core --filter=@gomoku/utils",
+    "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
     "typecheck": "turbo run typecheck --filter=@gomoku/utils --filter=@gomoku/core",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
