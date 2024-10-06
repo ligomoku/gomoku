@@ -390,7 +390,7 @@ dotnet_style_allow_multiple_blank_lines_experimental = true:silent
 dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
 dotnet_diagnostic.CA1823.severity = error
 
-# Custom added rules
+# Common diagnostic rules
 #
 # IDE0051: Remove unused private member
 dotnet_diagnostic.IDE0051.severity = error
@@ -426,3 +426,11 @@ dotnet_diagnostic.CS8601.severity = error
 #
 # CS9113: Parameter 'x' is unread
 dotnet_diagnostic.CS9113.severity = error
+#
+# Tapper typescript generator diagnostic rules
+#
+# TAPP001 Missing TranspilationSourceAttribute
+dotnet_diagnostic.TAPP001.severity = error
+#
+# TSRTS001 Apply the TranspilationSourceAttribute
+dotnet_diagnostic.TSRTS001.severity = error
