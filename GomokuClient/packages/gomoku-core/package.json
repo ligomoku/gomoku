@@ -18,7 +18,8 @@
     "lint:fix": "eslint . --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "messages:extract": "lingui extract"
+    "messages:extract": "lingui extract",
+    "messages:compile": "lingui compile"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.11.0",

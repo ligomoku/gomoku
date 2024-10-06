@@ -1,4 +1,5 @@
 import { Button } from "@/shared/ui/button";
+import { t } from "@lingui/macro";
 
 interface GameOptionsButtonsProps {
   onCreateGameClick?: () => void;
@@ -16,19 +17,19 @@ export const GameOptionsButtons = ({
       onClick={onCreateGameClick}
       className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
     >
-      CREATE A GAME
+      {t`CREATE A GAME`}
     </Button>
     <Button
       onClick={onPlayWithFriendClick}
       className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
     >
-      PLAY WITH A FRIEND
+      {t`PLAY WITH A FRIEND`}
     </Button>
     <Button
       onClick={onPlayWithAIClick}
       className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
     >
-      PLAY WITH AI
+      {t`PLAY WITH AI`}
     </Button>
   </div>
 );

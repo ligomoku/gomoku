@@ -1,26 +1,12 @@
 import { Card, CardContent } from "@/shared/ui/card";
-
-// const timeControls: TimeControlOption[] = [
-//   { time: "1+0", type: "Bullet" },
-//   { time: "2+1", type: "Bullet" },
-//   { time: "3+0", type: "Blitz" },
-//   { time: "3+2", type: "Blitz" },
-//   { time: "5+0", type: "Blitz" },
-//   { time: "5+3", type: "Blitz" },
-//   { time: "10+0", type: "Rapid" },
-//   { time: "10+5", type: "Rapid" },
-//   { time: "15+10", type: "Rapid" },
-//   { time: "30+0", type: "Classical" },
-//   { time: "30+20", type: "Classical" },
-//   { time: "Custom", type: "" },
-// ];
+import { t } from "@lingui/macro";
 
 const gameTypes = [
-  { time: "5+0", type: "Blitz" },
-  { time: "10+0", type: "Quick" },
-  { time: "15+5", type: "Standard" },
-  { time: "30+0", type: "Long" },
-  { time: "1 day", type: "Correspondence" },
+  { time: "5+0", type: t`Blitz` },
+  { time: "10+0", type: t`Quick` },
+  { time: "15+5", type: t`Standard` },
+  { time: "30+0", type: t`Long` },
+  { time: "1 day", type: t`Correspondence` },
   { time: "Custom", type: "" },
 ];
 

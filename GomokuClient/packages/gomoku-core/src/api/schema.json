@@ -403,7 +403,7 @@
             "type": "string"
           },
           "opponent": {
-            "$ref": "#/components/schemas/PlayerDto"
+            "$ref": "#/components/schemas/ProfileDto"
           }
         },
         "additionalProperties": false
@@ -481,25 +481,6 @@
         },
         "additionalProperties": false
       },
-      "PlayerDto": {
-        "required": ["playerId", "userName"],
-        "type": "object",
-        "properties": {
-          "playerId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "userName": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "color": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -526,6 +507,21 @@
           }
         },
         "additionalProperties": {}
+      },
+      "ProfileDto": {
+        "required": ["playerId", "userName"],
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "userName": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
       },
       "TileDto": {
         "required": ["x", "y"],
