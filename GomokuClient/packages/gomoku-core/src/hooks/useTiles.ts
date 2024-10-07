@@ -9,6 +9,7 @@ export type TileColor = "black" | "white" | null;
 export const useTiles = (gameID: string) => {
   const BOARD_KEY = `gameBoard_${gameID}` as `gameBoard_${string}`;
   const NEXT_TURN_KEY = `nextTurn_${gameID}` as `nextTurn_${string}`;
+  const LAST_TILE_KEY = `lastTile_${gameID}` as `lastTile_${string}`;
 
   const [tiles, setTiles] = useState<TileColor[][]>(() => {
     const savedBoard = typedStorage.getItem(BOARD_KEY);
@@ -18,7 +19,9 @@ export const useTiles = (gameID: string) => {
           .fill(null)
           .map(() => Array(19).fill(null));
   });
-  const [lastTile, setLastTile] = useState<TileDto>({ x: 0, y: 0 });
+  const [lastTile, setLastTile] = useState<TileDto>(
+    JSON.parse(typedStorage.getItem(LAST_TILE_KEY)!) ?? { x: 0, y: 0 },
+  );
 
   const isBlackNext = useRef<boolean>(
     typedStorage.getItem(NEXT_TURN_KEY) !== null
@@ -66,7 +69,10 @@ export const useTiles = (gameID: string) => {
         });
       }),
     );
-    setLastTile({ x, y });
+
+    const tile = { x, y };
+    setLastTile(tile);
+    typedStorage.setItem(LAST_TILE_KEY, JSON.stringify(tile));
   }, []);
 
   return {
