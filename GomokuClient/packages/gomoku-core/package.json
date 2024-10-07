@@ -19,7 +19,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "messages:extract": "lingui extract",
-    "messages:compile": "lingui compile"
+    "messages:compile": "lingui compile --typescript"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.11.0",

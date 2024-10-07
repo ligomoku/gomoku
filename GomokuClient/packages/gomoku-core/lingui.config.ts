@@ -1,13 +1,13 @@
-import type { LinguiConfig } from "@lingui/conf";
-
-const config: LinguiConfig = {
+/** @type {import('@lingui/conf').LinguiConfig} */
+const config = {
   locales: ["en"],
   catalogs: [
     {
-      path: "<rootDir>/src/locales/{locale}",
+      path: "<rootDir>/src/locales/{locale}/messages",
       include: ["src"],
     },
   ],
+  compileNamespace: "en",
 };
 
 export default config;
