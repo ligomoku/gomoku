@@ -1,12 +1,24 @@
-import styles from "./Board.module.scss";
 import { CellValue } from "@/hooks/useBoard";
 import { useMemo } from "react";
+import { cva } from "class-variance-authority";
 
 export interface BoardProps {
   size: number;
   onTileClick: (x: number, y: number) => void;
   tiles: CellValue[][];
 }
+
+const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
+  variants: {
+    color: {
+      black: "bg-black",
+      white: "bg-white",
+    },
+  },
+  defaultVariants: {
+    color: "white",
+  },
+});
 
 export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
   const tilesElements = useMemo(
@@ -16,18 +28,18 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
           return col !== null ? (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={styles.tileContainer}
+              className="flex items-center justify-center border border-black"
             >
               <div
-                className={`${styles.tile} ${
-                  col === "black" ? styles.tileBlack : styles.tileWhite
-                }`}
+                className={tileStyles({
+                  color: col === "black" ? "black" : "white",
+                })}
               />
             </div>
           ) : (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={styles.tileContainer}
+              className="flex items-center justify-center border border-black"
               onClick={() => onTileClick(rowIndex, colIndex)}
             />
           );
@@ -37,17 +49,15 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
   );
 
   return (
-    <div className={styles.boardContainer}>
-      <div className={styles.boardBackground}>
-        <div
-          className={styles.board}
-          style={{
-            gridTemplateColumns: `repeat(${size}, ${100 / size}vmin)`,
-            gridTemplateRows: `repeat(${size}, ${100 / size}vmin)`,
-          }}
-        >
-          {tilesElements}
-        </div>
+    <div className="rounded-lg bg-[#ba8c63] p-2.5 shadow-md">
+      <div
+        className="grid rounded-lg"
+        style={{
+          gridTemplateColumns: `repeat(${size}, ${100 / size}vmin)`,
+          gridTemplateRows: `repeat(${size}, ${100 / size}vmin)`,
+        }}
+      >
+        {tilesElements}
       </div>
     </div>
   );
