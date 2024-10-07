@@ -1,18 +1,13 @@
-import { ReactNode, useMemo } from "react";
+import { ElementType, ReactNode, useMemo } from "react";
 import { setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import * as enLocaleMessages from "@/locales/en/messages";
 
-export const generateRandomId = () =>
-  (Math.random() + 1).toString(36).substring(2);
-
-export const GlobalStorybookDecorator = (props: { children: ReactNode }) => {
-  return (
-    <>
-      <FallbackProviders>{props.children}</FallbackProviders>
-    </>
-  );
-};
+export const GlobalStorybookDecorator = (props: { children: ReactNode }) => (
+  <>
+    <FallbackProviders>{props.children}</FallbackProviders>
+  </>
+);
 
 function FallbackProviders({ children }: { children: ReactNode }) {
   const i18n = useMemo(() => {
@@ -31,7 +26,7 @@ function FallbackProviders({ children }: { children: ReactNode }) {
   );
 }
 
-export const withGlobalStorybookDecorator = (Story: any) => (
+export const withGlobalStorybookDecorator = (Story: ElementType) => (
   <GlobalStorybookDecorator>
     <Story />
   </GlobalStorybookDecorator>
