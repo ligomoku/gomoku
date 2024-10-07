@@ -1,4 +1,6 @@
-﻿using GomokuServer.Application.Interfaces.Common;
+﻿using System.Linq.Expressions;
+
+using GomokuServer.Application.Interfaces.Common;
 using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
@@ -23,10 +25,12 @@ public class GetAvailableToJoinGamesQueryHandler
 	public async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>>
 	Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
 	{
-		var availableGamesCount = await _gameRepository.CountAsync(game => !game.HasBothPlayersJoined);
+		Expression<Func<Game, bool>> expression =
+			game => !game.HasBothPlayersJoined;
 
-		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(
-			game => !game.HasBothPlayersJoined,
+		var availableGamesCount = await _gameRepository.CountAsync(expression);
+
+		var getAvailableGamesResult = await _gameRepository.GetByExpressionAsync(expression,
 			query => query
 				.Skip(request.Offset)
 				.Take(request.Limit)
@@ -44,14 +48,12 @@ public class GetAvailableToJoinGamesQueryHandler
 				return new GetAvailableGamesResponse(game.GameId, opponentDto);
 			}).ToList();
 
-			bool hasMoreItems = request.Offset + request.Limit < availableGamesCount;
-
 			return new PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>()
 			{
 				Data = availableGames,
 				Metadata = new PaginationMetadata
 				{
-					HasMoreItems = hasMoreItems,
+					HasMoreItems = request.Offset + request.Limit < availableGamesCount,
 					TotalCount = availableGamesCount
 				}
 			};

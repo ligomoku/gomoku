@@ -45,6 +45,8 @@ public class Game
 
 	public List<Tile>? WinningSequence { get; private set; }
 
+	public string PositionInGENFormat => _gameBoard.PositionInGENFormat;
+
 	public PlayerAddingResult AddOpponent(Profile newOpponent)
 	{
 		if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))

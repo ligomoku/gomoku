@@ -174,4 +174,24 @@ public class GameBoardTests
 		result.IsValid.Should().BeTrue();
 		result.WinningSequence.Should().BeNull();
 	}
+
+	[Test]
+	public void GenerateGENFormat_ShouldBeCorrect()
+	{
+		// Arrange
+		var board = new GameBoard(5);
+		board.PlaceNewTile(new Tile(0, 0));
+		board.PlaceNewTile(new Tile(1, 1));
+		board.PlaceNewTile(new Tile(2, 2));
+		board.PlaceNewTile(new Tile(3, 3));
+		board.PlaceNewTile(new Tile(4, 4));
+		board.PlaceNewTile(new Tile(5, 5));
+
+		// Act
+		var gen = board.PositionInGENFormat;
+
+		// Assert
+		var expectedGen = "X..../.O.../..X../...O./....X/w/5";
+		gen.Should().Be(expectedGen);
+	}
 }
