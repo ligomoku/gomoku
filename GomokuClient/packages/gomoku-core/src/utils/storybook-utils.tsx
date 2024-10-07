@@ -3,13 +3,7 @@ import { setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import * as enLocaleMessages from "@/locales/en/messages";
 
-export const GlobalStorybookDecorator = (props: { children: ReactNode }) => (
-  <>
-    <FallbackProviders>{props.children}</FallbackProviders>
-  </>
-);
-
-function FallbackProviders({ children }: { children: ReactNode }) {
+const FallbackProviders = ({ children }: { children: ReactNode }) => {
   const i18n = useMemo(() => {
     return setupI18n({
       locale: "en",
@@ -24,7 +18,11 @@ function FallbackProviders({ children }: { children: ReactNode }) {
       {children}
     </I18nProvider>
   );
-}
+};
+
+export const GlobalStorybookDecorator = (props: { children: ReactNode }) => (
+  <FallbackProviders>{props.children}</FallbackProviders>
+);
 
 export const withGlobalStorybookDecorator = (Story: ElementType) => (
   <GlobalStorybookDecorator>
