@@ -85,7 +85,7 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
     );
   }
   return (
-    <div className="rounded-lg bg-[#ba8c63] p-2.5 shadow-md">
+    <div className="rounded-lg bg-[#ba8c63] shadow-md">
       <div
         className="grid rounded-lg"
         style={{

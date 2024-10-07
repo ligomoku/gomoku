@@ -4,11 +4,13 @@ import { useJoinGame } from "@/hooks/useJoinGame";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
   const { board, handleMove } = useJoinGame(gameID!);
   const { jwtDecodedInfo } = useAuthToken();
+  const isMobile = useMobileDesign();
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
@@ -30,12 +32,14 @@ const JoinGame = () => {
               <div className="ml-4 flex flex-col justify-between">
                 <br />
                 <br />
-                <Chat
-                  messages={messages}
-                  isConnected={isConnected}
-                  sendMessage={sendMessage}
-                  username={jwtDecodedInfo?.username || ""}
-                />
+                {isMobile && (
+                  <Chat
+                    messages={messages}
+                    isConnected={isConnected}
+                    sendMessage={sendMessage}
+                    username={jwtDecodedInfo?.username || ""}
+                  />
+                )}
               </div>
             </div>
           </>
