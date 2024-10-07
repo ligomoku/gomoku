@@ -4,7 +4,6 @@ import "./styles/index.css";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { client } from "@/api/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 import * as Sentry from "@sentry/react";
@@ -12,6 +11,7 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { messages } from "./locales/en/messages";
 import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
+import { SwaggerServices } from "@/api";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -45,7 +45,7 @@ declare module "@tanstack/react-router" {
   }
 }
 
-client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
+SwaggerServices.client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 const queryClient = new QueryClient();
 
