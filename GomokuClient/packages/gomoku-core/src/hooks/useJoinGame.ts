@@ -51,8 +51,8 @@ export const useJoinGame = (gameID: string) => {
     }
   }, [winner]);
 
-  const handleMove = async (row: number, col: number, value: string | null) => {
-    if (!hubProxy || winner || value) return;
+  const handleMove = async (row: number, col: number) => {
+    if (!hubProxy || winner) return;
 
     const makeMoveMessage = {
       gameId: gameID,
