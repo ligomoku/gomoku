@@ -1,6 +1,8 @@
-﻿using GomokuServer.Core.Results;
+﻿using System.Text;
+
+using GomokuServer.Core.Extensions;
+using GomokuServer.Core.Results;
 using GomokuServer.Core.Validation;
-using GomokuServer.Utils.Extensions;
 
 namespace GomokuServer.Core.Entities;
 
@@ -8,6 +10,7 @@ public class GameBoard
 {
 	private readonly int _boardSize;
 	private readonly string[,] _board;
+	private int _movesCount = 0;
 
 	public GameBoard(int boardSize)
 	{
@@ -17,6 +20,40 @@ public class GameBoard
 	}
 
 	public TileColor NextTileColor { get; private set; }
+
+	public string PositionInGENFormat
+	{
+		get
+		{
+			static string GetGENCharFromColor(string color)
+			{
+				return color switch
+				{
+					"black" => "X",
+					"white" => "O",
+					_ => "."
+				};
+			}
+
+			var gen = new StringBuilder();
+
+			for (var i = 0; i < _boardSize; i++)
+			{
+				var row = new StringBuilder();
+
+				for (var j = 0; j < _boardSize; j++)
+				{
+					row.Append(GetGENCharFromColor(_board[i, j]));
+				}
+
+				gen.Append($"{row}/");
+			}
+
+			gen.Append($"{NextTileColor.GetChar()}/{_movesCount}");
+
+			return gen.ToString();
+		}
+	}
 
 	public BoardTilePlacementResult PlaceNewTile(Tile tile)
 	{
@@ -39,10 +76,11 @@ public class GameBoard
 		}
 
 		var newTileColor = NextTileColor;
-		var colorString = newTileColor.ToString().ToCamelCase();
+		var colorString = newTileColor.GetString();
 		_board[tile.X, tile.Y] = colorString;
 
 		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+		_movesCount++;
 
 		return new()
 		{
