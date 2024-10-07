@@ -42,8 +42,8 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
         <div
           className={styles.board}
           style={{
-            gridTemplateColumns: `repeat(${size}, 5vmin)`,
-            gridTemplateRows: `repeat(${size}, 5vmin)`,
+            gridTemplateColumns: `repeat(${size}, ${100 / size}vmin)`,
+            gridTemplateRows: `repeat(${size}, ${100 / size}vmin)`,
           }}
         >
           {tilesElements}

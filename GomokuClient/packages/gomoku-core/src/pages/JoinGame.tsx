@@ -1,16 +1,13 @@
 import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
 import { useJoinGame } from "@/hooks/useJoinGame";
-import MobileSquare from "@/features/Square/Mobile/MobileSquare";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
-import { Board } from "@/pages/Board";
+import { Board } from "@/features/Board/Board";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
   const { board, handleMove } = useJoinGame(gameID!);
-  const isMobile = useMobileDesign();
   const { jwtDecodedInfo } = useAuthToken();
 
   const { sendMessage, messages, isConnected } = useChat(
