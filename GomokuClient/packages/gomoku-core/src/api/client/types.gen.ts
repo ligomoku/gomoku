@@ -16,7 +16,7 @@ export type CreateGameResponse = {
 
 export type GetAvailableGamesResponse = {
   gameId: string;
-  opponent: PlayerDto;
+  opponent: ProfileDto;
 };
 
 export type GetAvailableGamesResponseIenumerablePaginatedResponse = {
@@ -44,12 +44,6 @@ export type PaginationMetadata = {
   totalCount: number;
 };
 
-export type PlayerDto = {
-  playerId: string;
-  userName: string;
-  color?: string | null;
-};
-
 export type ProblemDetails = {
   type?: string | null;
   title?: string | null;
@@ -57,6 +51,11 @@ export type ProblemDetails = {
   detail?: string | null;
   instance?: string | null;
   [key: string]: (unknown | string | number) | undefined;
+};
+
+export type ProfileDto = {
+  playerId: string;
+  userName: string;
 };
 
 export type TileDto = {

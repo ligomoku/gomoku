@@ -7,8 +7,22 @@ import { routeTree } from "./routeTree.gen";
 import { client } from "@/api/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
+import * as Sentry from "@sentry/react";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+Sentry.init({
+  dsn: "https://7a6d12a23db1a817976baedbf4616ab2@o4508078485340160.ingest.de.sentry.io/4508078486913104",
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
+  tracesSampleRate: 1.0,
+  //TODO: check if passing from .env is needed
+  tracePropagationTargets: ["localhost", /^https:\/\/gomoku-gi8o.onrender.com/],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+});
 
 const router = createRouter({ routeTree });
 

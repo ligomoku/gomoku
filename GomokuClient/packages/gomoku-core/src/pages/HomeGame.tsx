@@ -10,6 +10,7 @@ import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { SwaggerTypes, SwaggerServices } from "@/api";
 
 import { useAuthToken } from "@/context";
+import { t } from "@lingui/macro";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -41,12 +42,12 @@ export const HomeGame = () => {
               onItemClick={(item) => navigate({ to: `/game/join/${item.id}` })}
             />
             <p className="text-base sm:text-lg">
-              Gomoku.org is a free, open-source Five in a Row game platform.
+              {t`Gomoku.org is a free, open-source Five in a Row game platform.`}
             </p>
           </div>
           <div className="lg:col-span-6">
             <h2 className="mb-6 text-2xl font-bold text-[#bababa] sm:text-3xl">
-              Quick pairing
+              {t`Quick pairing`}
             </h2>
             <TimeControls />
           </div>

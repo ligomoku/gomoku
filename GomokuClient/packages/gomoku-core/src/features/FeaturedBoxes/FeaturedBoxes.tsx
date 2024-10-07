@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { SwaggerTypes } from "@/api";
+import { t } from "@lingui/macro";
 
 export interface FeaturedBoxesProps {
   games: SwaggerTypes.GetAvailableGamesResponse[];
@@ -32,7 +33,7 @@ export const FeaturedBoxes = ({
         </div>
       ))
     ) : (
-      <span>No games available</span>
+      <span>{t`No games available`}</span>
     )}
   </div>
 );
