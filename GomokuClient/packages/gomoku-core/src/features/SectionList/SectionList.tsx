@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { ReactNode } from "react";
+import { t } from "@lingui/macro";
 
 interface SectionListItem {
   id: string;
@@ -37,7 +38,7 @@ export const SectionList = ({
               </li>
             ))
           ) : (
-            <span>No online games were created</span>
+            <span>{t`No online games were created`}</span>
           )}
         </ul>
       </CardContent>

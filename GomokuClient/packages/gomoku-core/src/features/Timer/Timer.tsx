@@ -1,6 +1,7 @@
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useEffect, useState } from "react";
+import { t } from "@lingui/macro";
 
 const playAgain = () => {
   //ToDo: implement play again
@@ -37,18 +38,18 @@ export const Timer = () => {
   };
   return (
     <Card className="bg-white p-4">
-      <h2 className="mb-4 text-2xl font-semibold">Timer</h2>
+      <h2 className="mb-4 text-2xl font-semibold">{t`Timer`}</h2>
       <div className="mb-4 font-mono text-4xl">{formatTime(time)}</div>
       <div className="flex flex-col gap-2">
         <Button onClick={startTimer} disabled={isRunning}>
-          Start
+          {t`Start`}
         </Button>
         <Button onClick={stopTimer} disabled={!isRunning}>
-          Stop
+          {t`Stop`}
         </Button>
-        <Button onClick={resetTimer}>Reset</Button>
+        <Button onClick={resetTimer}>{t`Reset`}</Button>
         <Button className="mt-4" onClick={playAgain}>
-          Play again
+          {t`Play again`}
         </Button>
       </div>
     </Card>

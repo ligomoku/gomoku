@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Activity, ChevronUp, Users } from "lucide-react";
+import { t } from "@lingui/macro";
 
 export function Profile() {
   const ratingData = [
@@ -18,7 +19,7 @@ export function Profile() {
           <div className="md:col-span-1">
             <div className="space-y-6">
               <div>
-                <h2 className="mb-2 text-xl font-bold">STANDARD</h2>
+                <h2 className="mb-2 text-xl font-bold">{t`STANDARD`}</h2>
                 <div className="flex items-center">
                   <span className="mr-2 text-3xl font-bold">1920</span>
                   <ChevronUp className="text-green-500" />
@@ -27,7 +28,7 @@ export function Profile() {
                 <div className="text-sm">8,721 games</div>
               </div>
               <div>
-                <h2 className="mb-2 text-xl font-bold">BLITZ</h2>
+                <h2 className="mb-2 text-xl font-bold">{t`BLITZ`}</h2>
                 <div className="flex items-center">
                   <span className="mr-2 text-3xl font-bold">1885</span>
                   <ChevronUp className="text-green-500" />
@@ -36,7 +37,7 @@ export function Profile() {
                 <div className="text-sm">5,463 games</div>
               </div>
               <div>
-                <h2 className="mb-2 text-xl font-bold">LIGHTNING</h2>
+                <h2 className="mb-2 text-xl font-bold">{t`LIGHTNING`}</h2>
                 <div className="flex items-center">
                   <span className="mr-2 text-3xl font-bold">1750</span>
                   <ChevronUp className="text-green-500" />
@@ -49,24 +50,24 @@ export function Profile() {
           <div className="md:col-span-2 lg:col-span-2">
             <div className="mb-4 flex items-center">
               <div className="mr-4 h-12 w-12 rounded-full bg-green-500"></div>
-              <h1 className="text-3xl font-bold sm:text-4xl">GomokuMaster</h1>
+              <h1 className="text-3xl font-bold sm:text-4xl">{t`GomokuMaster`}</h1>
             </div>
             <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
               <div>
                 <div className="text-2xl font-bold">723</div>
-                <div className="text-sm">Tournament Points</div>
+                <div className="text-sm">{t`Tournament Points`}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold">2</div>
-                <div className="text-sm">Study</div>
+                <div className="text-sm">{t`Study`}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold">5</div>
-                <div className="text-sm">Forum Posts</div>
+                <div className="text-sm">{t`Forum Posts`}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold">1</div>
-                <div className="text-sm">Blog Posts</div>
+                <div className="text-sm">{t`Blog Posts`}</div>
               </div>
             </div>
             <div className="mb-6">
