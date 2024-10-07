@@ -33,16 +33,16 @@ export function getDefaultHeaders(
   }
 }
 
-interface FixedKeys {
+export interface FixedKeys {
   jwtToken: string;
   currentGameID: string;
+  chunkReloadedAt: string;
 }
 
-type DynamicKeys = {
+export interface DynamicKeys {
   [key: `gameBoard_${string}`]: string;
-} & {
   [key: `nextTurn_${string}`]: string;
-};
+}
 
 export type Schema = FixedKeys & DynamicKeys;
 

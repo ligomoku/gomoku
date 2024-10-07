@@ -1,22 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import {
-  CreateGameResponse,
-  postApiGame,
-  PostApiGameError,
-} from "@/api/client";
 import { getDefaultHeaders } from "@/shared/lib/utils";
+import { SwaggerServices, SwaggerTypes } from "@/api";
 
 export const useCreateGameAndNavigate = (authToken: string) => {
   const navigate = useNavigate();
 
   const createGame = useMutation<
-    CreateGameResponse | undefined,
-    PostApiGameError,
+    SwaggerTypes.CreateGameResponse | undefined,
+    SwaggerTypes.PostApiGameError,
     { boardSize: number }
   >({
     mutationFn: async ({ boardSize }) => {
-      const response = await postApiGame({
+      const response = await SwaggerServices.postApiGame({
         body: { boardSize },
         headers: getDefaultHeaders(authToken),
       });
