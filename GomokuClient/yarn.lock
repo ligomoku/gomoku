@@ -1167,6 +1167,7 @@ __metadata:
     recharts: "npm:^2.12.7"
     sass-embedded: "npm:^1.79.4"
     storybook: "npm:^8.3.5"
+    storybook-addon-linguijs: "npm:^1.0.10"
     tailwind-merge: "npm:^2.5.3"
     tailwindcss: "npm:^3.4.13"
     tailwindcss-animate: "npm:^1.0.7"
@@ -1469,6 +1470,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/core@npm:2.9.2":
+  version: 2.9.2
+  resolution: "@lingui/core@npm:2.9.2"
+  dependencies:
+    babel-runtime: "npm:^6.26.0"
+    make-plural: "npm:^4.1.1"
+    messageformat-parser: "npm:^2.0.0"
+  checksum: 10c0/ab54e9f1c286ba8301216fa8956ef155022bb456a2daa19886b6c7b71df74aa8ebd1c39f1663d4ef5ee2eed1687e1047e75595d063e4365f119242420ce358bb
+  languageName: node
+  linkType: hard
+
 "@lingui/core@npm:4.11.4":
   version: 4.11.4
   resolution: "@lingui/core@npm:4.11.4"
@@ -1515,6 +1527,21 @@ __metadata:
     "@messageformat/parser": "npm:^5.0.0"
     js-sha256: "npm:^0.10.1"
   checksum: 10c0/22e0ea1e9b2b4e260d404d70918a6430da8b46e2507ab8c87b3c798cc61118a5e53702f2d10ead69df905f983e75dcefd38dca6234d93ea91718552554edf641
+  languageName: node
+  linkType: hard
+
+"@lingui/react@npm:^2.8.3":
+  version: 2.9.2
+  resolution: "@lingui/react@npm:2.9.2"
+  dependencies:
+    "@lingui/core": "npm:2.9.2"
+    babel-runtime: "npm:^6.26.0"
+    hash-sum: "npm:^1.0.2"
+    hoist-non-react-statics: "npm:3.3.0"
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0
+  checksum: 10c0/d8b0241e3dece61230354501143f2ae808d7fa1b8f4cd023fd9c6891e5ae76968edf465b92e3a1800b66ac72cd242252d72fd6ec7d256a386df8d7432627b981
   languageName: node
   linkType: hard
 
@@ -4308,6 +4335,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-runtime@npm:^6.26.0":
+  version: 6.26.0
+  resolution: "babel-runtime@npm:6.26.0"
+  dependencies:
+    core-js: "npm:^2.4.0"
+    regenerator-runtime: "npm:^0.11.0"
+  checksum: 10c0/caa752004936b1463765ed3199c52f6a55d0613b9bed108743d6f13ca532b821d4ea9decc4be1b583193164462b1e3e7eefdfa36b15c72e7daac58dd72c1772f
+  languageName: node
+  linkType: hard
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -4895,6 +4932,13 @@ __metadata:
   version: 0.6.0
   resolution: "cookie@npm:0.6.0"
   checksum: 10c0/f2318b31af7a31b4ddb4a678d024514df5e705f9be5909a192d7f116cfb6d45cbacf96a473fa733faa95050e7cff26e7832bb3ef94751592f1387b71c8956686
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^2.4.0":
+  version: 2.6.12
+  resolution: "core-js@npm:2.6.12"
+  checksum: 10c0/00128efe427789120a06b819adc94cc72b96955acb331cb71d09287baf9bd37bebd191d91f1ee4939c893a050307ead4faea08876f09115112612b6a05684b63
   languageName: node
   linkType: hard
 
@@ -6547,6 +6591,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hash-sum@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "hash-sum@npm:1.0.2"
+  checksum: 10c0/311b2d7ea317b128860a88c7fd3ae46aef010b7fd7418a44afd2787cd889f24d635fa1e22a51bd5a5d8e338597c1da917d81f572e0de2f375e52e96c9fb63a66
+  languageName: node
+  linkType: hard
+
 "hasown@npm:^2.0.0, hasown@npm:^2.0.2":
   version: 2.0.2
   resolution: "hasown@npm:2.0.2"
@@ -6589,6 +6640,15 @@ __metadata:
   bin:
     he: bin/he
   checksum: 10c0/a27d478befe3c8192f006cdd0639a66798979dfa6e2125c6ac582a19a5ebfec62ad83e8382e6036170d873f46e4536a7e795bf8b95bf7c247f4cc0825ccc8c17
+  languageName: node
+  linkType: hard
+
+"hoist-non-react-statics@npm:3.3.0":
+  version: 3.3.0
+  resolution: "hoist-non-react-statics@npm:3.3.0"
+  dependencies:
+    react-is: "npm:^16.7.0"
+  checksum: 10c0/6057333b39f84da2d76b93d6d144de4060e4377815d2ed106a721f1789c52859c16ae409f5207a17dd7e9a4e6723c275cccac00b35ac19ae50a230acac78e353
   languageName: node
   linkType: hard
 
@@ -7400,6 +7460,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"make-plural@npm:^4.1.1":
+  version: 4.3.0
+  resolution: "make-plural@npm:4.3.0"
+  dependencies:
+    minimist: "npm:^1.2.0"
+  dependenciesMeta:
+    minimist:
+      optional: true
+  bin:
+    make-plural: ./bin/make-plural
+  checksum: 10c0/3b6acef92ec1adace048d7bb13ac2a888568e129f6dc7455e0fcbff162d7a7812698ff859122f408e64da74f10b6080d5e57f0a3734b66e2f792574418eb57f1
+  languageName: node
+  linkType: hard
+
 "map-or-similar@npm:^1.5.0":
   version: 1.5.0
   resolution: "map-or-similar@npm:1.5.0"
@@ -7450,6 +7524,13 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 10c0/254a8a4605b58f450308fc474c82ac9a094848081bf4c06778200207820e5193726dc563a0d2c16468810516a5c97d9d3ea0ca6585d23c58ccfff2403e8dbbeb
+  languageName: node
+  linkType: hard
+
+"messageformat-parser@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "messageformat-parser@npm:2.0.0"
+  checksum: 10c0/2a13a02d7189443d1058ae7708399b55df329df623a32fe38b84b7b9fda746567ccbeaf80a198c74f95f5d3fdb809ea323c952678861f1c8e6b98efb3d04e7cb
   languageName: node
   linkType: hard
 
@@ -7552,7 +7633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.5, minimist@npm:^1.2.6":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.5, minimist@npm:^1.2.6":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 10c0/19d3fcdca050087b84c2029841a093691a91259a47def2f18222f41e7645a0b7c44ef4b40e88a1e58a40c84d2ef0ee6047c55594d298146d0eb3f6b737c20ce6
@@ -8727,6 +8808,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react@npm:^16.8.6":
+  version: 16.14.0
+  resolution: "react@npm:16.14.0"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+    object-assign: "npm:^4.1.1"
+    prop-types: "npm:^15.6.2"
+  checksum: 10c0/df8faae43e01387013900e8f8fb3c4ce9935b7edbcbaa77e12999c913eb958000a0a8750bf9a0886dae0ad768dd4a4ee983752d5bade8d840adbe0ce890a2438
+  languageName: node
+  linkType: hard
+
 "read-cache@npm:^1.0.0":
   version: 1.0.0
   resolution: "read-cache@npm:1.0.0"
@@ -8813,6 +8905,13 @@ __metadata:
     indent-string: "npm:^4.0.0"
     strip-indent: "npm:^3.0.0"
   checksum: 10c0/d64a6b5c0b50eb3ddce3ab770f866658a2b9998c678f797919ceb1b586bab9259b311407280bd80b804e2a7c7539b19238ae6a2a20c843f1a7fcff21d48c2eae
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.11.0":
+  version: 0.11.1
+  resolution: "regenerator-runtime@npm:0.11.1"
+  checksum: 10c0/69cfa839efcf2d627fe358bf302ab8b24e5f182cb69f13e66f0612d3640d7838aad1e55662135e3ef2c1cc4322315b757626094fab13a48f9a64ab4bdeb8795b
   languageName: node
   linkType: hard
 
@@ -9525,6 +9624,21 @@ __metadata:
   version: 2.14.3
   resolution: "store2@npm:2.14.3"
   checksum: 10c0/22e1096e6d69590672ca0b7f891d82b060837ef4c3e5df0d4563e6cbed14c52ddf2589fa94b79f4311b6ec41d95d6142e5d01d194539e0175c3fb4090cca8244
+  languageName: node
+  linkType: hard
+
+"storybook-addon-linguijs@npm:^1.0.10":
+  version: 1.0.10
+  resolution: "storybook-addon-linguijs@npm:1.0.10"
+  dependencies:
+    "@lingui/react": "npm:^2.8.3"
+    react: "npm:^16.8.6"
+  peerDependencies:
+    "@lingui/react": ">=2.8.0"
+    "@storybook/addons": ">= 3.2.16"
+    "@storybook/react": ">= 3.2.16"
+    react: ">= 15.4.0"
+  checksum: 10c0/d1b85dd9ef62797a2eb7f231985b524dd89f6fc98b2961fed4fdae6270c01c9d518ff260431e276d8d091becd2a7f0268599cef960e134202f242bbf3de7ba2b
   languageName: node
   linkType: hard
 

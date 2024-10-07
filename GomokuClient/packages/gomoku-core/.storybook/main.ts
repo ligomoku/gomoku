@@ -7,11 +7,14 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    //TODO: check if we can refactor to Vite
     "@storybook/addon-styling-webpack",
+    "storybook-addon-linguijs",
   ],
   framework: {
     name: "@storybook/react-vite",
     options: {},
   },
 };
+
 export default config;
