@@ -29,8 +29,6 @@ export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
   const isMobile = useMobileDesign();
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
 
-  console.log("LAST TILE", lastTile);
-
   const tilesElements = useMemo(
     () =>
       tiles.map((row, rowIndex) =>
