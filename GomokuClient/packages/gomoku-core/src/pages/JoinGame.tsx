@@ -33,14 +33,12 @@ const JoinGame = () => {
               <div className="ml-4 flex flex-col justify-between">
                 <br />
                 <br />
-                {!isMobile && (
-                  <Chat
-                    messages={messages}
-                    isConnected={isConnected}
-                    sendMessage={sendMessage}
-                    username={jwtDecodedInfo?.username || ""}
-                  />
-                )}
+                <Chat
+                  messages={messages}
+                  isConnected={isConnected}
+                  sendMessage={sendMessage}
+                  username={jwtDecodedInfo?.username || ""}
+                />
               </div>
             </div>
           </>
