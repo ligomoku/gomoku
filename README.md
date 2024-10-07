@@ -13,5 +13,9 @@ Using Makefile (from the root directory)
 
 URL: https://gomoku-gi8o.onrender.com/swagger
 
+## Storybook
+
+URL: https://storybook-static-self.vercel.app
+
 ## License
 This project is licensed under the AGPL-3.0 License - see the [LICENSE](./LICENSE) file for details.

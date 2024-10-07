@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:storybook": "yarn workspace @gomoku/core build-storybook",
     "lint": "turbo run lint --filter=@gomoku/core --filter=@gomoku/utils",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
     "typecheck": "turbo run typecheck --filter=@gomoku/utils --filter=@gomoku/core",
