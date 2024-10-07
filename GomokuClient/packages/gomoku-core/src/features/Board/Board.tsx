@@ -1,6 +1,7 @@
 import { CellValue } from "@/hooks/useBoard";
 import { useMemo } from "react";
 import { cva } from "class-variance-authority";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 export interface BoardProps {
   size: number;
@@ -21,6 +22,7 @@ const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
 });
 
 export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
+  const isMobile = useMobileDesign();
   const tilesElements = useMemo(
     () =>
       tiles.map((row, rowIndex) =>
@@ -48,13 +50,16 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
     [tiles, onTileClick],
   );
 
+  const calculatedSize = isMobile ? 100 : 80;
+
   return (
     <div className="rounded-lg bg-[#ba8c63] p-2.5 shadow-md">
       <div
         className="grid rounded-lg"
         style={{
-          gridTemplateColumns: `repeat(${size}, ${100 / size}vmin)`,
-          gridTemplateRows: `repeat(${size}, ${100 / size}vmin)`,
+          //TODO: should be based on window size
+          gridTemplateColumns: `repeat(${size}, ${calculatedSize / size}vmin)`,
+          gridTemplateRows: `repeat(${size}, ${calculatedSize / size}vmin)`,
         }}
       >
         {tilesElements}
