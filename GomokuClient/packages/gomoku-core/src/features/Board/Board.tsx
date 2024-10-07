@@ -33,7 +33,7 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
           );
         }),
       ),
-    [size, tiles, onTileClick],
+    [tiles, onTileClick],
   );
 
   return (
