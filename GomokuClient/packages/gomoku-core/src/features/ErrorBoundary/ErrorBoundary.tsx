@@ -5,6 +5,7 @@ import {
   didChunkFailed,
   setChunkReloadAt,
 } from "@/utils/chunkUtils";
+import { typedStorage } from "@/shared/lib/utils";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -31,7 +32,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     } as ErrorBoundaryState;
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (didChunkFailed(error) && !didChunkAlreadyReload()) {
       setChunkReloadAt();
     } else {
@@ -43,9 +44,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   }
 
-  onRestore(): void {
-    localStorage.clear();
-    // window.location.reload();
+  onRestore() {
+    typedStorage.clear();
   }
 
   render(): ReactNode {

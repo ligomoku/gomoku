@@ -1,3 +1,5 @@
+import { typedStorage } from "@/shared/lib/utils";
+
 export const didChunkFailed = (error: { message: string }) => {
   const chunkFailedMessage = /Loading chunk \d+ failed/;
   const cssChunkFailedMessage = /Loading CSS chunk \d+ failed/;
@@ -14,18 +16,18 @@ export const setChunkReloadAt = () => {
     value: "true",
     expiry: new Date().getTime() + 10000,
   };
-  localStorage.setItem("chunkReloadedAt", JSON.stringify(item));
+  typedStorage.setItem("chunkReloadedAt", JSON.stringify(item));
 };
 
 export const didChunkAlreadyReload = () => {
-  const itemString = localStorage.getItem("chunkReloadedAt");
+  const itemString = typedStorage.getItem("chunkReloadedAt");
   if (!itemString) return false;
 
   const item = JSON.parse(itemString);
   const isExpired = new Date().getTime() > item.expiry;
 
   if (isExpired) {
-    localStorage.removeItem("chunkReloadedAt");
+    typedStorage.removeItem("chunkReloadedAt");
     return false;
   }
 

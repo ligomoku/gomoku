@@ -36,6 +36,7 @@ export function getDefaultHeaders(
 interface FixedKeys {
   jwtToken: string;
   currentGameID: string;
+  chunkReloadedAt: string;
 }
 
 type DynamicKeys = {
