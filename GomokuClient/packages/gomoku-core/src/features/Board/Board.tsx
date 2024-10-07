@@ -1,14 +1,16 @@
-import { CellValue } from "@/hooks/useBoard";
+import { TileColor } from "@/hooks/useTiles";
 import { useMemo, useState } from "react";
 import { cva } from "class-variance-authority";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
+import { TileDto } from "@/api/client";
 
 export interface BoardProps {
   size: number;
   onTileClick: (x: number, y: number) => void;
-  tiles: CellValue[][];
+  tiles: TileColor[][];
+  lastTile: TileDto;
 }
 
 const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
@@ -23,9 +25,11 @@ const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
   },
 });
 
-export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
+export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
   const isMobile = useMobileDesign();
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
+
+  console.log("LAST TILE", lastTile);
 
   const tilesElements = useMemo(
     () =>
@@ -34,7 +38,7 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
           return col !== null ? (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className="flex items-center justify-center border border-black"
+              className={`flex items-center justify-center border border-black ${colIndex === lastTile.x && rowIndex === lastTile.y ? "bg-amber-400" : ""}`}
             >
               <div
                 className={tileStyles({
@@ -46,12 +50,14 @@ export const Board = ({ size, onTileClick, tiles }: BoardProps) => {
             <div
               key={`${rowIndex}-${colIndex}`}
               className="flex items-center justify-center border border-black"
-              onClick={() => onTileClick(rowIndex, colIndex)}
+              onClick={() => {
+                onTileClick(rowIndex, colIndex);
+              }}
             />
           );
         }),
       ),
-    [tiles, onTileClick],
+    [tiles, lastTile, onTileClick],
   );
 
   const calculatedSize = boardSize / size;

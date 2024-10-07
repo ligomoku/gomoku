@@ -8,7 +8,7 @@ import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
-  const { board, handleMove } = useJoinGame(gameID!);
+  const { tiles, lastTile, handleMove } = useJoinGame(gameID!);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
 
@@ -24,7 +24,8 @@ const JoinGame = () => {
           <>
             <div className="mb-5 flex w-full flex-wrap justify-center">
               <Board
-                tiles={board}
+                tiles={tiles}
+                lastTile={lastTile}
                 size={19}
                 onTileClick={(x, y) => handleMove(x, y)}
               />

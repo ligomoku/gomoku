@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { CellValue, useBoard } from "@/hooks/useBoard";
+import { TileColor, useTiles } from "@/hooks/useTiles";
 import { typedStorage } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
 
 export const useJoinGame = (gameID: string) => {
-  const { board, winner, addPiece } = useBoard(gameID);
+  const { tiles, winner, addTile, lastTile } = useTiles(gameID);
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
@@ -36,14 +36,14 @@ export const useJoinGame = (gameID: string) => {
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
           console.log("Player made move:", playerId, tile, placedTileColor);
-          addPiece(tile.y, tile.x, placedTileColor as CellValue);
+          addTile(tile.y, tile.x, placedTileColor as TileColor);
         },
         onGameHubError: (error) => {
           console.warn("Error from game hub:", error.message);
         },
       });
     }
-  }, [hubProxy, isConnected, gameID, registerEventHandlers, addPiece]);
+  }, [hubProxy, isConnected, gameID, registerEventHandlers, addTile]);
 
   useEffect(() => {
     if (winner) {
@@ -67,5 +67,5 @@ export const useJoinGame = (gameID: string) => {
     }
   };
 
-  return { board, winner, handleMove };
+  return { tiles, lastTile, winner, handleMove };
 };
