@@ -9,7 +9,6 @@ using SignalRSwaggerGen.Attributes;
 namespace GomokuServer.Api.Hubs;
 
 [SignalRHub(HubRoute.GameHub)]
-[Authorize]
 public class GameHub : Hub, IGameHub
 {
 	private readonly IMediator _mediator;
@@ -40,6 +39,7 @@ public class GameHub : Hub, IGameHub
 		}
 	}
 
+	[Authorize]
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
 		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
@@ -64,6 +64,7 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
+	[Authorize]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");

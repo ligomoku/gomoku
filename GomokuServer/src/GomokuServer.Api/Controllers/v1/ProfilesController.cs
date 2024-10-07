@@ -24,9 +24,9 @@ public class ProfilesController : Controller
 	[HttpGet("{userName}/games")]
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>), StatusCodes.Status200OK)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	public async Task<IActionResult> GetGameHistory([FromRoute] string userName)
+	public async Task<IActionResult> GetUserGames([FromRoute] string userName, [FromQuery] PaginationRequest pagination)
 	{
-		var getUserGamesResult = await _mediator.Send(new GetGamesByUsernameQuery() { UserName = userName });
+		var getUserGamesResult = await _mediator.Send(new GetGamesByUsernameQuery() { UserName = userName, Limit = pagination.Limit, Offset = pagination.Offset });
 
 		return getUserGamesResult.ToApiResponse();
 	}

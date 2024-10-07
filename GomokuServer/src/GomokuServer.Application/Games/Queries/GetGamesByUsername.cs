@@ -33,11 +33,24 @@ public class GetGamesByUsernameQueryHandler
 		var availableGamesCount = await _gameRepository.CountAsync(expression);
 
 		var gamesByUsernameResult = await _gameRepository
-			.GetByExpressionAsync(expression);
+			.GetByExpressionAsync(expression,
+				query => query
+					.Skip(request.Offset)
+					.Take(request.Limit)
+					.OrderBy(game => game.Winner == null)
+					.ThenByDescending(game => game.CreatedAt)
+			);
 
 		return gamesByUsernameResult.Map(games => new PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>()
 		{
-			Data = games.Select(game => new GetGamesByUsernameResponse(game.GameId, game.PositionInGENFormat)),
+			Data = games.Select(game => new GetGamesByUsernameResponse
+			{
+				GameId = game.GameId,
+				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+				Gen = game.PositionInGENFormat,
+				Winner = game.Winner?.UserName,
+				Date = game.CreatedAt,
+			}),
 			Metadata = new()
 			{
 				HasMoreItems = request.Offset + request.Limit < availableGamesCount,

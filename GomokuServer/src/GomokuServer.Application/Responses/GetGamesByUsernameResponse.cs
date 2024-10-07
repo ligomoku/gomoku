@@ -1,10 +1,18 @@
 ﻿namespace GomokuServer.Application.Responses;
 
-public record GetGamesByUsernameResponse(string GameId, string Gen)
+public record GetGamesByUsernameResponse
 {
 	[Required]
-	public string GameId { get; } = GameId;
+	public required string GameId { get; init; }
 
 	[Required]
-	public string Gen { get; } = Gen;
+	public required UsernamesDto Players { get; init; }
+
+	public string? Winner { get; init; }
+
+	[Required]
+	public required string Gen { get; init; }
+
+	[Required]
+	public required DateTime Date { get; init; }
 }

@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Extensions;
+﻿using GomokuServer.Core.Extensions;
+
+namespace GomokuServer.Application.Extensions;
 
 public static class GameExtensions
 {
@@ -9,8 +11,8 @@ public static class GameExtensions
 
 		return new PlayersDto()
 		{
-			Black = blackPlayer != null ? new PlayerDto(blackPlayer.Id, blackPlayer.UserName, "Black") : null,
-			White = whitePlayer != null ? new PlayerDto(whitePlayer.Id, whitePlayer.UserName, "White") : null,
+			Black = blackPlayer != null ? new PlayerDto(blackPlayer.Id, blackPlayer.UserName, TileColor.Black.GetString()) : null,
+			White = whitePlayer != null ? new PlayerDto(whitePlayer.Id, whitePlayer.UserName, TileColor.White.GetString()) : null,
 		};
 	}
 }
