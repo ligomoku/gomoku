@@ -8,6 +8,9 @@ import { client } from "@/api/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 import * as Sentry from "@sentry/react";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import { messages } from "./locales/en/messages";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -40,16 +43,21 @@ client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
 
 const queryClient = new QueryClient();
 
+i18n.load("en", messages);
+i18n.activate("en");
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-        <AuthTokenProvider>
-          <SignalRProvider>
-            <RouterProvider router={router} />
-          </SignalRProvider>
-        </AuthTokenProvider>
-      </ClerkProvider>
+      <I18nProvider i18n={i18n}>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+          <AuthTokenProvider>
+            <SignalRProvider>
+              <RouterProvider router={router} />
+            </SignalRProvider>
+          </AuthTokenProvider>
+        </ClerkProvider>
+      </I18nProvider>
     </QueryClientProvider>
   </StrictMode>,
 );
