@@ -11,23 +11,22 @@ public class TestDataProvider
 	public TestDataProvider()
 	{
 		_randomProvider = Substitute.For<IRandomProvider>();
-		_randomProvider.GetInt(0, 2).Returns(0);
-
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
+		_randomProvider.GetInt(0, 2).Returns(0);
 	}
 
-	public Game GetGame_OnePlayerJoined()
+	public Game GetGame_OnePlayerJoined(IDateTimeProvider? dateTimeProvider = null)
 	{
-		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, dateTimeProvider ?? _dateTimeProvider);
 
 		game.AddOpponent(new Profile("player1Id", "player1Username"));
 
 		return game;
 	}
 
-	public Game GetGame_TwoPlayersJoined_NoMoves()
+	public Game GetGame_TwoPlayersJoined_NoMoves(IDateTimeProvider? dateTimeProvider = null)
 	{
-		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, dateTimeProvider ?? _dateTimeProvider);
 
 		game.AddOpponent(new Profile("PlayerOne", "Alice"));
 		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
@@ -35,9 +34,9 @@ public class TestDataProvider
 		return game;
 	}
 
-	public Game GetGame_HasWinner()
+	public Game GetGame_HasWinner(IDateTimeProvider? dateTimeProvider = null)
 	{
-		var game = new Game(_boardSize, _randomProvider, _dateTimeProvider);
+		var game = new Game(_boardSize, _randomProvider, dateTimeProvider ?? _dateTimeProvider);
 
 		game.AddOpponent(new Profile("PlayerOne", "Alice"));
 		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
