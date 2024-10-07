@@ -42,6 +42,7 @@ export interface FixedKeys {
 export interface DynamicKeys {
   [key: `gameBoard_${string}`]: string;
   [key: `nextTurn_${string}`]: string;
+  [key: `lastTile_${string}`]: string;
 }
 
 export type Schema = FixedKeys & DynamicKeys;

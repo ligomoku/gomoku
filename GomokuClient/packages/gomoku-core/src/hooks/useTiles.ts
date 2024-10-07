@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
 import { typedStorage } from "@/shared/lib/utils";
+import { TileDto } from "@/api/client";
 
-export type CellValue = "black" | "white" | null;
+export type TileColor = "black" | "white" | null;
 
 //TODO: refactor on IndexDB approach
-export const useBoard = (gameID: string) => {
+export const useTiles = (gameID: string) => {
   const BOARD_KEY = `gameBoard_${gameID}` as `gameBoard_${string}`;
   const NEXT_TURN_KEY = `nextTurn_${gameID}` as `nextTurn_${string}`;
+  const LAST_TILE_KEY = `lastTile_${gameID}` as `lastTile_${string}`;
 
-  const [board, setBoard] = useState<CellValue[][]>(() => {
+  const [tiles, setTiles] = useState<TileColor[][]>(() => {
     const savedBoard = typedStorage.getItem(BOARD_KEY);
     return savedBoard
       ? JSON.parse(savedBoard)
@@ -17,6 +19,9 @@ export const useBoard = (gameID: string) => {
           .fill(null)
           .map(() => Array(19).fill(null));
   });
+  const [lastTile, setLastTile] = useState<TileDto>(
+    JSON.parse(typedStorage.getItem(LAST_TILE_KEY)!) ?? { x: 0, y: 0 },
+  );
 
   const isBlackNext = useRef<boolean>(
     typedStorage.getItem(NEXT_TURN_KEY) !== null
@@ -32,7 +37,7 @@ export const useBoard = (gameID: string) => {
   useEffect(() => {
     if (lastRow.current === undefined || lastCol.current === undefined) return;
 
-    const convertedBoard = board.map((row) =>
+    const convertedBoard = tiles.map((row) =>
       row.map((cell) => (cell === null ? "" : cell)),
     );
 
@@ -41,56 +46,39 @@ export const useBoard = (gameID: string) => {
       y: lastRow.current,
     });
     setWinner(result);
-  }, [board]);
+  }, [tiles]);
 
   useEffect(() => {
     if (winner) {
       typedStorage.removeItem(BOARD_KEY);
       typedStorage.removeItem(NEXT_TURN_KEY);
     } else {
-      typedStorage.setItem(BOARD_KEY, JSON.stringify(board));
+      typedStorage.setItem(BOARD_KEY, JSON.stringify(tiles));
       typedStorage.setItem(NEXT_TURN_KEY, JSON.stringify(isBlackNext.current));
     }
-  }, [BOARD_KEY, NEXT_TURN_KEY, board, winner]);
+  }, [BOARD_KEY, NEXT_TURN_KEY, tiles, winner]);
 
-  const updateBoard = useCallback(
-    (y: number, x: number, newValue: CellValue) => {
-      setBoard((prevBoard) =>
-        prevBoard.map((row, currentY) => {
-          if (currentY !== y) return row;
+  const addTile = useCallback((x: number, y: number, newValue: TileColor) => {
+    setTiles((prevBoard) =>
+      prevBoard.map((row, currentY) => {
+        if (currentY !== y) return row;
 
-          return row.map((col, currentX) => {
-            if (currentX !== x) return col;
-            return newValue;
-          });
-        }),
-      );
-    },
-    [],
-  );
+        return row.map((col, currentX) => {
+          if (currentX !== x) return col;
+          return newValue;
+        });
+      }),
+    );
 
-  const handlePieceClick = (row: number, col: number, value: string | null) => {
-    if (value !== null || winner) return;
-
-    lastRow.current = row;
-    lastCol.current = col;
-
-    updateBoard(row, col, isBlackNext.current ? "black" : "white");
-
-    isBlackNext.current = !isBlackNext.current;
-  };
-
-  const addPiece = useCallback(
-    (x: number, y: number, color: CellValue) => {
-      updateBoard(y, x, color);
-    },
-    [updateBoard],
-  );
+    const tile = { x, y };
+    setLastTile(tile);
+    typedStorage.setItem(LAST_TILE_KEY, JSON.stringify(tile));
+  }, []);
 
   return {
-    board,
+    tiles,
+    lastTile,
     winner,
-    handlePieceClick,
-    addPiece,
+    addTile,
   };
 };

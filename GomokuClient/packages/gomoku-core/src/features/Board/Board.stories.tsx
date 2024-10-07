@@ -16,6 +16,7 @@ export const Default = () => (
     size={boardSize}
     onTileClick={(x, y) => console.log("Tile clicked", x, y)}
     tiles={Array.from({ length: boardSize }, () => Array(boardSize).fill(null))}
+    lastTile={{ x: 0, y: 0 }}
   />
 );
 
