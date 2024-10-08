@@ -1,16 +1,15 @@
 import { Card, CardContent } from "@/shared/ui/card";
-import { t } from "@lingui/macro";
 
-const gameTypes = [
-  { time: "5+0", type: t`Blitz` },
-  { time: "10+0", type: t`Quick` },
-  { time: "15+5", type: t`Standard` },
-  { time: "30+0", type: t`Long` },
-  { time: "1 day", type: t`Correspondence` },
-  { time: "Custom", type: "" },
-];
+interface GameType {
+  time: string;
+  type: string;
+}
 
-export const TimeControls = () => (
+export interface TimeControlsProps {
+  gameTypes: GameType[];
+}
+
+export const TimeControls = ({ gameTypes }: TimeControlsProps) => (
   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
     {gameTypes.map((game, index) => (
       <Card
