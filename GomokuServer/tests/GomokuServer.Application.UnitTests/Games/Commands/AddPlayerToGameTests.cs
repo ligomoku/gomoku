@@ -1,6 +1,8 @@
 ﻿using GomokuServer.Application.Games.Commands;
 using GomokuServer.Core.Interfaces;
 
+using Microsoft.Extensions.Logging;
+
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class AddPlayerToGameTests
@@ -19,7 +21,8 @@ public class AddPlayerToGameTests
 
 		_handler = new AddPlayerToGameCommandHandler(
 			_gameRepository,
-			_profilesRepository
+			_profilesRepository,
+			Substitute.For<ILogger<AddPlayerToGameCommandHandler>>()
 		);
 	}
 
