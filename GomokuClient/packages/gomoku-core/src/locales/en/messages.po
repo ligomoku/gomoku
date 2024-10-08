@@ -6,18 +6,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
-#: src/features/OnlinePlayersInfo/OnlinePlayersInfo.tsx:6
+#: src/pages/HomeGame.tsx:63
 msgid "1,892 games in play"
 msgstr ""
 
-#: src/features/OnlinePlayersInfo/OnlinePlayersInfo.tsx:5
+#: src/pages/HomeGame.tsx:64
 msgid "5,247 players online"
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:5
-msgid "Blitz"
-msgstr ""
+#~ msgid "Blitz"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:31
 msgid "BLITZ"
@@ -44,10 +50,10 @@ msgid "Connecting..."
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:9
-msgid "Correspondence"
-msgstr ""
+#~ msgid "Correspondence"
+#~ msgstr ""
 
-#: src/features/GameOptionsButton/GameOptionsButton.tsx:20
+#: src/pages/HomeGame.tsx:58
 msgid "CREATE A GAME"
 msgstr ""
 
@@ -59,7 +65,7 @@ msgstr ""
 msgid "gomoku.org"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:45
+#: src/pages/HomeGame.tsx:46
 msgid "Gomoku.org is a free, open-source Five in a Row game platform."
 msgstr ""
 
@@ -76,18 +82,18 @@ msgid "LIGHTNING"
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:8
-msgid "Long"
-msgstr ""
+#~ msgid "Long"
+#~ msgstr ""
 
 #: src/features/FeaturedBoxes/FeaturedBoxes.tsx:36
-msgid "No games available"
-msgstr ""
+#~ msgid "No games available"
+#~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:120
 msgid "No messages yet. Start the conversation!"
 msgstr ""
 
-#: src/features/SectionList/SectionList.tsx:41
+#: src/pages/HomeGame.tsx:43
 msgid "No online games were created"
 msgstr ""
 
@@ -96,28 +102,28 @@ msgid "PLAY"
 msgstr ""
 
 #: src/features/Timer/Timer.tsx:52
-msgid "Play again"
-msgstr ""
+#~ msgid "Play again"
+#~ msgstr ""
 
-#: src/features/GameOptionsButton/GameOptionsButton.tsx:26
+#: src/pages/HomeGame.tsx:59
 msgid "PLAY WITH A FRIEND"
 msgstr ""
 
-#: src/features/GameOptionsButton/GameOptionsButton.tsx:32
+#: src/pages/HomeGame.tsx:60
 msgid "PLAY WITH AI"
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:6
-msgid "Quick"
-msgstr ""
+#~ msgid "Quick"
+#~ msgstr ""
 
-#: src/pages/HomeGame.tsx:50
+#: src/pages/HomeGame.tsx:51
 msgid "Quick pairing"
 msgstr ""
 
 #: src/features/Timer/Timer.tsx:50
-msgid "Reset"
-msgstr ""
+#~ msgid "Reset"
+#~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:91
 msgid "Send"
@@ -132,28 +138,28 @@ msgid "SIGN IN"
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:7
-msgid "Standard"
-msgstr ""
+#~ msgid "Standard"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:22
 msgid "STANDARD"
 msgstr ""
 
 #: src/features/Timer/Timer.tsx:45
-msgid "Start"
-msgstr ""
+#~ msgid "Start"
+#~ msgstr ""
 
 #: src/features/Timer/Timer.tsx:48
-msgid "Stop"
-msgstr ""
+#~ msgid "Stop"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:62
 msgid "Study"
 msgstr ""
 
 #: src/features/Timer/Timer.tsx:41
-msgid "Timer"
-msgstr ""
+#~ msgid "Timer"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:58
 msgid "Tournament Points"

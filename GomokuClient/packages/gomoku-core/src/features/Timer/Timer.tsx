@@ -1,16 +1,26 @@
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useEffect, useState } from "react";
-import { t } from "@lingui/macro";
+
+export interface TimerProps {
+  timerLabel: string;
+  startLabel: string;
+  stopLabel: string;
+  resetLabel: string;
+  playAgainLabel: string;
+}
 
 const playAgain = () => {
-  //ToDo: implement play again
   window.location.reload();
 };
 
-export const Timer = () => {
-  // const { playAgain } = useBoard();
-
+export const Timer = ({
+  timerLabel,
+  startLabel,
+  stopLabel,
+  resetLabel,
+  playAgainLabel,
+}: TimerProps) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -36,20 +46,21 @@ export const Timer = () => {
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
+
   return (
     <Card className="bg-white p-4">
-      <h2 className="mb-4 text-2xl font-semibold">{t`Timer`}</h2>
+      <h2 className="mb-4 text-2xl font-semibold">{timerLabel}</h2>
       <div className="mb-4 font-mono text-4xl">{formatTime(time)}</div>
       <div className="flex flex-col gap-2">
         <Button onClick={startTimer} disabled={isRunning}>
-          {t`Start`}
+          {startLabel}
         </Button>
         <Button onClick={stopTimer} disabled={!isRunning}>
-          {t`Stop`}
+          {stopLabel}
         </Button>
-        <Button onClick={resetTimer}>{t`Reset`}</Button>
+        <Button onClick={resetTimer}>{resetLabel}</Button>
         <Button className="mt-4" onClick={playAgain}>
-          {t`Play again`}
+          {playAgainLabel}
         </Button>
       </div>
     </Card>

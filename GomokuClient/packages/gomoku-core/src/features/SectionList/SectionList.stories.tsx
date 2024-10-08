@@ -25,10 +25,19 @@ export default {
   component: SectionList,
 } as Meta<typeof SectionList>;
 
-const Template: StoryFn<SectionListProps> = () => (
-  <SectionList title="Tournaments" items={mockItems} />
-);
+const Template: StoryFn<SectionListProps> = (args) => <SectionList {...args} />;
 
 export const Default = Template.bind({});
 
-Default.args = {};
+Default.args = {
+  title: "Game Types",
+  items: mockItems,
+  noItemsText: "No online games were created",
+};
+
+export const EmptyList = Template.bind({});
+EmptyList.args = {
+  title: "Game Types",
+  items: [],
+  noItemsText: "No online games were created",
+};

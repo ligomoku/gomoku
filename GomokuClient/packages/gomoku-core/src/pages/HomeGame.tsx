@@ -40,6 +40,7 @@ export const HomeGame = () => {
               title="Online games"
               items={transformGameData(paginatedGames?.data)}
               onItemClick={(item) => navigate({ to: `/game/join/${item.id}` })}
+              noItemsText={t`No online games were created`}
             />
             <p className="text-base sm:text-lg">
               {t`Gomoku.org is a free, open-source Five in a Row game platform.`}
@@ -49,11 +50,19 @@ export const HomeGame = () => {
             <h2 className="mb-6 text-2xl font-bold text-[#bababa] sm:text-3xl">
               {t`Quick pairing`}
             </h2>
-            <TimeControls />
+            <TimeControls gameTypes={gameTypes} />
           </div>
           <div className="lg:col-span-3">
-            <GameOptionsButtons onCreateGameClick={handleCreateGame} />
-            <OnlinePlayersInfo />
+            <GameOptionsButtons
+              onCreateGameClick={handleCreateGame}
+              createGameText={t`CREATE A GAME`}
+              playWithFriendText={t`PLAY WITH A FRIEND`}
+              playWithAIText={t`PLAY WITH AI`}
+            />
+            <OnlinePlayersInfo
+              gamesInPlayText={t`1,892 games in play`}
+              playersOnlineText={t`5,247 players online`}
+            />
           </div>
         </div>
       </main>
@@ -82,3 +91,13 @@ const useFetchGames = () =>
     },
     refetchInterval: 5000,
   });
+
+//TODO: properly wrap with i18n
+const gameTypes = [
+  { time: "5+0", type: "Blitz" },
+  { time: "10+0", type: "Quick" },
+  { time: "15+5", type: "Standard" },
+  { time: "30+0", type: "Long" },
+  { time: "1 day", type: "Correspondence" },
+  { time: "Custom", type: "" },
+];

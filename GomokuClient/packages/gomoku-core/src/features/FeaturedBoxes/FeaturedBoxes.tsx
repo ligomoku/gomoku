@@ -1,15 +1,16 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { SwaggerTypes } from "@/api";
-import { t } from "@lingui/macro";
 
 export interface FeaturedBoxesProps {
   games: SwaggerTypes.GetAvailableGamesResponse[];
   onGameClick: (game: SwaggerTypes.GetAvailableGamesResponse) => void;
+  noGamesText: string;
 }
 
 export const FeaturedBoxes = ({
   games = [],
   onGameClick,
+  noGamesText,
 }: FeaturedBoxesProps) => (
   <div className="mt-8 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
     {games.length > 0 ? (
@@ -33,7 +34,7 @@ export const FeaturedBoxes = ({
         </div>
       ))
     ) : (
-      <span>{t`No games available`}</span>
+      <span>{noGamesText}</span>
     )}
   </div>
 );

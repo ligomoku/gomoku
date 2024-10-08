@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { ReactNode } from "react";
-import { t } from "@lingui/macro";
 
 interface SectionListItem {
   id: string;
@@ -12,12 +11,14 @@ export interface SectionListProps {
   title: string;
   items: SectionListItem[] | undefined;
   onItemClick?: (item: SectionListItem) => void;
+  noItemsText: string;
 }
 
 export const SectionList = ({
   title,
   items,
   onItemClick,
+  noItemsText,
 }: SectionListProps) => {
   return (
     <Card className="mb-6 border-[#2b2b2b] bg-[#2b2b2b]">
@@ -38,7 +39,7 @@ export const SectionList = ({
               </li>
             ))
           ) : (
-            <span>{t`No online games were created`}</span>
+            <span>{noItemsText}</span>
           )}
         </ul>
       </CardContent>
