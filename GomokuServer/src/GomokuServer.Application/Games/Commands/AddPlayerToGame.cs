@@ -33,7 +33,6 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 	{
 		_logger.LogInformation($"Attempting to add player {request.PlayerId} to game {request.GameId}");
 
-		// Check if game exists
 		var getGameResult = await _gameRepository.GetAsync(request.GameId);
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
@@ -41,7 +40,6 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.NotFound($"Game with ID {request.GameId} not found");
 		}
 
-		// Check if player exists
 		var getProfileResult = await _profilesRepository.GetAsync(request.PlayerId);
 		if (getProfileResult.Status == ResultStatus.NotFound)
 		{
@@ -49,14 +47,12 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.NotFound($"Player with ID {request.PlayerId} not found");
 		}
 
-		// Log a generic error if the result is not successful
 		if (getProfileResult.Status != ResultStatus.Ok)
 		{
 			_logger.LogError($"Error fetching player with ID {request.PlayerId}. Status: {getProfileResult.Status}");
 			return Result.Error($"Error fetching player with ID {request.PlayerId}");
 		}
 
-		// Add player to game
 		var game = getGameResult.Value;
 		var addingResult = game.AddOpponent(getProfileResult.Value);
 
@@ -66,7 +62,6 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.Invalid(new ValidationError(addingResult.ValidationError.ToString()));
 		}
 
-		// Save updated game
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
 		{

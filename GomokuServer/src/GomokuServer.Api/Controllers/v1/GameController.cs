@@ -61,7 +61,7 @@ public class GameController : Controller
 	/// </summary>
 	/// <response code="200">Returns information about newly created game</response>
 	[HttpPost]
-	[AllowAnonymous] // Allow anonymous users to access this endpoint
+	[AllowAnonymous]
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
@@ -91,7 +91,7 @@ public class GameController : Controller
 	/// <response code="204">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/join")]
-	[AllowAnonymous] // Allow anonymous users to access this endpoint
+	[AllowAnonymous]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
