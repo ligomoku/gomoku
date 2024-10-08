@@ -24,5 +24,3 @@ Default.args = {
     { time: "Custom", type: "" },
   ],
 };
-
-Default.args = {};
