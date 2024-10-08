@@ -1,8 +1,6 @@
 ﻿using GomokuServer.Api.Hubs.Messages.Server;
 using GomokuServer.Api.Swagger.Examples;
 
-using Microsoft.AspNetCore.Authorization;
-
 namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
@@ -23,55 +21,47 @@ public class GameController : Controller
 	}
 
 	/// <summary>
-	/// Get game history by game id
-	/// </summary>
-	/// <response code="200">Information about game </response>
-	/// <response code="404">Game by id not found</response>
-	[HttpGet("{gameId}/history")]
-	[ProducesResponseType(typeof(GetGameHistoryResponse), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	public async Task<IActionResult> GetGameHistory([FromRoute] string gameId)
-	{
-		var getGameSessionResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = gameId });
-
-		return getGameSessionResult.ToApiResponse();
-	}
-
-	/// <summary>
-	///	Get all games, which are available to join
-	/// </summary>
-	/// <response code="200">Returns list of games which are available to join</response>
-	[HttpGet()]
-	[Route("/api/games/available-to-join")]
-	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
-	{
-		var query = new GetAvailableToJoinGamesQuery() { Limit = request.Limit, Offset = request.Offset };
-		var getAvailableGames = await _mediator.Send(query);
-
-		return getAvailableGames.ToApiResponse();
-	}
-
-	/// <summary>
-	/// Create new game
+	/// Create new game (supports both anonymous and authenticated users)
 	/// </summary>
 	/// <response code="200">Returns information about new created game</response>
 	[HttpPost]
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[Authorize]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId! });
+		// Get userId and userName from claims (nullable)
+		string? userId = User.Claims.Get(JwtClaims.UserId);
+		string? userName = User.Claims.Get(JwtClaims.UserName);
 
-		return createGameResult.ToApiResponse();
+		if (string.IsNullOrEmpty(userId))
+		{
+			userId = Guid.NewGuid().ToString();
+			userName = $"Guest_{userId.Substring(0, 6)}";
+		}
+
+		var createGameResult = await _mediator.Send(new CreateGameCommand()
+		{
+			BoardSize = request.BoardSize,
+			PlayerId = userId
+		});
+
+		if (createGameResult.IsSuccess)
+		{
+			var response = new CreateGameResponse(
+				createGameResult.Value.GameId,
+				request.BoardSize
+			);
+			return Ok(response);
+		}
+		else
+		{
+			return BadRequest("Game creation failed");
+		}
 	}
 
 	/// <summary>
-	/// Join game
+	/// Join game (supports both anonymous and authenticated users)
 	/// </summary>
 	/// <response code="204">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
@@ -79,13 +69,22 @@ public class GameController : Controller
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[Authorize]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-		var userName = User.Claims.Get(JwtClaims.UserName);
+		string? userId = User.Claims.Get(JwtClaims.UserId);
+		string? userName = User.Claims.Get(JwtClaims.UserName);
 
-		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId! });
+		if (string.IsNullOrEmpty(userId))
+		{
+			userId = Guid.NewGuid().ToString();
+			userName = $"Guest_{userId.Substring(0, 6)}";
+		}
+
+		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand()
+		{
+			GameId = gameId,
+			PlayerId = userId
+		});
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
@@ -94,8 +93,11 @@ public class GameController : Controller
 				UserName = userName!
 			};
 			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, message);
+			return NoContent();
 		}
-
-		return addPlayerToGameResult.ToApiResponse();
+		else
+		{
+			return NotFound("Game or player not found");
+		}
 	}
 }

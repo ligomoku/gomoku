@@ -21,6 +21,14 @@ public class ClerkProfilesRepository : IProfilesRepository
 
 	public async Task<Result<Profile>> GetAsync(string id)
 	{
+		if (string.IsNullOrEmpty(id))
+		{
+			_logger.LogInformation("Anonymous user detected. Returning guest profile.");
+
+			var guestProfile = new Profile(Guid.NewGuid().ToString(), "Guest");
+			return Result.Success(guestProfile);
+		}
+
 		try
 		{
 			var clerkUser = await _memoryCache.GetOrCreateAsync(id, async entry =>
@@ -31,9 +39,16 @@ public class ClerkProfilesRepository : IProfilesRepository
 
 			return Result.Success(new Profile(id, clerkUser!.Username));
 		}
+		catch (ApiException apiException) when (apiException.StatusCode == System.Net.HttpStatusCode.NotFound)
+		{
+			_logger.LogWarning($"User with ID {id} not found in Clerk API. Returning guest profile.");
+
+			var guestProfile = new Profile(Guid.NewGuid().ToString(), "Guest");
+			return Result.Success(guestProfile);
+		}
 		catch (ApiException apiException)
 		{
-			_logger.LogError(apiException, apiException.Message);
+			_logger.LogError(apiException, $"Failed to fetch user profile: {apiException.Message}");
 			return Result.Error();
 		}
 	}

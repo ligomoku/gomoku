@@ -2,8 +2,6 @@ using GomokuServer.Api.Hubs.Interfaces;
 using GomokuServer.Api.Hubs.Messages.Client;
 using GomokuServer.Api.Hubs.Messages.Server;
 
-using Microsoft.AspNetCore.Authorization;
-
 using SignalRSwaggerGen.Attributes;
 
 namespace GomokuServer.Api.Hubs;
@@ -18,6 +16,20 @@ public class GameHub : Hub, IGameHub
 	{
 		_mediator = mediator;
 		_logger = logger;
+	}
+
+	private string GetUserId()
+	{
+		if (Context.User?.Identity != null && Context.User.Identity.IsAuthenticated)
+		{
+			var userId = Context.User.Claims.Get(JwtClaims.UserId);
+			if (!string.IsNullOrEmpty(userId))
+			{
+				return userId;
+			}
+		}
+
+		return Guid.NewGuid().ToString();
 	}
 
 	public async Task JoinGameGroup(string gameId)
@@ -39,21 +51,25 @@ public class GameHub : Hub, IGameHub
 		}
 	}
 
-	[Authorize]
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
 		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
 
-		var userId = Context?.User?.Claims.Get(JwtClaims.UserId);
+		var userId = GetUserId();
 
-		var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
+		var placeTileCommand = new PlaceTileCommand()
+		{
+			GameId = makeMoveMessage.GameId,
+			Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
+			PlayerId = userId
+		};
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
 		if (placeTileResult.IsSuccess)
 		{
 			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
-				PlayerId = userId!,
+				PlayerId = userId,
 				Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
 				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};
@@ -64,11 +80,23 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
-	[Authorize]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");
 
-		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
+		var userId = GetUserId();
+
+		var senderName = !string.IsNullOrEmpty(Context.User?.Identity?.Name)
+			? Context.User.Identity.Name
+			: $"Guest_{userId.Substring(0, 6)}";
+
+		var messageToSend = new ChatMessageClientMessage
+		{
+			GameId = messageRequest.GameId,
+			User = senderName,
+			Message = messageRequest.Message
+		};
+
+		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageToSend);
 	}
 }

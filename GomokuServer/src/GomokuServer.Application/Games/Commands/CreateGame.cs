@@ -52,6 +52,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Error();
 		}
 
-		return Result.Success(new CreateGameResponse(game.GameId));
+		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize));
 	}
 }

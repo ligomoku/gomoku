@@ -1,7 +1,9 @@
 ﻿namespace GomokuServer.Application.Responses;
 
-public record CreateGameResponse(string GameId)
-{
-	[Required]
-	public string GameId { get; } = GameId;
-}
+/// <summary>
+/// Response for game creation, containing the GameId and BoardSize of the newly created game.
+/// </summary>
+public record CreateGameResponse(
+	[Required] string GameId,
+	int BoardSize
+);

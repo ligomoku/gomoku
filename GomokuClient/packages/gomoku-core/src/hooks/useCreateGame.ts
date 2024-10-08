@@ -17,6 +17,8 @@ export const useCreateGameAndNavigate = (authToken: string) => {
         headers: getDefaultHeaders(authToken),
       });
 
+      console.log("Game created", response);
+
       return response.data;
     },
   });
@@ -26,8 +28,9 @@ export const useCreateGameAndNavigate = (authToken: string) => {
       { boardSize: 19 },
       {
         onSuccess: (data) => {
+          console.log("Game created", data);
           if (data?.gameId) {
-            navigate({ to: `/game/join/${data.gameId}` });
+            navigate({ to: `/game/join/${data?.gameId}` });
           } else {
             console.error("Game creation failed: No gameId received");
           }
