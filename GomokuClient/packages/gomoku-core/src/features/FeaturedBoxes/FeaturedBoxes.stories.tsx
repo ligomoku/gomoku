@@ -28,13 +28,21 @@ const mockedGames: SwaggerTypes.GetAvailableGamesResponse[] = [
   },
 ];
 
-const Template: StoryFn<FeaturedBoxesProps> = () => (
-  <FeaturedBoxes
-    games={mockedGames}
-    onGameClick={() => alert("Game Clicked")}
-  />
+const Template: StoryFn<FeaturedBoxesProps> = (args) => (
+  <FeaturedBoxes {...args} />
 );
 
 export const Default = Template.bind({});
 
-Default.args = {};
+Default.args = {
+  games: mockedGames,
+  onGameClick: (game) => alert(`Game clicked: ${game.gameId}`),
+  noGamesText: "No games available",
+};
+
+export const NoGames = Template.bind({});
+NoGames.args = {
+  games: [],
+  onGameClick: (game) => alert(`Game clicked: ${game.gameId}`),
+  noGamesText: "No games available",
+};
