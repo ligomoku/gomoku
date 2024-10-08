@@ -17,7 +17,7 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
 
   const authToken = typedStorage.getItem("jwtToken");
   if (!authToken) {
-    throw new Error("No authorization token available");
+    console.warn("No authorization token available, anonymous user detected");
   }
 
   try {
