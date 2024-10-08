@@ -23,7 +23,7 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
   try {
     await SwaggerServices.postApiGameByGameIdJoin({
       path: { gameId: gameID },
-      headers: getDefaultHeaders(authToken),
+      headers: getDefaultHeaders(authToken!),
     });
   } catch (error) {
     console.error("Failed to join game:", error);
