@@ -3,7 +3,7 @@ import { TimeControls } from "@/features/TimeControls";
 import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react";
 import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
@@ -11,11 +11,16 @@ import { SwaggerTypes, SwaggerServices } from "@/api";
 
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
+import { postApiGameByGameIdJoin } from "@/api/client";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { data: paginatedGames } = useFetchGames();
   const { jwtToken } = useAuthToken();
+
+  const handleJoinGame = useJoinGame(
+    jwtToken || typedStorage.getItem("jwtToken") || "",
+  );
 
   const handleCreateGame = useCreateGameAndNavigate(
     jwtToken || typedStorage.getItem("jwtToken") || "",
@@ -31,6 +36,18 @@ export const HomeGame = () => {
     }));
   };
 
+  const handleJoinNavigate = (gameId: string) => {
+    handleJoinGame.mutate(gameId, {
+      onSuccess: (data) => {
+        console.log("Game joined", data);
+        navigate({ to: `/game/join/${gameId}` });
+      },
+      onError: (error) => {
+        console.error("Error joining game:", error);
+      },
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <main className="container mx-auto p-4 sm:p-6">
@@ -39,7 +56,7 @@ export const HomeGame = () => {
             <SectionList
               title="Online games"
               items={transformGameData(paginatedGames?.data)}
-              onItemClick={(item) => navigate({ to: `/game/join/${item.id}` })}
+              onItemClick={(item) => handleJoinNavigate(item.id)}
               noItemsText={t`No online games were created`}
             />
             <p className="text-base sm:text-lg">
@@ -90,6 +107,20 @@ const useFetchGames = () =>
       return response.data;
     },
     refetchInterval: 5000,
+  });
+
+const useJoinGame = (authToken: string) =>
+  useMutation<void, Error, string>({
+    mutationFn: async (gameId) => {
+      const response = await postApiGameByGameIdJoin({
+        path: { gameId },
+        headers: getDefaultHeaders(authToken),
+      });
+
+      if (!response.data) {
+        throw new Error("Invalid game data received");
+      }
+    },
   });
 
 //TODO: properly wrap with i18n
