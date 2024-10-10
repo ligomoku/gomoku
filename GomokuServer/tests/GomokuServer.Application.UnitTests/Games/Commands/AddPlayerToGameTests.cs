@@ -85,12 +85,14 @@ public class AddPlayerToGameTests
 	public async Task AddPlayerToGame_GameNotFound_ShouldReturnNotFound()
 	{
 		// Arrange
+		var player = new Profile("Player1Id", "Player1UserName");
 		var command = new AddPlayerToGameCommand
 		{
 			GameId = "NonExistentGameId",
-			PlayerId = "Player1"
+			PlayerId = player.Id
 		};
 
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
 		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
 
 		// Act
