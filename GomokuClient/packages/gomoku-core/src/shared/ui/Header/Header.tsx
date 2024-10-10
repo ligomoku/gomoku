@@ -2,6 +2,7 @@ import { useState, ReactNode } from "react";
 import { Input } from "@/shared/ui/input";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/shared/ui/button";
+import { typedStorage } from "@/shared/lib/utils";
 
 export interface HeaderProps {
   onCreateGame: () => void;
@@ -31,6 +32,7 @@ export const Header = ({
   UserButtonComponent,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  if (SignedOutComponent) typedStorage.clear();
 
   return (
     <header className="bg-[#2b2b2b] p-4 sm:p-6">
