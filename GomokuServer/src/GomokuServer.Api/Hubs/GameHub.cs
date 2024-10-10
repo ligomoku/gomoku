@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+
 using SignalRSwaggerGen.Attributes;
 
 namespace GomokuServer.Api.Hubs;
@@ -33,6 +35,7 @@ public class GameHub : Hub, IGameHub
 		}
 	}
 
+	[AllowAnonymous]
 	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
 	{
 		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
@@ -62,6 +65,7 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
+	[AllowAnonymous]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");
