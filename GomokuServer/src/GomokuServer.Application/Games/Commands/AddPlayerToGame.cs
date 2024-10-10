@@ -9,8 +9,7 @@ public record AddPlayerToGameCommand : ICommand
 	[Required]
 	public required string GameId { get; init; }
 
-	[Required]
-	public required string PlayerId { get; init; }
+	public string? PlayerId { get; init; }
 }
 
 public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameCommand>
@@ -31,25 +30,20 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 
 	public async Task<Result> Handle(AddPlayerToGameCommand request, CancellationToken cancellationToken)
 	{
-		_logger.LogInformation($"Attempting to add player {request.PlayerId} to game {request.GameId}");
-
 		var getGameResult = await _gameRepository.GetAsync(request.GameId);
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
-			_logger.LogWarning($"Game with ID {request.GameId} not found.");
 			return Result.NotFound($"Game with ID {request.GameId} not found");
 		}
 
 		var getProfileResult = await _profilesRepository.GetAsync(request.PlayerId);
 		if (getProfileResult.Status == ResultStatus.NotFound)
 		{
-			_logger.LogWarning($"Player with ID {request.PlayerId} not found.");
 			return Result.NotFound($"Player with ID {request.PlayerId} not found");
 		}
 
 		if (getProfileResult.Status != ResultStatus.Ok)
 		{
-			_logger.LogError($"Error fetching player with ID {request.PlayerId}. Status: {getProfileResult.Status}");
 			return Result.Error($"Error fetching player with ID {request.PlayerId}");
 		}
 
@@ -58,18 +52,15 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 
 		if (!addingResult.IsValid)
 		{
-			_logger.LogWarning($"Validation failed when adding player {request.PlayerId} to game {request.GameId}: {addingResult.ValidationError}");
 			return Result.Invalid(new ValidationError(addingResult.ValidationError.ToString()));
 		}
 
 		var saveResult = await _gameRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
 		{
-			_logger.LogError($"Failed to save the game after adding player {request.PlayerId}.");
 			return Result.Error("Failed to save game changes");
 		}
 
-		_logger.LogInformation($"Player {request.PlayerId} successfully added to game {request.GameId}");
 		return Result.Success();
 	}
 }

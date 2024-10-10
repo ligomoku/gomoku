@@ -4,6 +4,7 @@ using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Infrastructure.Cache;
 
 using Microsoft.OpenApi.Models;
 
@@ -72,7 +73,7 @@ public static class ServiceCollectionExtensions
 		return services;
 	}
 
-	public static IServiceCollection RegisterCors(this IServiceCollection services, string corsPolicyName, Config config)
+	public static IServiceCollection RegisterCors(this IServiceCollection services, string corsPolicyName, EnvVariables config)
 	{
 		services.AddCors(options =>
 		{
@@ -92,6 +93,18 @@ public static class ServiceCollectionExtensions
 			.AddSignalR()
 			.AddJsonProtocol();
 		services.AddSingleton<IUserIdProvider, UserIdFromJwtProvider>();
+
+		return services;
+	}
+
+	public static IServiceCollection RegisterCache(this IServiceCollection services, IConfiguration configuration)
+	{
+		services.AddSingleton(new CacheServiceSettings()
+		{
+			TimeToLiveInMinutes = TimeSpan.FromMinutes(Convert.ToInt32(configuration["Cache:TimeToLiveInMinutes"]))
+		});
+		services.AddSingleton<ICacheService, MemoryCacheService>();
+		services.AddMemoryCache();
 
 		return services;
 	}
@@ -140,7 +153,7 @@ public static class ServiceCollectionExtensions
 		return services;
 	}
 
-	public static IServiceCollection RegisterGomokuServices(this IServiceCollection services, Config config)
+	public static IServiceCollection RegisterGomokuServices(this IServiceCollection services, EnvVariables config)
 	{
 		services.AddSingleton<IRandomProvider, RandomProvider>();
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

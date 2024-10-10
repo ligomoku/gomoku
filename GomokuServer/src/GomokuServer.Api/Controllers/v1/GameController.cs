@@ -67,19 +67,10 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		string? userId = User.Claims.Get(JwtClaims.UserId);
-		string? userName = User.Claims.Get(JwtClaims.UserName);
-
-		if (string.IsNullOrEmpty(userId))
-		{
-			userId = Guid.NewGuid().ToString();
-			userName = $"Guest_{userId.Substring(0, 6)}";
-		}
-
 		var createGameResult = await _mediator.Send(new CreateGameCommand
 		{
 			BoardSize = request.BoardSize,
-			PlayerId = userId
+			PlayerId = User.Claims.Get(JwtClaims.UserId)
 		});
 
 		return createGameResult.ToApiResponse();
@@ -97,24 +88,15 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		string? userId = User.Claims.Get(JwtClaims.UserId);
-		string? userName = User.Claims.Get(JwtClaims.UserName);
-
-		if (string.IsNullOrEmpty(userId))
-		{
-			userId = Guid.NewGuid().ToString();
-			userName = $"Guest_{userId.Substring(0, 6)}";
-		}
-
 		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand
 		{
 			GameId = gameId,
-			PlayerId = userId
+			PlayerId = User.Claims.Get(JwtClaims.UserId),
 		});
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
-			var message = new PlayerJoinedGameMessage { UserName = userName! };
+			var message = new PlayerJoinedGameMessage { UserId = addPlayerToGameResult.Value };
 			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, message);
 		}
 

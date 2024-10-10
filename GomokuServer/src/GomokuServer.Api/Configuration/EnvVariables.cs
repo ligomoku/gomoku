@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Api.Configuration;
 
-public record Config
+public record EnvVariables
 {
 	public required GomokuClient GomokuClient { get; init; }
 	public required Clerk Clerk { get; init; }

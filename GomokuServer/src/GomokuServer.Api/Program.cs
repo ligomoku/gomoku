@@ -1,12 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
-var config = EnvironmentLoader.LoadEnvironment(builder);
+var envVariables = EnvironmentLoader.LoadEnvironment(builder);
 
 builder.Services.RegisterSwagger();
 
 builder.Services.RegisterApiVersioning();
 
-builder.Services.RegisterCors(CorsPolicyName.GomokuClient, config);
+builder.Services.RegisterCors(CorsPolicyName.GomokuClient, envVariables);
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
@@ -15,9 +15,9 @@ builder.Services.RegisterAuthentication();
 
 builder.Services.RegisterSignalR();
 
-builder.Services.AddMemoryCache();
+builder.Services.RegisterCache(builder.Configuration);
 
-builder.Services.RegisterGomokuServices(config);
+builder.Services.RegisterGomokuServices(envVariables);
 
 var app = builder.Build();
 

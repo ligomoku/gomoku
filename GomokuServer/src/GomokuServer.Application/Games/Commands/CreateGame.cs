@@ -9,8 +9,7 @@ public record CreateGameCommand : ICommand<CreateGameResponse>
 	[Required]
 	public required int BoardSize { get; init; }
 
-	[Required]
-	public required string PlayerId { get; init; }
+	public string? PlayerId { get; init; }
 }
 
 public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, CreateGameResponse>
@@ -19,13 +18,20 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 	private const int BOARD_MAX_SIZE = 19;
 	private readonly IGameRepository _gameRepository;
 	private readonly IProfilesRepository _playersRepository;
+	private readonly ICacheService _cacheService;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
-	public CreateGameCommandHandler(IGameRepository gameRepository, IProfilesRepository playersRepository, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
+	public CreateGameCommandHandler(
+		IGameRepository gameRepository,
+		IProfilesRepository profilesRepository,
+		ICacheService cacheService,
+		IRandomProvider randomProvider,
+		IDateTimeProvider dateTimeProvider)
 	{
 		_gameRepository = gameRepository;
-		_playersRepository = playersRepository;
+		_playersRepository = profilesRepository;
+		_cacheService = cacheService;
 		_randomProvider = randomProvider;
 		_dateTimeProvider = dateTimeProvider;
 	}
@@ -37,7 +43,22 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		var getPlayerResult = await _playersRepository.GetAsync(request.PlayerId);
+		var isCreatedByAnonymusPlayer = request.PlayerId == null;
+
+		if (isCreatedByAnonymusPlayer)
+		{
+			var guid = Guid.NewGuid().ToString();
+			var tempAnonymusProfile = new Profile(guid, $"Guest {guid[..6]}");
+
+			var anonymusGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
+			anonymusGame.AddOpponent(tempAnonymusProfile);
+
+			await _cacheService.CreateAsync(anonymusGame.GameId, anonymusGame, cancellationToken);
+
+			return Result.Success(new CreateGameResponse(anonymusGame.GameId, request.BoardSize, tempAnonymusProfile.Id));
+		}
+
+		var getPlayerResult = await _playersRepository.GetAsync(request.PlayerId!);
 		if (!getPlayerResult.IsSuccess)
 		{
 			return Result.Error("Cannot get user by id. See logs for more details");
@@ -52,6 +73,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Error();
 		}
 
-		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize));
+		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize, request.PlayerId!));
 	}
 }

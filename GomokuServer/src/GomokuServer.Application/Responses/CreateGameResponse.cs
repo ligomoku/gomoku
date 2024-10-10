@@ -5,5 +5,6 @@
 /// </summary>
 public record CreateGameResponse(
 	[Required] string GameId,
-	int BoardSize
+	int BoardSize,
+	string PlayerId
 );
