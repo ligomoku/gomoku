@@ -1,11 +1,13 @@
 ﻿using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class CreateGameTests
 {
-	private IGameRepository _gameRepository;
+	private IGamesRepository _gameRepository;
 	private IProfilesRepository _profilesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
@@ -14,7 +16,7 @@ public class CreateGameTests
 	[SetUp]
 	public void Setup()
 	{
-		_gameRepository = Substitute.For<IGameRepository>();
+		_gameRepository = Substitute.For<IGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();

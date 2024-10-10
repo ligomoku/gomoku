@@ -1,4 +1,6 @@
 ﻿using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
 using GomokuServer.Core.Interfaces;
 
 using Microsoft.Extensions.Logging;
@@ -8,7 +10,7 @@ namespace GomokuServer.Application.UnitTests.Games.Commands;
 public class AddPlayerToGameTests
 {
 	private int _validBoardSize;
-	private IGameRepository _gameRepository;
+	private IGamesRepository _gameRepository;
 	private IProfilesRepository _profilesRepository;
 	private AddPlayerToGameCommandHandler _handler;
 
@@ -16,7 +18,7 @@ public class AddPlayerToGameTests
 	public void Setup()
 	{
 		_validBoardSize = 15;
-		_gameRepository = Substitute.For<IGameRepository>();
+		_gameRepository = Substitute.For<IGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 
 		_handler = new AddPlayerToGameCommandHandler(

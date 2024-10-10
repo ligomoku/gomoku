@@ -1,5 +1,5 @@
-﻿using GomokuServer.Application.Dto;
-using GomokuServer.Application.Games.Commands;
+﻿using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
@@ -7,7 +7,7 @@ namespace GomokuServer.Application.UnitTests.Games.Commands;
 public class PlaceTileTests
 {
 	private Game _game;
-	private IGameRepository _gameRepository;
+	private IGamesRepository _gameRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 	private PlaceTileCommandHandler _handler;
@@ -16,7 +16,7 @@ public class PlaceTileTests
 	public void Setup()
 	{
 		_game = Substitute.For<Game>(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
-		_gameRepository = Substitute.For<IGameRepository>();
+		_gameRepository = Substitute.For<IGamesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_handler = new PlaceTileCommandHandler(_gameRepository);

@@ -1,4 +1,6 @@
-﻿using Tapper;
+﻿using GomokuServer.Application.Games.Dto;
+
+using Tapper;
 
 namespace GomokuServer.Api.Hubs.Messages.Server;
 

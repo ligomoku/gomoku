@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Application.Games.Queries;
 using GomokuServer.Application.UnitTests.TestData;
 using GomokuServer.Core.Interfaces;
@@ -9,7 +10,7 @@ namespace GomokuServer.Application.UnitTests.Games.Queries;
 public class GetGamesByUsernameTests
 {
 	private TestDataProvider _testDataProvider;
-	private IGameRepository _gameRepository;
+	private IGamesRepository _gameRepository;
 	private IDateTimeProvider _dateTimeProvider;
 	private GetGamesByUsernameQueryHandler _handler;
 
@@ -17,7 +18,7 @@ public class GetGamesByUsernameTests
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
-		_gameRepository = Substitute.For<IGameRepository>();
+		_gameRepository = Substitute.For<IGamesRepository>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_handler = new GetGamesByUsernameQueryHandler(_gameRepository);
 	}

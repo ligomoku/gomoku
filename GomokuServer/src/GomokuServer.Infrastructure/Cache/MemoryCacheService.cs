@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using GomokuServer.Application.Common.Interfaces;
+
+using Microsoft.Extensions.Caching.Memory;
 
 namespace GomokuServer.Infrastructure.Cache;
 

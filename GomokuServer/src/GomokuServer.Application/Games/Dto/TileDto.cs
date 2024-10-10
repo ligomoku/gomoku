@@ -1,6 +1,6 @@
 ﻿using Tapper;
 
-namespace GomokuServer.Application.Dto;
+namespace GomokuServer.Application.Games.Dto;
 
 [TranspilationSource]
 public record TileDto(int X, int Y)

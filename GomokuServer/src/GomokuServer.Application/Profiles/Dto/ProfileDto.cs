@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Dto;
+﻿namespace GomokuServer.Application.Profiles.Dto;
 
 public record ProfileDto(string PlayerId, string UserName)
 {

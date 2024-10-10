@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 
-using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
+using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Common.Responses;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -15,9 +17,9 @@ public record GetAvailableToJoinGamesQuery
 public class GetAvailableToJoinGamesQueryHandler
 	: IQueryHandler<GetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 
-	public GetAvailableToJoinGamesQueryHandler(IGameRepository gameRepository)
+	public GetAvailableToJoinGamesQueryHandler(IGamesRepository gameRepository)
 	{
 		_gameRepository = gameRepository;
 	}

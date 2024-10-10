@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Application.Games.Queries;
 using GomokuServer.Application.UnitTests.TestData;
 
@@ -8,14 +9,14 @@ namespace GomokuServer.Application.UnitTests.Games.Queries;
 public class GetAvailableToJoinGamesTests
 {
 	private TestDataProvider _testDataProvider;
-	private IGameRepository _gameRepository;
+	private IGamesRepository _gameRepository;
 	private GetAvailableToJoinGamesQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
-		_gameRepository = Substitute.For<IGameRepository>();
+		_gameRepository = Substitute.For<IGamesRepository>();
 		_handler = new GetAvailableToJoinGamesQueryHandler(_gameRepository);
 	}
 

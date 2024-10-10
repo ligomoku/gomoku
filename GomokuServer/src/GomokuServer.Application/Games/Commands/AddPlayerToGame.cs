@@ -1,4 +1,6 @@
-﻿using GomokuServer.Application.Interfaces.Common;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
 
 using Microsoft.Extensions.Logging;
 
@@ -14,12 +16,12 @@ public record AddPlayerToGameCommand : ICommand
 
 public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameCommand>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 	private readonly IProfilesRepository _profilesRepository;
 	private readonly ILogger<AddPlayerToGameCommandHandler> _logger;
 
 	public AddPlayerToGameCommandHandler(
-		IGameRepository gameRepository,
+		IGamesRepository gameRepository,
 		IProfilesRepository profilesRepository,
 		ILogger<AddPlayerToGameCommandHandler> logger)
 	{

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq.Expressions;
 
+using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Core.Entities;
 
 namespace GomokuServer.Infrastructure.Data;
 
-public class InMemoryGameRepository : IGameRepository
+public class InMemoryAnonymusGamesRepository : IAnonymusGamesRepository
 {
 	private readonly ConcurrentDictionary<string, Game> _games = new();
 

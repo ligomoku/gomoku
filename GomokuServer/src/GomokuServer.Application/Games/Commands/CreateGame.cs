@@ -1,5 +1,7 @@
-﻿using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Games.Responses;
+using GomokuServer.Application.Profiles.Interfaces;
 using GomokuServer.Core.Interfaces;
 
 namespace GomokuServer.Application.Games.Commands;
@@ -16,14 +18,14 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 {
 	private const int BOARD_MIN_SIZE = 13;
 	private const int BOARD_MAX_SIZE = 19;
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 	private readonly IProfilesRepository _playersRepository;
 	private readonly ICacheService _cacheService;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
 	public CreateGameCommandHandler(
-		IGameRepository gameRepository,
+		IGamesRepository gameRepository,
 		IProfilesRepository profilesRepository,
 		ICacheService cacheService,
 		IRandomProvider randomProvider,
@@ -47,8 +49,8 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 
 		if (isCreatedByAnonymusPlayer)
 		{
-			var guid = Guid.NewGuid().ToString();
-			var tempAnonymusProfile = new Profile(guid, $"Guest {guid[..6]}");
+			var playerId = Guid.NewGuid().ToString();
+			var tempAnonymusProfile = new Profile(playerId, $"Guest {playerId[..6]}");
 
 			var anonymusGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
 			anonymusGame.AddOpponent(tempAnonymusProfile);

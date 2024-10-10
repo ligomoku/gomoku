@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Interfaces.Common;
+﻿namespace GomokuServer.Application.Common.Interfaces;
 
 public interface IPaginatedQuery<TResponse> : IQuery<TResponse>
 {

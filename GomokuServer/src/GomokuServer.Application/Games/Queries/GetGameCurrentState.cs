@@ -1,6 +1,7 @@
-﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Extensions;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -12,9 +13,9 @@ public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 
 public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 
-	public GetGameCurrentStateQueryHandler(IGameRepository gameRepository)
+	public GetGameCurrentStateQueryHandler(IGamesRepository gameRepository)
 	{
 		_gameRepository = gameRepository;
 	}

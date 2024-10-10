@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Responses;
+﻿namespace GomokuServer.Application.Common.Responses;
 
 public record PaginatedResponse<T>
 {

@@ -1,4 +1,6 @@
 ﻿using GomokuServer.Api.Swagger.Examples;
+using GomokuServer.Application.Common.Responses;
+using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Api.Controllers.v1;
 

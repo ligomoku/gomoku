@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Interfaces;
+﻿namespace GomokuServer.Application.Profiles.Interfaces;
 
 public interface IProfilesRepository
 {

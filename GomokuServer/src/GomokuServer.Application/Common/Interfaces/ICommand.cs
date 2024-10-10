@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Interfaces.Common;
+﻿namespace GomokuServer.Application.Common.Interfaces;
 
 public interface ICommand : IRequest<Result>;
 

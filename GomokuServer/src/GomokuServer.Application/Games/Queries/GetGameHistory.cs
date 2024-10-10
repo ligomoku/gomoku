@@ -1,5 +1,6 @@
-﻿using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -11,9 +12,9 @@ public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 
 public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 
-	public GetGameHistoryQueryHandler(IGameRepository gameRepository)
+	public GetGameHistoryQueryHandler(IGamesRepository gameRepository)
 	{
 		_gameRepository = gameRepository;
 	}

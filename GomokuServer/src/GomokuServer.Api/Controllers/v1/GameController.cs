@@ -1,5 +1,7 @@
 ﻿using GomokuServer.Api.Hubs.Messages.Server;
 using GomokuServer.Api.Swagger.Examples;
+using GomokuServer.Application.Common.Responses;
+using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 

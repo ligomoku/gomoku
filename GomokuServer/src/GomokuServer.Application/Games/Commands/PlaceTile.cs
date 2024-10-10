@@ -1,5 +1,7 @@
-﻿using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Games.Dto;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Application.Games.Commands;
 
@@ -17,9 +19,9 @@ public record PlaceTileCommand : ICommand<PlaceTileResponse>
 
 public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTileResponse>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IGamesRepository _gameRepository;
 
-	public PlaceTileCommandHandler(IGameRepository gameRepository)
+	public PlaceTileCommandHandler(IGamesRepository gameRepository)
 	{
 		_gameRepository = gameRepository;
 	}

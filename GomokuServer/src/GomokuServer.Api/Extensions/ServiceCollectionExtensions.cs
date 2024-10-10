@@ -3,7 +3,9 @@
 using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
-using GomokuServer.Application.Interfaces.Common;
+using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
 using GomokuServer.Infrastructure.Cache;
 
 using Microsoft.OpenApi.Models;
@@ -157,7 +159,8 @@ public static class ServiceCollectionExtensions
 	{
 		services.AddSingleton<IRandomProvider, RandomProvider>();
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-		services.AddSingleton<IGameRepository, InMemoryGameRepository>();
+		services.AddSingleton<IGamesRepository, InMemoryGamesRepository>();
+		services.AddSingleton<IAnonymusGamesRepository, InMemoryAnonymusGamesRepository>();
 		services.AddSingleton<IProfilesRepository, ClerkProfilesRepository>();
 		services.RegisterCommandsAndQueries();
 

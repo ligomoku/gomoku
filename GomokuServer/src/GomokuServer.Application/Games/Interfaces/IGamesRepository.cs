@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
 
-namespace GomokuServer.Application.Interfaces;
+using GomokuServer.Application.Common.Interfaces;
 
-public interface IGameRepository : IPaginatedRepository<Game>
+namespace GomokuServer.Application.Games.Interfaces;
+
+public interface IGamesRepository : IPaginatedRepository<Game>
 {
 	Task<Result<Game>> GetAsync(string id);
 

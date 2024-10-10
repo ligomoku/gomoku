@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Application.Interfaces;
+﻿namespace GomokuServer.Application.Common.Interfaces;
 
 public interface ICacheService
 {

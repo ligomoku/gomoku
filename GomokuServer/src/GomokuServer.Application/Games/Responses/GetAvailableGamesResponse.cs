@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Responses;
+﻿using GomokuServer.Application.Profiles.Dto;
+
+namespace GomokuServer.Application.Games.Responses;
 
 public record GetAvailableGamesResponse(string GameId, ProfileDto Opponent)
 {
