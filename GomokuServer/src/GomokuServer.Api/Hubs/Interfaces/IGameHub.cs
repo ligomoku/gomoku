@@ -1,7 +1,4 @@
-﻿using GomokuServer.Api.Hubs.Messages.Client;
-using GomokuServer.Api.Hubs.Messages.Server;
-
-using TypedSignalR.Client;
+﻿using TypedSignalR.Client;
 
 namespace GomokuServer.Api.Hubs.Interfaces;
 

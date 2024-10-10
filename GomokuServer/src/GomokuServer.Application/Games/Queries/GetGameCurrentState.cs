@@ -1,6 +1,4 @@
 ﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -12,16 +10,23 @@ public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 
 public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IRegisteredGamesRepository _registeredGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 
-	public GetGameCurrentStateQueryHandler(IGameRepository gameRepository)
+	public GetGameCurrentStateQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymousGamesRepository anonymousGamesRepository)
 	{
-		_gameRepository = gameRepository;
+		_registeredGamesRepository = gameRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 	}
 
 	public async Task<Result<GetGameCurrentStateResponse>> Handle(GetGameCurrentStateQuery request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _gameRepository.GetAsync(request.GameId);
+		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
+
+		if (!getGameResult.IsSuccess)
+		{
+			getGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
+		}
 
 		return getGameResult.Map(game => new GetGameCurrentStateResponse
 		{

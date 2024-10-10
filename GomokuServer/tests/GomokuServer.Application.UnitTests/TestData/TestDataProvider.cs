@@ -1,6 +1,4 @@
-﻿using GomokuServer.Core.Interfaces;
-
-namespace GomokuServer.Application.UnitTests.TestData;
+﻿namespace GomokuServer.Application.UnitTests.TestData;
 
 public class TestDataProvider
 {

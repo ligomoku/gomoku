@@ -1,9 +1,4 @@
-﻿using System.Linq.Expressions;
-
-using GomokuServer.Application.Interfaces.Common;
-using GomokuServer.Application.Responses;
-
-namespace GomokuServer.Application.Games.Queries;
+﻿namespace GomokuServer.Application.Games.Queries;
 
 public class GetGamesByUsernameQuery
 	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>
@@ -17,11 +12,11 @@ public class GetGamesByUsernameQuery
 public class GetGamesByUsernameQueryHandler
 	: IQueryHandler<GetGamesByUsernameQuery, PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>
 {
-	private readonly IGameRepository _gameRepository;
+	private readonly IRegisteredGamesRepository _registeredGamesRepository;
 
-	public GetGamesByUsernameQueryHandler(IGameRepository gameRepository)
+	public GetGamesByUsernameQueryHandler(IRegisteredGamesRepository registeredGamesRepository)
 	{
-		_gameRepository = gameRepository;
+		_registeredGamesRepository = registeredGamesRepository;
 	}
 
 	public async Task<Result<PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>>
@@ -30,9 +25,9 @@ public class GetGamesByUsernameQueryHandler
 		Expression<Func<Game, bool>> expression =
 			game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
 
-		var availableGamesCount = await _gameRepository.CountAsync(expression);
+		var availableGamesCount = await _registeredGamesRepository.CountAsync(expression);
 
-		var gamesByUsernameResult = await _gameRepository
+		var gamesByUsernameResult = await _registeredGamesRepository
 			.GetByExpressionAsync(expression,
 				query => query
 					.Skip(request.Offset)

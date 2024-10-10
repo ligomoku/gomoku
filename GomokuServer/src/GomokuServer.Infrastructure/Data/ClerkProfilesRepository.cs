@@ -1,7 +1,8 @@
-﻿using GomokuServer.Core.Entities;
+﻿using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
+using GomokuServer.Core.Entities;
 using GomokuServer.Infrastructure.Api;
 
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace GomokuServer.Infrastructure.Data;
@@ -9,13 +10,13 @@ namespace GomokuServer.Infrastructure.Data;
 public class ClerkProfilesRepository : IProfilesRepository
 {
 	private readonly IClerkBackendApi _clerkBackendApiHttpClient;
-	private readonly IMemoryCache _memoryCache;
+	private readonly ICacheService _cache;
 	private readonly ILogger<ClerkProfilesRepository> _logger;
 
-	public ClerkProfilesRepository(IClerkBackendApi clerkBackendApiHttpClient, IMemoryCache memoryCache, ILogger<ClerkProfilesRepository> logger)
+	public ClerkProfilesRepository(IClerkBackendApi clerkBackendApiHttpClient, ICacheService cache, ILogger<ClerkProfilesRepository> logger)
 	{
 		_clerkBackendApiHttpClient = clerkBackendApiHttpClient;
-		_memoryCache = memoryCache;
+		_cache = cache;
 		_logger = logger;
 	}
 
@@ -23,17 +24,20 @@ public class ClerkProfilesRepository : IProfilesRepository
 	{
 		try
 		{
-			var clerkUser = await _memoryCache.GetOrCreateAsync(id, async entry =>
+			var clerkUser = await _cache.GetOrCreateAsync(id, async entry =>
 			{
-				entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
 				return await _clerkBackendApiHttpClient.GetUserByIdAsync(id);
-			});
+			}, CancellationToken.None);
 
 			return Result.Success(new Profile(id, clerkUser!.Username));
 		}
+		catch (ApiException apiException) when (apiException.StatusCode == System.Net.HttpStatusCode.NotFound)
+		{
+			return Result.NotFound($"User with id {id} not found");
+		}
 		catch (ApiException apiException)
 		{
-			_logger.LogError(apiException, apiException.Message);
+			_logger.LogError(apiException, $"Failed to fetch user profile: {apiException.Message}");
 			return Result.Error();
 		}
 	}

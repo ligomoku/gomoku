@@ -1,5 +1,6 @@
-﻿using GomokuServer.Api.Hubs.Messages.Server;
-using GomokuServer.Api.Swagger.Examples;
+﻿using GomokuServer.Api.Swagger.Examples;
+using GomokuServer.Application.Common.Responses;
+using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -33,66 +34,71 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> GetGameHistory([FromRoute] string gameId)
 	{
-		var getGameSessionResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = gameId });
-
+		var getGameSessionResult = await _mediator.Send(new GetGameHistoryQuery { GameId = gameId });
 		return getGameSessionResult.ToApiResponse();
 	}
 
 	/// <summary>
-	///	Get all games, which are available to join
+	/// Get all games available to join
 	/// </summary>
-	/// <response code="200">Returns list of games which are available to join</response>
-	[HttpGet()]
+	/// <response code="200">Returns list of games that are available to join</response>
+	[HttpGet]
 	[Route("/api/games/available-to-join")]
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
+	public async Task<IActionResult> GetAvailableGames([FromQuery] GetAvailableGamesRequest request)
 	{
-		var query = new GetAvailableToJoinGamesQuery() { Limit = request.Limit, Offset = request.Offset };
-		var getAvailableGames = await _mediator.Send(query);
+		var query = new GetAvailableToJoinGamesQuery
+		{
+			IsAnonymous = request.IsAnonymous,
+			Limit = request.Limit,
+			Offset = request.Offset
+		};
 
-		return getAvailableGames.ToApiResponse();
+		var availableGamesResult = await _mediator.Send(query);
+		return availableGamesResult.ToApiResponse();
 	}
 
 	/// <summary>
-	/// Create new game
+	/// Create new game (supports both anonymous and authenticated users)
 	/// </summary>
-	/// <response code="200">Returns information about new created game</response>
+	/// <response code="200">Returns information about newly created game</response>
 	[HttpPost]
+	[AllowAnonymous]
 	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
-	[Authorize]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-		var createGameResult = await _mediator.Send(new CreateGameCommand() { BoardSize = request.BoardSize, PlayerId = userId! });
+		var createGameResult = await _mediator.Send(new CreateGameCommand
+		{
+			BoardSize = request.BoardSize,
+			PlayerId = User.Claims.Get(JwtClaims.UserId)
+		});
 
 		return createGameResult.ToApiResponse();
 	}
 
 	/// <summary>
-	/// Join game
+	/// Join game (supports both anonymous and authenticated users)
 	/// </summary>
-	/// <response code="204">Player with specified id successfully joined the game</response>
+	/// <response code="200">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/join")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(AddPlayerToGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
-	[Authorize]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var userId = User.Claims.Get(JwtClaims.UserId);
-		var userName = User.Claims.Get(JwtClaims.UserName);
-
-		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand() { GameId = gameId, PlayerId = userId! });
+		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand
+		{
+			GameId = gameId,
+			PlayerId = User.Claims.Get(JwtClaims.UserId),
+		});
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
-			var message = new PlayerJoinedGameMessage()
-			{
-				UserName = userName!
-			};
+			var message = new PlayerJoinedGameMessage { UserId = addPlayerToGameResult.Value.PlayerId };
 			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, message);
 		}
 

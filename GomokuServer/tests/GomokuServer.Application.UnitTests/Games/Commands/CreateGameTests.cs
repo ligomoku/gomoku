@@ -1,11 +1,9 @@
-﻿using GomokuServer.Application.Games.Commands;
-using GomokuServer.Core.Interfaces;
-
-namespace GomokuServer.Application.UnitTests.Games.Commands;
+﻿namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class CreateGameTests
 {
-	private IGameRepository _gameRepository;
+	private IRegisteredGamesRepository _registeredGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IProfilesRepository _profilesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
@@ -14,13 +12,15 @@ public class CreateGameTests
 	[SetUp]
 	public void Setup()
 	{
-		_gameRepository = Substitute.For<IGameRepository>();
+		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
 		_handler = new CreateGameCommandHandler(
-			_gameRepository,
+			_registeredGamesRepository,
+			_anonymousGamesRepository,
 			_profilesRepository,
 			_randomProvider,
 			_dateTimeProvider);
@@ -37,7 +37,7 @@ public class CreateGameTests
 		};
 
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(new Profile(command.PlayerId, "Alice")));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -46,7 +46,7 @@ public class CreateGameTests
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.Should().NotBeNull();
 		result.Value.GameId.Should().NotBeNullOrEmpty();
-		await _gameRepository.Received(1).SaveAsync(Arg.Any<Game>());
+		await _registeredGamesRepository.Received(1).SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -65,7 +65,7 @@ public class CreateGameTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
 		result.ValidationErrors.Count().Should().Be(1);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _registeredGamesRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -84,7 +84,7 @@ public class CreateGameTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
 		result.ValidationErrors.Count().Should().Be(1);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _registeredGamesRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]

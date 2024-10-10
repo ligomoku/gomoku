@@ -6,15 +6,15 @@ namespace GomokuServer.Application.UnitTests.Games.Queries;
 public class GetGameHistoryTests
 {
 	private TestDataProvider _testDataProvider;
-	private IGameRepository _gameRepository;
+	private IRegisteredGamesRepository _registeredGamesRepository;
 	private GetGameHistoryQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
-		_gameRepository = Substitute.For<IGameRepository>();
-		_handler = new GetGameHistoryQueryHandler(_gameRepository);
+		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
+		_handler = new GetGameHistoryQueryHandler(_registeredGamesRepository);
 	}
 
 	[Test]
@@ -23,7 +23,7 @@ public class GetGameHistoryTests
 		// Arrange
 		var game = _testDataProvider.GetGame_OnePlayerJoined();
 
-		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
+		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
 		var query = new GetGameHistoryQuery { GameId = game.GameId };
 
@@ -38,7 +38,7 @@ public class GetGameHistoryTests
 		getGameResponse.Players!.White.Should().BeNull();
 		getGameResponse.MovesHistory.Should().BeEmpty();
 
-		await _gameRepository.Received(1).GetAsync(game.GameId);
+		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
 
 	[Test]
@@ -46,7 +46,7 @@ public class GetGameHistoryTests
 	{
 		// Arrange
 		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
-		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
+		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
 		var query = new GetGameHistoryQuery { GameId = game.GameId };
 
@@ -61,6 +61,6 @@ public class GetGameHistoryTests
 		getGameResponse.Players!.White!.Should().Be(game.Players!.White!.UserName);
 		getGameResponse.MovesHistory.Should().BeEmpty();
 
-		await _gameRepository.Received(1).GetAsync(game.GameId);
+		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
 }

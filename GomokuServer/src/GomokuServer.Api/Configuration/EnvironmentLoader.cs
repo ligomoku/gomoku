@@ -2,7 +2,7 @@ namespace GomokuServer.Api.Configuration;
 
 public static class EnvironmentLoader
 {
-	public static Config LoadEnvironment(WebApplicationBuilder builder)
+	public static EnvVariables LoadEnvironment(WebApplicationBuilder builder)
 	{
 		builder.Configuration.AddEnvironmentVariables();
 
@@ -21,9 +21,9 @@ public static class EnvironmentLoader
 		return GetAndValidateConfig();
 	}
 
-	private static Config GetAndValidateConfig()
+	private static EnvVariables GetAndValidateConfig()
 	{
-		var config = new Config()
+		var config = new EnvVariables()
 		{
 			GomokuClient = new()
 			{

@@ -1,7 +1,5 @@
 ﻿using Ardalis.Result;
 
-using GomokuServer.Api.Hubs.Messages.Server;
-
 namespace GomokuServer.Api.Extensions;
 
 using IResult = Ardalis.Result.IResult;

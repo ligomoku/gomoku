@@ -20,6 +20,9 @@ import type {
   PostApiGameByGameIdJoinError,
   PostApiGameByGameIdJoinResponse,
   GetHealthData,
+  GetApiProfilesByUserNameGamesData,
+  GetApiProfilesByUserNameGamesError,
+  GetApiProfilesByUserNameGamesResponse,
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
   PostGamehubSendMessageData,
@@ -31,6 +34,7 @@ import {
   postApiGame,
   postApiGameByGameIdJoin,
   getHealth,
+  getApiProfilesByUserNameGames,
   postGamehubJoinGameGroup,
   postGamehubMakeMove,
   postGamehubSendMessage,
@@ -280,6 +284,74 @@ export const getHealthOptions = (options: Options<GetHealthData>) => {
     },
     queryKey: getHealthQueryKey(options),
   });
+};
+
+export const getApiProfilesByUserNameGamesQueryKey = (
+  options: Options<GetApiProfilesByUserNameGamesData>,
+) => [createQueryKey("getApiProfilesByUserNameGames", options)];
+
+export const getApiProfilesByUserNameGamesOptions = (
+  options: Options<GetApiProfilesByUserNameGamesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await getApiProfilesByUserNameGames({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiProfilesByUserNameGamesQueryKey(options),
+  });
+};
+
+export const getApiProfilesByUserNameGamesInfiniteQueryKey = (
+  options: Options<GetApiProfilesByUserNameGamesData>,
+): QueryKey<Options<GetApiProfilesByUserNameGamesData>> => [
+  createQueryKey("getApiProfilesByUserNameGames", options, true),
+];
+
+export const getApiProfilesByUserNameGamesInfiniteOptions = (
+  options: Options<GetApiProfilesByUserNameGamesData>,
+) => {
+  return infiniteQueryOptions<
+    GetApiProfilesByUserNameGamesResponse,
+    GetApiProfilesByUserNameGamesError,
+    InfiniteData<GetApiProfilesByUserNameGamesResponse>,
+    QueryKey<Options<GetApiProfilesByUserNameGamesData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetApiProfilesByUserNameGamesData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetApiProfilesByUserNameGamesData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  offset: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getApiProfilesByUserNameGames({
+          ...options,
+          ...params,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getApiProfilesByUserNameGamesInfiniteQueryKey(options),
+    },
+  );
 };
 
 export const postGamehubJoinGameGroupQueryKey = (

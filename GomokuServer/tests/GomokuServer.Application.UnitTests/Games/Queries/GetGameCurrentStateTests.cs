@@ -6,15 +6,17 @@ namespace GomokuServer.Application.UnitTests.Games.Queries;
 public class GetGameCurrentStateTests
 {
 	private TestDataProvider _testDataProvider;
-	private IGameRepository _gameRepository;
+	private IRegisteredGamesRepository _registeredGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private GetGameCurrentStateQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
-		_gameRepository = Substitute.For<IGameRepository>();
-		_handler = new GetGameCurrentStateQueryHandler(_gameRepository);
+		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
+		_handler = new GetGameCurrentStateQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
@@ -23,7 +25,7 @@ public class GetGameCurrentStateTests
 		// Arrange
 		var game = _testDataProvider.GetGame_OnePlayerJoined();
 
-		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
+		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
 		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
@@ -45,7 +47,7 @@ public class GetGameCurrentStateTests
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
-		await _gameRepository.Received(1).GetAsync(game.GameId);
+		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
 
 	[Test]
@@ -53,7 +55,7 @@ public class GetGameCurrentStateTests
 	{
 		// Arrange
 		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
-		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
+		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
 		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
@@ -74,7 +76,7 @@ public class GetGameCurrentStateTests
 		getGameResponse.Winner.Should().BeNull();
 		getGameResponse.WinningSequence.Should().BeNull();
 
-		await _gameRepository.Received(1).GetAsync(game.GameId);
+		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
 
 	[Test]
@@ -82,7 +84,7 @@ public class GetGameCurrentStateTests
 	{
 		// Arrange
 		var game = _testDataProvider.GetGame_HasWinner();
-		_gameRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
+		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
 		var query = new GetGameCurrentStateQuery { GameId = game.GameId };
 
@@ -105,15 +107,16 @@ public class GetGameCurrentStateTests
 			getGameResponse.WinningSequence.Should().Contain(t => t.X == tile.X && t.Y == tile.Y);
 		}
 
-		await _gameRepository.Received(1).GetAsync(game.GameId);
+		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
 
 	[Test]
-	public async Task GetGameInformation_GameNotFound_ShouldReturnNotFound()
+	public async Task GetGameInformation_GameNotFoundInBothRegisteredAndAnonymousRepository_ShouldReturnNotFound()
 	{
 		// Arrange
 		var invalidGameId = "InvalidGameId";
-		_gameRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
+		_registeredGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
+		_anonymousGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
 
 		var query = new GetGameCurrentStateQuery { GameId = invalidGameId };
 
@@ -124,6 +127,6 @@ public class GetGameCurrentStateTests
 		result.Status.Should().Be(ResultStatus.NotFound);
 		result.Value.Should().BeNull();
 
-		await _gameRepository.Received(1).GetAsync(invalidGameId);
+		await _registeredGamesRepository.Received(1).GetAsync(invalidGameId);
 	}
 }
