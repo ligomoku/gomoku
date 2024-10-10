@@ -27,10 +27,21 @@ export const useCreateGameAndNavigate = (authToken: string) => {
     createGame.mutate(
       { boardSize: 19 },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           console.log("Game created", data);
-          if (data?.gameId) {
-            navigate({ to: `/game/join/${data?.gameId}` });
+          if (data?.gameId && data?.playerId) {
+            try {
+              await new Promise<void>((resolve) => {
+                if (data?.playerId) {
+                  sessionStorage.setItem("playerID", data?.playerId);
+                  resolve();
+                }
+              });
+
+              navigate({ to: `/game/join/${data?.gameId}` });
+            } catch (error) {
+              console.error("Failed to set session storage:", error);
+            }
           } else {
             console.error("Game creation failed: No gameId received");
           }

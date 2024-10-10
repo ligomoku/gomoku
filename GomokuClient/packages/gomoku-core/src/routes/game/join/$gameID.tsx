@@ -4,15 +4,18 @@ import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
 import { SwaggerServices } from "@/api";
 import { SignalRProvider } from "@/context";
 
-let playerID: string | null | undefined = undefined;
+let playerID: string | null | undefined = null;
 
 export const Route = createFileRoute("/game/join/$gameID")({
+  // TODO: don't use loader if playerID is already set from useLocation hook
   loader: async (route) => {
     playerID = await joinGameLoader({ params: route.params });
   },
   component: () => {
     return (
-      <SignalRProvider playerID={playerID!}>
+      <SignalRProvider
+        playerID={playerID! || sessionStorage.getItem("playerID")!}
+      >
         <JoinGame />
       </SignalRProvider>
     );
@@ -24,6 +27,10 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
 
   if (!gameID) {
     throw new Error("Game ID is required");
+  }
+
+  if (sessionStorage.getItem("playerID")) {
+    return;
   }
 
   const authToken = typedStorage.getItem("jwtToken");
