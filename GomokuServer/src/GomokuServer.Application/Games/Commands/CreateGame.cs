@@ -1,10 +1,4 @@
-﻿using GomokuServer.Application.Common.Interfaces;
-using GomokuServer.Application.Games.Interfaces;
-using GomokuServer.Application.Games.Responses;
-using GomokuServer.Application.Profiles.Interfaces;
-using GomokuServer.Core.Interfaces;
-
-namespace GomokuServer.Application.Games.Commands;
+﻿namespace GomokuServer.Application.Games.Commands;
 
 public record CreateGameCommand : ICommand<CreateGameResponse>
 {
@@ -18,22 +12,22 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 {
 	private const int BOARD_MIN_SIZE = 13;
 	private const int BOARD_MAX_SIZE = 19;
-	private readonly IGamesRepository _gameRepository;
-	private readonly IProfilesRepository _playersRepository;
-	private readonly ICacheService _cacheService;
+	private readonly IRegisteredGamesRepository _registeredGamesRepository;
+	private readonly IAnonymusGamesRepository _anonymusGamesRepository;
+	private readonly IProfilesRepository _profilesRepository;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
 	public CreateGameCommandHandler(
-		IGamesRepository gameRepository,
+		IRegisteredGamesRepository registeredGamesRepository,
+		IAnonymusGamesRepository anonymusGamesRepository,
 		IProfilesRepository profilesRepository,
-		ICacheService cacheService,
 		IRandomProvider randomProvider,
 		IDateTimeProvider dateTimeProvider)
 	{
-		_gameRepository = gameRepository;
-		_playersRepository = profilesRepository;
-		_cacheService = cacheService;
+		_registeredGamesRepository = registeredGamesRepository;
+		_anonymusGamesRepository = anonymusGamesRepository;
+		_profilesRepository = profilesRepository;
 		_randomProvider = randomProvider;
 		_dateTimeProvider = dateTimeProvider;
 	}
@@ -55,21 +49,25 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			var anonymusGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
 			anonymusGame.AddOpponent(tempAnonymusProfile);
 
-			await _cacheService.CreateAsync(anonymusGame.GameId, anonymusGame, cancellationToken);
+			var saveAnonymusResult = await _anonymusGamesRepository.SaveAsync(anonymusGame);
+			if (saveAnonymusResult.Status != ResultStatus.Ok)
+			{
+				return Result.Error();
+			}
 
 			return Result.Success(new CreateGameResponse(anonymusGame.GameId, request.BoardSize, tempAnonymusProfile.Id));
 		}
 
-		var getPlayerResult = await _playersRepository.GetAsync(request.PlayerId!);
+		var getPlayerResult = await _profilesRepository.GetAsync(request.PlayerId!);
 		if (!getPlayerResult.IsSuccess)
 		{
 			return Result.Error("Cannot get user by id. See logs for more details");
 		}
 
 		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-		var addPlayerResult = game.AddOpponent(getPlayerResult.Value);
+		game.AddOpponent(getPlayerResult.Value);
 
-		var saveResult = await _gameRepository.SaveAsync(game);
+		var saveResult = await _registeredGamesRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
 		{
 			return Result.Error();

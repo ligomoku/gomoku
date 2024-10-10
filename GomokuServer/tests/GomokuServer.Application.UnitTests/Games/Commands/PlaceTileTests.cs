@@ -1,13 +1,11 @@
-﻿using GomokuServer.Application.Games.Commands;
-using GomokuServer.Application.Games.Interfaces;
-using GomokuServer.Core.Interfaces;
+﻿using GomokuServer.Application.Games.Dto;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class PlaceTileTests
 {
 	private Game _game;
-	private IGamesRepository _gameRepository;
+	private IRegisteredGamesRepository _registeredGamesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 	private PlaceTileCommandHandler _handler;
@@ -16,10 +14,10 @@ public class PlaceTileTests
 	public void Setup()
 	{
 		_game = Substitute.For<Game>(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
-		_gameRepository = Substitute.For<IGamesRepository>();
+		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_handler = new PlaceTileCommandHandler(_gameRepository);
+		_handler = new PlaceTileCommandHandler(_registeredGamesRepository);
 	}
 
 	[Test]
@@ -38,8 +36,8 @@ public class PlaceTileTests
 		game.AddOpponent(opponent);
 		game.AddOpponent(new Profile("player2", "player2UserName"));
 
-		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -48,7 +46,7 @@ public class PlaceTileTests
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.IsWinningMove.Should().BeFalse();
 		result.Value.PlacedTileColor.Should().Be("black");
-		await _gameRepository.Received(1).SaveAsync(game);
+		await _registeredGamesRepository.Received(1).SaveAsync(game);
 	}
 
 	[Test]
@@ -62,7 +60,7 @@ public class PlaceTileTests
 			Tile = new TileDto(0, 0)
 		};
 
-		_gameRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
+		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -83,14 +81,14 @@ public class PlaceTileTests
 		};
 
 		var game = new Game(15, _randomProvider, _dateTimeProvider);
-		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Invalid);
-		await _gameRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
+		await _registeredGamesRepository.DidNotReceive().SaveAsync(Arg.Any<Game>());
 	}
 
 	[Test]
@@ -109,8 +107,8 @@ public class PlaceTileTests
 		game.AddOpponent(new Profile("player1Id", "player1UserName"));
 		game.AddOpponent(new Profile("player2Id", "player2UserName"));
 
-		_gameRepository.GetAsync(command.GameId).Returns(Result.Success(game));
-		_gameRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
+		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		for (int i = 0; i < 4; i++)
 		{

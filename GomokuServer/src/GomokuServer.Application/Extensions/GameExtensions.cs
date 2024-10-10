@@ -1,5 +1,4 @@
-﻿using GomokuServer.Application.Games.Dto;
-using GomokuServer.Core.Extensions;
+﻿using GomokuServer.Core.Extensions;
 
 namespace GomokuServer.Application.Extensions;
 

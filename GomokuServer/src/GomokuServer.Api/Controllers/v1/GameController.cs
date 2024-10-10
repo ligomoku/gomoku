@@ -1,5 +1,4 @@
-﻿using GomokuServer.Api.Hubs.Messages.Server;
-using GomokuServer.Api.Swagger.Examples;
+﻿using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Application.Common.Responses;
 using GomokuServer.Application.Games.Responses;
 
@@ -46,10 +45,11 @@ public class GameController : Controller
 	[HttpGet]
 	[Route("/api/games/available-to-join")]
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
+	public async Task<IActionResult> GetAvailableGames([FromQuery] GetAvailableGamesRequest request)
 	{
 		var query = new GetAvailableToJoinGamesQuery
 		{
+			IsAnonymus = request.IsAnonymus,
 			Limit = request.Limit,
 			Offset = request.Offset
 		};
@@ -85,7 +85,7 @@ public class GameController : Controller
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/join")]
 	[AllowAnonymous]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(typeof(AddPlayerToGameResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
@@ -98,7 +98,7 @@ public class GameController : Controller
 
 		if (addPlayerToGameResult.IsSuccess)
 		{
-			var message = new PlayerJoinedGameMessage { UserId = addPlayerToGameResult.Value };
+			var message = new PlayerJoinedGameMessage { UserId = addPlayerToGameResult.Value.PlayerId };
 			await _gameHubContext.Clients.Group(gameId).SendAsync(GameHubMethod.PlayerJoinedGame, message);
 		}
 

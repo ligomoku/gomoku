@@ -438,3 +438,6 @@ dotnet_diagnostic.TAPP001.severity = error
 #
 # TSRTS001 Apply the TranspilationSourceAttribute
 dotnet_diagnostic.TSRTS001.severity = error
+#
+# Treat unused local variables as errors
+dotnet_diagnostic.IDE0059.severity = error

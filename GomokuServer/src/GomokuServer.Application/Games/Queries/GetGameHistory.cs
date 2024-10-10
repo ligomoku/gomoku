@@ -1,8 +1,4 @@
-﻿using GomokuServer.Application.Common.Interfaces;
-using GomokuServer.Application.Games.Interfaces;
-using GomokuServer.Application.Games.Responses;
-
-namespace GomokuServer.Application.Games.Queries;
+﻿namespace GomokuServer.Application.Games.Queries;
 
 public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 {
@@ -12,16 +8,16 @@ public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 
 public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
 {
-	private readonly IGamesRepository _gameRepository;
+	private readonly IRegisteredGamesRepository _registeredGamesRepository;
 
-	public GetGameHistoryQueryHandler(IGamesRepository gameRepository)
+	public GetGameHistoryQueryHandler(IRegisteredGamesRepository gameRepository)
 	{
-		_gameRepository = gameRepository;
+		_registeredGamesRepository = gameRepository;
 	}
 
 	public async Task<Result<GetGameHistoryResponse>> Handle(GetGameHistoryQuery request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _gameRepository.GetAsync(request.GameId);
+		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
 
 		return getGameResult.Map(game => new GetGameHistoryResponse()
 		{

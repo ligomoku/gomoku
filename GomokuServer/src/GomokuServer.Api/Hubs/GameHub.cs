@@ -1,7 +1,3 @@
-using GomokuServer.Api.Hubs.Interfaces;
-using GomokuServer.Api.Hubs.Messages.Client;
-using GomokuServer.Api.Hubs.Messages.Server;
-
 using SignalRSwaggerGen.Attributes;
 
 namespace GomokuServer.Api.Hubs;

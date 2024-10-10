@@ -1,8 +1,4 @@
-﻿using System.Linq.Expressions;
-
-using GomokuServer.Application.Common.Interfaces;
-
-namespace GomokuServer.Application.Games.Interfaces;
+﻿namespace GomokuServer.Application.Games.Interfaces;
 
 public interface IGamesRepository : IPaginatedRepository<Game>
 {

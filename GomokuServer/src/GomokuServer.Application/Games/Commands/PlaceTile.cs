@@ -1,9 +1,4 @@
-﻿using GomokuServer.Application.Common.Interfaces;
-using GomokuServer.Application.Games.Dto;
-using GomokuServer.Application.Games.Interfaces;
-using GomokuServer.Application.Games.Responses;
-
-namespace GomokuServer.Application.Games.Commands;
+﻿namespace GomokuServer.Application.Games.Commands;
 
 public record PlaceTileCommand : ICommand<PlaceTileResponse>
 {
@@ -19,16 +14,16 @@ public record PlaceTileCommand : ICommand<PlaceTileResponse>
 
 public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTileResponse>
 {
-	private readonly IGamesRepository _gameRepository;
+	private readonly IRegisteredGamesRepository _registeredGamesRepository;
 
-	public PlaceTileCommandHandler(IGamesRepository gameRepository)
+	public PlaceTileCommandHandler(IRegisteredGamesRepository registeredGamesRepository)
 	{
-		_gameRepository = gameRepository;
+		_registeredGamesRepository = registeredGamesRepository;
 	}
 
 	public async Task<Result<PlaceTileResponse>> Handle(PlaceTileCommand request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _gameRepository.GetAsync(request.GameId);
+		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
 			return Result.NotFound();
@@ -42,7 +37,7 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 			return Result.Invalid(new ValidationError(tilePlacementResult.ValidationError.ToString()));
 		}
 
-		var saveResult = await _gameRepository.SaveAsync(game);
+		var saveResult = await _registeredGamesRepository.SaveAsync(game);
 		if (saveResult.Status == ResultStatus.Error)
 		{
 			return Result.Error();

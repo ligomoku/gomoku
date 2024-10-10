@@ -1,6 +1,4 @@
-﻿using GomokuServer.Application.Games.Dto;
-
-namespace GomokuServer.Application.Games.Responses;
+﻿namespace GomokuServer.Application.Games.Responses;
 
 public class GetGameCurrentStateResponse
 {

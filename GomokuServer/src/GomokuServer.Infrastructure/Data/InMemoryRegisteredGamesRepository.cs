@@ -6,7 +6,7 @@ using GomokuServer.Core.Entities;
 
 namespace GomokuServer.Infrastructure.Data;
 
-public class InMemoryGamesRepository : IGamesRepository
+public class InMemoryRegisteredGamesRepository : IRegisteredGamesRepository
 {
 	private readonly ConcurrentDictionary<string, Game> _games = new();
 

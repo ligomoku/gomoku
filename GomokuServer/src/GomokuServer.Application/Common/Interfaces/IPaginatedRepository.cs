@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace GomokuServer.Application.Common.Interfaces;
+﻿namespace GomokuServer.Application.Common.Interfaces;
 
 public interface IPaginatedRepository<T>
 {
