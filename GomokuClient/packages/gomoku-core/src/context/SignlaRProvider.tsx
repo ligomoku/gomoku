@@ -48,9 +48,13 @@ export const SignalRContext = createContext<SignalRContextType | undefined>(
 
 interface SignalRProviderProps {
   children: ReactNode;
+  playerID?: string;
 }
 
-export const SignalRProvider = ({ children }: SignalRProviderProps) => {
+export const SignalRProvider = ({
+  children,
+  playerID,
+}: SignalRProviderProps) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
@@ -58,13 +62,6 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(
     null,
   );
-  const [playerID, setPlayerID] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!typedStorage.getItem("anonymousPlayerID")) return;
-
-    setPlayerID(typedStorage.getItem("anonymousPlayerID"));
-  }, [typedStorage.getItem("anonymousPlayerID")]);
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {

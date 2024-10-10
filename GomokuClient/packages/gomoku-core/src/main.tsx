@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthTokenProvider, SignalRProvider } from "@/context";
+import { AuthTokenProvider } from "@/context";
 import * as Sentry from "@sentry/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -59,9 +59,7 @@ createRoot(document.getElementById("root")!).render(
         <I18nProvider i18n={i18n}>
           <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
             <AuthTokenProvider>
-              <SignalRProvider>
-                <RouterProvider router={router} />
-              </SignalRProvider>
+              <RouterProvider router={router} />
             </AuthTokenProvider>
           </ClerkProvider>
         </I18nProvider>
