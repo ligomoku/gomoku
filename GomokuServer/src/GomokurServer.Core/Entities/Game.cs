@@ -53,7 +53,8 @@ public class Game
 		{
 			return new()
 			{
-				IsValid = true,
+				IsValid = false,
+				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame
 			};
 		}
 
