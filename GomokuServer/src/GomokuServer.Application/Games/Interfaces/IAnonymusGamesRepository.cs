@@ -1,2 +1,2 @@
 ﻿namespace GomokuServer.Application.Games.Interfaces;
-public interface IAnonymusGamesRepository : IGamesRepository;
+public interface IAnonymousGamesRepository : IGamesRepository;

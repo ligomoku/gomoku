@@ -7,7 +7,7 @@ public class GetGameCurrentStateTests
 {
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymusGamesRepository _anonymusGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private GetGameCurrentStateQueryHandler _handler;
 
 	[SetUp]
@@ -15,8 +15,8 @@ public class GetGameCurrentStateTests
 	{
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymusGamesRepository = Substitute.For<IAnonymusGamesRepository>();
-		_handler = new GetGameCurrentStateQueryHandler(_registeredGamesRepository, _anonymusGamesRepository);
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
+		_handler = new GetGameCurrentStateQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
@@ -111,12 +111,12 @@ public class GetGameCurrentStateTests
 	}
 
 	[Test]
-	public async Task GetGameInformation_GameNotFoundInBothRegisteredAndAnonymusRepository_ShouldReturnNotFound()
+	public async Task GetGameInformation_GameNotFoundInBothRegisteredAndAnonymousRepository_ShouldReturnNotFound()
 	{
 		// Arrange
 		var invalidGameId = "InvalidGameId";
 		_registeredGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
-		_anonymusGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
+		_anonymousGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
 
 		var query = new GetGameCurrentStateQuery { GameId = invalidGameId };
 

@@ -11,12 +11,12 @@ public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
 {
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymusGamesRepository _anonymusGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 
-	public GetGameCurrentStateQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymusGamesRepository anonymusGamesRepository)
+	public GetGameCurrentStateQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymousGamesRepository anonymousGamesRepository)
 	{
 		_registeredGamesRepository = gameRepository;
-		_anonymusGamesRepository = anonymusGamesRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 	}
 
 	public async Task<Result<GetGameCurrentStateResponse>> Handle(GetGameCurrentStateQuery request, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentState
 
 		if (!getGameResult.IsSuccess)
 		{
-			getGameResult = await _anonymusGamesRepository.GetAsync(request.GameId);
+			getGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
 		}
 
 		return getGameResult.Map(game => new GetGameCurrentStateResponse

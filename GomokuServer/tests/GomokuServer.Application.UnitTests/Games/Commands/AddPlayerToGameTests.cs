@@ -6,7 +6,7 @@ public class AddPlayerToGameTests
 {
 	private int _validBoardSize;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymusGamesRepository _anonymusGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IProfilesRepository _profilesRepository;
 	private AddPlayerToGameCommandHandler _handler;
 
@@ -15,12 +15,12 @@ public class AddPlayerToGameTests
 	{
 		_validBoardSize = 15;
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymusGamesRepository = Substitute.For<IAnonymusGamesRepository>();
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 
 		_handler = new AddPlayerToGameCommandHandler(
 			_registeredGamesRepository,
-			_anonymusGamesRepository,
+			_anonymousGamesRepository,
 			_profilesRepository,
 			Substitute.For<ILogger<AddPlayerToGameCommandHandler>>()
 		);

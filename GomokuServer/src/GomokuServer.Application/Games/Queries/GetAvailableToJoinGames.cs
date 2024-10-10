@@ -3,7 +3,7 @@
 public record GetAvailableToJoinGamesQuery
 	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
-	public required bool IsAnonymus { get; init; }
+	public required bool IsAnonymous { get; init; }
 	public int Limit { get; init; } = 5;
 	public int Offset { get; init; } = 0;
 }
@@ -12,22 +12,22 @@ public class GetAvailableToJoinGamesQueryHandler
 	: IQueryHandler<GetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymusGamesRepository _anonymusGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 
 	public GetAvailableToJoinGamesQueryHandler(
 		IRegisteredGamesRepository gameRepository,
-		IAnonymusGamesRepository anonymusGamesRepository
+		IAnonymousGamesRepository anonymousGamesRepository
 	)
 	{
 		_registeredGamesRepository = gameRepository;
-		_anonymusGamesRepository = anonymusGamesRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 	}
 
 	public async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>>
 	Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
 	{
-		return request.IsAnonymus
-			? await TryGetGames(_anonymusGamesRepository, request)
+		return request.IsAnonymous
+			? await TryGetGames(_anonymousGamesRepository, request)
 			: await TryGetGames(_registeredGamesRepository, request);
 	}
 

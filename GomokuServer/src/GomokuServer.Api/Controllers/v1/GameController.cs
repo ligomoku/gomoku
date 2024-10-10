@@ -49,7 +49,7 @@ public class GameController : Controller
 	{
 		var query = new GetAvailableToJoinGamesQuery
 		{
-			IsAnonymus = request.IsAnonymus,
+			IsAnonymous = request.IsAnonymous,
 			Limit = request.Limit,
 			Offset = request.Offset
 		};

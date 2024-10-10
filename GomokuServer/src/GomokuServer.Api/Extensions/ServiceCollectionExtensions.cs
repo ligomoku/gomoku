@@ -160,7 +160,7 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IRandomProvider, RandomProvider>();
 		services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 		services.AddSingleton<IRegisteredGamesRepository, InMemoryRegisteredGamesRepository>();
-		services.AddSingleton<IAnonymusGamesRepository, InMemoryAnonymusGamesRepository>();
+		services.AddSingleton<IAnonymousGamesRepository, InMemoryAnonymousGamesRepository>();
 		services.AddSingleton<IProfilesRepository, ClerkProfilesRepository>();
 		services.RegisterCommandsAndQueries();
 

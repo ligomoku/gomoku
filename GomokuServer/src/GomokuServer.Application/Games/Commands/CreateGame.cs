@@ -13,20 +13,20 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 	private const int BOARD_MIN_SIZE = 13;
 	private const int BOARD_MAX_SIZE = 19;
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymusGamesRepository _anonymusGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 	private readonly IProfilesRepository _profilesRepository;
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
 	public CreateGameCommandHandler(
 		IRegisteredGamesRepository registeredGamesRepository,
-		IAnonymusGamesRepository anonymusGamesRepository,
+		IAnonymousGamesRepository anonymousGamesRepository,
 		IProfilesRepository profilesRepository,
 		IRandomProvider randomProvider,
 		IDateTimeProvider dateTimeProvider)
 	{
 		_registeredGamesRepository = registeredGamesRepository;
-		_anonymusGamesRepository = anonymusGamesRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 		_profilesRepository = profilesRepository;
 		_randomProvider = randomProvider;
 		_dateTimeProvider = dateTimeProvider;
@@ -39,23 +39,23 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		var isCreatedByAnonymusPlayer = request.PlayerId == null;
+		var isCreatedByAnonymousPlayer = request.PlayerId == null;
 
-		if (isCreatedByAnonymusPlayer)
+		if (isCreatedByAnonymousPlayer)
 		{
 			var playerId = Guid.NewGuid().ToString();
-			var tempAnonymusProfile = new Profile(playerId, $"Guest {playerId[..6]}");
+			var tempAnonymousProfile = new Profile(playerId, $"Guest {playerId[..6]}");
 
-			var anonymusGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-			anonymusGame.AddOpponent(tempAnonymusProfile);
+			var anonymousGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
+			anonymousGame.AddOpponent(tempAnonymousProfile);
 
-			var saveAnonymusResult = await _anonymusGamesRepository.SaveAsync(anonymusGame);
-			if (saveAnonymusResult.Status != ResultStatus.Ok)
+			var saveAnonymousResult = await _anonymousGamesRepository.SaveAsync(anonymousGame);
+			if (saveAnonymousResult.Status != ResultStatus.Ok)
 			{
 				return Result.Error();
 			}
 
-			return Result.Success(new CreateGameResponse(anonymusGame.GameId, request.BoardSize, tempAnonymusProfile.Id));
+			return Result.Success(new CreateGameResponse(anonymousGame.GameId, request.BoardSize, tempAnonymousProfile.Id));
 		}
 
 		var getPlayerResult = await _profilesRepository.GetAsync(request.PlayerId!);

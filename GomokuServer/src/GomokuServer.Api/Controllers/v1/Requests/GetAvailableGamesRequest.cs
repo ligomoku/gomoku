@@ -3,5 +3,5 @@
 public class GetAvailableGamesRequest : PaginationRequest
 {
 	[Required]
-	public required bool IsAnonymus { get; init; }
+	public required bool IsAnonymous { get; init; }
 }

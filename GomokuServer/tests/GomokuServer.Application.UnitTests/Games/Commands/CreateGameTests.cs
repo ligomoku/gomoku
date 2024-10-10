@@ -3,7 +3,7 @@
 public class CreateGameTests
 {
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymusGamesRepository _anonymusGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IProfilesRepository _profilesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
@@ -13,14 +13,14 @@ public class CreateGameTests
 	public void Setup()
 	{
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymusGamesRepository = Substitute.For<IAnonymusGamesRepository>();
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
 		_handler = new CreateGameCommandHandler(
 			_registeredGamesRepository,
-			_anonymusGamesRepository,
+			_anonymousGamesRepository,
 			_profilesRepository,
 			_randomProvider,
 			_dateTimeProvider);

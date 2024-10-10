@@ -9,7 +9,7 @@ public class GetAvailableToJoinGamesTests
 {
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymusGamesRepository _anonymusGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private GetAvailableToJoinGamesQueryHandler _handler;
 
 	[SetUp]
@@ -17,8 +17,8 @@ public class GetAvailableToJoinGamesTests
 	{
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymusGamesRepository = Substitute.For<IAnonymusGamesRepository>();
-		_handler = new GetAvailableToJoinGamesQueryHandler(_registeredGamesRepository, _anonymusGamesRepository);
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
+		_handler = new GetAvailableToJoinGamesQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
@@ -28,7 +28,7 @@ public class GetAvailableToJoinGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymus = false };
+		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -52,7 +52,7 @@ public class GetAvailableToJoinGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymus = false };
+		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -75,7 +75,7 @@ public class GetAvailableToJoinGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymus = false };
+		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -94,7 +94,7 @@ public class GetAvailableToJoinGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymus = false };
+		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);

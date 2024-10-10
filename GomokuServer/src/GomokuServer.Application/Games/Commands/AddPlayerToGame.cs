@@ -13,32 +13,32 @@ public record AddPlayerToGameCommand : ICommand<AddPlayerToGameResponse>
 public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameCommand, AddPlayerToGameResponse>
 {
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymusGamesRepository _anonymusGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 	private readonly IProfilesRepository _profilesRepository;
 	private readonly ILogger<AddPlayerToGameCommandHandler> _logger;
 
 	public AddPlayerToGameCommandHandler(
 		IRegisteredGamesRepository registeredGamesRepository,
-		IAnonymusGamesRepository anonymusGamesRepository,
+		IAnonymousGamesRepository anonymousGamesRepository,
 		IProfilesRepository profilesRepository,
 		ILogger<AddPlayerToGameCommandHandler> logger)
 	{
 		_registeredGamesRepository = registeredGamesRepository;
-		_anonymusGamesRepository = anonymusGamesRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 		_profilesRepository = profilesRepository;
 		_logger = logger;
 	}
 
 	public async Task<Result<AddPlayerToGameResponse>> Handle(AddPlayerToGameCommand request, CancellationToken cancellationToken)
 	{
-		var isAnonymusGame = request.PlayerId == null;
+		var isAnonymousGame = request.PlayerId == null;
 
-		if (isAnonymusGame)
+		if (isAnonymousGame)
 		{
 			var playerId = Guid.NewGuid().ToString();
-			var anonymus = new Profile(playerId, $"Guest {playerId[..6]}");
+			var anonymous = new Profile(playerId, $"Guest {playerId[..6]}");
 
-			return await TryAddPlayerToGame(_anonymusGamesRepository, request.GameId, anonymus);
+			return await TryAddPlayerToGame(_anonymousGamesRepository, request.GameId, anonymous);
 		}
 
 		var getProfileResult = await _profilesRepository.GetAsync(request.PlayerId!);
