@@ -58,6 +58,13 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(
     null,
   );
+  const [playerID, setPlayerID] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!typedStorage.getItem("anonymousPlayerID")) return;
+
+    setPlayerID(typedStorage.getItem("anonymousPlayerID"));
+  }, [typedStorage.getItem("anonymousPlayerID")]);
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -77,23 +84,26 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
 
   if (!connectionRef.current) {
     connectionRef.current = new signalR.HubConnectionBuilder()
-      .withUrl(`${import.meta.env.VITE_API_URL}/gamehub`, {
-        accessTokenFactory: async () => {
-          let token = typedStorage.getItem("jwtToken");
-          if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
-            console.log("JWT token expired, refreshing token...");
-            try {
-              token = await getToken({ skipCache: true });
-              if (token) {
-                typedStorage.setItem("jwtToken", token);
+      .withUrl(
+        `${import.meta.env.VITE_API_URL}/gamehub?player_id=${playerID}`,
+        {
+          accessTokenFactory: async () => {
+            let token = typedStorage.getItem("jwtToken");
+            if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
+              console.log("JWT token expired, refreshing token...");
+              try {
+                token = await getToken({ skipCache: true });
+                if (token) {
+                  typedStorage.setItem("jwtToken", token);
+                }
+              } catch (error) {
+                console.error("Error refreshing token:", error);
               }
-            } catch (error) {
-              console.error("Error refreshing token:", error);
             }
-          }
-          return token ? token : "";
+            return token ? token : "";
+          },
         },
-      })
+      )
       .withHubProtocol(new JsonHubProtocol())
       .withAutomaticReconnect()
       .build();

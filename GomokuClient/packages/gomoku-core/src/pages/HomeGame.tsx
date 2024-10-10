@@ -123,6 +123,10 @@ const useJoinGame = (authToken: string) =>
       if (!response.data) {
         throw new Error("Invalid game data received");
       }
+
+      if (response.data.playerId) {
+        typedStorage.setItem("anonymousPlayerID", response.data.playerId);
+      }
     },
   });
 

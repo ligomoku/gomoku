@@ -37,6 +37,7 @@ export interface FixedKeys {
   jwtToken: string;
   currentGameID: string;
   chunkReloadedAt: string;
+  anonymousPlayerID: string;
 }
 
 export interface DynamicKeys {
