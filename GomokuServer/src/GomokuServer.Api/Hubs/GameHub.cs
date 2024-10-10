@@ -40,16 +40,21 @@ public class GameHub : Hub, IGameHub
 	{
 		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
 
-		var userId = Context?.User?.Claims.Get(JwtClaims.UserId);
+		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
 
-		var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = userId! };
+		if (playerId == null)
+		{
+			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
+		}
+
+		var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = playerId! };
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
 		if (placeTileResult.IsSuccess)
 		{
 			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
-				PlayerId = userId!,
+				PlayerId = playerId!,
 				Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
 				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};

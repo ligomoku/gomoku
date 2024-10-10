@@ -8,6 +8,13 @@ public class UserIdFromJwtProvider : IUserIdProvider
 {
 	public string? GetUserId(HubConnectionContext connectionContext)
 	{
-		return connectionContext?.User?.Claims?.Get(JwtClaims.UserId);
+		var userId = connectionContext?.User?.Claims?.Get(JwtClaims.UserId);
+
+		if (string.IsNullOrEmpty(userId))
+		{
+			userId = connectionContext?.GetHttpContext()?.Request.Query["player_id"];
+		}
+
+		return userId;
 	}
 }
