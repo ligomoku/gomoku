@@ -71,8 +71,17 @@
     "/api/games/available-to-join": {
       "get": {
         "tags": ["Game"],
-        "summary": "Get all games, which are available to join",
+        "summary": "Get all games available to join",
         "parameters": [
+          {
+            "name": "isAnonymous",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
           {
             "name": "limit",
             "in": "query",
@@ -112,7 +121,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns list of games which are available to join",
+            "description": "Returns list of games that are available to join",
             "content": {
               "application/json": {
                 "schema": {
@@ -127,7 +136,7 @@
     "/api/game": {
       "post": {
         "tags": ["Game"],
-        "summary": "Create new game",
+        "summary": "Create new game (supports both anonymous and authenticated users)",
         "parameters": [
           {
             "name": "X-Version",
@@ -135,16 +144,6 @@
             "style": "simple",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "Bearer "
             }
           },
           {
@@ -169,7 +168,7 @@
         },
         "responses": {
           "200": {
-            "description": "Returns information about new created game",
+            "description": "Returns information about newly created game",
             "content": {
               "application/json": {
                 "schema": {
@@ -193,18 +192,13 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     },
     "/api/game/{gameId}/join": {
       "post": {
         "tags": ["Game"],
-        "summary": "Join game",
+        "summary": "Join game (supports both anonymous and authenticated users)",
         "parameters": [
           {
             "name": "gameId",
@@ -224,16 +218,6 @@
             }
           },
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "default": "Bearer "
-            }
-          },
-          {
             "name": "Content-Type",
             "in": "header",
             "required": true,
@@ -245,8 +229,15 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Player with specified id successfully joined the game"
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddPlayerToGameResponse"
+                }
+              }
+            }
           },
           "404": {
             "description": "Game or player with specified id not found",
@@ -262,13 +253,11 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "Player with specified id successfully joined the game"
           }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
+        }
       }
     },
     "/health": {
@@ -302,6 +291,71 @@
         }
       }
     },
+    "/api/profiles/{userName}/games": {
+      "get": {
+        "tags": ["Profiles"],
+        "summary": "Get games for specific user",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about user games",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGamesByUsernameResponseIEnumerablePaginatedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gamehub/JoinGameGroup": {
       "post": {
         "tags": ["GameHub"],
@@ -331,7 +385,8 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {},
+        "security": [{}]
       }
     },
     "/gamehub/SendMessage": {
@@ -347,12 +402,27 @@
             }
           }
         ],
-        "responses": {}
+        "responses": {},
+        "security": [{}]
       }
     }
   },
   "components": {
     "schemas": {
+      "AddPlayerToGameResponse": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true
+          },
+          "playerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChatMessageClientMessage": {
         "required": ["gameId", "message", "user"],
         "type": "object",
@@ -384,12 +454,19 @@
         "additionalProperties": false
       },
       "CreateGameResponse": {
-        "required": ["gameId"],
         "type": "object",
         "properties": {
           "gameId": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "boardSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "playerId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -444,6 +521,48 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/TileDto"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGamesByUsernameResponse": {
+        "required": ["date", "gameId", "gen", "players"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "players": {
+            "$ref": "#/components/schemas/UsernamesDto"
+          },
+          "winner": {
+            "type": "string",
+            "nullable": true
+          },
+          "gen": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetGamesByUsernameResponseIEnumerablePaginatedResponse": {
+        "required": ["data", "metadata"],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetGamesByUsernameResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
           }
         },
         "additionalProperties": false

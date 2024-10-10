@@ -15,8 +15,10 @@ import { postApiGameByGameIdJoin } from "@/api/client";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
-  const { data: paginatedGames } = useFetchGames();
   const { jwtToken } = useAuthToken();
+  const { data: paginatedGames } = useFetchGames(
+    jwtToken || typedStorage.getItem("jwtToken") || "",
+  );
 
   const handleJoinGame = useJoinGame(
     jwtToken || typedStorage.getItem("jwtToken") || "",
@@ -87,7 +89,7 @@ export const HomeGame = () => {
   );
 };
 
-const useFetchGames = () =>
+const useFetchGames = (authToken: string) =>
   useQuery<
     SwaggerTypes.GetApiGamesAvailableToJoinResponse,
     SwaggerTypes.GetApiGamesAvailableToJoinError,
@@ -97,7 +99,8 @@ const useFetchGames = () =>
     queryKey: ["games", null],
     queryFn: async () => {
       const response = await SwaggerServices.getApiGamesAvailableToJoin({
-        headers: getDefaultHeaders(),
+        headers: getDefaultHeaders(authToken),
+        query: { isAnonymous: !authToken },
       });
 
       if (!response.data) {

@@ -5,25 +5,29 @@ import {
   createConfig,
   type Options,
 } from "@hey-api/client-fetch";
-import type {
-  GetApiGameByGameIdHistoryData,
-  GetApiGameByGameIdHistoryError,
-  GetApiGameByGameIdHistoryResponse,
-  GetApiGamesAvailableToJoinData,
-  GetApiGamesAvailableToJoinError,
-  GetApiGamesAvailableToJoinResponse,
-  PostApiGameData,
-  PostApiGameError,
-  PostApiGameResponse,
-  PostApiGameByGameIdJoinData,
-  PostApiGameByGameIdJoinError,
-  PostApiGameByGameIdJoinResponse,
-  GetHealthData,
-  GetHealthError,
-  GetHealthResponse,
-  PostGamehubJoinGameGroupData,
-  PostGamehubMakeMoveData,
-  PostGamehubSendMessageData,
+import {
+  type GetApiGameByGameIdHistoryData,
+  type GetApiGameByGameIdHistoryError,
+  type GetApiGameByGameIdHistoryResponse,
+  type GetApiGamesAvailableToJoinData,
+  type GetApiGamesAvailableToJoinError,
+  type GetApiGamesAvailableToJoinResponse,
+  type PostApiGameData,
+  type PostApiGameError,
+  type PostApiGameResponse,
+  type PostApiGameByGameIdJoinData,
+  type PostApiGameByGameIdJoinError,
+  type PostApiGameByGameIdJoinResponse,
+  type GetHealthData,
+  type GetHealthError,
+  type GetHealthResponse,
+  type GetApiProfilesByUserNameGamesData,
+  type GetApiProfilesByUserNameGamesError,
+  type GetApiProfilesByUserNameGamesResponse,
+  type PostGamehubJoinGameGroupData,
+  type PostGamehubMakeMoveData,
+  type PostGamehubSendMessageData,
+  GetApiProfilesByUserNameGamesResponseTransformer,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -45,7 +49,7 @@ export const getApiGameByGameIdHistory = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get all games, which are available to join
+ * Get all games available to join
  */
 export const getApiGamesAvailableToJoin = <
   ThrowOnError extends boolean = false,
@@ -63,7 +67,7 @@ export const getApiGamesAvailableToJoin = <
 };
 
 /**
- * Create new game
+ * Create new game (supports both anonymous and authenticated users)
  */
 export const postApiGame = <ThrowOnError extends boolean = false>(
   options: Options<PostApiGameData, ThrowOnError>,
@@ -79,7 +83,7 @@ export const postApiGame = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Join game
+ * Join game (supports both anonymous and authenticated users)
  */
 export const postApiGameByGameIdJoin = <ThrowOnError extends boolean = false>(
   options: Options<PostApiGameByGameIdJoinData, ThrowOnError>,
@@ -107,6 +111,25 @@ export const getHealth = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     url: "/health",
+  });
+};
+
+/**
+ * Get games for specific user
+ */
+export const getApiProfilesByUserNameGames = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiProfilesByUserNameGamesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiProfilesByUserNameGamesResponse,
+    GetApiProfilesByUserNameGamesError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/profiles/{userName}/games",
+    responseTransformer: GetApiProfilesByUserNameGamesResponseTransformer,
   });
 };
 
