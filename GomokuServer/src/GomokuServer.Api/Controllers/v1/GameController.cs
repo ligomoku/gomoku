@@ -81,7 +81,7 @@ public class GameController : Controller
 	/// <summary>
 	/// Join game (supports both anonymous and authenticated users)
 	/// </summary>
-	/// <response code="204">Player with specified id successfully joined the game</response>
+	/// <response code="200">Player with specified id successfully joined the game</response>
 	/// <response code="404">Game or player with specified id not found</response>
 	[HttpPost("{gameId}/join")]
 	[AllowAnonymous]
