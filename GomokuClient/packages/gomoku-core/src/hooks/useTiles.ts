@@ -58,22 +58,25 @@ export const useTiles = (gameID: string) => {
     }
   }, [BOARD_KEY, NEXT_TURN_KEY, tiles, winner]);
 
-  const addTile = useCallback((x: number, y: number, newValue: TileColor) => {
-    setTiles((prevBoard) =>
-      prevBoard.map((row, currentY) => {
-        if (currentY !== y) return row;
+  const addTile = useCallback(
+    (x: number, y: number, newValue: TileColor) => {
+      setTiles((prevBoard) =>
+        prevBoard.map((row, currentY) => {
+          if (currentY !== y) return row;
 
-        return row.map((col, currentX) => {
-          if (currentX !== x) return col;
-          return newValue;
-        });
-      }),
-    );
+          return row.map((col, currentX) => {
+            if (currentX !== x) return col;
+            return newValue;
+          });
+        }),
+      );
 
-    const tile = { x, y };
-    setLastTile(tile);
-    typedStorage.setItem(LAST_TILE_KEY, JSON.stringify(tile));
-  }, []);
+      const tile = { x, y };
+      setLastTile(tile);
+      typedStorage.setItem(LAST_TILE_KEY, JSON.stringify(tile));
+    },
+    [LAST_TILE_KEY],
+  );
 
   return {
     tiles,
