@@ -4,6 +4,7 @@ using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Common.Interfaces;
+using GomokuServer.Application.Common.Pipelines;
 using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Application.Profiles.Interfaces;
 using GomokuServer.Infrastructure.Cache;
@@ -182,7 +183,9 @@ public static class ServiceCollectionExtensions
 		services.AddMediatR(config =>
 		{
 			config.RegisterServicesFromAssembly(typeof(IQuery<>).Assembly);
+			//config.AddOpenBehavior(typeof(ExceptionHandlingPipeline<,>));
 		});
+		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingPipeline<,>));
 
 		return services;
 	}
