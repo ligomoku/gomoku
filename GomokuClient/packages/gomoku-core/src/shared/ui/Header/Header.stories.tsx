@@ -14,9 +14,6 @@ const Template: StoryFn<HeaderProps> = (args) => <Header {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
-  onCreateGame: () => alert("Create a Game clicked!"),
-  onSignInClick: () => alert("Sign In clicked!"),
-  onSignOutClick: () => alert("Sign Out clicked!"),
   isSignedIn: true,
   searchPlaceholder: "Search",
   logoText: "gomoku.org",
