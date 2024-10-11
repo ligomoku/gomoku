@@ -39,6 +39,7 @@ export const HomeGame = () => {
               items={transformGameData(paginatedGames?.data)}
               onItemClick={(item) => {
                 sessionStorage.removeItem("playerID");
+                sessionStorage.setItem("fromHomeJoinedGame", String(true));
                 navigate({ to: `/game/join/${item.id}` });
               }}
               noItemsText={t`No online games were created`}
