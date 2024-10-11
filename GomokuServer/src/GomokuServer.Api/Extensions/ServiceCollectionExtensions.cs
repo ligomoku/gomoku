@@ -183,7 +183,6 @@ public static class ServiceCollectionExtensions
 		services.AddMediatR(config =>
 		{
 			config.RegisterServicesFromAssembly(typeof(IQuery<>).Assembly);
-			//config.AddOpenBehavior(typeof(ExceptionHandlingPipeline<,>));
 		});
 		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingPipeline<,>));
 

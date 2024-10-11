@@ -1,7 +1,6 @@
-﻿
-namespace GomokuServer.Application.Games.Commands;
+﻿namespace GomokuServer.Application.Games.Commands;
 
-public record CreateGameCommand : ICommand
+public record CreateGameCommand : ICommand<CreateGameResponse>
 {
 	[Required]
 	public required int BoardSize { get; init; }
@@ -9,7 +8,7 @@ public record CreateGameCommand : ICommand
 	public string? PlayerId { get; init; }
 }
 
-public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand>
+public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, CreateGameResponse>
 {
 	private const int BOARD_MIN_SIZE = 13;
 	private const int BOARD_MAX_SIZE = 19;
@@ -33,10 +32,8 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand>
 		_dateTimeProvider = dateTimeProvider;
 	}
 
-	public async Task<Result> Handle(CreateGameCommand request, CancellationToken cancellationToken)
+	public async Task<Result<CreateGameResponse>> Handle(CreateGameCommand request, CancellationToken cancellationToken)
 	{
-		throw new Exception("Some random exception");
-
 		if (request.BoardSize < BOARD_MIN_SIZE || request.BoardSize > BOARD_MAX_SIZE)
 		{
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
@@ -58,7 +55,7 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand>
 				return Result.Error();
 			}
 
-			return Result.Success();
+			return Result.Success(new CreateGameResponse(anonymousGame.GameId, request.BoardSize, tempAnonymousProfile.Id));
 		}
 
 		var getPlayerResult = await _profilesRepository.GetAsync(request.PlayerId!);
@@ -76,6 +73,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand>
 			return Result.Error();
 		}
 
-		return Result.Success();
+		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize, request.PlayerId!));
 	}
 }
