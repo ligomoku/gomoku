@@ -5,9 +5,6 @@ import { Button } from "@/shared/ui/button";
 import { typedStorage } from "@/shared/lib/utils";
 
 export interface HeaderProps {
-  onCreateGame: () => void;
-  onSignInClick: () => void;
-  onSignOutClick: () => void;
   isSignedIn: boolean;
   searchPlaceholder: string;
   logoText: string;
@@ -17,6 +14,7 @@ export interface HeaderProps {
   SignedOutComponent: ReactNode;
   SignInButtonComponent: ReactNode;
   UserButtonComponent: ReactNode;
+  onSignInClick: () => void;
 }
 
 export const Header = ({
@@ -56,9 +54,9 @@ export const Header = ({
           className={`${isMenuOpen ? "flex" : "hidden"} absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
           style={{ zIndex: 100 }}
         >
-          {menuItems.map((item, index) => (
+          {menuItems.map((item) => (
             <span
-              key={index}
+              key={item.label}
               className="cursor-pointer text-lg hover:text-[#f0f0f0] sm:text-xl"
               onClick={item.onClick}
             >

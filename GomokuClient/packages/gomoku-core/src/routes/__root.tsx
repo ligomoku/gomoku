@@ -23,15 +23,7 @@ const RootComponent = () => {
   return (
     <>
       <Header
-        onCreateGame={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        onSignInClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        onSignOutClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
+        onSignInClick={() => {}}
         isSignedIn={isSignedIn || false}
         searchPlaceholder={"Search"}
         logoText={"gomoku.org"}
@@ -54,7 +46,7 @@ const RootComponent = () => {
             </span>
           </SignInButton>
         }
-        UserButtonComponent={<UserButton>User</UserButton>}
+        UserButtonComponent={<UserButton />}
       />
       <Outlet />
       <TanStackRouterDevtools />

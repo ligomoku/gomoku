@@ -23,18 +23,20 @@ interface JwtTokenPayload {
 }
 
 interface AuthTokenContextType {
-  jwtToken: string | null;
+  jwtToken: string;
   jwtDecodedInfo: JwtTokenPayload | null;
 }
 
 export const AuthTokenContext = createContext<AuthTokenContextType>({
-  jwtToken: null,
+  jwtToken: typedStorage.getItem("jwtToken") || "",
   jwtDecodedInfo: null,
 });
 
 export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const { isLoaded, getToken } = useAuth();
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
+  const [jwtToken, setJwtToken] = useState<string>(
+    typedStorage.getItem("jwtToken") || "",
+  );
   const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
     null,
   );

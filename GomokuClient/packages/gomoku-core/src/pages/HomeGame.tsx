@@ -5,7 +5,7 @@ import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react";
-import { getDefaultHeaders, typedStorage } from "@/shared/lib/utils";
+import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { SwaggerTypes, SwaggerServices } from "@/api";
 
@@ -15,13 +15,9 @@ import { t } from "@lingui/macro";
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
-  const { data: paginatedGames } = useFetchGames(
-    jwtToken || typedStorage.getItem("jwtToken") || "",
-  );
+  const { data: paginatedGames } = useFetchGames(jwtToken);
 
-  const handleCreateGame = useCreateGameAndNavigate(
-    jwtToken || typedStorage.getItem("jwtToken") || "",
-  );
+  const handleCreateGame = useCreateGameAndNavigate(jwtToken);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
