@@ -37,7 +37,10 @@ export const HomeGame = () => {
             <SectionList
               title="Online games"
               items={transformGameData(paginatedGames?.data)}
-              onItemClick={(item) => navigate({ to: `/game/join/${item.id}` })}
+              onItemClick={(item) => {
+                sessionStorage.removeItem("playerID");
+                navigate({ to: `/game/join/${item.id}` });
+              }}
               noItemsText={t`No online games were created`}
             />
             <p className="text-base sm:text-lg">

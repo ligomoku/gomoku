@@ -22,7 +22,7 @@ export const Route = createFileRoute("/game/join/$gameID")({
   },
 });
 
-async function joinGameLoader({ params }: { params: { gameID: string } }) {
+const joinGameLoader = async ({ params }: { params: { gameID: string } }) => {
   const { gameID } = params;
 
   if (!gameID) {
@@ -49,4 +49,4 @@ async function joinGameLoader({ params }: { params: { gameID: string } }) {
     console.error("Failed to join game:", error);
     throw error;
   }
-}
+};

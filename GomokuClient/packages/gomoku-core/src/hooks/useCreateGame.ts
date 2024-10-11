@@ -5,6 +5,7 @@ import { SwaggerServices, SwaggerTypes } from "@/api";
 
 export const useCreateGameAndNavigate = (authToken: string) => {
   const navigate = useNavigate();
+  sessionStorage.removeItem("playerID");
 
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
