@@ -12,6 +12,7 @@ global using GomokuServer.Api.Hubs;
 global using GomokuServer.Api.Hubs.Interfaces;
 global using GomokuServer.Api.Hubs.Messages.Client;
 global using GomokuServer.Api.Hubs.Messages.Server;
+global using GomokuServer.Api.Middlewares;
 global using GomokuServer.Application.Games.Commands;
 global using GomokuServer.Application.Games.Dto;
 global using GomokuServer.Application.Games.Queries;

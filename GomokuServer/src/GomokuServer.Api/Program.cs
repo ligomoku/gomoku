@@ -1,5 +1,3 @@
-using GomokuServer.Api.Middlewares;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var envVariables = EnvironmentLoader.LoadEnvironment(builder);
