@@ -1,6 +1,6 @@
-﻿using GomokuServer.Core.Validation;
+﻿using GomokuServer.Core.Games.Validation;
 
-namespace GomokuServer.Core.Results;
+namespace GomokuServer.Core.Games.Results;
 
 public class PlayerAddingResult
 {

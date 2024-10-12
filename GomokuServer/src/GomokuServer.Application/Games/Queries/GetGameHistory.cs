@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Games.Queries;
+﻿using GomokuServer.Core.Games.Enums;
+
+namespace GomokuServer.Application.Games.Queries;
 
 public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 {
@@ -24,6 +26,8 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 			BoardSize = game.BoardSize,
 			MovesCount = game.MovesHistory.Count,
 			Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+			IsCompleted = game.Status == GameStatus.Completed,
+			Winner = game.Winner?.UserName,
 			MovesHistory = game.MovesHistory.ToDictionary(
 				keyValuePair => keyValuePair.Key,
 				keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)

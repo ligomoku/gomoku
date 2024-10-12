@@ -41,6 +41,7 @@ public class GetGamesByUsernameTests
 		result.Value.Data.Should().BeEmpty();
 		result.Value.Metadata.TotalCount.Should().Be(0);
 		result.Value.Metadata.HasMoreItems.Should().BeFalse();
+
 		await _registeredGamesRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 

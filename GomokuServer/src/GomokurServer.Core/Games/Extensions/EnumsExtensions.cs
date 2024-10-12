@@ -1,6 +1,6 @@
-﻿using GomokuServer.Core.Entities;
+﻿using GomokuServer.Core.Games.Enums;
 
-namespace GomokuServer.Core.Extensions;
+namespace GomokuServer.Core.Games.Extensions;
 
 public static class EnumsExtensions
 {

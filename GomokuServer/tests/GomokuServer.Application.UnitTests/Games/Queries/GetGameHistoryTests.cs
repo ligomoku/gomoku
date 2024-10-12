@@ -37,6 +37,7 @@ public class GetGameHistoryTests
 		getGameResponse.Players!.Black!.Should().BeNull();
 		getGameResponse.Players!.White.Should().BeNull();
 		getGameResponse.MovesHistory.Should().BeEmpty();
+		getGameResponse.IsCompleted.Should().BeFalse();
 
 		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}
@@ -60,6 +61,7 @@ public class GetGameHistoryTests
 		getGameResponse.Players!.Black!.Should().Be(game.Players!.Black!.UserName);
 		getGameResponse.Players!.White!.Should().Be(game.Players!.White!.UserName);
 		getGameResponse.MovesHistory.Should().BeEmpty();
+		getGameResponse.IsCompleted.Should().BeFalse();
 
 		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
 	}

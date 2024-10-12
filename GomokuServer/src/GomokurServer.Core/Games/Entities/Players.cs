@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Core.Entities;
+﻿namespace GomokuServer.Core.Games.Entities;
 
 public record Players
 {

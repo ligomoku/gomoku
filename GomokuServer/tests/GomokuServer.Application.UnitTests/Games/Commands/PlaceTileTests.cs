@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Application.Games.Dto;
+using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 

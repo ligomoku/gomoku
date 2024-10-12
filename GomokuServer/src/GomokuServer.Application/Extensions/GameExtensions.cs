@@ -1,4 +1,5 @@
-﻿using GomokuServer.Core.Extensions;
+﻿using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Extensions;
 
 namespace GomokuServer.Application.Extensions;
 

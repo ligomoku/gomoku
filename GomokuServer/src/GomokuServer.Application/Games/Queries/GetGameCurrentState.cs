@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Application.Extensions;
+using GomokuServer.Core.Games.Enums;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -32,8 +33,8 @@ public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentState
 		{
 			GameId = game.GameId,
 			Players = game.GetPlayersDto(),
-			HasBothPlayersJoined = game.HasBothPlayersJoined,
-			IsGameStarted = game.IsGameStarted,
+			HasBothPlayersJoined = game.Status != GameStatus.WaitingForPlayersToJoin,
+			IsGameStarted = game.Status == GameStatus.InProgress || game.Status == GameStatus.Completed,
 			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
 			Winner = game.Winner != null ? new PlayerDto(game.Winner.Id, game.Winner.UserName, game.Winner.Color.ToString()) : null,
 			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),

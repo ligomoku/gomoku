@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Games.Queries;
+﻿using GomokuServer.Core.Games.Enums;
+
+namespace GomokuServer.Application.Games.Queries;
 
 public class GetGamesByUsernameQuery
 	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>
@@ -42,6 +44,7 @@ public class GetGamesByUsernameQueryHandler
 			{
 				GameId = game.GameId,
 				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+				IsCompleted = game.Status == GameStatus.Completed,
 				Gen = game.PositionInGENFormat,
 				Winner = game.Winner?.UserName,
 				Date = game.CreatedAt,

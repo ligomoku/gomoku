@@ -1,25 +1,28 @@
 ﻿using System.Text;
 
-using GomokuServer.Core.Extensions;
-using GomokuServer.Core.Results;
-using GomokuServer.Core.Validation;
+using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Extensions;
+using GomokuServer.Core.Games.Results;
+using GomokuServer.Core.Games.Validation;
 
-namespace GomokuServer.Core.Entities;
+namespace GomokuServer.Core.Games.Entities;
 
 public class GameBoard
 {
 	private readonly int _boardSize;
 	private readonly string[,] _board;
 	private int _movesCount = 0;
+	private TileColor _nextTileColor;
 
 	public GameBoard(int boardSize)
 	{
 		_boardSize = boardSize;
 		_board = new string[_boardSize, _boardSize];
-		NextTileColor = TileColor.Black;
+		_nextTileColor = TileColor.Black;
+		GameResult = GameResult.NotCompletedYet;
 	}
 
-	public TileColor NextTileColor { get; private set; }
+	public GameResult GameResult { get; private set; }
 
 	public string PositionInGENFormat
 	{
@@ -49,7 +52,7 @@ public class GameBoard
 				gen.Append($"{row}/");
 			}
 
-			gen.Append($"{NextTileColor.GetChar()}/{_movesCount}");
+			gen.Append($"{_nextTileColor.GetChar()}/{_movesCount}");
 
 			return gen.ToString();
 		}
@@ -57,6 +60,15 @@ public class GameBoard
 
 	public BoardTilePlacementResult PlaceNewTile(Tile tile)
 	{
+		if (GameResult != GameResult.NotCompletedYet)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = TilePlacementValidationError.GameIsOver
+			};
+		}
+
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
 			return new()
@@ -75,18 +87,30 @@ public class GameBoard
 			};
 		}
 
-		var newTileColor = NextTileColor;
+		var newTileColor = _nextTileColor;
 		var colorString = newTileColor.GetString();
 		_board[tile.X, tile.Y] = colorString;
 
-		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+		_nextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
 		_movesCount++;
+
+		var winningSequence = CalculateWinningSequence(tile, colorString);
+
+		if (winningSequence == null && _movesCount == _boardSize * _boardSize)
+		{
+			GameResult = GameResult.Tie;
+		}
+
+		if (winningSequence != null)
+		{
+			GameResult = newTileColor == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+		}
 
 		return new()
 		{
 			IsValid = true,
 			PlacedTileColor = newTileColor,
-			WinningSequence = CalculateWinningSequence(tile, colorString)
+			WinningSequence = winningSequence
 		};
 	}
 

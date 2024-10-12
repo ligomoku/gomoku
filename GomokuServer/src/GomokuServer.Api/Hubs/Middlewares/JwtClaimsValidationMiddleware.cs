@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace GomokuServer.Api.Middlewares;
+namespace GomokuServer.Api.Hubs.Middlewares;
 
 public class JwtClaimsValidationMiddleware
 {

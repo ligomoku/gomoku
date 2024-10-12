@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 using GomokuServer.Application.Games.Interfaces;
-using GomokuServer.Core.Entities;
+using GomokuServer.Core.Games.Entities;
 
 namespace GomokuServer.Infrastructure.Data;
 

@@ -1,8 +1,10 @@
-﻿using GomokuServer.Core.Interfaces;
-using GomokuServer.Core.Results;
-using GomokuServer.Core.Validation;
+﻿using GomokuServer.Core.Common.Interfaces;
+using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Results;
+using GomokuServer.Core.Games.Validation;
+using GomokuServer.Core.Profiles.Entities;
 
-namespace GomokuServer.Core.Entities;
+namespace GomokuServer.Core.Games.Entities;
 
 public class Game
 {
@@ -21,6 +23,7 @@ public class Game
 		Opponents = new();
 		Players = new();
 		CreatedAt = _dateTimeProvider.UtcNow;
+		Status = GameStatus.WaitingForPlayersToJoin;
 	}
 
 	public int BoardSize { get; init; }
@@ -35,9 +38,9 @@ public class Game
 
 	public Players Players { get; init; }
 
-	public bool HasBothPlayersJoined => Players.Black != null && Players.Black != null;
+	public GameStatus Status { get; private set; }
 
-	public bool IsGameStarted => HasBothPlayersJoined && _movesHistory.Count > 0;
+	public GameResult Result => _gameBoard.GameResult;
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
@@ -83,6 +86,7 @@ public class Game
 		var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
 
 		NextMoveShouldMakePlayerId = firstPlayer.Id;
+		Status = GameStatus.BothPlayersJoined;
 		Players.Black = firstPlayer;
 		Players.White = secondPlayer;
 
@@ -104,7 +108,7 @@ public class Game
 			};
 		}
 
-		if (!HasBothPlayersJoined)
+		if (Status == GameStatus.WaitingForPlayersToJoin)
 		{
 			return new()
 			{
@@ -136,6 +140,16 @@ public class Game
 
 		if (boardTilePlacementResult.IsValid)
 		{
+			if (_movesHistory.Count == 0)
+			{
+				Status = GameStatus.InProgress;
+			}
+
+			if (_gameBoard.GameResult != GameResult.NotCompletedYet)
+			{
+				Status = GameStatus.Completed;
+			}
+
 			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;

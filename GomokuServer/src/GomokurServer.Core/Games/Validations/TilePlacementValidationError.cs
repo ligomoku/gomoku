@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Core.Validation;
+﻿namespace GomokuServer.Core.Games.Validation;
 
 public enum TilePlacementValidationError
 {

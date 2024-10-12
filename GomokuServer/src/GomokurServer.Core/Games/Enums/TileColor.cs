@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Core.Entities;
+﻿namespace GomokuServer.Core.Games.Enums;
 
 public enum TileColor
 {

@@ -1,5 +1,6 @@
-﻿using GomokuServer.Core.Entities;
-using GomokuServer.Core.Validation;
+﻿using GomokuServer.Core.Games.Entities;
+using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Validation;
 
 namespace GomokuServer.Core.UnitTests;
 
@@ -173,6 +174,61 @@ public class GameBoardTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinningSequence.Should().BeNull();
+	}
+
+	[Test]
+	public void PlaceNewTile_BlackWon_ShouldSetCorrectResult()
+	{
+		// Arrange
+		for (int i = 0; i < 4; i++)
+		{
+			_gameBoard.PlaceNewTile(new Tile(7, i));
+			_gameBoard.PlaceNewTile(new Tile(8, i));
+		}
+
+		// Act
+		var result = _gameBoard.PlaceNewTile(new Tile(7, 4));
+
+		// Assert
+		result.IsValid.Should().BeTrue();
+		_gameBoard.GameResult.Should().Be(GameResult.BlackWon);
+	}
+
+	[Test]
+	public void PlaceNewTile_WhiteWon_ShouldSetCorrectResult()
+	{
+		// Arrange
+		for (int i = 0; i < 4; i++)
+		{
+			_gameBoard.PlaceNewTile(new Tile(7, i));
+			_gameBoard.PlaceNewTile(new Tile(8, i));
+		}
+
+		// Act
+		_gameBoard.PlaceNewTile(new Tile(12, 12));
+		var result = _gameBoard.PlaceNewTile(new Tile(8, 4));
+
+		// Assert
+		result.IsValid.Should().BeTrue();
+		_gameBoard.GameResult.Should().Be(GameResult.WhiteWon);
+	}
+
+	[Test]
+	public void PlaceNewTile_BoardIsOverflowed_AndNoWinningSequence_GameResultShouldBeTie()
+	{
+		// Arrange
+		var gameBoard = new GameBoard(2);
+
+		// Act
+		gameBoard.PlaceNewTile(new Tile(0, 0));
+		gameBoard.PlaceNewTile(new Tile(0, 1));
+		gameBoard.PlaceNewTile(new Tile(1, 0));
+		var result = gameBoard.PlaceNewTile(new Tile(1, 1));
+
+		// Assert
+		result.IsValid.Should().BeTrue();
+		result.WinningSequence.Should().BeNull();
+		gameBoard.GameResult.Should().Be(GameResult.Tie);
 	}
 
 	[Test]
