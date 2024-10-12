@@ -35,9 +35,9 @@ public static class EnvironmentLoader
 				BackendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_BASE_URL")!,
 				BackendApiSecret = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_SECRET")!
 			},
-			Centry = new()
+			Sentry = new()
 			{
-				Dsn = Environment.GetEnvironmentVariable("ASPNETCORE_CENTRY_DSN")
+				Dsn = Environment.GetEnvironmentVariable("ASPNETCORE_SENTRY_DSN")
 			}
 		};
 
