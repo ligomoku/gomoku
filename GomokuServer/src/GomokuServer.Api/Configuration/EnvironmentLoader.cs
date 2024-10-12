@@ -34,6 +34,10 @@ public static class EnvironmentLoader
 				FrontendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_FRONTEND_API_BASE_URL")!,
 				BackendApiBaseUrl = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_BASE_URL")!,
 				BackendApiSecret = Environment.GetEnvironmentVariable("ASPNETCORE_CLERK_BACKEND_API_SECRET")!
+			},
+			Sentry = new()
+			{
+				Dsn = Environment.GetEnvironmentVariable("ASPNETCORE_SENTRY_DSN")
 			}
 		};
 
@@ -48,10 +52,16 @@ public static class EnvironmentLoader
 
 		foreach (var property in properties)
 		{
+			// Skip indexed properties to avoid parameter count mismatch errors
+			if (property.GetIndexParameters().Length > 0)
+			{
+				continue;
+			}
+
 			var value = property.GetValue(obj);
 			var propertyName = parentName != null ? $"{parentName}.{property.Name}" : property.Name;
 
-			if (property.PropertyType == typeof(string))
+			if (property.PropertyType == typeof(string) && !property.IsNullableType())
 			{
 				if (string.IsNullOrWhiteSpace(value?.ToString()))
 				{

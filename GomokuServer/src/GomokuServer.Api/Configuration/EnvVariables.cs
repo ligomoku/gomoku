@@ -4,6 +4,7 @@ public record EnvVariables
 {
 	public required GomokuClient GomokuClient { get; init; }
 	public required Clerk Clerk { get; init; }
+	public required Sentry Sentry { get; set; }
 }
 
 public record GomokuClient
@@ -16,4 +17,9 @@ public record Clerk
 	public required string FrontendApiBaseUrl { get; init; }
 	public required string BackendApiBaseUrl { get; init; }
 	public required string BackendApiSecret { get; set; }
+}
+
+public record Sentry
+{
+	public string? Dsn { get; init; }
 }

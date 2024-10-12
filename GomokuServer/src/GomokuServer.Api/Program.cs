@@ -19,6 +19,8 @@ builder.Services.RegisterCache(builder.Configuration);
 
 builder.Services.RegisterGomokuServices(envVariables);
 
+builder.Logging.RegisterLogger(envVariables);
+
 var app = builder.Build();
 
 app.UseSwaggerPage();
