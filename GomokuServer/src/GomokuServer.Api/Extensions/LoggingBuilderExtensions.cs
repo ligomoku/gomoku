@@ -9,8 +9,8 @@ public static class LoggingBuilderExtensions
 			builder.AddSentry(options =>
 			{
 				options.Dsn = envVariables.Centry.Dsn;
-				options.Debug = true;
-				options.TracesSampleRate = 1.0;
+				options.Debug = false;
+				options.DiagnosticLevel = SentryLevel.Warning;
 			});
 		}
 	}
