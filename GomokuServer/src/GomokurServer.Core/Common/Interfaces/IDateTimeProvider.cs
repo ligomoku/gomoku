@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Core.Interfaces;
+﻿namespace GomokuServer.Core.Common.Interfaces;
 
 public interface IDateTimeProvider
 {

@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Games.Queries;
+﻿using GomokuServer.Core.Games.Enums;
+
+namespace GomokuServer.Application.Games.Queries;
 
 public record GetAvailableToJoinGamesQuery
 	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
@@ -34,7 +36,7 @@ public class GetAvailableToJoinGamesQueryHandler
 	private async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>> TryGetGames(IGamesRepository gamesRepository, GetAvailableToJoinGamesQuery request)
 	{
 		Expression<Func<Game, bool>> expression =
-			game => !game.HasBothPlayersJoined;
+			game => game.Status == GameStatus.WaitingForPlayersToJoin;
 
 		var availableGamesCount = await gamesRepository.CountAsync(expression);
 

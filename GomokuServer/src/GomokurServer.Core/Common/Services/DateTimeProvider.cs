@@ -1,6 +1,6 @@
-﻿using GomokuServer.Core.Interfaces;
+﻿using GomokuServer.Core.Common.Interfaces;
 
-namespace GomokuServer.Core.Services;
+namespace GomokuServer.Core.Common.Services;
 
 public class DateTimeProvider : IDateTimeProvider
 {

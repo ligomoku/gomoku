@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.UnitTests.TestData;
+﻿using GomokuServer.Core.Profiles.Entities;
+
+namespace GomokuServer.Application.UnitTests.TestData;
 
 public class TestDataProvider
 {

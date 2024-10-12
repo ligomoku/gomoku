@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.Games.Commands;
+﻿using GomokuServer.Core.Profiles.Entities;
+
+namespace GomokuServer.Application.Games.Commands;
 
 public record CreateGameCommand : ICommand<CreateGameResponse>
 {

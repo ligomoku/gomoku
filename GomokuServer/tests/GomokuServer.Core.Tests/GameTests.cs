@@ -1,6 +1,8 @@
-using GomokuServer.Core.Entities;
-using GomokuServer.Core.Interfaces;
-using GomokuServer.Core.Validation;
+using GomokuServer.Core.Common.Interfaces;
+using GomokuServer.Core.Games.Entities;
+using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Validation;
+using GomokuServer.Core.Profiles.Entities;
 
 using NSubstitute;
 
@@ -251,17 +253,17 @@ public class GameTests
 	}
 
 	[Test]
-	public void CreateGame_WhenPlayersNotAdded_GameStartedShouldBeFalse()
+	public void CreateGame_WhenPlayersNotAdded_GameStatusShouldBeWaitingForPlayersToJoin()
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		// Assert
-		_game.IsGameStarted.Should().BeFalse();
+		_game.Status.Should().Be(GameStatus.WaitingForPlayersToJoin);
 	}
 
 	[Test]
-	public void CreateGame_WhenBothPlayersAreAdded_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeFalse()
+	public void CreateGame_WhenBothPlayersAreAdded_GameStatus_ShouldBe_BothPlayersJoined()
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
@@ -269,12 +271,11 @@ public class GameTests
 		_game.AddOpponent(new Profile("somePlayer2", "somePlayer2UserName"));
 
 		// Assert
-		_game.HasBothPlayersJoined.Should().BeTrue();
-		_game.IsGameStarted.Should().BeFalse();
+		_game.Status.Should().Be(GameStatus.BothPlayersJoined);
 	}
 
 	[Test]
-	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_HasBothPlayersJoinedShouldBeTrue_IsGameStartedShouldBeTrue()
+	public void CreateGame_WhenBothPlayersAreAdded_AndOneMoveIsMade_GameStatus_ShouldBe_InProgress()
 	{
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
@@ -285,8 +286,7 @@ public class GameTests
 		_game.PlaceTile(new Tile(0, 0), "somePlayer1Id");
 
 		// Assert
-		_game.HasBothPlayersJoined.Should().BeTrue();
-		_game.IsGameStarted.Should().BeTrue();
+		_game.Status.Should().Be(GameStatus.InProgress);
 	}
 
 	[Test]

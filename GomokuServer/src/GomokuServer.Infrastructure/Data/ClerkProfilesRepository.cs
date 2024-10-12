@@ -1,6 +1,6 @@
 ﻿using GomokuServer.Application.Common.Interfaces;
 using GomokuServer.Application.Profiles.Interfaces;
-using GomokuServer.Core.Entities;
+using GomokuServer.Core.Profiles.Entities;
 using GomokuServer.Infrastructure.Api;
 
 using Microsoft.Extensions.Logging;

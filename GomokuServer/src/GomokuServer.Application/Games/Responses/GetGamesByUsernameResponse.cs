@@ -8,6 +8,9 @@ public record GetGamesByUsernameResponse
 	[Required]
 	public required UsernamesDto Players { get; init; }
 
+	[Required]
+	public bool IsCompleted { get; init; }
+
 	public string? Winner { get; init; }
 
 	[Required]

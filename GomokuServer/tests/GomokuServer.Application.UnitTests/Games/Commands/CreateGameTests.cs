@@ -1,4 +1,6 @@
-﻿namespace GomokuServer.Application.UnitTests.Games.Commands;
+﻿using GomokuServer.Core.Profiles.Entities;
+
+namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class CreateGameTests
 {

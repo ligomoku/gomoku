@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GomokuServer.Core.Profiles.Entities;
+
+using Microsoft.Extensions.Logging;
 
 namespace GomokuServer.Application.Games.Commands;
 

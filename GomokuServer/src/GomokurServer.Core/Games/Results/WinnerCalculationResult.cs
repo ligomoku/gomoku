@@ -1,6 +1,6 @@
-﻿using GomokuServer.Core.Entities;
+﻿using GomokuServer.Core.Games.Entities;
 
-namespace GomokuServer.Core.Results;
+namespace GomokuServer.Core.Games.Results;
 
 public class WinnerCalculationResult
 {
