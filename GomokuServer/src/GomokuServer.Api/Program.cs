@@ -1,4 +1,4 @@
-using GomokuServer.Api.Hubs.Middlewares;
+using GomokuServer.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
