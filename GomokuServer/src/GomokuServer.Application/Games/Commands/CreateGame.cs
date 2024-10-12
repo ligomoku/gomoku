@@ -34,6 +34,8 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 
 	public async Task<Result<CreateGameResponse>> Handle(CreateGameCommand request, CancellationToken cancellationToken)
 	{
+		throw new AccessViolationException("Test Sentry V3");
+
 		if (request.BoardSize < BOARD_MIN_SIZE || request.BoardSize > BOARD_MAX_SIZE)
 		{
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
