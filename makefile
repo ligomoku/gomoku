@@ -32,10 +32,10 @@ download-localhost:
 	@echo "Download JSON schema from localhost..."
 	@cd $(CLIENT_DIR) && yarn download:localhost
 
-codegen:
+codegen-swagger:
 	@echo "Generating API client..."
 	@cd $(CLIENT_DIR) && yarn codegen
 
-codegen-sever:
+codegen-hubs:
 	@echo "Generating hub types..."
 	yarn generate-hub-types:server
