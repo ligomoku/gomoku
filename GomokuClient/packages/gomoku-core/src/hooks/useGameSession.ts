@@ -11,6 +11,7 @@ export const useGameSession = (gameID?: string) => {
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
+  // TODO: check server acceptance of empty string errors
   const { data: gameHistory } = useGameHistory(gameID || "");
 
   useEffect(() => {
@@ -65,14 +66,8 @@ export const useGameSession = (gameID?: string) => {
   const handleMove = async (x: number, y: number) => {
     if (!hubProxy || winner || !gameID) return;
 
-    const makeMoveMessage = {
-      gameId: gameID,
-      x,
-      y,
-    };
-
     try {
-      await hubProxy.makeMove(makeMoveMessage);
+      await hubProxy.makeMove({ gameId: gameID, x, y });
     } catch (error) {
       console.error("Error making move:", error);
     }
