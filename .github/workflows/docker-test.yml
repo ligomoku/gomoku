@@ -64,7 +64,7 @@ jobs:
       - name: Generate API Hub Types
         run: |
           echo "Generating hub types..."
-          cd ./GomokuClient && yarn codegen:hubs
+          cd ./GomokuClient && yarn install && yarn codegen:hubs
 
       - name: Check for Uncommitted Changes
         run: |
