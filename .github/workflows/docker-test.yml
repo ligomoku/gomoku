@@ -67,6 +67,10 @@ jobs:
           dotnet tool install --global TypedSignalR.Client.TypeScript.Generator &&
           dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-core/src/api/hubs  --assemblies
 
+      - name: Format with Prettier
+        run: |
+          ls -la && yarn format
+
       - name: Check for Uncommitted Changes
         run: |
           git config --global --add safe.directory '*'
