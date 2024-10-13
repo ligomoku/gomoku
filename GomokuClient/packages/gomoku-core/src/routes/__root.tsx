@@ -32,6 +32,7 @@ const RootComponent = () => {
           { label: "LEARN", onClick: () => alert("Learn clicked!") },
           { label: "WATCH", onClick: () => alert("Watch clicked!") },
           { label: "COMMUNITY", onClick: () => alert("Community clicked!") },
+          { label: "PROFILE", onClick: () => navigate({ to: "/profile" }) },
         ]}
         SignedInComponent={<SignedIn>Signed In</SignedIn>}
         SignedOutComponent={<SignedOut>Sign Out</SignedOut>}
