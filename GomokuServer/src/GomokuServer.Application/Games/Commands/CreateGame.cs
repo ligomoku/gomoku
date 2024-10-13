@@ -49,7 +49,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			var tempAnonymousProfile = new Profile(playerId, $"Guest {playerId[..6]}");
 
 			var anonymousGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-			anonymousGame.AddOpponent(tempAnonymousProfile);
 
 			var saveAnonymousResult = await _anonymousGamesRepository.SaveAsync(anonymousGame);
 			if (saveAnonymousResult.Status != ResultStatus.Ok)
