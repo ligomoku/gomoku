@@ -28,8 +28,8 @@ export const useGameSession = (gameID?: string) => {
       });
 
       return registerEventHandlers({
-        onPlayerJoined: ({ userName }) => {
-          console.log(`Player ${userName} joined game.`);
+        onPlayerJoined: ({ userId }) => {
+          console.log(`Player ${userId} joined game.`);
         },
         onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
