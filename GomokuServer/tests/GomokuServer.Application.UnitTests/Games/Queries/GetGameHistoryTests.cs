@@ -7,6 +7,7 @@ public class GetGameHistoryTests
 {
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private GetGameHistoryQueryHandler _handler;
 
 	[SetUp]
@@ -14,7 +15,8 @@ public class GetGameHistoryTests
 	{
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_handler = new GetGameHistoryQueryHandler(_registeredGamesRepository);
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
+		_handler = new GetGameHistoryQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
