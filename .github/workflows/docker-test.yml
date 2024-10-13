@@ -61,14 +61,8 @@ jobs:
           echo "Generating API client..."
           cd ./GomokuClient && yarn install && yarn codegen
           
-          echo "Directory structure:"
-          ls -la
-          
-          echo "Directory structure subfolder:"
-          cd .. && ls -la
-          
           echo "Generating hub types..."
-          cd .. && yarn generate-hub-types:server
+          yarn codegen:hubs
           
           # Format with Prettier
           yarn format
