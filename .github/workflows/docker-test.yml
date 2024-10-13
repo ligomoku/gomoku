@@ -62,7 +62,7 @@ jobs:
           cd ./GomokuClient && yarn install && yarn codegen
           
           echo "Generating hub types..."
-          yarn generate-hub-types:server
+          cd .. && yarn generate-hub-types:server
           
           # Format with Prettier
           yarn format
