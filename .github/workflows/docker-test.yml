@@ -56,6 +56,28 @@ jobs:
           exit 1
         shell: bash
 
+      - name: Generate API Client and Hub Types
+        run: |
+          echo "Generating API client..."
+          cd $(CLIENT_DIR) && yarn codegen
+          
+          echo "Generating hub types..."
+          yarn generate-hub-types:server
+          
+          # Format with Prettier
+          yarn format
+
+      - name: Check for Uncommitted Changes
+        run: |
+          git config --global --add safe.directory '*'
+          if [[ $(git status --porcelain) ]]; then
+            echo "Code generation produced changes!"
+            git diff
+            exit 1
+          else
+            echo "No changes detected from code generation."
+          fi
+
       - name: Stop and Remove Docker Container
         if: always()
         run: |
