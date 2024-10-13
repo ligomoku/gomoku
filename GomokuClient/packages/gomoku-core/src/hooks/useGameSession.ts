@@ -3,7 +3,6 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
 import { SwaggerServices, SwaggerTypes } from "@/api";
-import { genToArray } from "@/utils/gen.utility";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGameSession = (gameID: string) => {
@@ -19,7 +18,7 @@ export const useGameSession = (gameID: string) => {
       setTiles(genToArray(gameHistory.gen));
       setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
     }
-  }, [gameHistory]);
+  }, [gameHistory, setTiles, setLastTile]);
 
   useEffect(() => {
     if (isConnected && gameID && hubProxy) {
@@ -103,3 +102,16 @@ const useGameHistory = (gameID: string) =>
       return response.data;
     },
   });
+
+const genToArray = (gen: string) => {
+  const rowsAndMetadata = gen.split("/");
+  const rows = gen.split("/").slice(0, rowsAndMetadata.length - 2);
+
+  return rows.map((row) =>
+    row.split("").map((char) => {
+      if (char === "X") return "black";
+      if (char === "O") return "white";
+      return null;
+    }),
+  );
+};
