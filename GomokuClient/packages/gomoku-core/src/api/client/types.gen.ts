@@ -33,8 +33,11 @@ export type GetAvailableGamesResponseIenumerablePaginatedResponse = {
 
 export type GetGameHistoryResponse = {
   boardSize: number;
+  gen: string;
   movesCount: number;
   players: UsernamesDto;
+  isCompleted: boolean;
+  winner?: string | null;
   movesHistory: {
     [key: string]: TileDto;
   };
@@ -43,6 +46,7 @@ export type GetGameHistoryResponse = {
 export type GetGamesByUsernameResponse = {
   gameId: string;
   players: UsernamesDto;
+  isCompleted: boolean;
   winner?: string | null;
   gen: string;
   date: Date;
@@ -141,7 +145,7 @@ export type PostApiGameByGameIdJoinData = {
   };
 };
 
-export type PostApiGameByGameIdJoinResponse = AddPlayerToGameResponse | void;
+export type PostApiGameByGameIdJoinResponse = AddPlayerToGameResponse;
 
 export type PostApiGameByGameIdJoinError = ProblemDetails;
 

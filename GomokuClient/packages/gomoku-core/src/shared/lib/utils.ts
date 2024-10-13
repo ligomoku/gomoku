@@ -33,19 +33,11 @@ export function getDefaultHeaders(
   }
 }
 
-export interface FixedKeys {
+export interface Schema {
   jwtToken: string;
   currentGameID: string;
   chunkReloadedAt: string;
 }
-
-export interface DynamicKeys {
-  [key: `gameBoard_${string}`]: string;
-  [key: `nextTurn_${string}`]: string;
-  [key: `lastTile_${string}`]: string;
-}
-
-export type Schema = FixedKeys & DynamicKeys;
 
 const memoryStorage = new MemoryStorage();
 export const typedStorage = new TypedLocalStore<Schema>({

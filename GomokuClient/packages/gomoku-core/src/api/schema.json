@@ -230,7 +230,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Player with specified id successfully joined the game",
             "content": {
               "application/json": {
                 "schema": {
@@ -253,9 +253,6 @@
                 }
               }
             }
-          },
-          "204": {
-            "description": "Player with specified id successfully joined the game"
           }
         }
       }
@@ -502,12 +499,23 @@
         "additionalProperties": false
       },
       "GetGameHistoryResponse": {
-        "required": ["boardSize", "movesCount", "movesHistory", "players"],
+        "required": [
+          "boardSize",
+          "gen",
+          "isCompleted",
+          "movesCount",
+          "movesHistory",
+          "players"
+        ],
         "type": "object",
         "properties": {
           "boardSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "gen": {
+            "minLength": 1,
+            "type": "string"
           },
           "movesCount": {
             "type": "integer",
@@ -515,6 +523,13 @@
           },
           "players": {
             "$ref": "#/components/schemas/UsernamesDto"
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "winner": {
+            "type": "string",
+            "nullable": true
           },
           "movesHistory": {
             "type": "object",
@@ -526,7 +541,7 @@
         "additionalProperties": false
       },
       "GetGamesByUsernameResponse": {
-        "required": ["date", "gameId", "gen", "players"],
+        "required": ["date", "gameId", "gen", "isCompleted", "players"],
         "type": "object",
         "properties": {
           "gameId": {
@@ -535,6 +550,9 @@
           },
           "players": {
             "$ref": "#/components/schemas/UsernamesDto"
+          },
+          "isCompleted": {
+            "type": "boolean"
           },
           "winner": {
             "type": "string",

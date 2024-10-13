@@ -99,12 +99,23 @@ export const GetAvailableGamesResponseIEnumerablePaginatedResponseSchema = {
 } as const;
 
 export const GetGameHistoryResponseSchema = {
-  required: ["boardSize", "movesCount", "movesHistory", "players"],
+  required: [
+    "boardSize",
+    "gen",
+    "isCompleted",
+    "movesCount",
+    "movesHistory",
+    "players",
+  ],
   type: "object",
   properties: {
     boardSize: {
       type: "integer",
       format: "int32",
+    },
+    gen: {
+      minLength: 1,
+      type: "string",
     },
     movesCount: {
       type: "integer",
@@ -112,6 +123,13 @@ export const GetGameHistoryResponseSchema = {
     },
     players: {
       $ref: "#/components/schemas/UsernamesDto",
+    },
+    isCompleted: {
+      type: "boolean",
+    },
+    winner: {
+      type: "string",
+      nullable: true,
     },
     movesHistory: {
       type: "object",
@@ -124,7 +142,7 @@ export const GetGameHistoryResponseSchema = {
 } as const;
 
 export const GetGamesByUsernameResponseSchema = {
-  required: ["date", "gameId", "gen", "players"],
+  required: ["date", "gameId", "gen", "isCompleted", "players"],
   type: "object",
   properties: {
     gameId: {
@@ -133,6 +151,9 @@ export const GetGamesByUsernameResponseSchema = {
     },
     players: {
       $ref: "#/components/schemas/UsernamesDto",
+    },
+    isCompleted: {
+      type: "boolean",
     },
     winner: {
       type: "string",

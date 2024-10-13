@@ -1,13 +1,13 @@
 import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
-import { useJoinGame } from "@/hooks/useJoinGame";
+import { useGameSession } from "@/hooks/useGameSession";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 
 const JoinGame = () => {
   const { gameID } = useParams({ strict: false });
-  const { tiles, lastTile, handleMove } = useJoinGame(gameID!);
+  const { tiles, lastTile, handleMove } = useGameSession(gameID!);
   const { jwtDecodedInfo } = useAuthToken();
 
   const { sendMessage, messages, isConnected } = useChat(
