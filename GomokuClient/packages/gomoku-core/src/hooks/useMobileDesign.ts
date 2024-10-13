@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useMobileDesign = (mobileWidth = 768): boolean => {
+export const useMobileDesign = (mobileWidth = 768) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -8,7 +8,7 @@ export const useMobileDesign = (mobileWidth = 768): boolean => {
     setIsMobile(mediaQuery.matches);
     const handleResize = (): void => setIsMobile(mediaQuery.matches);
     window.addEventListener("resize", handleResize);
-    return (): void => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [mobileWidth]);
 
   return isMobile;

@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Header } from "@/shared/ui/Header";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { LoadedClerk } from "@clerk/types";
@@ -10,6 +9,7 @@ import {
   useAuth,
   UserButton,
 } from "@clerk/clerk-react";
+import { lazy } from "react";
 
 export interface MyRouterContext {
   isSignedIn: boolean;
@@ -58,3 +58,12 @@ const RootComponent = () => {
 export const Route = createRootRoute<MyRouterContext>({
   component: RootComponent,
 });
+
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === "production"
+    ? () => null
+    : lazy(() =>
+        import("@tanstack/router-devtools").then((res) => ({
+          default: res.TanStackRouterDevtools,
+        })),
+      );

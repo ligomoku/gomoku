@@ -5,13 +5,14 @@ import { useSignalRConnection } from "@/context";
 import { SwaggerServices, SwaggerTypes } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGameSession = (gameID: string) => {
+export const useGameSession = (gameID?: string) => {
   const { tiles, setTiles, winner, addTile, lastTile, setLastTile } =
     useTiles();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
-  const { data: gameHistory } = useGameHistory(gameID);
+  // TODO: check server acceptance of empty string errors
+  const { data: gameHistory } = useGameHistory(gameID || "");
 
   useEffect(() => {
     if (gameHistory) {
@@ -63,16 +64,10 @@ export const useGameSession = (gameID: string) => {
   }, [winner]);
 
   const handleMove = async (x: number, y: number) => {
-    if (!hubProxy || winner) return;
-
-    const makeMoveMessage = {
-      gameId: gameID,
-      x,
-      y,
-    };
+    if (!hubProxy || winner || !gameID) return;
 
     try {
-      await hubProxy.makeMove(makeMoveMessage);
+      await hubProxy.makeMove({ gameId: gameID, x, y });
     } catch (error) {
       console.error("Error making move:", error);
     }

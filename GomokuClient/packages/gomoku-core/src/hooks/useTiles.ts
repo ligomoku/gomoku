@@ -4,7 +4,6 @@ import { TileDto } from "@/api/client";
 
 export type TileColor = "black" | "white" | null;
 
-//TODO: refactor on IndexDB approach
 export const useTiles = () => {
   const [tiles, setTiles] = useState<TileColor[][]>(
     Array(19)

@@ -4,11 +4,13 @@ import { useGameSession } from "@/hooks/useGameSession";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 const JoinGame = () => {
-  const { gameID } = useParams({ strict: false });
-  const { tiles, lastTile, handleMove } = useGameSession(gameID!);
+  const { gameID } = useParams({ from: "/game/join/$gameID" });
+  const { tiles, lastTile, handleMove } = useGameSession(gameID);
   const { jwtDecodedInfo } = useAuthToken();
+  const isMobile = useMobileDesign();
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
@@ -28,9 +30,13 @@ const JoinGame = () => {
                 onTileClick={(x, y) => handleMove(x, y)}
               />
 
-              <div className="ml-4 flex flex-col justify-between">
-                <br />
-                <br />
+              <div
+                className="mt-4 flex flex-col justify-between"
+                style={{
+                  marginLeft: isMobile ? 0 : "1rem",
+                  width: isMobile ? "100%" : "unset",
+                }}
+              >
                 <Chat
                   messages={messages}
                   isConnected={isConnected}
