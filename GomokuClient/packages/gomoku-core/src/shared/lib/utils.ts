@@ -39,13 +39,7 @@ export interface FixedKeys {
   chunkReloadedAt: string;
 }
 
-export interface DynamicKeys {
-  [key: `gameBoard_${string}`]: string;
-  [key: `nextTurn_${string}`]: string;
-  [key: `lastTile_${string}`]: string;
-}
-
-export type Schema = FixedKeys & DynamicKeys;
+export type Schema = FixedKeys;
 
 const memoryStorage = new MemoryStorage();
 export const typedStorage = new TypedLocalStore<Schema>({

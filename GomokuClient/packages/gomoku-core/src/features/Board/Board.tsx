@@ -31,12 +31,12 @@ export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
 
   const tilesElements = useMemo(
     () =>
-      tiles.map((row, rowIndex) =>
-        row.map((col, colIndex) => {
+      tiles.map((row, xIndex) =>
+        row.map((col, yIndex) => {
           return col !== null ? (
             <div
-              key={`${rowIndex}-${colIndex}`}
-              className={`flex items-center justify-center border border-black ${colIndex === lastTile.x && rowIndex === lastTile.y ? "bg-amber-400" : ""}`}
+              key={`${xIndex}-${yIndex}`}
+              className={`flex items-center justify-center border border-black ${xIndex === lastTile.x && yIndex === lastTile.y ? "bg-amber-400" : ""}`}
             >
               <div
                 className={tileStyles({
@@ -46,10 +46,11 @@ export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
             </div>
           ) : (
             <div
-              key={`${rowIndex}-${colIndex}`}
+              key={`${xIndex}-${yIndex}`}
               className="flex items-center justify-center border border-black"
               onClick={() => {
-                onTileClick(rowIndex, colIndex);
+                console.log("x", xIndex, "y", yIndex);
+                onTileClick(xIndex, yIndex);
               }}
             />
           );

@@ -11,19 +11,27 @@ public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
 {
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
+	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
 
-	public GetGameHistoryQueryHandler(IRegisteredGamesRepository gameRepository)
+	public GetGameHistoryQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymousGamesRepository anonymousGamesRepository)
 	{
 		_registeredGamesRepository = gameRepository;
+		_anonymousGamesRepository = anonymousGamesRepository;
 	}
 
 	public async Task<Result<GetGameHistoryResponse>> Handle(GetGameHistoryQuery request, CancellationToken cancellationToken)
 	{
 		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
 
+		if (!getGameResult.IsSuccess)
+		{
+			getGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
+		}
+
 		return getGameResult.Map(game => new GetGameHistoryResponse()
 		{
 			BoardSize = game.BoardSize,
+			Gen = game.PositionInGENFormat,
 			MovesCount = game.MovesHistory.Count,
 			Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
 			IsCompleted = game.Status == GameStatus.Completed,
@@ -31,7 +39,7 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 			MovesHistory = game.MovesHistory.ToDictionary(
 				keyValuePair => keyValuePair.Key,
 				keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)
-			)
+			),
 		});
 	}
 }

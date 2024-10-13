@@ -1,20 +1,34 @@
 import { useEffect } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
-import { typedStorage } from "@/shared/lib/utils";
+import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
+import { SwaggerServices } from "@/api";
+import { genToArray } from "@/utils/gen.utility";
 
-export const useJoinGame = (gameID: string) => {
-  const { tiles, winner, addTile, lastTile } = useTiles(gameID);
+export const useGameSession = (gameID: string) => {
+  const { tiles, setTiles, winner, addTile, lastTile, setLastTile } =
+    useTiles();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
+  const getGameHistory = () => {
+    SwaggerServices.getApiGameByGameIdHistory({
+      headers: getDefaultHeaders(),
+      path: { gameId: gameID },
+    })
+      .then((response) => {
+        if (!response.data) {
+          throw new Error("Game history not received!");
+        }
+
+        setTiles(genToArray(response.data.gen));
+        setLastTile(response.data.movesHistory[response.data.movesCount]);
+      })
+      .catch((error) => console.warn(error));
+  };
+
   useEffect(() => {
-    const previousGameID = typedStorage.getItem("currentGameID");
-    if (previousGameID && previousGameID !== gameID) {
-      typedStorage.removeItem(`gameBoard_${previousGameID}`);
-      typedStorage.removeItem(`nextTurn_${previousGameID}`);
-    }
-    typedStorage.setItem("currentGameID", gameID);
+    getGameHistory();
   }, [gameID]);
 
   useEffect(() => {
@@ -37,6 +51,7 @@ export const useJoinGame = (gameID: string) => {
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
           console.log("Player made move:", playerId, tile, placedTileColor);
           addTile(tile.y, tile.x, placedTileColor as TileColor);
+          setLastTile({ x: tile.x, y: tile.y });
         },
         onGameHubError: (error) => {
           console.warn("Error from game hub:", error.message);
@@ -51,13 +66,13 @@ export const useJoinGame = (gameID: string) => {
     }
   }, [winner]);
 
-  const handleMove = async (row: number, col: number) => {
+  const handleMove = async (x: number, y: number) => {
     if (!hubProxy || winner) return;
 
     const makeMoveMessage = {
       gameId: gameID,
-      x: row,
-      y: col,
+      x,
+      y,
     };
 
     try {

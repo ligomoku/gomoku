@@ -6,6 +6,9 @@ public class GetGameHistoryResponse
 	public required int BoardSize { get; init; }
 
 	[Required]
+	public required string Gen { get; init; }
+
+	[Required]
 	public required int MovesCount { get; init; }
 
 	[Required]
@@ -18,4 +21,6 @@ public class GetGameHistoryResponse
 
 	[Required]
 	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; init; }
+
+	public TileDto? LastMove { get; init; }
 }
