@@ -38,4 +38,4 @@ codegen-swagger:
 
 codegen-hubs:
 	@echo "Generating hub types..."
-	yarn generate-hub-types:server && prettier --write src/api/hubs/
+	yarn generate-hub-types:server

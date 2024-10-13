@@ -32,6 +32,9 @@ jobs:
           cd $(CLIENT_DIR) && yarn install
           cd ./GomokuServer/src/GomokuServer.Api && dotnet restore
 
+      - name: Install Tapper CLI
+        run: dotnet tool install --global TypedSignalR.Client.TypeScript.Generator
+
       - name: Run Server
         run: dotnet run --configuration Release --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj
 
