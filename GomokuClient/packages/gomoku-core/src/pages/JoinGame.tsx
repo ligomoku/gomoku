@@ -6,8 +6,8 @@ import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 
 const JoinGame = () => {
-  const { gameID } = useParams({ strict: false });
-  const { tiles, lastTile, handleMove } = useGameSession(gameID!);
+  const { gameID } = useParams({ from: "/game/join/$gameID" });
+  const { tiles, lastTile, handleMove } = useGameSession(gameID);
   const { jwtDecodedInfo } = useAuthToken();
 
   const { sendMessage, messages, isConnected } = useChat(

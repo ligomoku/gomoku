@@ -5,13 +5,13 @@ import { useSignalRConnection } from "@/context";
 import { SwaggerServices, SwaggerTypes } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGameSession = (gameID: string) => {
+export const useGameSession = (gameID?: string) => {
   const { tiles, setTiles, winner, addTile, lastTile, setLastTile } =
     useTiles();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
-  const { data: gameHistory } = useGameHistory(gameID);
+  const { data: gameHistory } = useGameHistory(gameID || "");
 
   useEffect(() => {
     if (gameHistory) {
@@ -63,7 +63,7 @@ export const useGameSession = (gameID: string) => {
   }, [winner]);
 
   const handleMove = async (x: number, y: number) => {
-    if (!hubProxy || winner) return;
+    if (!hubProxy || winner || !gameID) return;
 
     const makeMoveMessage = {
       gameId: gameID,
