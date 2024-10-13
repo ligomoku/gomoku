@@ -56,16 +56,15 @@ jobs:
           exit 1
         shell: bash
 
-      - name: Generate API Client and Hub Types
+      - name: Generate API Swagger Types
         run: |
           echo "Generating API client..."
           cd ./GomokuClient && yarn install && yarn codegen
-          
+
+      - name: Generate API Hub Types
+        run: |
           echo "Generating hub types..."
-          yarn codegen:hubs
-          
-          # Format with Prettier
-          yarn format
+          cd ./GomokuClient && yarn codegen:hubs
 
       - name: Check for Uncommitted Changes
         run: |
