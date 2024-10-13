@@ -116,22 +116,22 @@ const genToArray = (gen: string) => {
 };
 
 //TODO: we are already dublicating this as it exists in router
-const useJoinGame = (authToken: string) =>
-  useMutation<
-    SwaggerTypes.PostApiGameByGameIdJoinResponse,
-    SwaggerTypes.PostApiGameByGameIdJoinError,
-    string
-  >({
-    mutationFn: async (gameId) => {
-      const response = await SwaggerServices.postApiGameByGameIdJoin({
-        path: { gameId },
-        headers: getDefaultHeaders(authToken),
-      });
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-  });
+// const useJoinGame = (authToken: string) =>
+//   useMutation<
+//     SwaggerTypes.PostApiGameByGameIdJoinResponse,
+//     SwaggerTypes.PostApiGameByGameIdJoinError,
+//     string
+//   >({
+//     mutationFn: async (gameId) => {
+//       const response = await SwaggerServices.postApiGameByGameIdJoin({
+//         path: { gameId },
+//         headers: getDefaultHeaders(authToken),
+//       });
+//
+//       if (!response.data) {
+//         throw new Error("Invalid game data received");
+//       }
+//
+//       return response.data;
+//     },
+//   });

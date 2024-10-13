@@ -67,7 +67,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
   }, []);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading game history</div>;
+  if (error) return <div>Error loading game history {error.toString()}</div>;
 
   if (!playerID) return <div>Joining game...</div>;
 
