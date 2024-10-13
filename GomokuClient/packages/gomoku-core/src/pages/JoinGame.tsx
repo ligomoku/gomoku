@@ -5,8 +5,13 @@ import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { SwaggerTypes } from "@/api";
 
-const JoinGame = () => {
+interface JoinGameProps {
+  gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
+}
+
+const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { tiles, lastTile, handleMove } = useGameSession(gameID);
   const { jwtDecodedInfo } = useAuthToken();
