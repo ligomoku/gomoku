@@ -4,7 +4,7 @@ import JoinGame from "@/pages/JoinGame";
 import { SignalRProvider } from "@/context";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const getGameHistory = async (gameID: string) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
@@ -52,6 +52,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     const asyncJoinGame = async () => {
       try {
         const joinGameResponse = await joinGame(gameID);
+        console.count("KEK");
         const playerIDFromResponse =
           joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
         setPlayerID(playerIDFromResponse);
@@ -63,7 +64,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     };
 
     asyncJoinGame();
-  }, [gameID]);
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading game history</div>;
