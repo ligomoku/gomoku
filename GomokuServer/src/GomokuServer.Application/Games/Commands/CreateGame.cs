@@ -67,7 +67,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 		}
 
 		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-		game.AddOpponent(getPlayerResult.Value);
 
 		var saveResult = await _registeredGamesRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
