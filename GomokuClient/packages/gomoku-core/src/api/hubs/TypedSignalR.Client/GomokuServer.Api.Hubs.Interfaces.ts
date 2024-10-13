@@ -2,58 +2,67 @@
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
-import type { IStreamResult, Subject } from '@microsoft/signalr';
-import type { MakeMoveClientMessage, ChatMessageClientMessage } from '../GomokuServer.Api.Hubs.Messages.Client';
-import type { PlayerJoinedGameMessage, GameStartedMessage, PlayerMadeMoveMessage, ErrorMessage } from '../GomokuServer.Api.Hubs.Messages.Server';
+import type { IStreamResult, Subject } from "@microsoft/signalr";
+import type {
+  MakeMoveClientMessage,
+  ChatMessageClientMessage,
+} from "../GomokuServer.Api.Hubs.Messages.Client";
+import type {
+  PlayerJoinedGameMessage,
+  GameStartedMessage,
+  PlayerMadeMoveMessage,
+  ErrorMessage,
+} from "../GomokuServer.Api.Hubs.Messages.Server";
 
 export type IGameHub = {
-    /**
-    * @param gameId Transpiled from string
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    joinGameGroup(gameId: string): Promise<void>;
-    /**
-    * @param makeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Client.MakeMoveClientMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    makeMove(makeMoveMessage: MakeMoveClientMessage): Promise<void>;
-    /**
-    * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
-}
+  /**
+   * @param gameId Transpiled from string
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  joinGameGroup(gameId: string): Promise<void>;
+  /**
+   * @param makeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Client.MakeMoveClientMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  makeMove(makeMoveMessage: MakeMoveClientMessage): Promise<void>;
+  /**
+   * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
+};
 
 export type IGameHubReceiver = {
-    /**
-    * @param gameId Transpiled from string
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    gameGroupJoined(gameId: string): Promise<void>;
-    /**
-    * @param playerJoinedGameMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerJoinedGameMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    playerJoinedGame(playerJoinedGameMessage: PlayerJoinedGameMessage): Promise<void>;
-    /**
-    * @param gameStartedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    gameStarted(gameStartedMessage: GameStartedMessage): Promise<void>;
-    /**
-    * @param playerMadeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerMadeMoveMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    playerMadeMove(playerMadeMoveMessage: PlayerMadeMoveMessage): Promise<void>;
-    /**
-    * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
-    /**
-    * @param errorMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.ErrorMessage
-    * @returns Transpiled from System.Threading.Tasks.Task
-    */
-    gameHubError(errorMessage: ErrorMessage): Promise<void>;
-}
-
+  /**
+   * @param gameId Transpiled from string
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  gameGroupJoined(gameId: string): Promise<void>;
+  /**
+   * @param playerJoinedGameMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerJoinedGameMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  playerJoinedGame(
+    playerJoinedGameMessage: PlayerJoinedGameMessage,
+  ): Promise<void>;
+  /**
+   * @param gameStartedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  gameStarted(gameStartedMessage: GameStartedMessage): Promise<void>;
+  /**
+   * @param playerMadeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerMadeMoveMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  playerMadeMove(playerMadeMoveMessage: PlayerMadeMoveMessage): Promise<void>;
+  /**
+   * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
+  /**
+   * @param errorMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.ErrorMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  gameHubError(errorMessage: ErrorMessage): Promise<void>;
+};
