@@ -59,7 +59,7 @@ jobs:
       - name: Generate API Client and Hub Types
         run: |
           echo "Generating API client..."
-          cd $(CLIENT_DIR) && yarn codegen
+          cd ./GomokuClient && yarn codegen
           
           echo "Generating hub types..."
           yarn generate-hub-types:server
