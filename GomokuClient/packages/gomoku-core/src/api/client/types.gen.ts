@@ -41,6 +41,7 @@ export type GetGameHistoryResponse = {
   movesHistory: {
     [key: string]: TileDto;
   };
+  lastMove?: TileDto;
 };
 
 export type GetGamesByUsernameResponse = {

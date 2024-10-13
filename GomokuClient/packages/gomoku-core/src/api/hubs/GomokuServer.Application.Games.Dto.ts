@@ -2,7 +2,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-/** Transpiled from GomokuServer.Application.Dto.TileDto */
+/** Transpiled from GomokuServer.Application.Games.Dto.TileDto */
 export type TileDto = {
   /** Transpiled from int */
   x: number;

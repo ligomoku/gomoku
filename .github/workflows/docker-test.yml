@@ -56,6 +56,32 @@ jobs:
           exit 1
         shell: bash
 
+      - name: Generate API Swagger Types
+        run: |
+          echo "Generating API client..."
+          cd ./GomokuClient && yarn install && yarn codegen
+
+      - name: Generate API Hub Types
+        run: |
+          echo "Generating hub types..."
+          dotnet tool install --global TypedSignalR.Client.TypeScript.Generator &&
+          dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-core/src/api/hubs  --assemblies
+
+      - name: Format with Prettier
+        run: |
+          ls -la && yarn format
+
+      - name: Check for Uncommitted Changes
+        run: |
+          git config --global --add safe.directory '*'
+          if [[ $(git status --porcelain) ]]; then
+            echo "Code generation produced changes!"
+            git diff
+            exit 1
+          else
+            echo "No changes detected from code generation."
+          fi
+
       - name: Stop and Remove Docker Container
         if: always()
         run: |

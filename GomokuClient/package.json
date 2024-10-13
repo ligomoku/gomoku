@@ -21,6 +21,7 @@
     "download": "yarn workspace @gomoku/core download",
     "download:localhost": "yarn workspace @gomoku/core download:localhost",
     "codegen": "yarn workspace @gomoku/core codegen",
+    "codegen:hubs": "cd .. && yarn generate-hub-types:server",
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name .turbo -type d -prune -exec rm -rf '{}' + && find . -name dist -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
