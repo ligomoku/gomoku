@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { useSignalRConnection } from "@/context";
-import { SwaggerServices } from "@/api";
+import { SwaggerServices, SwaggerTypes } from "@/api";
 import { genToArray } from "@/utils/gen.utility";
+import { useQuery } from "@tanstack/react-query";
 
 export const useGameSession = (gameID: string) => {
   const { tiles, setTiles, winner, addTile, lastTile, setLastTile } =
@@ -11,25 +12,14 @@ export const useGameSession = (gameID: string) => {
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
-  const getGameHistory = () => {
-    SwaggerServices.getApiGameByGameIdHistory({
-      headers: getDefaultHeaders(),
-      path: { gameId: gameID },
-    })
-      .then((response) => {
-        if (!response.data) {
-          throw new Error("Game history not received!");
-        }
-
-        setTiles(genToArray(response.data.gen));
-        setLastTile(response.data.movesHistory[response.data.movesCount]);
-      })
-      .catch((error) => console.warn(error));
-  };
+  const { data: gameHistory } = useGameHistory(gameID);
 
   useEffect(() => {
-    getGameHistory();
-  }, [gameID]);
+    if (gameHistory) {
+      setTiles(genToArray(gameHistory.gen));
+      setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
+    }
+  }, [gameHistory]);
 
   useEffect(() => {
     if (isConnected && gameID && hubProxy) {
@@ -58,7 +48,14 @@ export const useGameSession = (gameID: string) => {
         },
       });
     }
-  }, [hubProxy, isConnected, gameID, registerEventHandlers, addTile]);
+  }, [
+    hubProxy,
+    isConnected,
+    gameID,
+    registerEventHandlers,
+    addTile,
+    setLastTile,
+  ]);
 
   useEffect(() => {
     if (winner) {
@@ -84,3 +81,25 @@ export const useGameSession = (gameID: string) => {
 
   return { tiles, lastTile, winner, handleMove };
 };
+
+const useGameHistory = (gameID: string) =>
+  useQuery<
+    SwaggerTypes.GetApiGameByGameIdHistoryResponse,
+    SwaggerTypes.GetApiGameByGameIdHistoryError,
+    SwaggerTypes.GetApiGameByGameIdHistoryResponse,
+    [string, string]
+  >({
+    queryKey: ["gameHistory", gameID],
+    queryFn: async () => {
+      const response = await SwaggerServices.getApiGameByGameIdHistory({
+        headers: getDefaultHeaders(),
+        path: { gameId: gameID },
+      });
+
+      if (!response.data) {
+        throw new Error("Game history not received!");
+      }
+
+      return response.data;
+    },
+  });

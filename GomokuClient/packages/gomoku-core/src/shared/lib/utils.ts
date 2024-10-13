@@ -33,13 +33,11 @@ export function getDefaultHeaders(
   }
 }
 
-export interface FixedKeys {
+export interface Schema {
   jwtToken: string;
   currentGameID: string;
   chunkReloadedAt: string;
 }
-
-export type Schema = FixedKeys;
 
 const memoryStorage = new MemoryStorage();
 export const typedStorage = new TypedLocalStore<Schema>({

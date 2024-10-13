@@ -1,6 +1,4 @@
-import { TileColor } from "@/hooks/useTiles";
-
-export const genToArray = (gen: string): TileColor[][] => {
+export const genToArray = (gen: string) => {
   const rowsAndMetadata = gen.split("/");
   const rows = gen.split("/").slice(0, rowsAndMetadata.length - 2);
 
