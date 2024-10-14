@@ -53,17 +53,17 @@ i18n.load("en", messages);
 i18n.activate("en");
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
-  <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <I18nProvider i18n={i18n}>
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-          <AuthTokenProvider>
-            <RouterProvider router={router} />
-          </AuthTokenProvider>
-        </ClerkProvider>
-      </I18nProvider>
-    </QueryClientProvider>
-  </ErrorBoundary>,
-  // </StrictMode>,
+  <StrictMode>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider i18n={i18n}>
+          <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+            <AuthTokenProvider>
+              <RouterProvider router={router} />
+            </AuthTokenProvider>
+          </ClerkProvider>
+        </I18nProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  </StrictMode>,
 );
