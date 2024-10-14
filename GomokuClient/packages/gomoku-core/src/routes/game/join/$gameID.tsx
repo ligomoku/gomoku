@@ -51,24 +51,17 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
   useEffect(() => {
     if (!gameHistory) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const asyncJoinGame = async () => {
-      console.log("Game history", gameHistory);
-      if (!gameHistory.players.black || !gameHistory.players.white) {
-        try {
-          const joinGameResponse = await joinGame(gameID);
-          console.count("KEK");
-          const playerIDFromResponse =
-            joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
-          setPlayerID(playerIDFromResponse);
-          console.log("Joined game:", joinGameResponse);
-          console.log("PlayerIDResponse", playerIDFromResponse);
-        } catch (error) {
-          console.error("Failed to join the game:", error);
-        }
-      }
-      await asyncJoinGame();
+      const joinGameResponse = await joinGame(gameID);
+      console.count("KEK");
+      const playerIDFromResponse =
+        joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
+      setPlayerID(playerIDFromResponse);
+      console.log("Joined game:", joinGameResponse);
+      console.log("PlayerIDResponse", playerIDFromResponse);
     };
+
+    asyncJoinGame();
   }, [gameHistory, gameID]);
 
   if (isLoading) return <div>Loading...</div>;
