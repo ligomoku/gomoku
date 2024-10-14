@@ -24,7 +24,7 @@ export const HomeGame = () => {
   ) => {
     return games?.map((game) => ({
       id: game.gameId,
-      title: game.opponent.userName,
+      title: game.opponent?.userName ?? "EMPTY GAME", //TODO: Probably requires better handling
       icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
     }));
   };

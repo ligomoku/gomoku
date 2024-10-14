@@ -22,7 +22,7 @@ export type CreateGameResponse = {
 
 export type GetAvailableGamesResponse = {
   gameId: string;
-  opponent: ProfileDto;
+  opponent?: ProfileDto;
 };
 
 export type GetAvailableGamesResponseIenumerablePaginatedResponse = {

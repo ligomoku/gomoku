@@ -465,7 +465,7 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponse": {
-        "required": ["gameId", "opponent"],
+        "required": ["gameId"],
         "type": "object",
         "properties": {
           "gameId": {

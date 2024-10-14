@@ -63,7 +63,7 @@ export const CreateGameResponseSchema = {
 } as const;
 
 export const GetAvailableGamesResponseSchema = {
-  required: ["gameId", "opponent"],
+  required: ["gameId"],
   type: "object",
   properties: {
     gameId: {
