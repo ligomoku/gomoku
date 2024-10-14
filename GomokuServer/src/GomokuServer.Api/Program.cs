@@ -37,4 +37,5 @@ app.MapHub<GameHub>(HubRoute.GameHub);
 
 app.Run();
 
+// Required for functional tests
 public partial class Program { }
