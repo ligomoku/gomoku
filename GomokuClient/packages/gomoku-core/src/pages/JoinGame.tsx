@@ -14,8 +14,7 @@ interface JoinGameProps {
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
-  const { tiles, lastTile, handleMove, setTiles, setLastTile } =
-    useJoinGame(gameID);
+  const { tiles, lastTile, handleMove, setTiles } = useJoinGame(gameID);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
 
@@ -26,11 +25,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
 
   //TODO: should be done without side effect
   useEffect(() => {
-    if (gameHistory) {
-      setTiles(genToArray(gameHistory?.gen));
-      setLastTile(gameHistory?.lastMove || lastTile);
-    }
-  }, [gameHistory, lastTile, setLastTile, setTiles]);
+    if (gameHistory) setTiles(genToArray(gameHistory?.gen));
+  }, [gameHistory, setTiles]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -40,7 +36,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
             <div className="mb-5 flex w-full flex-wrap justify-center">
               <Board
                 tiles={tiles}
-                lastTile={lastTile}
+                lastTile={gameHistory?.lastMove || lastTile}
                 size={19}
                 onTileClick={(x, y) => handleMove(x, y)}
               />
