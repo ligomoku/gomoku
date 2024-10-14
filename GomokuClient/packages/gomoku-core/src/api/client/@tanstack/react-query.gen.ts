@@ -214,15 +214,18 @@ export const postApiGameOptions = (options: Options<PostApiGameData>) => {
   });
 };
 
-export const postApiGameMutation = () => {
+export const postApiGameMutation = (
+  options?: Partial<Options<PostApiGameData>>,
+) => {
   const mutationOptions: UseMutationOptions<
     PostApiGameResponse,
     PostApiGameError,
     Options<PostApiGameData>
   > = {
-    mutationFn: async (options) => {
+    mutationFn: async (localOptions) => {
       const { data } = await postApiGame({
         ...options,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
@@ -251,15 +254,18 @@ export const postApiGameByGameIdJoinOptions = (
   });
 };
 
-export const postApiGameByGameIdJoinMutation = () => {
+export const postApiGameByGameIdJoinMutation = (
+  options?: Partial<Options<PostApiGameByGameIdJoinData>>,
+) => {
   const mutationOptions: UseMutationOptions<
     PostApiGameByGameIdJoinResponse,
     PostApiGameByGameIdJoinError,
     Options<PostApiGameByGameIdJoinData>
   > = {
-    mutationFn: async (options) => {
+    mutationFn: async (localOptions) => {
       const { data } = await postApiGameByGameIdJoin({
         ...options,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
@@ -374,15 +380,18 @@ export const postGamehubJoinGameGroupOptions = (
   });
 };
 
-export const postGamehubJoinGameGroupMutation = () => {
+export const postGamehubJoinGameGroupMutation = (
+  options?: Partial<Options<PostGamehubJoinGameGroupData>>,
+) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
     Options<PostGamehubJoinGameGroupData>
   > = {
-    mutationFn: async (options) => {
+    mutationFn: async (localOptions) => {
       const { data } = await postGamehubJoinGameGroup({
         ...options,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
@@ -411,15 +420,18 @@ export const postGamehubMakeMoveOptions = (
   });
 };
 
-export const postGamehubMakeMoveMutation = () => {
+export const postGamehubMakeMoveMutation = (
+  options?: Partial<Options<PostGamehubMakeMoveData>>,
+) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
     Options<PostGamehubMakeMoveData>
   > = {
-    mutationFn: async (options) => {
+    mutationFn: async (localOptions) => {
       const { data } = await postGamehubMakeMove({
         ...options,
+        ...localOptions,
         throwOnError: true,
       });
       return data;
@@ -448,15 +460,18 @@ export const postGamehubSendMessageOptions = (
   });
 };
 
-export const postGamehubSendMessageMutation = () => {
+export const postGamehubSendMessageMutation = (
+  options?: Partial<Options<PostGamehubSendMessageData>>,
+) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
     Options<PostGamehubSendMessageData>
   > = {
-    mutationFn: async (options) => {
+    mutationFn: async (localOptions) => {
       const { data } = await postGamehubSendMessage({
         ...options,
+        ...localOptions,
         throwOnError: true,
       });
       return data;

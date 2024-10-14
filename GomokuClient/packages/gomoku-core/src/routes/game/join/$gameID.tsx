@@ -5,6 +5,7 @@ import { SignalRProvider } from "@/context";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Spinner } from "@/shared/ui/spinner";
 
 const getGameHistory = async (gameID: string) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
@@ -24,12 +25,6 @@ const joinGame = async (gameID: string) => {
     path: { gameId: gameID },
     headers: getDefaultHeaders(),
   });
-
-  if (!response.data) {
-    console.log(response);
-  }
-
-  console.count("Joined game");
 
   return response.data;
 };
@@ -70,7 +65,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     asyncJoinGame();
   }, [gameHistory, gameID, playerID]);
 
-  if (isLoading || (isJoining && !playerID)) return <div>Loading...</div>;
+  if (isLoading || (isJoining && !playerID)) return <Spinner />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
   return (
