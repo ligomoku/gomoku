@@ -43,31 +43,22 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 
 		if (isCreatedByAnonymousPlayer)
 		{
-			var anonymousGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-
-			var saveAnonymousResult = await _anonymousGamesRepository.SaveAsync(anonymousGame);
-			if (saveAnonymousResult.Status != ResultStatus.Ok)
-			{
-				return Result.Error();
-			}
-
-			return Result.Success(new CreateGameResponse(anonymousGame.GameId, request.BoardSize));
+			return await TryCreateGame(_anonymousGamesRepository, request);
 		}
 
-		var getPlayerResult = await _profilesRepository.GetAsync(request.PlayerId!);
-		if (!getPlayerResult.IsSuccess)
+		var getProfile = await _profilesRepository.GetAsync(request.PlayerId!);
+		if (!getProfile.IsSuccess)
 		{
 			return Result.Error("Cannot get user by id. See logs for more details");
 		}
 
+		return await TryCreateGame(_registeredGamesRepository, request);
+	}
+
+	private async Task<Result<CreateGameResponse>> TryCreateGame(IGamesRepository gamesRepository, CreateGameCommand request)
+	{
 		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-
-		var saveResult = await _registeredGamesRepository.SaveAsync(game);
-		if (saveResult.Status != ResultStatus.Ok)
-		{
-			return Result.Error();
-		}
-
-		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize));
+		var saveResult = await gamesRepository.SaveAsync(game);
+		return saveResult.Map(_ => new CreateGameResponse(game.GameId, game.BoardSize));
 	}
 }

@@ -27,6 +27,20 @@ public class CreateGameTests : FunctionalTestBase
 	}
 
 	[Test]
+	public async Task CreateGame_PassNonExistingPlayerId_ShouldReturnError()
+	{
+		// Act
+		var createGameResult = await SendAsync(new CreateGameCommand
+		{
+			BoardSize = 19,
+			PlayerId = "-999"
+		});
+
+		// Assert
+		createGameResult.Status.Should().Be(ResultStatus.Error);
+	}
+
+	[Test]
 	public async Task CreateGame_PassNullPlayerId_ShouldSuccessfullyCreateGameInAnonymousGamesRepository()
 	{
 		// Act
