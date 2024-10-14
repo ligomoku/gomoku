@@ -3,7 +3,8 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 
 export const useJoinGame = (gameID: string) => {
-  const { tiles, winner, addTile, lastTile, setTiles } = useTiles();
+  const { tiles, winner, addTile, lastTile, setTiles, setLastTile } =
+    useTiles();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
@@ -57,5 +58,5 @@ export const useJoinGame = (gameID: string) => {
     }
   };
 
-  return { tiles, lastTile, winner, handleMove, setTiles };
+  return { tiles, lastTile, winner, handleMove, setTiles, setLastTile };
 };
