@@ -36,3 +36,5 @@ app.UseJwtClaimsValidation();
 app.MapHub<GameHub>(HubRoute.GameHub);
 
 app.Run();
+
+public partial class Program { }
