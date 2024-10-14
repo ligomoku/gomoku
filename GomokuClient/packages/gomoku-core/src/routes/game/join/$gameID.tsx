@@ -38,6 +38,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
   const [playerID, setPlayerID] = useState<string | null>(
     sessionStorage.getItem("playerID"),
   );
+  const [isJoining, setIsJoining] = useState(false);
 
   const {
     data: gameHistory,
@@ -49,26 +50,27 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
   });
 
   useEffect(() => {
-    if (!gameHistory) return;
+    if (!gameHistory || playerID) return;
 
     const asyncJoinGame = async () => {
-      const joinGameResponse = await joinGame(gameID);
-      console.count("KEK");
-      const playerIDFromResponse =
-        joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
-      setPlayerID(playerIDFromResponse);
-      console.log("Joined game:", joinGameResponse);
-      console.log("PlayerIDResponse", playerIDFromResponse);
+      setIsJoining(true);
+      try {
+        const joinGameResponse = await joinGame(gameID);
+        setPlayerID(
+          joinGameResponse?.playerId || sessionStorage.getItem("playerID")!,
+        );
+      } catch (err) {
+        console.error("Error joining game:", err);
+      } finally {
+        setIsJoining(false);
+      }
     };
 
     asyncJoinGame();
-  }, [gameHistory, gameID]);
+  }, [gameHistory, gameID, playerID]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || (isJoining && !playerID)) return <div>Loading...</div>;
   if (error) return <div>Error loading game history {error.toString()}</div>;
-
-  console.log("Joined game:", gameHistory);
-  console.log("Player ID:", playerID);
 
   return (
     <SignalRProvider playerID={playerID}>
