@@ -56,14 +56,10 @@ jobs:
           exit 1
         shell: bash
 
-      - name: Download OpenAPI spec
-        run: |
-          cd ./GomokuClient && yarn download:ci
-
       - name: Generate API Swagger Types
         run: |
           echo "Generating API client..."
-          cd ./GomokuClient && yarn install && yarn codegen
+          cd ./GomokuClient && yarn install && yarn download:ci && yarn codegen
 
       - name: Generate API Hub Types
         run: |
