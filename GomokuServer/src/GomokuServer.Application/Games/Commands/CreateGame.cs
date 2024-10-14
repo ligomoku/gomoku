@@ -1,6 +1,4 @@
-﻿using GomokuServer.Core.Profiles.Entities;
-
-namespace GomokuServer.Application.Games.Commands;
+﻿namespace GomokuServer.Application.Games.Commands;
 
 public record CreateGameCommand : ICommand<CreateGameResponse>
 {
@@ -45,9 +43,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 
 		if (isCreatedByAnonymousPlayer)
 		{
-			var playerId = Guid.NewGuid().ToString();
-			var tempAnonymousProfile = new Profile(playerId, $"Guest {playerId[..6]}");
-
 			var anonymousGame = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
 
 			var saveAnonymousResult = await _anonymousGamesRepository.SaveAsync(anonymousGame);
@@ -56,7 +51,7 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 				return Result.Error();
 			}
 
-			return Result.Success(new CreateGameResponse(anonymousGame.GameId, request.BoardSize, tempAnonymousProfile.Id));
+			return Result.Success(new CreateGameResponse(anonymousGame.GameId, request.BoardSize));
 		}
 
 		var getPlayerResult = await _profilesRepository.GetAsync(request.PlayerId!);
@@ -73,6 +68,6 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Error();
 		}
 
-		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize, request.PlayerId!));
+		return Result.Success(new CreateGameResponse(game.GameId, request.BoardSize));
 	}
 }
