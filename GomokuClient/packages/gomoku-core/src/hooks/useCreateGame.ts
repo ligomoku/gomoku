@@ -24,26 +24,23 @@ export const useCreateGameAndNavigate = (authToken: string) => {
     },
   });
 
-  return () => {
-    createGame.mutate(
-      { boardSize: 19 },
-      {
-        onSuccess: async (data) => {
-          console.log("Game created", data);
-          if (data?.gameId) {
-            try {
+  return {
+    createGame: () => {
+      createGame.mutate(
+        { boardSize: 19 },
+        {
+          onSuccess: async (data) => {
+            console.log("Game created", data);
+            if (data?.gameId) {
               navigate({ to: `/game/join/${data?.gameId}` });
-            } catch (error) {
-              console.error("Failed to set session storage:", error);
             }
-          } else {
-            console.error("Game creation failed: No gameId received");
-          }
+          },
+          onError: (error) => {
+            console.error("Error creating game:", error);
+          },
         },
-        onError: (error) => {
-          console.error("Error creating game:", error);
-        },
-      },
-    );
+      );
+    },
+    isLoading: createGame.isPending,
   };
 };

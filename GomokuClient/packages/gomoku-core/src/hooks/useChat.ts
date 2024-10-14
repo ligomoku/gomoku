@@ -23,7 +23,7 @@ export const useChat = (gameID?: string, username?: string) => {
       };
     }
 
-    return undefined;
+    return;
   }, [isConnected, hubProxy, registerEventHandlers]);
 
   const sendMessage = async (message: string) => {
