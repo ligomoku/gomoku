@@ -30,15 +30,8 @@ export const useCreateGameAndNavigate = (authToken: string) => {
       {
         onSuccess: async (data) => {
           console.log("Game created", data);
-          if (data?.gameId && data?.playerId) {
+          if (data?.gameId) {
             try {
-              await new Promise<void>((resolve) => {
-                if (data?.playerId) {
-                  sessionStorage.setItem("playerID", data?.playerId);
-                  resolve();
-                }
-              });
-
               navigate({ to: `/game/join/${data?.gameId}` });
             } catch (error) {
               console.error("Failed to set session storage:", error);

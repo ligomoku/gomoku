@@ -12,6 +12,7 @@
     "typecheck": "tsc --build --pretty",
     "download": "sh ./scripts/download-openapi-document.sh",
     "download:localhost": "sh ./scripts/download-openapi-document.sh localhost",
+    "download:ci": "sh ./scripts/download-openapi-document.sh CI",
     "codegen": "openapi-ts",
     "format": "prettier . --write src",
     "format:check": "prettier . --check src",
