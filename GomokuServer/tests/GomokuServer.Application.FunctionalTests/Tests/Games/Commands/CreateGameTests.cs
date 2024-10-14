@@ -1,30 +1,47 @@
-﻿
-using GomokuServer.Application.FunctionalTests.TestData;
+﻿using Ardalis.Result;
+
 using GomokuServer.Application.Games.Commands;
 
 namespace GomokuServer.Application.FunctionalTests.Tests.Games.Commands;
 
-public class CreateGameTests
+public class CreateGameTests : FunctionalTestBase
 {
-	private TestDataProvider _testDataProvider;
-
-	[SetUp]
-	public void Setup()
-	{
-		_testDataProvider = new TestDataProvider();
-	}
-
 	[Test]
-	public async Task CreateGame_PassExistingPlayerId_ShouldSuccessfullyCreateGame()
+	public async Task CreateGame_PassExistingPlayerId_ShouldSuccessfullyCreateGameInRegisteredGamesRepository()
 	{
-		await AddRegisteredGameAsync(_testDataProvider.GetGame_NoPlayersJoined());
-
+		// Act
 		var createGameResult = await SendAsync(new CreateGameCommand
 		{
 			BoardSize = 19,
 			PlayerId = "1"
 		});
 
-		createGameResult.IsSuccess.Should().BeTrue();
+		// Assert
+		createGameResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getRegisteredGameResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
+	}
+
+	[Test]
+	public async Task CreateGame_PassNullPlayerId_ShouldSuccessfullyCreateGameInAnonymousGamesRepository()
+	{
+		// Act
+		var createGameResult = await SendAsync(new CreateGameCommand
+		{
+			BoardSize = 19
+		});
+
+		// Assert
+		createGameResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
+
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.Ok);
 	}
 }

@@ -1,5 +1,7 @@
 using GomokuServer.Application.FunctionalTests.Data;
+using GomokuServer.Application.FunctionalTests.Infrastructure;
 using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Application.Profiles.Interfaces;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -18,7 +20,9 @@ public class GomokuWebApplicationFactory : WebApplicationFactory<Program>
 				.RemoveAll<IRegisteredGamesRepository>()
 				.AddSingleton<IRegisteredGamesRepository, TestsRegisteredGamesRepository>()
 				.RemoveAll<IAnonymousGamesRepository>()
-				.AddSingleton<IAnonymousGamesRepository, TestsAnonymousGamesRepository>();
+				.AddSingleton<IAnonymousGamesRepository, TestsAnonymousGamesRepository>()
+				.RemoveAll<IProfilesRepository>()
+				.AddSingleton<IProfilesRepository, TestsProfilesRepository>();
 		});
 	}
 }
