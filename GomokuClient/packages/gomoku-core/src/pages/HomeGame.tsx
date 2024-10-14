@@ -17,7 +17,8 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
 
-  const handleCreateGame = useCreateGameAndNavigate(jwtToken);
+  const { createGame, isLoading: isLoadingCreateGame } =
+    useCreateGameAndNavigate(jwtToken);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
@@ -59,10 +60,11 @@ export const HomeGame = () => {
           </div>
           <div className="lg:col-span-3">
             <GameOptionsButtons
-              onCreateGameClick={handleCreateGame}
+              onCreateGameClick={createGame}
               createGameText={t`CREATE A GAME`}
               playWithFriendText={t`PLAY WITH A FRIEND`}
               playWithAIText={t`PLAY WITH AI`}
+              isLoadingCreateGame={isLoadingCreateGame}
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`1,892 games in play`}

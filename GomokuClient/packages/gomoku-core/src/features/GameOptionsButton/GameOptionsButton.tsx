@@ -7,7 +7,28 @@ export interface GameOptionsButtonsProps {
   createGameText: string;
   playWithFriendText: string;
   playWithAIText: string;
+  isLoadingCreateGame?: boolean;
+  isLoadingPlayWithFriend?: boolean;
+  isLoadingPlayWithAI?: boolean;
 }
+
+const GameButton = ({
+  onClick,
+  text,
+  loading,
+}: {
+  onClick?: () => void;
+  text: string;
+  loading?: boolean;
+}) => (
+  <Button
+    onClick={onClick}
+    loading={loading}
+    className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
+  >
+    {text}
+  </Button>
+);
 
 export const GameOptionsButtons = ({
   onCreateGameClick,
@@ -16,25 +37,25 @@ export const GameOptionsButtons = ({
   createGameText,
   playWithFriendText,
   playWithAIText,
+  isLoadingCreateGame = false,
+  isLoadingPlayWithFriend = false,
+  isLoadingPlayWithAI = false,
 }: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
-    <Button
+    <GameButton
       onClick={onCreateGameClick}
-      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
-    >
-      {createGameText}
-    </Button>
-    <Button
+      text={createGameText}
+      loading={isLoadingCreateGame}
+    />
+    <GameButton
       onClick={onPlayWithFriendClick}
-      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
-    >
-      {playWithFriendText}
-    </Button>
-    <Button
+      text={playWithFriendText}
+      loading={isLoadingPlayWithFriend}
+    />
+    <GameButton
       onClick={onPlayWithAIClick}
-      className="h-12 w-full border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
-    >
-      {playWithAIText}
-    </Button>
+      text={playWithAIText}
+      loading={isLoadingPlayWithAI}
+    />
   </div>
 );
