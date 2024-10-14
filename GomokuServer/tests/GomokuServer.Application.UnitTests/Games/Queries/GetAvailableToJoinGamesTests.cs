@@ -83,7 +83,7 @@ public class GetAvailableToJoinGamesTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.Data.Should().HaveCount(1);
-		result.Value.Data.First().Opponent.UserName.Should().Be(games[0].Opponents[0].UserName);
+		result.Value.Data.First().Opponent!.UserName.Should().Be(games[0].Opponents[0].UserName);
 		await _registeredGamesRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 

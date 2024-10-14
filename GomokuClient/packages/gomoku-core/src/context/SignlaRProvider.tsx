@@ -18,14 +18,14 @@ export const SignalRContext = createContext<SignalRContextType | undefined>(
 
 interface SignalRProviderProps {
   children: ReactNode;
-  playerID?: string;
+  playerID?: string | null;
 }
 
 export const SignalRProvider = ({
   children,
   playerID,
 }: SignalRProviderProps) => {
-  const signalRState = useSignalR(playerID);
+  const signalRState = useSignalR(playerID!);
 
   return (
     <SignalRContext.Provider value={signalRState}>

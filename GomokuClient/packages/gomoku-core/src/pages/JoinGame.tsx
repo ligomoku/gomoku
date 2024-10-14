@@ -1,14 +1,20 @@
 import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
-import { useGameSession } from "@/hooks/useGameSession";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { useJoinGame } from "@/hooks/useJoinGame";
+import { SwaggerTypes } from "@/api";
+import { useEffect } from "react";
 
-const JoinGame = () => {
+interface JoinGameProps {
+  gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
+}
+
+const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
-  const { tiles, lastTile, handleMove } = useGameSession(gameID);
+  const { tiles, lastTile, handleMove, setTiles } = useJoinGame(gameID);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
 
@@ -16,6 +22,11 @@ const JoinGame = () => {
     gameID,
     jwtDecodedInfo?.username,
   );
+
+  //TODO: should be done without side effect
+  useEffect(() => {
+    if (gameHistory) setTiles(genToArray(gameHistory?.gen));
+  }, [gameHistory, setTiles]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -25,7 +36,7 @@ const JoinGame = () => {
             <div className="mb-5 flex w-full flex-wrap justify-center">
               <Board
                 tiles={tiles}
-                lastTile={lastTile}
+                lastTile={gameHistory?.lastMove || lastTile}
                 size={19}
                 onTileClick={(x, y) => handleMove(x, y)}
               />
@@ -53,5 +64,19 @@ const JoinGame = () => {
 };
 
 JoinGame.displayName = "JoinGame";
+
+const genToArray = (gen?: string) => {
+  if (!gen) return [];
+  const rowsAndMetadata = gen.split("/");
+  const rows = gen.split("/").slice(0, rowsAndMetadata.length - 2);
+
+  return rows.map((row) =>
+    row.split("").map((char) => {
+      if (char === "X") return "black";
+      if (char === "O") return "white";
+      return null;
+    }),
+  );
+};
 
 export default JoinGame;

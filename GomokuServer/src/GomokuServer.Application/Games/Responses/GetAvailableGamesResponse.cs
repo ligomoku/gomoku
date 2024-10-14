@@ -1,10 +1,9 @@
 ﻿namespace GomokuServer.Application.Games.Responses;
 
-public record GetAvailableGamesResponse(string GameId, ProfileDto Opponent)
+public record GetAvailableGamesResponse(string GameId)
 {
 	[Required]
 	public string GameId { get; } = GameId;
 
-	[Required]
-	public ProfileDto Opponent { get; } = Opponent;
+	public ProfileDto? Opponent { get; init; }
 }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 using Microsoft.Extensions.Logging;
 
@@ -23,17 +24,36 @@ public class ExceptionHandlingPipeline<TRequest, TResponse> : IPipelineBehavior<
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex.Message, ex);
+			var requestType = typeof(TRequest).Name;
+
+			var stackTrace = new StackTrace(ex, true);
+			var frame = stackTrace.GetFrames()?.FirstOrDefault(f => f.GetFileLineNumber() > 0);
+
+			var fileName = frame?.GetFileName() ?? "Unknown File";
+			var lineNumber = frame?.GetFileLineNumber() ?? 0;
+			var methodName = frame?.GetMethod()?.Name ?? "Unknown Method";
+
+			_logger.LogError(ex,
+				"Exception caught in {PipelineName} while handling {RequestType}: {Message}. \n" +
+				"Occurred in {FileName} at line {LineNumber}, method {MethodName}. \nStackTrace: {StackTrace}",
+				nameof(ExceptionHandlingPipeline<TRequest, TResponse>),
+				requestType,
+				ex.Message,
+				fileName,
+				lineNumber,
+				methodName,
+				ex.StackTrace
+			);
 
 			if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
 			{
-				var resultContructor = typeof(TResponse).GetConstructor(
+				var resultConstructor = typeof(TResponse).GetConstructor(
 					BindingFlags.NonPublic | BindingFlags.CreateInstance | BindingFlags.Instance,
 					null,
-					[typeof(ResultStatus)],
+					new[] { typeof(ResultStatus) },
 					null);
 
-				return (TResponse)resultContructor!.Invoke(new object[] { ResultStatus.Error });
+				return (TResponse)resultConstructor!.Invoke(new object[] { ResultStatus.Error });
 			}
 
 			if (typeof(TResponse) == typeof(Result))

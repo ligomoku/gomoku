@@ -52,10 +52,9 @@ public class GetAvailableToJoinGamesQueryHandler
 		{
 			var availableGames = games.Select(game =>
 			{
-				var opponent = game.Opponents[0];
-				var opponentDto = new ProfileDto(opponent.Id, opponent.UserName);
+				var opponentDto = game.Opponents.Count > 0 ? new ProfileDto(game.Opponents[0].Id, game.Opponents[0].UserName) : null;
 
-				return new GetAvailableGamesResponse(game.GameId, opponentDto);
+				return new GetAvailableGamesResponse(game.GameId) { Opponent = opponentDto };
 			}).ToList();
 
 			return new PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>()

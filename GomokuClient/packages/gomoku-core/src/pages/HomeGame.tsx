@@ -22,11 +22,14 @@ export const HomeGame = () => {
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
   ) => {
-    return games?.map((game) => ({
-      id: game.gameId,
-      title: game.opponent.userName,
-      icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
-    }));
+    return games?.map((game) => {
+      console.log("Game", game);
+      return {
+        id: game.gameId,
+        title: game.opponent?.userName ?? game.gameId.slice(0, 6),
+        icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
+      };
+    });
   };
 
   return (
