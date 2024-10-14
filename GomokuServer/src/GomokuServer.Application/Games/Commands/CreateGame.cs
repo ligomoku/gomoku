@@ -39,9 +39,7 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		var isCreatedByAnonymousPlayer = request.PlayerId == null;
-
-		if (isCreatedByAnonymousPlayer)
+		if (request.PlayerId == null)
 		{
 			return await TryCreateGame(_anonymousGamesRepository, request);
 		}
