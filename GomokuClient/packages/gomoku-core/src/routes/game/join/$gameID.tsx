@@ -75,7 +75,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
 
   return (
     <SignalRProvider playerID={playerID}>
-      <JoinGame />
+      <JoinGame gameHistory={gameHistory} />
     </SignalRProvider>
   );
 };

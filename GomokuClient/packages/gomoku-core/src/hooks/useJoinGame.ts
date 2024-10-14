@@ -3,7 +3,7 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 
 export const useJoinGame = (gameID: string) => {
-  const { tiles, winner, addTile, lastTile } = useTiles();
+  const { tiles, winner, addTile, lastTile, setTiles } = useTiles();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
@@ -13,7 +13,7 @@ export const useJoinGame = (gameID: string) => {
         console.error("Error joining game group:", error);
       });
 
-      return registerEventHandlers({
+      registerEventHandlers({
         onPlayerJoined: ({ userId }) => {
           console.log(`Player ${userId} joined game.`);
         },
@@ -57,5 +57,5 @@ export const useJoinGame = (gameID: string) => {
     }
   };
 
-  return { tiles, lastTile, winner, handleMove };
+  return { tiles, lastTile, winner, handleMove, setTiles };
 };
