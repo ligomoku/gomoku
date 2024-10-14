@@ -53,6 +53,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     if (!gameHistory || playerID) return;
 
     const asyncJoinGame = async () => {
+      if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
         const joinGameResponse = await joinGame(gameID);
