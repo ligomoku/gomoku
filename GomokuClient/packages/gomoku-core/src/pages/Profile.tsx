@@ -73,7 +73,9 @@ export function Profile() {
             <div className="mb-6">
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={ratingData}>
+                  {/*@ts-expect-error*/}
                   <XAxis dataKey="date" stroke="#bababa" />
+                  {/*@ts-expect-error*/}
                   <YAxis stroke="#bababa" />
                   <Line
                     type="monotone"
