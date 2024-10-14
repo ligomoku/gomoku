@@ -58,10 +58,6 @@ export const CreateGameResponseSchema = {
       type: "integer",
       format: "int32",
     },
-    playerId: {
-      type: "string",
-      nullable: true,
-    },
   },
   additionalProperties: false,
 } as const;

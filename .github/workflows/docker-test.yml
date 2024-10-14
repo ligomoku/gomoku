@@ -59,7 +59,7 @@ jobs:
       - name: Generate API Swagger Types
         run: |
           echo "Generating API client..."
-          cd ./GomokuClient && yarn install && yarn codegen
+          cd ./GomokuClient && yarn install && yarn download:ci && yarn codegen
 
       - name: Generate API Hub Types
         run: |
@@ -67,9 +67,13 @@ jobs:
           dotnet tool install --global TypedSignalR.Client.TypeScript.Generator &&
           dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-core/src/api/hubs  --assemblies
 
+      - name: TypeCheck after Generation
+        run: |
+          cd ./GomokuClient && yarn typecheck
+
       - name: Format with Prettier
         run: |
-          ls -la && yarn format
+         yarn format
 
       - name: Check for Uncommitted Changes
         run: |
