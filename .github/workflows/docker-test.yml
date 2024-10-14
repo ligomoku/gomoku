@@ -61,6 +61,10 @@ jobs:
           echo "Generating API client..."
           cd ./GomokuClient && yarn install && yarn download:ci && yarn codegen
 
+      - name: TypeCheck after Generation
+        run: |
+          cd ./GomokuClient && yarn typecheck
+
       - name: Generate API Hub Types
         run: |
           echo "Generating hub types..."
@@ -69,7 +73,7 @@ jobs:
 
       - name: Format with Prettier
         run: |
-          ls -la && yarn format
+         yarn format
 
       - name: Check for Uncommitted Changes
         run: |
