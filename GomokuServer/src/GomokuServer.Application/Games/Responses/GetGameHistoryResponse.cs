@@ -21,6 +21,4 @@ public class GetGameHistoryResponse
 
 	[Required]
 	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; init; }
-
-	public TileDto? LastMove { get; init; }
 }

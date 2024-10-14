@@ -133,9 +133,6 @@ export const GetGameHistoryResponseSchema = {
         $ref: "#/components/schemas/TileDto",
       },
     },
-    lastMove: {
-      $ref: "#/components/schemas/TileDto",
-    },
   },
   additionalProperties: false,
 } as const;
