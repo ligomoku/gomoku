@@ -49,27 +49,30 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
   });
 
   useEffect(() => {
-    const asyncJoinGame = async () => {
-      try {
-        const joinGameResponse = await joinGame(gameID);
-        console.count("KEK");
-        const playerIDFromResponse =
-          joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
-        setPlayerID(playerIDFromResponse);
-        console.log("Joined game:", joinGameResponse);
-        console.log("PlayerIDResponse", playerIDFromResponse);
-      } catch (error) {
-        console.error("Failed to join the game:", error);
-      }
-    };
+    if (!gameHistory) return;
 
-    asyncJoinGame();
-  }, []);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const asyncJoinGame = async () => {
+      console.log("Game history", gameHistory);
+      if (!gameHistory.players.black || !gameHistory.players.white) {
+        try {
+          const joinGameResponse = await joinGame(gameID);
+          console.count("KEK");
+          const playerIDFromResponse =
+            joinGameResponse?.playerId || sessionStorage.getItem("playerID")!;
+          setPlayerID(playerIDFromResponse);
+          console.log("Joined game:", joinGameResponse);
+          console.log("PlayerIDResponse", playerIDFromResponse);
+        } catch (error) {
+          console.error("Failed to join the game:", error);
+        }
+      }
+      await asyncJoinGame();
+    };
+  }, [gameHistory, gameID]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading game history {error.toString()}</div>;
-
-  if (!playerID) return <div>Joining game...</div>;
 
   console.log("Joined game:", gameHistory);
   console.log("Player ID:", playerID);
@@ -96,3 +99,6 @@ export const Route = createFileRoute("/game/join/$gameID")({
     return <JoinGameComponent gameID={gameID!} />;
   },
 });
+
+//{"arguments":[{"gameId":"c2675c15-3c31-43c9-a357-2776905bc01d","x":6,"y":10}],"invocationId":"1","target":"MakeMove","type":1}
+//{"arguments":[{"gameId":"c2675c15-3c31-43c9-a357-2776905bc01d","x":7,"y":7}],"invocationId":"2","target":"MakeMove","type":1}
