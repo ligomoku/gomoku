@@ -19,6 +19,7 @@
     "storybook": "yarn workspace @gomoku/core storybook",
     "preview": "yarn workspace @gomoku/core preview",
     "download": "yarn workspace @gomoku/core download",
+    "download:ci": "yarn workspace @gomoku/core download:ci",
     "download:localhost": "yarn workspace @gomoku/core download:localhost",
     "codegen": "yarn workspace @gomoku/core codegen",
     "codegen:hubs": "cd .. && yarn generate-hub-types:server",
