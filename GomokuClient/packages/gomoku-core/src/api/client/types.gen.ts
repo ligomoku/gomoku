@@ -18,7 +18,6 @@ export type CreateGameRequest = {
 export type CreateGameResponse = {
   gameId?: string | null;
   boardSize?: number;
-  playerId?: string | null;
 };
 
 export type GetAvailableGamesResponse = {
