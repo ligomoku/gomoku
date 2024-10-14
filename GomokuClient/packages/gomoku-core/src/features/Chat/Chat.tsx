@@ -76,6 +76,7 @@ export const Chat = ({
               />
               <Button
                 onClick={handleSendMessage}
+                loading={isSending}
                 disabled={!messageInput.trim() || isSending}
                 className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
               >
