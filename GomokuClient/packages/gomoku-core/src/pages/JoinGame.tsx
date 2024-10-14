@@ -1,19 +1,14 @@
 import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
-import { useGameSession } from "@/hooks/useGameSession";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { SwaggerTypes } from "@/api";
+import { useJoinGame } from "@/hooks/useJoinGame";
 
-interface JoinGameProps {
-  gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
-}
-
-const JoinGame = ({ gameHistory }: JoinGameProps) => {
+const JoinGame = () => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
-  const { tiles, lastTile, handleMove } = useGameSession(gameID);
+  const { tiles, lastTile, handleMove } = useJoinGame(gameID);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
 

@@ -79,7 +79,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
 
   return (
     <SignalRProvider playerID={playerID}>
-      <JoinGame gameHistory={gameHistory} />
+      <JoinGame />
     </SignalRProvider>
   );
 };
@@ -99,6 +99,3 @@ export const Route = createFileRoute("/game/join/$gameID")({
     return <JoinGameComponent gameID={gameID!} />;
   },
 });
-
-//{"arguments":[{"gameId":"c2675c15-3c31-43c9-a357-2776905bc01d","x":6,"y":10}],"invocationId":"1","target":"MakeMove","type":1}
-//{"arguments":[{"gameId":"c2675c15-3c31-43c9-a357-2776905bc01d","x":7,"y":7}],"invocationId":"2","target":"MakeMove","type":1}
