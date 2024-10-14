@@ -4,9 +4,8 @@
 
 /** Transpiled from GomokuServer.Application.Games.Dto.TileDto */
 export type TileDto = {
-    /** Transpiled from int */
-    x: number;
-    /** Transpiled from int */
-    y: number;
-}
-
+  /** Transpiled from int */
+  x: number;
+  /** Transpiled from int */
+  y: number;
+};
