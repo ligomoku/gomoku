@@ -532,9 +532,6 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/TileDto"
             }
-          },
-          "lastMove": {
-            "$ref": "#/components/schemas/TileDto"
           }
         },
         "additionalProperties": false
