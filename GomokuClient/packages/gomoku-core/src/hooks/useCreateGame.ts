@@ -38,11 +38,7 @@ export const useCreateGameAndNavigate = ({
           onSuccess: async (data) => {
             console.log("Game created", data);
             if (data?.gameId) {
-              navigate({
-                to: `/game/join/${data?.gameId}`,
-                //@ts-expect-error
-                state: { boardSize: boardSizeProp },
-              });
+              navigate({ to: `/game/join/${data?.gameId}` });
             }
           },
           onError: (error) => {

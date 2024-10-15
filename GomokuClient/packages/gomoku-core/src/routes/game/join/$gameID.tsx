@@ -62,7 +62,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     };
 
     asyncJoinGame();
-  }, [gameHistory, gameID, playerID]);
+  }, [gameHistory, gameID, jwtToken, playerID]);
 
   if (isLoading || (isJoining && !playerID))
     return <LoadingOverlay isVisible />;
@@ -76,14 +76,14 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
-  loader: async ({ params, location }) => {
+  loader: async ({ params }) => {
     const queryClient = new QueryClient();
     const { gameID } = params;
     await queryClient.ensureQueryData({
       queryKey: ["gameHistory", gameID],
       queryFn: () => getGameHistory(gameID),
     });
-    return { gameID, location };
+    return { gameID };
   },
   component: () => {
     //TODO: this should be done via router itself here

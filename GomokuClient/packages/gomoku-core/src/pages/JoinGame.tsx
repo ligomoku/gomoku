@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "@tanstack/react-router";
+import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
@@ -16,13 +16,10 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
-  const location = useLocation();
-  // @ts-expect-error
-  const boardSize = location.state?.boardSize || 19;
-  const [dynamicBoardSize, setDynamicBoardSize] = useState(boardSize);
+  const [dynamicBoardSize, setDynamicBoardSize] = useState(19);
   const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
     gameID,
-    boardSize || dynamicBoardSize,
+    dynamicBoardSize,
   );
 
   const { sendMessage, messages, isConnected } = useChat(
