@@ -56,4 +56,19 @@ public class PlaceTileTests : FunctionalTestBase
 		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
 		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
+
+	[Test]
+	public async Task PlaceTile_PassNonExistingGameId_ShouldReturnNotFound()
+	{
+		// Act
+		var placeTileResult = await SendAsync(new PlaceTileCommand
+		{
+			GameId = "nonExistingGameId",
+			PlayerId = "somePlayerId",
+			Tile = new TileDto(0, 0)
+		});
+
+		// Assert
+		placeTileResult.Status.Should().Be(ResultStatus.NotFound);
+	}
 }

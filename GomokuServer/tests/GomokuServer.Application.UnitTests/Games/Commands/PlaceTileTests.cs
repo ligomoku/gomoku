@@ -7,6 +7,7 @@ public class PlaceTileTests
 {
 	private Game _game;
 	private IRegisteredGamesRepository _registeredGamesRepository;
+	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 	private PlaceTileCommandHandler _handler;
@@ -16,9 +17,10 @@ public class PlaceTileTests
 	{
 		_game = Substitute.For<Game>(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
+		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_handler = new PlaceTileCommandHandler(_registeredGamesRepository);
+		_handler = new PlaceTileCommandHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
