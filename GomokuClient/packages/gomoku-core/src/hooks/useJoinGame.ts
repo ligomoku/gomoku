@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
+import { notification } from "@/shared/ui/notification";
 
 export const useJoinGame = (gameID: string) => {
   const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
@@ -30,6 +31,7 @@ export const useJoinGame = (gameID: string) => {
           addTile(tile.y, tile.x, placedTileColor as TileColor);
         },
         onGameHubError: (error) => {
+          notification.show("Error from game hub");
           console.warn("Error from game hub:", error.message);
         },
       });
@@ -55,6 +57,7 @@ export const useJoinGame = (gameID: string) => {
       await hubProxy.makeMove(makeMoveMessage);
     } catch (error) {
       console.error("Error making move:", error);
+      notification.show("Error making move");
     }
   };
 

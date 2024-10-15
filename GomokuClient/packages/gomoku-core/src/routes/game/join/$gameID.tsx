@@ -6,6 +6,7 @@ import { getDefaultHeaders } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
+import { notification } from "@/shared/ui/notification";
 
 const getGameHistory = async (gameID: string) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
@@ -57,6 +58,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
         );
       } catch (err) {
         console.error("Error joining game:", err);
+        notification.show("Error joining game");
       } finally {
         setIsJoining(false);
       }

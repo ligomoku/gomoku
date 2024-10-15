@@ -10,6 +10,7 @@ import {
   SignalRClientService,
   SignalServerMessages,
 } from "@/api";
+import { notification } from "@/shared/ui/notification";
 
 export interface SignalREventHandlers {
   onPlayerJoined?: (
@@ -43,6 +44,7 @@ export const useSignalR = (playerID?: string) => {
           setIsConnected(true);
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
+          notification.show("Error starting SignalR connection");
           setTimeout(() => startConnection(connection), 5000);
         }
       }
@@ -105,9 +107,10 @@ export const useSignalR = (playerID?: string) => {
         connection
           .stop()
           .then(() => console.log("SignalR connection stopped"))
-          .catch((error) =>
-            console.error("Error stopping SignalR connection:", error),
-          );
+          .catch((error) => {
+            console.error("Error stopping SignalR connection:", error);
+            notification.show("Error stopping SignalR connection");
+          });
       }
     };
   }, [jwtToken, jwtDecodedInfo, startConnection, getToken, playerID]);

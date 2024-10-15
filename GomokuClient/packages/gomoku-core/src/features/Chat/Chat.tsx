@@ -3,6 +3,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { t } from "@lingui/macro";
+import { notification } from "@/shared/ui/notification";
 
 export interface ChatProps {
   messages: string[];
@@ -30,6 +31,7 @@ export const Chat = ({
         setMessageInput("");
       } catch (error) {
         console.error("Failed to send message", error);
+        notification.show("Error sending message");
       } finally {
         setIsSending(false);
       }
