@@ -57,6 +57,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       {children}
       <Toast.Root
         open={toastState.open}
+        duration={5000}
         onOpenChange={(open) => setInternalToastState((s) => ({ ...s, open }))}
         className={`${getToastClass(
           toastState.type,
