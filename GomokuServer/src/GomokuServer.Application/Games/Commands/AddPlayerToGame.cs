@@ -33,9 +33,7 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 
 	public async Task<Result<AddPlayerToGameResponse>> Handle(AddPlayerToGameCommand request, CancellationToken cancellationToken)
 	{
-		var isAnonymousGame = request.PlayerId == null;
-
-		if (isAnonymousGame)
+		if (request.PlayerId == null)
 		{
 			var playerId = Guid.NewGuid().ToString();
 			var anonymous = new Profile(playerId, $"Guest {playerId[..6]}");

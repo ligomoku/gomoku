@@ -44,8 +44,8 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 			return await TryCreateGame(_anonymousGamesRepository, request);
 		}
 
-		var getProfile = await _profilesRepository.GetAsync(request.PlayerId!);
-		if (!getProfile.IsSuccess)
+		var getProfileResult = await _profilesRepository.GetAsync(request.PlayerId!);
+		if (!getProfileResult.IsSuccess)
 		{
 			return Result.Error("Cannot get user by id. See logs for more details");
 		}
@@ -58,5 +58,22 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
 		var saveResult = await gamesRepository.SaveAsync(game);
 		return saveResult.Map(_ => new CreateGameResponse(game.GameId, game.BoardSize));
+	}
+}
+
+public static class ResultExtensions
+{
+	public static async Task<Result<TOut>> MapAsync<TIn, TOut>(
+		this Result<TIn> result,
+		Func<TIn, Task<TOut>> mapFunction)
+	{
+		switch (result.Status)
+		{
+			case ResultStatus.Ok:
+				var mappedValue = await mapFunction(result.Value);
+				return mappedValue;
+			default:
+				throw new NotSupportedException($"Result {result.Status} conversion is not supported.");
+		}
 	}
 }

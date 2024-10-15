@@ -259,6 +259,22 @@ public class GameTests
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 
 		// Assert
+		_game.Opponents.Count.Should().Be(0);
+		_game.Players.Black.Should().BeNull();
+		_game.Players.White.Should().BeNull();
+		_game.Status.Should().Be(GameStatus.WaitingForPlayersToJoin);
+	}
+
+	[Test]
+	public void CreateGame_WhenOnePlayersAdded_GameStatusShouldBeWaitingForPlayersToJoin()
+	{
+		// Arrange
+		_game = new Game(15, _randomProvider, _dateTimeProvider);
+
+		// Assert
+		_game.Opponents.Count.Should().Be(1);
+		_game.Players.Black.Should().BeNull();
+		_game.Players.White.Should().BeNull();
 		_game.Status.Should().Be(GameStatus.WaitingForPlayersToJoin);
 	}
 
@@ -268,9 +284,13 @@ public class GameTests
 		// Arrange
 		_game = new Game(15, _randomProvider, _dateTimeProvider);
 		_game.AddOpponent(new Profile("somePlayer1Id", "somePlayer1UserName"));
-		_game.AddOpponent(new Profile("somePlayer2", "somePlayer2UserName"));
+		_game.AddOpponent(new Profile("somePlayer2Id", "somePlayer2UserName"));
 
 		// Assert
+		_game.Opponents.Count().Should().Be(2);
+		_game.Players.Black!.Id.Should().Be("somePlayer1Id");
+		_game.Players.White!.Id.Should().Be("somePlayer2Id");
+		_game.Players.White.Should().BeNull();
 		_game.Status.Should().Be(GameStatus.BothPlayersJoined);
 	}
 
