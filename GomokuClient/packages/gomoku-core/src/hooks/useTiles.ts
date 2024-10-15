@@ -4,11 +4,11 @@ import { TileDto } from "@/api/client";
 
 export type TileColor = "black" | "white" | null;
 
-export const useTiles = () => {
+export const useTiles = (boardSize: number) => {
   const [tiles, setTiles] = useState<TileColor[][]>(
-    Array(19)
+    Array(boardSize)
       .fill(null)
-      .map(() => Array(19).fill(null)),
+      .map(() => Array(boardSize).fill(null)),
   );
   const [lastTile, setLastTile] = useState<TileDto>({ x: 0, y: 0 });
 

@@ -3,9 +3,9 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
 
-export const useJoinGame = (gameID: string) => {
+export const useJoinGame = (gameID: string, boardSize: number) => {
   const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
-    useTiles();
+    useTiles(boardSize);
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 

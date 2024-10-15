@@ -6,7 +6,7 @@ import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
@@ -14,14 +14,16 @@ interface JoinGameProps {
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
-  const { tiles, lastTile, handleMove, setTiles, setLastTile } =
-    useJoinGame(gameID);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
   const location = useLocation();
-
   // @ts-expect-error
   const boardSize = location.state?.boardSize || 19;
+  const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
+    gameID,
+    boardSize,
+  );
+  const [dynamicBoardSize, setDynamicBoardSize] = useState(boardSize);
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
@@ -31,6 +33,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   //TODO: should be done without side effect
   useEffect(() => {
     if (gameHistory) {
+      setDynamicBoardSize(gameHistory.boardSize);
       setTiles(genToArray(gameHistory?.gen));
       setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
     }
@@ -45,7 +48,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               <Board
                 tiles={tiles}
                 lastTile={lastTile}
-                size={boardSize}
+                size={dynamicBoardSize}
                 onTileClick={(x, y) => handleMove(x, y)}
               />
 
