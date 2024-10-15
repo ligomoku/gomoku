@@ -31,7 +31,7 @@ export const Chat = ({
         setMessageInput("");
       } catch (error) {
         console.error("Failed to send message", error);
-        notification.show("Error sending message");
+        notification.show("Error sending message", "error");
       } finally {
         setIsSending(false);
       }

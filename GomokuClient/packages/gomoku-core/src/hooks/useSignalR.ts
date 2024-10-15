@@ -44,7 +44,7 @@ export const useSignalR = (playerID?: string) => {
           setIsConnected(true);
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
-          notification.show("Error starting SignalR connection");
+          notification.show("Error starting SignalR connection", "error");
           setTimeout(() => startConnection(connection), 5000);
         }
       }
@@ -109,7 +109,7 @@ export const useSignalR = (playerID?: string) => {
           .then(() => console.log("SignalR connection stopped"))
           .catch((error) => {
             console.error("Error stopping SignalR connection:", error);
-            notification.show("Error stopping SignalR connection");
+            notification.show("Error stopping SignalR connection", "error");
           });
       }
     };

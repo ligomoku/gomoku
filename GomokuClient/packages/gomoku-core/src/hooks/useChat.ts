@@ -37,7 +37,7 @@ export const useChat = (gameID?: string, username?: string) => {
         });
       } catch (error) {
         console.error("Sending message failed: ", error);
-        notification.show("Error sending message");
+        notification.show("Error sending message", "error");
       }
     }
   };

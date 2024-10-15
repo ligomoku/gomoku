@@ -67,7 +67,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
-        notification.show("Error getting auth token");
+        notification.show("Error getting auth token", "error");
       }
     };
 

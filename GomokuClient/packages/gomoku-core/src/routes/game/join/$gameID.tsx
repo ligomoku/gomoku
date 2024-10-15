@@ -58,7 +58,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
         );
       } catch (err) {
         console.error("Error joining game:", err);
-        notification.show("Error joining game");
+        notification.show("Error joining game", "error");
       } finally {
         setIsJoining(false);
       }

@@ -1136,6 +1136,7 @@ __metadata:
     "@lingui/vite-plugin": "npm:^4.12.0"
     "@microsoft/signalr": "npm:^8.0.7"
     "@microsoft/signalr-protocol-msgpack": "npm:^8.0.7"
+    "@radix-ui/colors": "npm:^3.0.0"
     "@radix-ui/react-icons": "npm:^1.3.0"
     "@radix-ui/react-scroll-area": "npm:^1.2.0"
     "@radix-ui/react-slot": "npm:^1.1.0"
@@ -1646,6 +1647,13 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10c0/5bd7576bb1b38a47a7fc7b51ac9f38748e772beebc56200450c4a817d712232b8f1d3ef70532c80840243c657d491cf6a6be1e3a214cff907645819fdc34aadd
+  languageName: node
+  linkType: hard
+
+"@radix-ui/colors@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@radix-ui/colors@npm:3.0.0"
+  checksum: 10c0/612c6bb4efe987f2d49aaca2f785687d08150da59a248328bc2b4e187ece4ef731c1dc5c6a9430fffcac4af9e65cf2f89ceb9806f8809940c9eb238b79d2cf2f
   languageName: node
   linkType: hard
 

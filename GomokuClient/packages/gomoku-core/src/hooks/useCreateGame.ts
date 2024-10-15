@@ -36,7 +36,7 @@ export const useCreateGameAndNavigate = (authToken: string) => {
           },
           onError: (error) => {
             console.error("Error creating game:", error);
-            notification.show("Error creating game");
+            notification.show("Error creating game", "error");
           },
         },
       );

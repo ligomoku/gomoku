@@ -31,7 +31,7 @@ export const useJoinGame = (gameID: string) => {
           addTile(tile.y, tile.x, placedTileColor as TileColor);
         },
         onGameHubError: (error) => {
-          notification.show("Error from game hub");
+          notification.show("Error from game hub", "error");
           console.warn("Error from game hub:", error.message);
         },
       });
@@ -57,7 +57,7 @@ export const useJoinGame = (gameID: string) => {
       await hubProxy.makeMove(makeMoveMessage);
     } catch (error) {
       console.error("Error making move:", error);
-      notification.show("Error making move");
+      notification.show("Error making move", "error");
     }
   };
 
