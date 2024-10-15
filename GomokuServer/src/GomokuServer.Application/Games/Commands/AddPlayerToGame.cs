@@ -33,9 +33,7 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 
 	public async Task<Result<AddPlayerToGameResponse>> Handle(AddPlayerToGameCommand request, CancellationToken cancellationToken)
 	{
-		var isAnonymousGame = request.PlayerId == null;
-
-		if (isAnonymousGame)
+		if (request.PlayerId == null)
 		{
 			var playerId = Guid.NewGuid().ToString();
 			var anonymous = new Profile(playerId, $"Guest {playerId[..6]}");
@@ -73,7 +71,7 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.Invalid(new ValidationError(addingResult.ValidationError.ToString()));
 		}
 
-		var saveResult = await _registeredGamesRepository.SaveAsync(game);
+		var saveResult = await gamesRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
 		{
 			return Result.Error("Failed to save game. See logs for more details");

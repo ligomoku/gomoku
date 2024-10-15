@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { Chat, ChatProps } from "./Chat";
+import { notification } from "@/shared/ui/notification";
 
 export default {
   title: "Components/Chat",
@@ -23,7 +24,7 @@ const Template: StoryFn<ChatProps> = () => (
   <Chat
     isConnected={true}
     messages={mockMessages}
-    sendMessage={async () => alert("Sending message...")}
+    sendMessage={async () => notification.show("Sending message...")}
     username={"User1"}
   />
 );
