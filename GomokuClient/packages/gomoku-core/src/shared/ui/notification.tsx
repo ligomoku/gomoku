@@ -41,7 +41,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const getToastClass = (type: ToastState["type"]) => {
     switch (type) {
       case "error":
-        return "bg-red-600 text-red-12";
+        return "bg-red-600 text-white";
       case "warning":
         return "bg-yellow-600 text-yellow-12";
       case "success":
@@ -53,7 +53,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <Toast.Provider swipeDirection="down">
+    <Toast.Provider swipeDirection="right">
       {children}
       <Toast.Root
         open={toastState.open}
@@ -61,6 +61,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         className={`grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-md p-[15px] shadow-[0_10px_38px_-10px_rgba(0,0,0,0.35),0_10px_20px_-15px_rgba(0,0,0,0.2)] ${getToastClass(
           toastState.type,
         )} data-[state=closed]:animate-hide data-[state=open]:animate-slideIn [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:transition-[transform_200ms_ease-out]`}
+        duration={5000}
       >
         <Toast.Title className="mb-[5px] text-[15px] font-medium [grid-area:_title]">
           {toastState.message}
