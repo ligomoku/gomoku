@@ -6,7 +6,7 @@ import {
   SetStateAction,
   ReactNode,
 } from "react";
-import { Button } from "@/shared/ui/button";
+import { X } from "lucide-react";
 
 interface ToastState {
   open: boolean;
@@ -41,14 +41,14 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const getToastClass = (type: ToastState["type"]) => {
     switch (type) {
       case "error":
-        return "bg-red-600 text-white";
+        return "bg-red-100 border-l-4 border-red-500 text-red-700";
       case "warning":
-        return "bg-yellow-600 text-yellow-12";
+        return "bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700";
       case "success":
-        return "bg-green-600 text-green-12";
+        return "bg-green-100 border-l-4 border-green-500 text-green-700";
       case "info":
       default:
-        return "bg-blue-600 text-blue-12";
+        return "bg-blue-100 border-l-4 border-blue-500 text-blue-700";
     }
   };
 
@@ -58,26 +58,25 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       <Toast.Root
         open={toastState.open}
         onOpenChange={(open) => setInternalToastState((s) => ({ ...s, open }))}
-        className={`grid grid-cols-[auto_max-content] items-center gap-x-[15px] rounded-md p-[15px] shadow-[0_10px_38px_-10px_rgba(0,0,0,0.35),0_10px_20px_-15px_rgba(0,0,0,0.2)] ${getToastClass(
+        className={`${getToastClass(
           toastState.type,
-        )} data-[state=closed]:animate-hide data-[state=open]:animate-slideIn [grid-template-areas:_'title_action'_'description_action'] data-[swipe=cancel]:transition-[transform_200ms_ease-out]`}
-        duration={5000}
+        )} flex transform items-center justify-between rounded-md p-4 shadow-md transition-all duration-300 ease-in-out data-[state=closed]:translate-y-full data-[state=open]:translate-y-0`}
       >
-        <Toast.Title className="mb-[5px] text-[15px] font-medium [grid-area:_title]">
+        <Toast.Title className="text-sm font-medium">
           {toastState.message}
         </Toast.Title>
-        <Toast.Action altText="Close" asChild>
-          <Button
+        <Toast.Action asChild altText="Close">
+          <button
             onClick={() =>
               setInternalToastState((s) => ({ ...s, open: false }))
             }
-            className="inline-flex h-[25px] items-center justify-center rounded px-2.5 text-xs font-medium leading-[25px] shadow-[inset_0_0_0_1px] hover:shadow-[inset_0_0_0_1px] focus:shadow-[0_0_0_2px]"
+            className="ml-4 rounded-full p-1 transition-colors duration-200 hover:bg-black/10"
           >
-            Close
-          </Button>
+            <X className="h-4 w-4" />
+          </button>
         </Toast.Action>
       </Toast.Root>
-      <Toast.Viewport className="fixed bottom-0 right-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-2.5 p-4 p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]" />
+      <Toast.Viewport className="fixed bottom-0 right-0 z-50 m-0 flex w-full max-w-sm list-none flex-col gap-2 p-6 outline-none" />
     </Toast.Provider>
   );
 };
