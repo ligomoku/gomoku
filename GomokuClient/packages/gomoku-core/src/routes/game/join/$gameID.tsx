@@ -31,9 +31,7 @@ const joinGame = async (gameID: string, jwtToken: string) => {
 };
 
 const JoinGameComponent = ({ gameID }: { gameID: string }) => {
-  const [playerID, setPlayerID] = useState<string | null>(
-    sessionStorage.getItem("playerID"),
-  );
+  const [playerID, setPlayerID] = useState<string | null>();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 
@@ -54,9 +52,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
       setIsJoining(true);
       try {
         const joinGameResponse = await joinGame(gameID, jwtToken);
-        setPlayerID(
-          joinGameResponse?.playerId || sessionStorage.getItem("playerID")!,
-        );
+        setPlayerID(joinGameResponse?.playerId);
       } catch (err) {
         console.error("Error joining game:", err);
         notification.show("Error joining game", "error");
@@ -80,13 +76,14 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
-  loader: async ({ params }) => {
+  loader: async ({ params, location }) => {
     const queryClient = new QueryClient();
     const { gameID } = params;
     await queryClient.ensureQueryData({
       queryKey: ["gameHistory", gameID],
       queryFn: () => getGameHistory(gameID),
     });
+    return { gameID, location };
   },
   component: () => {
     //TODO: this should be done via router itself here

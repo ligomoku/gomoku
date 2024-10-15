@@ -1,4 +1,4 @@
-import { useParams } from "@tanstack/react-router";
+import { useLocation, useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken } from "@/context";
@@ -18,6 +18,10 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     useJoinGame(gameID);
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign();
+  const location = useLocation();
+
+  // @ts-expect-error
+  const boardSize = location.state?.boardSize || 19;
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
@@ -41,7 +45,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               <Board
                 tiles={tiles}
                 lastTile={lastTile}
-                size={19}
+                size={boardSize}
                 onTileClick={(x, y) => handleMove(x, y)}
               />
 
