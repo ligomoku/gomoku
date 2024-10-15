@@ -64,6 +64,7 @@ public class PlaceTileTests
 		};
 
 		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
+		_anonymousGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
