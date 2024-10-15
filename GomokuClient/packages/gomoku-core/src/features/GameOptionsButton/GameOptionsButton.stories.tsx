@@ -3,6 +3,7 @@ import {
   GameOptionsButtons,
   GameOptionsButtonsProps,
 } from "./GameOptionsButton";
+import { notification } from "@/shared/ui/notification";
 
 export default {
   title: "Components/GameOptionsButton",
@@ -13,19 +14,14 @@ export default {
 } as Meta<GameOptionsButtonsProps>;
 
 export const Default = (args: GameOptionsButtonsProps) => (
-  <GameOptionsButtons
-    onCreateGameClick={() => alert("Create Game Clicked")}
-    onPlayWithFriendClick={() => alert("Play with Friend Clicked")}
-    onPlayWithAIClick={() => alert("Play with AI Clicked")}
-    {...args}
-  />
+  <GameOptionsButtons {...args} />
 );
 
 Default.args = {
   createGameText: "CREATE A GAME",
   playWithFriendText: "PLAY WITH A FRIEND",
   playWithAIText: "PLAY WITH AI",
-  onCreateGameClick: () => alert("Create a Game clicked!"),
-  onPlayWithFriendClick: () => alert("Play with a Friend clicked!"),
-  onPlayWithAIClick: () => alert("Play with AI clicked!"),
+  onCreateGameClick: () => notification.show("Create a Game clicked!"),
+  onPlayWithFriendClick: () => notification.show("Play with a Friend clicked!"),
+  onPlayWithAIClick: () => notification.show("Play with AI clicked!"),
 };

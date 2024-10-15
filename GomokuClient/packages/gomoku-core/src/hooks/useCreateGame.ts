@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerServices, SwaggerTypes } from "@/api";
+import { notification } from "@/shared/ui/notification";
 
 export const useCreateGameAndNavigate = (authToken: string) => {
   const navigate = useNavigate();
@@ -17,8 +18,6 @@ export const useCreateGameAndNavigate = (authToken: string) => {
         body: { boardSize },
         headers: getDefaultHeaders(authToken),
       });
-
-      console.log("Game created", response);
 
       return response.data;
     },
@@ -37,10 +36,12 @@ export const useCreateGameAndNavigate = (authToken: string) => {
           },
           onError: (error) => {
             console.error("Error creating game:", error);
+            notification.show("Error creating game", "error");
           },
         },
       );
     },
     isLoading: createGame.isPending,
+    isError: createGame.isError,
   };
 };

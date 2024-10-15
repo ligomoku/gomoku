@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
+import { notification } from "@/shared/ui/notification";
 
 export const useJoinGame = (gameID: string) => {
   const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
@@ -20,9 +21,9 @@ export const useJoinGame = (gameID: string) => {
         },
         onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
-            alert("It's your turn. Place your tile");
+            notification.show("It's your turn. Place your tile");
           } else {
-            alert("Wait for your opponent's move");
+            notification.show("Wait for your opponent's move");
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
@@ -30,6 +31,7 @@ export const useJoinGame = (gameID: string) => {
           addTile(tile.y, tile.x, placedTileColor as TileColor);
         },
         onGameHubError: (error) => {
+          notification.show("Error from game hub", "error");
           console.warn("Error from game hub:", error.message);
         },
       });
@@ -38,7 +40,7 @@ export const useJoinGame = (gameID: string) => {
 
   useEffect(() => {
     if (winner) {
-      alert(`The winner is: ${winner}`);
+      notification.show(`The winner is: ${winner}`);
     }
   }, [winner]);
 
@@ -55,6 +57,7 @@ export const useJoinGame = (gameID: string) => {
       await hubProxy.makeMove(makeMoveMessage);
     } catch (error) {
       console.error("Error making move:", error);
+      notification.show("Error making move", "error");
     }
   };
 
