@@ -38,14 +38,12 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 		}
 
 		var saveResult = await _registeredGamesRepository.SaveAsync(game);
-		if (saveResult.Status == ResultStatus.Error)
+		return saveResult.Map(_ =>
 		{
-			return Result.Error();
-		}
+			var winningSequence = tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
+			var placedTileColor = tilePlacementResult.PlacedTileColor.ToString()!.ToCamelCase();
 
-		var winningSequence = tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
-		var placedTileColor = tilePlacementResult.PlacedTileColor.ToString()!.ToCamelCase();
-
-		return Result.Success(new PlaceTileResponse(placedTileColor!, winningSequence));
+			return new PlaceTileResponse(placedTileColor!, winningSequence);
+		});
 	}
 }

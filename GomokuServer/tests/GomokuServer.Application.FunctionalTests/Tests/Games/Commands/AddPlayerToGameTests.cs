@@ -26,6 +26,9 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		var getUpdatedGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents[0].Id.Should().Be("1");
+
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
 	[Test]
@@ -48,6 +51,9 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		var getUpdatedGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents[1].Id.Should().Be("2");
+
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
 	[Test]
@@ -98,6 +104,9 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		var getUpdatedGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents[0].Id.Should().Be(addPlayerResult.Value.PlayerId);
+
+		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
+		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
 	[Test]

@@ -71,7 +71,7 @@ public class AddPlayerToGameCommandHandler : ICommandHandler<AddPlayerToGameComm
 			return Result.Invalid(new ValidationError(addingResult.ValidationError.ToString()));
 		}
 
-		var saveResult = await _registeredGamesRepository.SaveAsync(game);
+		var saveResult = await gamesRepository.SaveAsync(game);
 		if (saveResult.Status != ResultStatus.Ok)
 		{
 			return Result.Error("Failed to save game. See logs for more details");
