@@ -58,18 +58,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), "relative")}
         ref={ref}
         disabled={loading || props.disabled}
         {...props}
       >
         {loading ? (
-          <Spinner
-            size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
-            className="mr-2"
-          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Spinner
+              size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
+            />
+          </div>
         ) : null}
-        {loading ? <span className="opacity-0">{children}</span> : children}{" "}
+        <span className={loading ? "opacity-0" : "flex items-center"}>
+          {children}
+        </span>
       </Comp>
     );
   },

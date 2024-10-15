@@ -1,16 +1,19 @@
 import { Card, CardContent } from "@/shared/ui/card";
 import { SwaggerTypes } from "@/api";
+import { Spinner } from "@/shared/ui/spinner";
 
 export interface FeaturedBoxesProps {
   games: SwaggerTypes.GetAvailableGamesResponse[];
   onGameClick: (game: SwaggerTypes.GetAvailableGamesResponse) => void;
   noGamesText: string;
+  onGameClickLoading?: boolean;
 }
 
 export const FeaturedBoxes = ({
   games = [],
   onGameClick,
   noGamesText,
+  onGameClickLoading = false,
 }: FeaturedBoxesProps) => (
   <div className="mt-8 grid grid-cols-1 gap-6 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
     {games.length > 0 ? (
@@ -18,7 +21,7 @@ export const FeaturedBoxes = ({
         <div
           key={game.gameId}
           onClick={() => onGameClick(game)}
-          className="cursor-pointer"
+          className="relative cursor-pointer"
         >
           <Card className="border-[#2b2b2b] bg-[#2b2b2b] hover:bg-[#3e3e3e]">
             <CardContent className="p-4 sm:p-6">
@@ -31,6 +34,12 @@ export const FeaturedBoxes = ({
               </p>
             </CardContent>
           </Card>
+
+          {onGameClickLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+              <Spinner size="md" className="text-white" />
+            </div>
+          )}
         </div>
       ))
     ) : (
