@@ -21,9 +21,9 @@ export const useJoinGame = (gameID: string) => {
         },
         onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
-            alert("It's your turn. Place your tile");
+            notification.show("It's your turn. Place your tile");
           } else {
-            alert("Wait for your opponent's move");
+            notification.show("Wait for your opponent's move");
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
@@ -40,7 +40,7 @@ export const useJoinGame = (gameID: string) => {
 
   useEffect(() => {
     if (winner) {
-      alert(`The winner is: ${winner}`);
+      notification.show(`The winner is: ${winner}`);
     }
   }, [winner]);
 
