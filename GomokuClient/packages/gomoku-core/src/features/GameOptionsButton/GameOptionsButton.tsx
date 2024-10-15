@@ -32,7 +32,6 @@ const GameButton = ({
 );
 
 export const GameOptionsButtons = ({
-  onCreateGameClick,
   onPlayWithFriendClick,
   onPlayWithAIClick,
   createGameText,
