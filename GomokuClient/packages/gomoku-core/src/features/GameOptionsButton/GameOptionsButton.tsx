@@ -43,7 +43,7 @@ export const GameOptionsButtons = ({
   isLoadingPlayWithAI = false,
 }: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
-    <GameCreatorButton onCreateGameClick={onCreateGameClick}>
+    <GameCreatorButton>
       <GameButton text={createGameText} loading={isLoadingCreateGame} />
     </GameCreatorButton>
     <GameButton
