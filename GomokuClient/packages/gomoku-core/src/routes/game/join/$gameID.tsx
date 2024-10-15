@@ -1,7 +1,7 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { SwaggerServices } from "@/api";
 import JoinGame from "@/pages/JoinGame";
-import { SignalRProvider } from "@/context";
+import { SignalRProvider, useAuthToken } from "@/context";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
@@ -21,10 +21,10 @@ const getGameHistory = async (gameID: string) => {
   return response.data;
 };
 
-const joinGame = async (gameID: string) => {
+const joinGame = async (gameID: string, jwtToken: string) => {
   const response = await SwaggerServices.postApiGameByGameIdJoin({
     path: { gameId: gameID },
-    headers: getDefaultHeaders(),
+    headers: getDefaultHeaders(jwtToken),
   });
 
   return response.data;
@@ -35,6 +35,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     sessionStorage.getItem("playerID"),
   );
   const [isJoining, setIsJoining] = useState(false);
+  const { jwtToken } = useAuthToken();
 
   const {
     data: gameHistory,
@@ -52,7 +53,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        const joinGameResponse = await joinGame(gameID);
+        const joinGameResponse = await joinGame(gameID, jwtToken);
         setPlayerID(
           joinGameResponse?.playerId || sessionStorage.getItem("playerID")!,
         );
