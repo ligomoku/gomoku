@@ -4,9 +4,16 @@ import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerServices, SwaggerTypes } from "@/api";
 import { notification } from "@/shared/ui/notification";
 
-export const useCreateGameAndNavigate = (authToken: string) => {
+interface CreateGameAndNavigateProps {
+  authToken: string;
+  boardSizeProp: number;
+}
+
+export const useCreateGameAndNavigate = ({
+  authToken,
+  boardSizeProp,
+}: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
-  sessionStorage.removeItem("playerID");
 
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
@@ -26,7 +33,7 @@ export const useCreateGameAndNavigate = (authToken: string) => {
   return {
     createGame: () => {
       createGame.mutate(
-        { boardSize: 19 },
+        { boardSize: boardSizeProp },
         {
           onSuccess: async (data) => {
             console.log("Game created", data);
