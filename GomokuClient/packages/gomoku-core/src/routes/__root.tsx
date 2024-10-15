@@ -10,6 +10,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { lazy } from "react";
+import { notification } from "@/shared/ui/notification";
 
 export interface MyRouterContext {
   isSignedIn: boolean;
@@ -29,9 +30,18 @@ const RootComponent = () => {
         logoText={"gomoku.org"}
         logoOnClick={() => navigate({ to: "/" })}
         menuItems={[
-          { label: "LEARN", onClick: () => alert("Learn clicked!") },
-          { label: "WATCH", onClick: () => alert("Watch clicked!") },
-          { label: "COMMUNITY", onClick: () => alert("Community clicked!") },
+          {
+            label: "LEARN",
+            onClick: () => notification.show("Learn clicked!"),
+          },
+          {
+            label: "WATCH",
+            onClick: () => notification.show("Watch clicked!"),
+          },
+          {
+            label: "COMMUNITY",
+            onClick: () => notification.show("Community clicked!"),
+          },
           { label: "PROFILE", onClick: () => navigate({ to: "/profile" }) },
         ]}
         SignedInComponent={<SignedIn>Signed In</SignedIn>}

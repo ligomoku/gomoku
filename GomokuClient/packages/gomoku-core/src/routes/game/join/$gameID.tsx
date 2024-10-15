@@ -5,7 +5,8 @@ import { SignalRProvider } from "@/context";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Spinner } from "@/shared/ui/spinner";
+import { LoadingOverlay } from "@/shared/ui/loading-overlay";
+import { notification } from "@/shared/ui/notification";
 
 const getGameHistory = async (gameID: string) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
@@ -57,6 +58,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
         );
       } catch (err) {
         console.error("Error joining game:", err);
+        notification.show("Error joining game", "error");
       } finally {
         setIsJoining(false);
       }
@@ -65,7 +67,8 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
     asyncJoinGame();
   }, [gameHistory, gameID, playerID]);
 
-  if (isLoading || (isJoining && !playerID)) return <Spinner />;
+  if (isLoading || (isJoining && !playerID))
+    return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
   return (

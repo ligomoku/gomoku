@@ -12,6 +12,7 @@ import { I18nProvider } from "@lingui/react";
 import { messages } from "./locales/en/messages";
 import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
 import { SwaggerServices } from "@/api";
+import { NotificationProvider } from "@/shared/ui/notification";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -59,7 +60,9 @@ createRoot(document.getElementById("root")!).render(
         <I18nProvider i18n={i18n}>
           <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
             <AuthTokenProvider>
-              <RouterProvider router={router} />
+              <NotificationProvider>
+                <RouterProvider router={router} />
+              </NotificationProvider>
             </AuthTokenProvider>
           </ClerkProvider>
         </I18nProvider>

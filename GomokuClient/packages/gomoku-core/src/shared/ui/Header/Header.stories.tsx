@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { Header, HeaderProps } from "@/shared/ui/Header/Header";
+import { notification } from "@/shared/ui/notification";
 
 export default {
   title: "Components/Header",
@@ -18,9 +19,12 @@ Default.args = {
   searchPlaceholder: "Search",
   logoText: "gomoku.org",
   menuItems: [
-    { label: "LEARN", onClick: () => alert("Learn clicked!") },
-    { label: "WATCH", onClick: () => alert("Watch clicked!") },
-    { label: "COMMUNITY", onClick: () => alert("Community clicked!") },
+    { label: "LEARN", onClick: () => notification.show("Learn clicked!") },
+    { label: "WATCH", onClick: () => notification.show("Watch clicked!") },
+    {
+      label: "COMMUNITY",
+      onClick: () => notification.show("Community clicked!"),
+    },
   ],
   SignedInComponent: (
     <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">Signed In</span>
