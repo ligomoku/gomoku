@@ -19,11 +19,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const location = useLocation();
   // @ts-expect-error
   const boardSize = location.state?.boardSize || 19;
+  const [dynamicBoardSize, setDynamicBoardSize] = useState(boardSize);
   const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
     gameID,
-    boardSize,
+    boardSize || dynamicBoardSize,
   );
-  const [dynamicBoardSize, setDynamicBoardSize] = useState(boardSize);
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
