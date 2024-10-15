@@ -6,7 +6,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react";
 import { getDefaultHeaders } from "@/shared/lib/utils";
-import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { SwaggerTypes, SwaggerServices } from "@/api";
 
 import { useAuthToken } from "@/context";
@@ -16,9 +15,6 @@ export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
-
-  const { createGame, isLoading: isLoadingCreateGame } =
-    useCreateGameAndNavigate(jwtToken);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
@@ -56,11 +52,9 @@ export const HomeGame = () => {
           </div>
           <div className="lg:col-span-3">
             <GameOptionsButtons
-              onCreateGameClick={createGame}
               createGameText={t`CREATE A GAME`}
               playWithFriendText={t`PLAY WITH A FRIEND`}
               playWithAIText={t`PLAY WITH AI`}
-              isLoadingCreateGame={isLoadingCreateGame}
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`1,892 games in play`}

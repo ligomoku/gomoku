@@ -24,6 +24,8 @@ export const notification = {
   },
 };
 
+//TODO: check duration logic for expiration time
+//TODO: align with .NET error messages
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [toastState, setInternalToastState] = useState<ToastState>({
     open: false,
@@ -53,7 +55,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <Toast.Provider swipeDirection="right">
+    <Toast.Provider swipeDirection="right" duration={5000}>
       {children}
       <Toast.Root
         open={toastState.open}

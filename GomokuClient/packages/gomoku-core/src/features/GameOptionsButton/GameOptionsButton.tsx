@@ -1,4 +1,5 @@
 import { Button } from "@/shared/ui/button";
+import { GameCreatorButton } from "@/features/GameCreator";
 
 export interface GameOptionsButtonsProps {
   onCreateGameClick?: () => void;
@@ -31,7 +32,6 @@ const GameButton = ({
 );
 
 export const GameOptionsButtons = ({
-  onCreateGameClick,
   onPlayWithFriendClick,
   onPlayWithAIClick,
   createGameText,
@@ -42,11 +42,9 @@ export const GameOptionsButtons = ({
   isLoadingPlayWithAI = false,
 }: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
-    <GameButton
-      onClick={onCreateGameClick}
-      text={createGameText}
-      loading={isLoadingCreateGame}
-    />
+    <GameCreatorButton>
+      <GameButton text={createGameText} loading={isLoadingCreateGame} />
+    </GameCreatorButton>
     <GameButton
       onClick={onPlayWithFriendClick}
       text={playWithFriendText}
