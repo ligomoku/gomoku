@@ -6,7 +6,7 @@ import { notification } from "@/shared/ui/notification";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
-  boardSizeProp: number;
+  boardSizeProp: SwaggerTypes.CreateGameRequest["boardSize"];
 }
 
 export const useCreateGameAndNavigate = ({

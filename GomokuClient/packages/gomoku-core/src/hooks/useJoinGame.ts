@@ -2,8 +2,13 @@ import { useEffect } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
+import { MakeMoveClientMessage } from "@/api/client";
+import { SwaggerTypes } from "@/api";
 
-export const useJoinGame = (gameID: string, boardSize: number) => {
+export const useJoinGame = (
+  gameID: MakeMoveClientMessage["gameId"],
+  boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+) => {
   const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
     useTiles(boardSize);
   const { hubProxy, isConnected, registerEventHandlers } =
@@ -44,13 +49,16 @@ export const useJoinGame = (gameID: string, boardSize: number) => {
     }
   }, [winner]);
 
-  const handleMove = async (row: number, col: number) => {
+  const handleMove = async (
+    x: MakeMoveClientMessage["x"],
+    y: MakeMoveClientMessage["y"],
+  ) => {
     if (!hubProxy || winner) return;
 
     const makeMoveMessage = {
       gameId: gameID,
-      x: row,
-      y: col,
+      x,
+      y,
     };
 
     try {

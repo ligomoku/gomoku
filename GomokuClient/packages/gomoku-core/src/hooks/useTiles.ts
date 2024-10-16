@@ -1,16 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
-import { TileDto } from "@/api/client";
+import { SwaggerTypes } from "@/api";
 
+//TODO: this should come from server side generated types
 export type TileColor = "black" | "white" | null;
 
-export const useTiles = (boardSize: number) => {
+export const useTiles = (
+  boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+) => {
   const [tiles, setTiles] = useState<TileColor[][]>(
     Array(boardSize)
       .fill(null)
       .map(() => Array(boardSize).fill(null)),
   );
-  const [lastTile, setLastTile] = useState<TileDto>({ x: 0, y: 0 });
+  const [lastTile, setLastTile] = useState<SwaggerTypes.TileDto>({
+    x: 0,
+    y: 0,
+  });
 
   const [winner, setWinner] = useState<Winner>(undefined);
 

@@ -1,5 +1,5 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { SwaggerServices } from "@/api";
+import { SwaggerServices, SwaggerTypes } from "@/api";
 import JoinGame from "@/pages/JoinGame";
 import { SignalRProvider, useAuthToken } from "@/context";
 import { getDefaultHeaders } from "@/shared/lib/utils";
@@ -8,10 +8,12 @@ import { useEffect, useState } from "react";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
 import { notification } from "@/shared/ui/notification";
 
-const getGameHistory = async (gameID: string) => {
+const getGameHistory = async (
+  gameID: SwaggerTypes.CreateGameResponse["gameId"],
+) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
     headers: getDefaultHeaders(),
-    path: { gameId: gameID },
+    path: { gameId: gameID ? gameID : "" },
   });
 
   if (!response.data) {
@@ -30,7 +32,11 @@ const joinGame = async (gameID: string, jwtToken: string) => {
   return response.data;
 };
 
-const JoinGameComponent = ({ gameID }: { gameID: string }) => {
+const JoinGameComponent = ({
+  gameID,
+}: {
+  gameID: SwaggerTypes.CreateGameResponse["gameId"];
+}) => {
   const [playerID, setPlayerID] = useState<string | null>();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
@@ -51,7 +57,7 @@ const JoinGameComponent = ({ gameID }: { gameID: string }) => {
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        const joinGameResponse = await joinGame(gameID, jwtToken);
+        const joinGameResponse = await joinGame(gameID ? gameID : "", jwtToken);
         setPlayerID(joinGameResponse?.playerId);
       } catch (err) {
         console.error("Error joining game:", err);

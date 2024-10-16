@@ -73,7 +73,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
 
 JoinGame.displayName = "JoinGame";
 
-const genToArray = (gen?: string) => {
+const genToArray = (gen?: SwaggerTypes.GetGameHistoryResponse["gen"]) => {
   if (!gen) return [];
   const rowsAndMetadata = gen.split("/");
   const rows = gen.split("/").slice(0, rowsAndMetadata.length - 2);

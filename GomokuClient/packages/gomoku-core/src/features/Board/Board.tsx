@@ -4,14 +4,17 @@ import { cva } from "class-variance-authority";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
-import { TileDto } from "@/api/client";
+import { MakeMoveClientMessage, TileDto } from "@/api/client";
 
 export interface TileProps {
-  xIndex: number;
-  yIndex: number;
+  xIndex: MakeMoveClientMessage["x"];
+  yIndex: MakeMoveClientMessage["y"];
   col: TileColor;
   lastTile?: TileDto;
-  onTileClick: (x: number, y: number) => void;
+  onTileClick: (
+    x: MakeMoveClientMessage["x"],
+    y: MakeMoveClientMessage["y"],
+  ) => void;
 }
 
 const Tile = memo(
@@ -93,10 +96,6 @@ export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
 
   const calculatedSize = boardSize / size;
   const calculatedMobileSize = isMobile ? 100 : 80;
-
-  // if (!lastTile) {
-  //   notification.show("Error: lastTile is not defined", "error");
-  // }
 
   if (!isMobile) {
     return (
