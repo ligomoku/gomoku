@@ -9,6 +9,7 @@ import {
   SignalHubInterfaces,
   SignalRClientService,
   SignalServerMessages,
+  SwaggerTypes,
 } from "@/api";
 import { notification } from "@/shared/ui/notification";
 
@@ -26,7 +27,9 @@ export interface SignalREventHandlers {
   onGameHubError?: (error: SignalServerMessages.ErrorMessage) => void;
 }
 
-export const useSignalR = (playerID?: string) => {
+export const useSignalR = (
+  playerID?: SwaggerTypes.AddPlayerToGameResponse["playerId"],
+) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);

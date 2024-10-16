@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
+import { SignalClientMessages, SwaggerTypes } from "@/api";
 
-export const useChat = (gameID?: string, username?: string) => {
+export const useChat = (
+  gameID?: SwaggerTypes.CreateGameResponse["gameId"],
+  username?: SignalClientMessages.ChatMessageClientMessage["user"],
+) => {
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<
+    SignalClientMessages.ChatMessageClientMessage["message"][]
+  >([]);
 
   useEffect(() => {
     if (isConnected && hubProxy) {
@@ -27,7 +33,9 @@ export const useChat = (gameID?: string, username?: string) => {
     return;
   }, [isConnected, hubProxy, registerEventHandlers]);
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (
+    message: SignalClientMessages.ChatMessageClientMessage["message"],
+  ) => {
     if (hubProxy && isConnected && gameID && username) {
       try {
         await hubProxy.sendMessage({

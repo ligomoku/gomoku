@@ -23,9 +23,12 @@ const getGameHistory = async (
   return response.data;
 };
 
-const joinGame = async (gameID: string, jwtToken: string) => {
+const joinGame = async (
+  gameID: SwaggerTypes.CreateGameResponse["gameId"],
+  jwtToken: string,
+) => {
   const response = await SwaggerServices.postApiGameByGameIdJoin({
-    path: { gameId: gameID },
+    path: { gameId: gameID ? gameID : "" },
     headers: getDefaultHeaders(jwtToken),
   });
 
@@ -37,7 +40,9 @@ const JoinGameComponent = ({
 }: {
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
-  const [playerID, setPlayerID] = useState<string | null>();
+  const [playerID, setPlayerID] = useState<
+    SwaggerTypes.AddPlayerToGameResponse["playerId"] | null
+  >();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 

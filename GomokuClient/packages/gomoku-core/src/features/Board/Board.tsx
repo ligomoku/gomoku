@@ -4,16 +4,16 @@ import { cva } from "class-variance-authority";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
-import { MakeMoveClientMessage, TileDto } from "@/api/client";
+import { SignalClientMessages, SwaggerTypes } from "@/api";
 
 export interface TileProps {
-  xIndex: MakeMoveClientMessage["x"];
-  yIndex: MakeMoveClientMessage["y"];
+  xIndex: SignalClientMessages.MakeMoveClientMessage["x"];
+  yIndex: SignalClientMessages.MakeMoveClientMessage["y"];
   col: TileColor;
-  lastTile?: TileDto;
+  lastTile?: SwaggerTypes.TileDto;
   onTileClick: (
-    x: MakeMoveClientMessage["x"],
-    y: MakeMoveClientMessage["y"],
+    x: SignalClientMessages.MakeMoveClientMessage["x"],
+    y: SignalClientMessages.MakeMoveClientMessage["y"],
   ) => void;
 }
 
@@ -68,9 +68,9 @@ const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
 
 export interface BoardProps {
   size: number;
-  onTileClick: (x: number, y: number) => void;
+  onTileClick: Pick<TileProps, "onTileClick">["onTileClick"];
   tiles: TileColor[][];
-  lastTile?: TileDto;
+  lastTile?: SwaggerTypes.TileDto;
 }
 
 export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {

@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext } from "react";
 import { SignalREventHandlers, useSignalR } from "@/hooks/useSignalR";
 import * as signalR from "@microsoft/signalr";
-import { SignalHubInterfaces } from "@/api";
+import { SignalHubInterfaces, SwaggerTypes } from "@/api";
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
@@ -18,7 +18,7 @@ export const SignalRContext = createContext<SignalRContextType | undefined>(
 
 interface SignalRProviderProps {
   children: ReactNode;
-  playerID?: string | null;
+  playerID?: SwaggerTypes.AddPlayerToGameResponse["playerId"] | null;
 }
 
 export const SignalRProvider = ({
