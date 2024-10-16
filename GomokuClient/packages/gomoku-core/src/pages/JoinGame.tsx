@@ -7,6 +7,7 @@ import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
 import { useEffect, useState } from "react";
+import { genParser } from "@/utils/getParser";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
@@ -31,7 +32,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   useEffect(() => {
     if (gameHistory) {
       setDynamicBoardSize(gameHistory.boardSize);
-      setTiles(genToArray(gameHistory?.gen));
+      setTiles(genParser(gameHistory?.gen));
       setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
     }
   }, [gameHistory, setTiles, setLastTile]);
@@ -72,19 +73,5 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
 };
 
 JoinGame.displayName = "JoinGame";
-
-const genToArray = (gen?: SwaggerTypes.GetGameHistoryResponse["gen"]) => {
-  if (!gen) return [];
-  const rowsAndMetadata = gen.split("/");
-  const rows = gen.split("/").slice(0, rowsAndMetadata.length - 2);
-
-  return rows.map((row) =>
-    row.split("").map((char) => {
-      if (char === "X") return "black";
-      if (char === "O") return "white";
-      return null;
-    }),
-  );
-};
 
 export default JoinGame;
