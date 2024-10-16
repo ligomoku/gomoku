@@ -1,11 +1,11 @@
 import { SwaggerTypes } from "@/api";
 import { useMemo } from "react";
 import { genParser } from "@/utils/getParser";
-import { Board } from "@/features/Board/Board";
+import { Board, BoardProps } from "@/features/Board/Board";
 
 export interface GamePreviewProps {
   gen: SwaggerTypes.GetGameHistoryResponse["gen"];
-  lastTile?: SwaggerTypes.TileDto;
+  lastTile?: Pick<BoardProps, "lastTile">["lastTile"];
 }
 
 export const GamePreview = ({ gen, lastTile }: GamePreviewProps) => {

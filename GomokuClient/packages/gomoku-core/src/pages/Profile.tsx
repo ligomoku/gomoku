@@ -127,7 +127,10 @@ export const Profile = () => {
   );
 };
 
-const useFetchProfileGames = (authToken: string, userName: string) =>
+const useFetchProfileGames = (
+  authToken: string,
+  userName: SwaggerTypes.GetApiProfilesByUserNameGamesData["path"]["userName"],
+) =>
   useInfiniteQuery<
     SwaggerTypes.GetApiProfilesByUserNameGamesResponse,
     SwaggerTypes.GetApiProfilesByUserNameGamesError
