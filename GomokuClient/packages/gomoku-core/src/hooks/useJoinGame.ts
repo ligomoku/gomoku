@@ -32,7 +32,7 @@ export const useJoinGame = (
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
           console.log("Player made move:", playerId, tile, placedTileColor);
-          addTile(tile.y, tile.x, placedTileColor as TileColor);
+          addTile(tile, placedTileColor as TileColor);
         },
         onGameHubError: (error) => {
           notification.show("Error from game hub", "error");
