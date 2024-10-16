@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { findWinner, Winner } from "@/utils";
 import { SwaggerTypes } from "@/api";
-import { TileDto } from "@/api/client";
 
 //TODO: this should come from server side generated types
 export type TileColor = "black" | "white" | null;
@@ -38,23 +37,26 @@ export const useTiles = (
     setWinner(result);
   }, [tiles]);
 
-  const addTile = useCallback((tile: TileDto, newValue: TileColor) => {
-    const { x, y } = tile;
-    lastX.current = x;
-    lastY.current = y;
+  const addTile = useCallback(
+    (tile: SwaggerTypes.TileDto, newValue: TileColor) => {
+      const { x, y } = tile;
+      lastX.current = x;
+      lastY.current = y;
 
-    setTiles((prevBoard) =>
-      prevBoard.map((row, xIndex) => {
-        if (xIndex !== x) return row;
+      setTiles((prevBoard) =>
+        prevBoard.map((row, xIndex) => {
+          if (xIndex !== x) return row;
 
-        return row.map((col, yIndex) => {
-          if (yIndex !== y) return col;
-          return newValue;
-        });
-      }),
-    );
-    setLastTile(tile);
-  }, []);
+          return row.map((col, yIndex) => {
+            if (yIndex !== y) return col;
+            return newValue;
+          });
+        }),
+      );
+      setLastTile(tile);
+    },
+    [],
+  );
 
   return {
     tiles,
