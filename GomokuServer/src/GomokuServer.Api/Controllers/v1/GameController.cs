@@ -59,6 +59,26 @@ public class GameController : Controller
 	}
 
 	/// <summary>
+	/// Get all active games
+	/// </summary>
+	/// <response code="200">Returns list of active games</response>
+	[HttpGet]
+	[Route("/api/games/active")]
+	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetActiveGamesResponse>>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> GetActiveGames([FromQuery] GetActiveGamesRequest request)
+	{
+		var query = new GetActiveGamesQuery
+		{
+			IsAnonymous = request.IsAnonymous,
+			Limit = request.Limit,
+			Offset = request.Offset
+		};
+
+		var activeGamesResult = await _mediator.Send(query);
+		return activeGamesResult.ToApiResponse();
+	}
+
+	/// <summary>
 	/// Create new game (supports both anonymous and authenticated users)
 	/// </summary>
 	/// <response code="200">Returns information about newly created game</response>

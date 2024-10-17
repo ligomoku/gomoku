@@ -53,4 +53,23 @@ public class TestDataProvider
 
 		return game;
 	}
+
+	// New method for a game in progress
+	public Game GetGame_InProgress(IDateTimeProvider? dateTimeProvider = null)
+	{
+		var game = new Game(_boardSize, _randomProvider, dateTimeProvider ?? _dateTimeProvider);
+
+		// Adding two players
+		game.AddOpponent(new Profile("PlayerOne", "Alice"));
+		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
+
+		// Simulating some moves, but not enough to determine a winner
+		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
+
+		// Game is in progress with no winner
+		return game;
+	}
 }
