@@ -12,6 +12,9 @@ import {
   type GetApiGamesAvailableToJoinData,
   type GetApiGamesAvailableToJoinError,
   type GetApiGamesAvailableToJoinResponse,
+  type GetApiGamesActiveData,
+  type GetApiGamesActiveError,
+  type GetApiGamesActiveResponse,
   type PostApiGameData,
   type PostApiGameError,
   type PostApiGameResponse,
@@ -63,6 +66,22 @@ export const getApiGamesAvailableToJoin = <
   >({
     ...options,
     url: "/api/games/available-to-join",
+  });
+};
+
+/**
+ * Get all active games
+ */
+export const getApiGamesActive = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiGamesActiveData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiGamesActiveResponse,
+    GetApiGamesActiveError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/games/active",
   });
 };
 

@@ -20,6 +20,16 @@ export type CreateGameResponse = {
   boardSize?: number;
 };
 
+export type GetActiveGamesResponse = {
+  gameId: string;
+  opponent?: ProfileDto;
+};
+
+export type GetActiveGamesResponseIenumerablePaginatedResponse = {
+  data: Array<GetActiveGamesResponse>;
+  metadata: PaginationMetadata;
+};
+
 export type GetAvailableGamesResponse = {
   gameId: string;
   opponent?: ProfileDto;
@@ -121,6 +131,23 @@ export type GetApiGamesAvailableToJoinResponse =
   GetAvailableGamesResponseIenumerablePaginatedResponse;
 
 export type GetApiGamesAvailableToJoinError = unknown;
+
+export type GetApiGamesActiveData = {
+  headers: {
+    "Content-Type": string;
+    "X-Version"?: string;
+  };
+  query?: {
+    isAnonymous?: boolean;
+    limit?: number;
+    offset?: number;
+  };
+};
+
+export type GetApiGamesActiveResponse =
+  GetActiveGamesResponseIenumerablePaginatedResponse;
+
+export type GetApiGamesActiveError = unknown;
 
 export type PostApiGameData = {
   body?: CreateGameRequest;
