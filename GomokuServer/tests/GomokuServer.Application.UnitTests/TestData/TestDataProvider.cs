@@ -53,4 +53,19 @@ public class TestDataProvider
 
 		return game;
 	}
+
+	public Game GetGame_InProgress(IDateTimeProvider? dateTimeProvider = null)
+	{
+		var game = new Game(_boardSize, _randomProvider, dateTimeProvider ?? _dateTimeProvider);
+
+		game.AddOpponent(new Profile("PlayerOne", "Alice"));
+		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
+
+		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
+
+		return game;
+	}
 }

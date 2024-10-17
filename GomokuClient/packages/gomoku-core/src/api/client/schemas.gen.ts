@@ -62,6 +62,38 @@ export const CreateGameResponseSchema = {
   additionalProperties: false,
 } as const;
 
+export const GetActiveGamesResponseSchema = {
+  required: ["gameId"],
+  type: "object",
+  properties: {
+    gameId: {
+      minLength: 1,
+      type: "string",
+    },
+    opponent: {
+      $ref: "#/components/schemas/ProfileDto",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const GetActiveGamesResponseIEnumerablePaginatedResponseSchema = {
+  required: ["data", "metadata"],
+  type: "object",
+  properties: {
+    data: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/GetActiveGamesResponse",
+      },
+    },
+    metadata: {
+      $ref: "#/components/schemas/PaginationMetadata",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const GetAvailableGamesResponseSchema = {
   required: ["gameId"],
   type: "object",

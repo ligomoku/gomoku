@@ -133,6 +133,70 @@
         }
       }
     },
+    "/api/games/active": {
+      "get": {
+        "tags": ["Game"],
+        "summary": "Get all active games",
+        "parameters": [
+          {
+            "name": "isAnonymous",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "X-Version",
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns list of active games",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActiveGamesResponseIEnumerablePaginatedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/game": {
       "post": {
         "tags": ["Game"],
@@ -460,6 +524,36 @@
           "boardSize": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetActiveGamesResponse": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "opponent": {
+            "$ref": "#/components/schemas/ProfileDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetActiveGamesResponseIEnumerablePaginatedResponse": {
+        "required": ["data", "metadata"],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetActiveGamesResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
           }
         },
         "additionalProperties": false

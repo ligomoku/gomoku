@@ -13,6 +13,9 @@ import type {
   GetApiGamesAvailableToJoinData,
   GetApiGamesAvailableToJoinError,
   GetApiGamesAvailableToJoinResponse,
+  GetApiGamesActiveData,
+  GetApiGamesActiveError,
+  GetApiGamesActiveResponse,
   PostApiGameData,
   PostApiGameError,
   PostApiGameResponse,
@@ -31,6 +34,7 @@ import {
   client,
   getApiGameByGameIdHistory,
   getApiGamesAvailableToJoin,
+  getApiGamesActive,
   postApiGame,
   postApiGameByGameIdJoin,
   getHealth,
@@ -192,6 +196,74 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
         return data;
       },
       queryKey: getApiGamesAvailableToJoinInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const getApiGamesActiveQueryKey = (
+  options: Options<GetApiGamesActiveData>,
+) => [createQueryKey("getApiGamesActive", options)];
+
+export const getApiGamesActiveOptions = (
+  options: Options<GetApiGamesActiveData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await getApiGamesActive({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiGamesActiveQueryKey(options),
+  });
+};
+
+export const getApiGamesActiveInfiniteQueryKey = (
+  options: Options<GetApiGamesActiveData>,
+): QueryKey<Options<GetApiGamesActiveData>> => [
+  createQueryKey("getApiGamesActive", options, true),
+];
+
+export const getApiGamesActiveInfiniteOptions = (
+  options: Options<GetApiGamesActiveData>,
+) => {
+  return infiniteQueryOptions<
+    GetApiGamesActiveResponse,
+    GetApiGamesActiveError,
+    InfiniteData<GetApiGamesActiveResponse>,
+    QueryKey<Options<GetApiGamesActiveData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetApiGamesActiveData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetApiGamesActiveData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  offset: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getApiGamesActive({
+          ...options,
+          ...params,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getApiGamesActiveInfiniteQueryKey(options),
     },
   );
 };
