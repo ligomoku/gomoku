@@ -503,6 +503,21 @@
         },
         "additionalProperties": false
       },
+      "ClockDto": {
+        "required": ["black", "white"],
+        "type": "object",
+        "properties": {
+          "black": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "white": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateGameRequest": {
         "required": ["boardSize"],
         "type": "object",
@@ -510,6 +525,9 @@
           "boardSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "timeControl": {
+            "$ref": "#/components/schemas/TimeControlDto"
           }
         },
         "additionalProperties": false
@@ -538,6 +556,9 @@
           },
           "opponent": {
             "$ref": "#/components/schemas/ProfileDto"
+          },
+          "timeControl": {
+            "$ref": "#/components/schemas/TimeControlDto"
           }
         },
         "additionalProperties": false
@@ -568,6 +589,9 @@
           },
           "opponent": {
             "$ref": "#/components/schemas/ProfileDto"
+          },
+          "timeControl": {
+            "$ref": "#/components/schemas/TimeControlDto"
           }
         },
         "additionalProperties": false
@@ -626,6 +650,12 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/TileDto"
             }
+          },
+          "timeControl": {
+            "$ref": "#/components/schemas/TimeControlDto"
+          },
+          "clock": {
+            "$ref": "#/components/schemas/ClockDto"
           }
         },
         "additionalProperties": false
@@ -655,6 +685,12 @@
           "date": {
             "type": "string",
             "format": "date-time"
+          },
+          "timeControl": {
+            "$ref": "#/components/schemas/TimeControlDto"
+          },
+          "clock": {
+            "$ref": "#/components/schemas/ClockDto"
           }
         },
         "additionalProperties": false
@@ -759,6 +795,21 @@
             "format": "int32"
           },
           "y": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TimeControlDto": {
+        "required": ["incrementPerMove", "initialTimeInSeconds"],
+        "type": "object",
+        "properties": {
+          "initialTimeInSeconds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "incrementPerMove": {
             "type": "integer",
             "format": "int32"
           }

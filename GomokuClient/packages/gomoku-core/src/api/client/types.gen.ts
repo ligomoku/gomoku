@@ -11,8 +11,14 @@ export type ChatMessageClientMessage = {
   message: string;
 };
 
+export type ClockDto = {
+  black: number;
+  white: number;
+};
+
 export type CreateGameRequest = {
   boardSize: number;
+  timeControl?: TimeControlDto;
 };
 
 export type CreateGameResponse = {
@@ -23,6 +29,7 @@ export type CreateGameResponse = {
 export type GetActiveGamesResponse = {
   gameId: string;
   opponent?: ProfileDto;
+  timeControl?: TimeControlDto;
 };
 
 export type GetActiveGamesResponseIenumerablePaginatedResponse = {
@@ -33,6 +40,7 @@ export type GetActiveGamesResponseIenumerablePaginatedResponse = {
 export type GetAvailableGamesResponse = {
   gameId: string;
   opponent?: ProfileDto;
+  timeControl?: TimeControlDto;
 };
 
 export type GetAvailableGamesResponseIenumerablePaginatedResponse = {
@@ -50,6 +58,8 @@ export type GetGameHistoryResponse = {
   movesHistory: {
     [key: string]: TileDto;
   };
+  timeControl?: TimeControlDto;
+  clock?: ClockDto;
 };
 
 export type GetGamesByUsernameResponse = {
@@ -59,6 +69,8 @@ export type GetGamesByUsernameResponse = {
   winner?: string | null;
   gen: string;
   date: Date;
+  timeControl?: TimeControlDto;
+  clock?: ClockDto;
 };
 
 export type GetGamesByUsernameResponseIenumerablePaginatedResponse = {
@@ -94,6 +106,11 @@ export type ProfileDto = {
 export type TileDto = {
   x: number;
   y: number;
+};
+
+export type TimeControlDto = {
+  initialTimeInSeconds: number;
+  incrementPerMove: number;
 };
 
 export type UsernamesDto = {
