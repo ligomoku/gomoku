@@ -7,19 +7,26 @@ import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerTypes, SwaggerServices } from "@/api";
-
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
+import { useEffect } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
+  const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
+
+  useEffect(() => {
+    if (paginatedActiveGames) {
+      console.log("Active games", paginatedActiveGames);
+    }
+  }, [paginatedActiveGames]);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
-  ) => {
-    return games?.map((game) => {
+  ) =>
+    games?.map((game) => {
       console.log("Game", game);
       return {
         id: game.gameId,
@@ -27,7 +34,6 @@ export const HomeGame = () => {
         icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
       };
     });
-  };
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -81,6 +87,27 @@ const useFetchGames = (authToken: string) =>
     queryKey: ["games", null],
     queryFn: async () => {
       const response = await SwaggerServices.getApiGamesAvailableToJoin({
+        headers: getDefaultHeaders(authToken),
+        query: { isAnonymous: !authToken },
+      });
+
+      if (!response.data) {
+        throw new Error("Invalid game data received");
+      }
+
+      return response.data;
+    },
+    refetchInterval: 5000,
+  });
+
+const useFetchActiveGames = (authToken: string) =>
+  useQuery<
+    SwaggerTypes.GetApiGamesActiveResponse,
+    SwaggerTypes.GetApiGamesActiveError
+  >({
+    queryKey: ["gamesActive", null],
+    queryFn: async () => {
+      const response = await SwaggerServices.getApiGamesActive({
         headers: getDefaultHeaders(authToken),
         query: { isAnonymous: !authToken },
       });

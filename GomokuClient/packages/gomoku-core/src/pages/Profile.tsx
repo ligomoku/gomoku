@@ -135,7 +135,7 @@ const useFetchProfileGames = (
     SwaggerTypes.GetApiProfilesByUserNameGamesResponse,
     SwaggerTypes.GetApiProfilesByUserNameGamesError
   >({
-    queryKey: ["games", userName],
+    queryKey: ["gamesProfile", userName],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await SwaggerServices.getApiProfilesByUserNameGames({
         path: { userName },
