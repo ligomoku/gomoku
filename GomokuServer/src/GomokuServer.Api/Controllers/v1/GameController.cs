@@ -92,6 +92,7 @@ public class GameController : Controller
 		var createGameResult = await _mediator.Send(new CreateGameCommand
 		{
 			BoardSize = request.BoardSize,
+			TimeControl = request.TimeControl,
 			PlayerId = User.Claims.Get(JwtClaims.UserId)
 		});
 

@@ -5,4 +5,6 @@ public record PlaceTileResponse(string PlacedTileColor, List<TileDto>? WinningSe
 	public string PlacedTileColor { get; } = PlacedTileColor;
 
 	public bool IsWinningMove => WinningSequence != null;
+
+	public int? RemainingTimeInSeconds { get; init; }
 }

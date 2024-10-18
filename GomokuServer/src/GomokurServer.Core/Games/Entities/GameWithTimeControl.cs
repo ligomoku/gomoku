@@ -34,6 +34,14 @@ public class GameWithTimeControl : Game
 
 		if (tilePlacementResult.IsValid)
 		{
+			if (Status == GameStatus.Completed)
+			{
+				_blackClock.Stop();
+				_whiteClock.Stop();
+
+				return tilePlacementResult;
+			}
+
 			var (currentPlayerClock, opponentsClock) = currentColor == TileColor.Black
 				? (_blackClock, _whiteClock)
 				: (_whiteClock, _blackClock);
@@ -68,5 +76,20 @@ public class GameWithTimeControl : Game
 		}
 
 		return tilePlacementResult;
+	}
+
+	public int? GetRemainingTime(string playerId)
+	{
+		if (playerId == Players?.Black?.Id)
+		{
+			return _blackClock.RemainingTimeInSeconds;
+		};
+
+		if (playerId == Players?.White?.Id)
+		{
+			return _whiteClock.RemainingTimeInSeconds;
+		};
+
+		return null;
 	}
 }

@@ -5,6 +5,8 @@ public record CreateGameCommand : ICommand<CreateGameResponse>
 	[Required]
 	public required int BoardSize { get; init; }
 
+	public TimeControlDto? TimeControl { get; init; }
+
 	public string? PlayerId { get; init; }
 }
 
@@ -55,7 +57,18 @@ public class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Creat
 
 	private async Task<Result<CreateGameResponse>> TryCreateGame(IGamesRepository gamesRepository, CreateGameCommand request)
 	{
-		var game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
+		Game game;
+
+		if (request.TimeControl != null)
+		{
+			var timeControl = new TimeControl(request.TimeControl.InitialTimeInSeconds, request.TimeControl.IncrementPerMove);
+			game = new GameWithTimeControl(request.BoardSize, timeControl, _randomProvider, _dateTimeProvider);
+		}
+		else
+		{
+			game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
+		}
+
 		var saveResult = await gamesRepository.SaveAsync(game);
 		return saveResult.Map(_ => new CreateGameResponse(game.GameId, game.BoardSize));
 	}

@@ -94,4 +94,27 @@ public class GameWithTimeControlTests
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.TimeOut);
 	}
+
+	[Test]
+	public void WhenGameIsOver_BecauseOfAnyReason_BothClockShouldStop()
+	{
+		// Arrange
+		var game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
+		game.AddOpponent(_blackPlayer);
+		game.AddOpponent(_whitePlayer);
+		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 1), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 2), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 3), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 4), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(4, 4), game.NextMoveShouldMakePlayerId!);
+		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+
+		// Assert
+		game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
+		game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
+	}
 }
