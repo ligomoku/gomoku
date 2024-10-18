@@ -24,6 +24,7 @@ public class Game
 		Players = new();
 		CreatedAt = _dateTimeProvider.UtcNow;
 		Status = GameStatus.WaitingForPlayersToJoin;
+		Result = GameResult.NotCompletedYet;
 	}
 
 	public int BoardSize { get; init; }
@@ -38,17 +39,21 @@ public class Game
 
 	public Players Players { get; init; }
 
-	public GameStatus Status { get; private set; }
+	public GameStatus Status { get; protected set; }
 
-	public GameResult Result => _gameBoard.GameResult;
+	public GameResult Result { get; protected set; }
+
+	public CompletionReason CompletionReason { get; protected set; }
 
 	public string? NextMoveShouldMakePlayerId { get; private set; }
 
-	public Player? Winner { get; private set; }
+	public Player? Winner { get; protected set; }
 
 	public List<Tile>? WinningSequence { get; private set; }
 
 	public string PositionInGENFormat => _gameBoard.PositionInGENFormat;
+
+	public TileColor? NextTileColor => _gameBoard.NextTileColor;
 
 	public PlayerAddingResult AddOpponent(Profile newOpponent)
 	{
@@ -96,15 +101,14 @@ public class Game
 		};
 	}
 
-	public GameTilePlacementResult PlaceTile(Tile tile, string playerId)
+	public virtual GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
-		if (Winner != null)
+		if (Status == GameStatus.Completed)
 		{
 			return new()
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.GameIsOver,
-				Winner = Winner,
 			};
 		}
 
@@ -136,39 +140,41 @@ public class Game
 		}
 
 		var currentPlayer = playerId == Players.Black.Id ? Players.Black : Players.White;
-		var boardTilePlacementResult = _gameBoard.PlaceNewTile(tile);
+		var placeNewTileResult = _gameBoard.PlaceNewTile(tile);
 
-		if (boardTilePlacementResult.IsValid)
+		if (placeNewTileResult.IsValid)
 		{
 			if (_movesHistory.Count == 0)
 			{
 				Status = GameStatus.InProgress;
 			}
-
-			if (_gameBoard.GameResult != GameResult.NotCompletedYet)
-			{
-				Status = GameStatus.Completed;
-			}
-
 			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
 		}
 
-		if (boardTilePlacementResult.WinningSequence != null)
+		if (placeNewTileResult.IsTieSituationAfterMove)
 		{
+			Result = GameResult.Tie;
+			Status = GameStatus.Completed;
+			CompletionReason = CompletionReason.TieOnTheBoard;
+		}
+
+		if (placeNewTileResult.WinningSequence != null)
+		{
+			Result = currentPlayer!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+			Status = GameStatus.Completed;
+			CompletionReason = CompletionReason.MadeFiveInARow;
+
 			Winner = currentPlayer;
-			WinningSequence = boardTilePlacementResult.WinningSequence;
+			WinningSequence = placeNewTileResult.WinningSequence;
 			NextMoveShouldMakePlayerId = null;
 		}
 
 		return new()
 		{
-			IsValid = boardTilePlacementResult.IsValid,
-			PlacedTileColor = boardTilePlacementResult.PlacedTileColor,
-			ValidationError = boardTilePlacementResult.ValidationError,
-			WinningSequence = boardTilePlacementResult.WinningSequence,
-			Winner = Winner,
+			IsValid = placeNewTileResult.IsValid,
+			ValidationError = placeNewTileResult.ValidationError,
 		};
 	}
 }

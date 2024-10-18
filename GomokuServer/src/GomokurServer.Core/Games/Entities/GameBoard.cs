@@ -12,17 +12,15 @@ public class GameBoard
 	private readonly int _boardSize;
 	private readonly string[,] _board;
 	private int _movesCount = 0;
-	private TileColor _nextTileColor;
 
 	public GameBoard(int boardSize)
 	{
 		_boardSize = boardSize;
 		_board = new string[_boardSize, _boardSize];
-		_nextTileColor = TileColor.Black;
-		GameResult = GameResult.NotCompletedYet;
+		NextTileColor = TileColor.Black;
 	}
 
-	public GameResult GameResult { get; private set; }
+	public TileColor NextTileColor { get; private set; }
 
 	public string PositionInGENFormat
 	{
@@ -52,7 +50,7 @@ public class GameBoard
 				gen.Append($"{row}/");
 			}
 
-			gen.Append($"{_nextTileColor.GetChar()}/{_movesCount}");
+			gen.Append($"{NextTileColor.GetChar()}/{_movesCount}");
 
 			return gen.ToString();
 		}
@@ -60,15 +58,6 @@ public class GameBoard
 
 	public BoardTilePlacementResult PlaceNewTile(Tile tile)
 	{
-		if (GameResult != GameResult.NotCompletedYet)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = TilePlacementValidationError.GameIsOver
-			};
-		}
-
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
 			return new()
@@ -87,29 +76,25 @@ public class GameBoard
 			};
 		}
 
-		var newTileColor = _nextTileColor;
+		var newTileColor = NextTileColor;
 		var colorString = newTileColor.GetString();
 		_board[tile.X, tile.Y] = colorString;
 
-		_nextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
 		_movesCount++;
 
 		var winningSequence = CalculateWinningSequence(tile, colorString);
 
+		bool isTieSituation = false;
 		if (winningSequence == null && _movesCount == _boardSize * _boardSize)
 		{
-			GameResult = GameResult.Tie;
-		}
-
-		if (winningSequence != null)
-		{
-			GameResult = newTileColor == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+			isTieSituation = true;
 		}
 
 		return new()
 		{
 			IsValid = true,
-			PlacedTileColor = newTileColor,
+			IsTieSituationAfterMove = isTieSituation,
 			WinningSequence = winningSequence
 		};
 	}

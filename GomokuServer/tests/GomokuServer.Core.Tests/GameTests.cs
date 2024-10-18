@@ -4,8 +4,6 @@ using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Validation;
 using GomokuServer.Core.Profiles.Entities;
 
-using NSubstitute;
-
 namespace GomokuServer.Core.UnitTests;
 
 public class GameTests
@@ -44,7 +42,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().BeNull();
+		_game.Winner.Should().BeNull();
 	}
 
 	[Test]
@@ -94,7 +92,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsHorizontally_ShouldDeclareWinnerAndReturnWinningTiles()
+	public void PlaceTile_BlackPlayerWinsHorizontally_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		for (int i = 0; i < 4; i++)
@@ -108,19 +106,23 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.Players!.Black);
-		result.WinningSequence.Should().BeEquivalentTo(new[] {
+		_game.Winner.Should().Be(_game.Players!.Black);
+		_game.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 7),
 			new Tile(1, 7),
 			new Tile(2, 7),
 			new Tile(3, 7),
 			new Tile(4, 7)
 		});
+
 		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.Result.Should().Be(GameResult.BlackWon);
+		_game.Status.Should().Be(GameStatus.Completed);
+		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsVertically_ShouldDeclareWinnerAndReturnWinningTiles()
+	public void PlaceTile_BlackPlayerWinsVertically_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		for (int i = 0; i < 4; i++)
@@ -134,19 +136,23 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.Players!.Black);
-		result.WinningSequence.Should().BeEquivalentTo(new[] {
+		_game.Winner.Should().Be(_game.Players!.Black);
+		_game.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(7, 0),
 			new Tile(7, 1),
 			new Tile(7, 2),
 			new Tile(7, 3),
 			new Tile(7, 4)
 		});
+
 		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.Result.Should().Be(GameResult.BlackWon);
+		_game.Status.Should().Be(GameStatus.Completed);
+		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
 	}
 
 	[Test]
-	public void PlaceTile_PlayerWinsDiagonally_ShouldDeclareWinnerAndReturnWinningTiles()
+	public void PlaceTile_BlackPlayerWinsDiagonally_ShouldDeclareWinnerAndReturnWinningTiles()
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _game.Players!.Black!.Id);
@@ -163,15 +169,19 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.Winner.Should().Be(_game.Players!.Black);
-		result.WinningSequence.Should().BeEquivalentTo(new[] {
+		_game.Winner.Should().Be(_game.Players!.Black);
+		_game.WinningSequence.Should().BeEquivalentTo(new[] {
 			new Tile(0, 0),
 			new Tile(1, 1),
 			new Tile(2, 2),
 			new Tile(3, 3),
 			new Tile(4, 4)
 		});
+
 		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.Result.Should().Be(GameResult.BlackWon);
+		_game.Status.Should().Be(GameStatus.Completed);
+		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
 	}
 
 	[Test]
@@ -184,7 +194,7 @@ public class GameTests
 		var result = _game.PlaceTile(tile, _game.Players!.Black!.Id);
 
 		// Assert
-		result.Winner.Should().BeNull();
+		_game.Winner.Should().BeNull();
 	}
 
 	[Test]
@@ -218,7 +228,24 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
-		result.Winner.Should().Be(_game.Players!.Black);
+		_game.Winner.Should().Be(_game.Players!.Black);
+	}
+
+	[Test]
+	public void PlaceTile_AndMakeTie_ResultStatusAndReasonShouldBeCorrect()
+	{
+		// Arrage
+		var game = new Game(1, _randomProvider, _dateTimeProvider);
+		game.AddOpponent(new Profile("1", "Username1"));
+		game.AddOpponent(new Profile("2", "Username2"));
+
+		// Act
+		game.PlaceTile(new Tile(0, 0), "1");
+
+		// Assert
+		game.Result.Should().Be(GameResult.Tie);
+		game.Status.Should().Be(GameStatus.Completed);
+		game.CompletionReason.Should().Be(CompletionReason.TieOnTheBoard);
 	}
 
 	[Test]
@@ -262,7 +289,9 @@ public class GameTests
 		_game.Opponents.Count.Should().Be(0);
 		_game.Players.Black.Should().BeNull();
 		_game.Players.White.Should().BeNull();
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
 		_game.Status.Should().Be(GameStatus.WaitingForPlayersToJoin);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
 	}
 
 	[Test]
@@ -278,7 +307,9 @@ public class GameTests
 		_game.Opponents.Count.Should().Be(1);
 		_game.Players.Black.Should().BeNull();
 		_game.Players.White.Should().BeNull();
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
 		_game.Status.Should().Be(GameStatus.WaitingForPlayersToJoin);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
 	}
 
 	[Test]
@@ -295,7 +326,9 @@ public class GameTests
 		_game.Opponents.Count().Should().Be(2);
 		_game.Players.Black!.Id.Should().Be("somePlayer1Id");
 		_game.Players.White!.Id.Should().Be("somePlayer2Id");
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
 		_game.Status.Should().Be(GameStatus.BothPlayersJoined);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
 	}
 
 	[Test]
@@ -310,7 +343,9 @@ public class GameTests
 		_game.PlaceTile(new Tile(0, 0), "somePlayer1Id");
 
 		// Assert
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
 		_game.Status.Should().Be(GameStatus.InProgress);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
 	}
 
 	[Test]

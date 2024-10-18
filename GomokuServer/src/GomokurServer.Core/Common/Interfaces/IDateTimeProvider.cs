@@ -3,4 +3,6 @@
 public interface IDateTimeProvider
 {
 	DateTime UtcNow { get; }
+
+	long UtcNowInPosix { get; }
 }
