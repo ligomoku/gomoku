@@ -62,8 +62,12 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 		{
 			var winningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
 			var placedTileColor = currentColor.ToString()!.ToCamelCase();
+			var placeTileResponse = new PlaceTileResponse(placedTileColor!, winningSequence)
+			{
+				RemainingTimeInSeconds = game is GameWithTimeControl gameWithTimeControl ? gameWithTimeControl.GetRemainingTime(request.PlayerId) : null
+			};
 
-			return new PlaceTileResponse(placedTileColor!, winningSequence);
+			return placeTileResponse;
 		});
 	}
 }

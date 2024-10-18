@@ -21,4 +21,8 @@ public class GetGameHistoryResponse
 
 	[Required]
 	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; init; }
+
+	public TimeControlDto? TimeControl { get; init; }
+
+	public ClockDto? Clock { get; init; }
 }

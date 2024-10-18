@@ -1,4 +1,5 @@
-﻿using GomokuServer.Core.Games.Enums;
+﻿using GomokuServer.Application.Extensions;
+using GomokuServer.Core.Games.Enums;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -40,14 +41,23 @@ public class GetGamesByUsernameQueryHandler
 
 		return gamesByUsernameResult.Map(games => new PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>()
 		{
-			Data = games.Select(game => new GetGamesByUsernameResponse
+			Data = games.Select(game =>
 			{
-				GameId = game.GameId,
-				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
-				IsCompleted = game.Status == GameStatus.Completed,
-				Gen = game.PositionInGENFormat,
-				Winner = game.Winner?.UserName,
-				Date = game.CreatedAt,
+				var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
+					? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInSeconds, gameWithTimeControl.WhiteRemainingTimeInSeconds))
+					: (null, null);
+
+				return new GetGamesByUsernameResponse
+				{
+					GameId = game.GameId,
+					Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+					IsCompleted = game.Status == GameStatus.Completed,
+					Gen = game.PositionInGENFormat,
+					Winner = game.Winner?.UserName,
+					Date = game.CreatedAt,
+					TimeControl = timeControl,
+					Clock = clock
+				};
 			}),
 			Metadata = new()
 			{

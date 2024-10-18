@@ -18,4 +18,8 @@ public record GetGamesByUsernameResponse
 
 	[Required]
 	public required DateTime Date { get; init; }
+
+	public TimeControlDto? TimeControl { get; init; }
+
+	public ClockDto? Clock { get; init; }
 }

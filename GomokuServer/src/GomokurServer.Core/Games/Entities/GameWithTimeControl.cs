@@ -17,9 +17,16 @@ public class GameWithTimeControl : Game
 		IDateTimeProvider dateTimeProvider
 	) : base(boardSize, randomProvider, dateTimeProvider)
 	{
+		TimeControl = timeControl;
 		_blackClock = new Clock(timeControl, dateTimeProvider);
 		_whiteClock = new Clock(timeControl, dateTimeProvider);
 	}
+
+	public TimeControl TimeControl { get; init; }
+
+	public int BlackRemainingTimeInSeconds => _blackClock.RemainingTimeInSeconds;
+
+	public int WhiteRemainingTimeInSeconds => _whiteClock.RemainingTimeInSeconds;
 
 	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
@@ -34,6 +41,14 @@ public class GameWithTimeControl : Game
 
 		if (tilePlacementResult.IsValid)
 		{
+			if (Status == GameStatus.Completed)
+			{
+				_blackClock.Stop();
+				_whiteClock.Stop();
+
+				return tilePlacementResult;
+			}
+
 			var (currentPlayerClock, opponentsClock) = currentColor == TileColor.Black
 				? (_blackClock, _whiteClock)
 				: (_whiteClock, _blackClock);
@@ -68,5 +83,20 @@ public class GameWithTimeControl : Game
 		}
 
 		return tilePlacementResult;
+	}
+
+	public int? GetRemainingTime(string playerId)
+	{
+		if (playerId == Players?.Black?.Id)
+		{
+			return _blackClock.RemainingTimeInSeconds;
+		};
+
+		if (playerId == Players?.White?.Id)
+		{
+			return _whiteClock.RemainingTimeInSeconds;
+		};
+
+		return null;
 	}
 }

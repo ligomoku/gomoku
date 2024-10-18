@@ -35,6 +35,22 @@ export const ChatMessageClientMessageSchema = {
   additionalProperties: false,
 } as const;
 
+export const ClockDtoSchema = {
+  required: ["black", "white"],
+  type: "object",
+  properties: {
+    black: {
+      type: "integer",
+      format: "int32",
+    },
+    white: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const CreateGameRequestSchema = {
   required: ["boardSize"],
   type: "object",
@@ -42,6 +58,9 @@ export const CreateGameRequestSchema = {
     boardSize: {
       type: "integer",
       format: "int32",
+    },
+    timeControl: {
+      $ref: "#/components/schemas/TimeControlDto",
     },
   },
   additionalProperties: false,
@@ -72,6 +91,9 @@ export const GetActiveGamesResponseSchema = {
     },
     opponent: {
       $ref: "#/components/schemas/ProfileDto",
+    },
+    timeControl: {
+      $ref: "#/components/schemas/TimeControlDto",
     },
   },
   additionalProperties: false,
@@ -104,6 +126,9 @@ export const GetAvailableGamesResponseSchema = {
     },
     opponent: {
       $ref: "#/components/schemas/ProfileDto",
+    },
+    timeControl: {
+      $ref: "#/components/schemas/TimeControlDto",
     },
   },
   additionalProperties: false,
@@ -165,6 +190,12 @@ export const GetGameHistoryResponseSchema = {
         $ref: "#/components/schemas/TileDto",
       },
     },
+    timeControl: {
+      $ref: "#/components/schemas/TimeControlDto",
+    },
+    clock: {
+      $ref: "#/components/schemas/ClockDto",
+    },
   },
   additionalProperties: false,
 } as const;
@@ -194,6 +225,12 @@ export const GetGamesByUsernameResponseSchema = {
     date: {
       type: "string",
       format: "date-time",
+    },
+    timeControl: {
+      $ref: "#/components/schemas/TimeControlDto",
+    },
+    clock: {
+      $ref: "#/components/schemas/ClockDto",
     },
   },
   additionalProperties: false,
@@ -304,6 +341,22 @@ export const TileDtoSchema = {
       format: "int32",
     },
     y: {
+      type: "integer",
+      format: "int32",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
+export const TimeControlDtoSchema = {
+  required: ["incrementPerMove", "initialTimeInSeconds"],
+  type: "object",
+  properties: {
+    initialTimeInSeconds: {
+      type: "integer",
+      format: "int32",
+    },
+    incrementPerMove: {
       type: "integer",
       format: "int32",
     },

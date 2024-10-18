@@ -5,7 +5,7 @@ namespace GomokuServer.Core.Games.Entities;
 public class Clock
 {
 	private long? _lastStartTime;
-	private long _remainingTimeInSeconds;
+	private int _remainingTimeInSeconds;
 	private readonly TimeControl _timeControl;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
@@ -16,9 +16,9 @@ public class Clock
 		_dateTimeProvider = dateTimeProvider;
 	}
 
-	public long RemainingTimeInSeconds =>
+	public int RemainingTimeInSeconds =>
 		_lastStartTime.HasValue
-			? _remainingTimeInSeconds - (_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value)
+			? _remainingTimeInSeconds - (int)(_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value)
 			: _remainingTimeInSeconds;
 
 	public void Start()
@@ -33,13 +33,13 @@ public class Clock
 	{
 		if (_lastStartTime.HasValue)
 		{
-			_remainingTimeInSeconds -= (_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value);
+			_remainingTimeInSeconds -= (int)(_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value);
 			_remainingTimeInSeconds += _timeControl.IncrementPerMove;
 			_lastStartTime = null;
 		}
 	}
 
-	public void AddTime(long incrementInSeconds)
+	public void AddTime(int incrementInSeconds)
 	{
 		_remainingTimeInSeconds += incrementInSeconds;
 	}

@@ -1,4 +1,5 @@
-﻿using GomokuServer.Core.Games.Enums;
+﻿using GomokuServer.Application.Extensions;
+using GomokuServer.Core.Games.Enums;
 
 namespace GomokuServer.Application.Games.Queries;
 
@@ -28,18 +29,30 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 			getGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
 		}
 
-		return getGameResult.Map(game => new GetGameHistoryResponse()
+		return getGameResult.Map(game =>
 		{
-			BoardSize = game.BoardSize,
-			Gen = game.PositionInGENFormat,
-			MovesCount = game.MovesHistory.Count,
-			Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
-			IsCompleted = game.Status == GameStatus.Completed,
-			Winner = game.Winner?.UserName,
-			MovesHistory = game.MovesHistory.ToDictionary(
-				keyValuePair => keyValuePair.Key,
-				keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)
-			),
+			var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
+				? (
+					gameWithTimeControl.TimeControl.ToDto(),
+					new ClockDto(gameWithTimeControl.BlackRemainingTimeInSeconds, gameWithTimeControl.WhiteRemainingTimeInSeconds)
+				)
+				: (null, null);
+
+			return new GetGameHistoryResponse()
+			{
+				BoardSize = game.BoardSize,
+				Gen = game.PositionInGENFormat,
+				MovesCount = game.MovesHistory.Count,
+				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+				IsCompleted = game.Status == GameStatus.Completed,
+				Winner = game.Winner?.UserName,
+				MovesHistory = game.MovesHistory.ToDictionary(
+					keyValuePair => keyValuePair.Key,
+					keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)
+				),
+				TimeControl = timeControl,
+				Clock = clock
+			};
 		});
 	}
 }

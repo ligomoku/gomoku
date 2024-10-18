@@ -1,6 +1,8 @@
 ﻿using Ardalis.Result;
 
 using GomokuServer.Application.Games.Commands;
+using GomokuServer.Application.Games.Dto;
+using GomokuServer.Core.Games.Entities;
 
 namespace GomokuServer.Application.FunctionalTests.Tests.Games.Commands;
 
@@ -57,5 +59,46 @@ public class CreateGameTests : FunctionalTestBase
 
 		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(createGameResult.Value.GameId);
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.Ok);
+	}
+
+	[Test]
+	public async Task CreateGame_TimeControlNull_ShouldSuccessfullyCreateGame()
+	{
+		// Act
+		var createGameResult = await SendAsync(new CreateGameCommand
+		{
+			BoardSize = 19,
+			PlayerId = "1",
+		});
+
+		// Assert
+		createGameResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getGameResult.Status.Should().Be(ResultStatus.Ok);
+		getGameResult.Value.Should().BeOfType<Game>();
+	}
+
+	[Test]
+	public async Task CreateGame_PassTimeControl_ShouldSuccessfullyCreateGameWithTimeControl()
+	{
+		// Act
+		var createGameResult = await SendAsync(new CreateGameCommand
+		{
+			BoardSize = 19,
+			PlayerId = "1",
+			TimeControl = new TimeControlDto
+			{
+				InitialTimeInSeconds = 180,
+				IncrementPerMove = 2,
+			}
+		});
+
+		// Assert
+		createGameResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		getGameResult.Status.Should().Be(ResultStatus.Ok);
+		getGameResult.Value.Should().BeOfType<GameWithTimeControl>();
 	}
 }

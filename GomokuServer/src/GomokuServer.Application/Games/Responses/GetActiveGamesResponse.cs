@@ -1,14 +1,11 @@
 namespace GomokuServer.Application.Games.Responses;
 
-public record GetActiveGamesResponse
+public record GetActiveGamesResponse(string GameId)
 {
 	[Required]
-	public string GameId { get; init; }
+	public string GameId { get; init; } = GameId;
 
 	public ProfileDto? Opponent { get; init; }
 
-	public GetActiveGamesResponse(string gameId)
-	{
-		GameId = gameId;
-	}
+	public TimeControlDto? TimeControl { get; init; }
 }
