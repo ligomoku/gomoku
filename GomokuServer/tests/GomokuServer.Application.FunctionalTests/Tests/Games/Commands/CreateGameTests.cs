@@ -62,7 +62,7 @@ public class CreateGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task CreateGame_TimeControlNull_ShouldSuccessfullyCreateGameWithTimeControl()
+	public async Task CreateGame_TimeControlNull_ShouldSuccessfullyCreateGame()
 	{
 		// Act
 		var createGameResult = await SendAsync(new CreateGameCommand
