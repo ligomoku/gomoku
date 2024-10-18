@@ -6,4 +6,6 @@ public record GetAvailableGamesResponse(string GameId)
 	public string GameId { get; } = GameId;
 
 	public ProfileDto? Opponent { get; init; }
+
+	public TimeControlDto? TimeControl { get; init; }
 }

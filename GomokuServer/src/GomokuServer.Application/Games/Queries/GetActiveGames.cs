@@ -1,3 +1,4 @@
+using GomokuServer.Application.Extensions;
 using GomokuServer.Core.Games.Enums;
 
 namespace GomokuServer.Application.Games.Queries;
@@ -53,7 +54,11 @@ public class GetActiveGamesQueryHandler
 			{
 				var opponentDto = game.Opponents.Count > 0 ? new ProfileDto(game.Opponents[0].Id, game.Opponents[0].UserName) : null;
 
-				return new GetActiveGamesResponse(game.GameId) { Opponent = opponentDto };
+				var timeControl = game is GameWithTimeControl gameWithTimeControl
+					? gameWithTimeControl.TimeControl.ToDto()
+					: null;
+
+				return new GetActiveGamesResponse(game.GameId) { Opponent = opponentDto, TimeControl = timeControl };
 			}).ToList();
 
 			return new PaginatedResponse<IEnumerable<GetActiveGamesResponse>>()

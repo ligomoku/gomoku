@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Application.Games.Dto;
 
-public record TimeControlDto()
+public record TimeControlDto
 {
 	[Required]
 	public required int InitialTimeInSeconds { get; init; }

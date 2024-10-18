@@ -17,9 +17,16 @@ public class GameWithTimeControl : Game
 		IDateTimeProvider dateTimeProvider
 	) : base(boardSize, randomProvider, dateTimeProvider)
 	{
+		TimeControl = timeControl;
 		_blackClock = new Clock(timeControl, dateTimeProvider);
 		_whiteClock = new Clock(timeControl, dateTimeProvider);
 	}
+
+	public TimeControl TimeControl { get; init; }
+
+	public int BlackRemainingTimeInSeconds => _blackClock.RemainingTimeInSeconds;
+
+	public int WhiteRemainingTimeInSeconds => _whiteClock.RemainingTimeInSeconds;
 
 	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
