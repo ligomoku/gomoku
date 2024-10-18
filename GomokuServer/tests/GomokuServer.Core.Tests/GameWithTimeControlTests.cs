@@ -43,7 +43,7 @@ public class GameWithTimeControlTests
 	}
 
 	[Test]
-	public void PlaceTile_WhenFirstMoveIsMade_ShouldBeSuccess()
+	public void PlaceTile_WhenFirstMoveIsMadeAfterLongTimeAfterCreation_ShouldBeSuccess()
 	{
 		// Arrange
 		_dateTimeProvider.UtcNowInPosix.Returns(2000);
