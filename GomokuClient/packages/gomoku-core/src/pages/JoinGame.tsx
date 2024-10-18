@@ -8,6 +8,7 @@ import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
 import { useEffect, useState } from "react";
 import { genParser } from "@/utils/getParser";
+import { GameTime } from "@/features/GameTime";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
@@ -43,17 +44,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
         {gameID && (
           <>
             <div className="mb-5 flex w-full flex-wrap justify-center">
-              <Board
-                tiles={tiles}
-                lastTile={lastTile}
-                size={dynamicBoardSize}
-                onTileClick={(x, y) => handleMove(x, y)}
-              />
-
               <div
                 className="mt-4 flex flex-col justify-between"
                 style={{
-                  marginLeft: isMobile ? 0 : "1rem",
+                  order: isMobile ? 2 : "unset",
+                  marginRight: isMobile ? 0 : "1rem",
                   width: isMobile ? "100%" : "unset",
                 }}
               >
@@ -62,6 +57,40 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   isConnected={isConnected}
                   sendMessage={sendMessage}
                   username={jwtDecodedInfo?.username || ""}
+                />
+              </div>
+
+              <Board
+                tiles={tiles}
+                lastTile={lastTile}
+                size={dynamicBoardSize}
+                onTileClick={(x, y) => handleMove(x, y)}
+                style={{
+                  order: isMobile ? 1 : "unset",
+                  width: isMobile ? "100%" : "unset",
+                }}
+              />
+              <div
+                className="mt-4 flex flex-col justify-between"
+                style={{
+                  order: isMobile ? 3 : "unset",
+                  marginLeft: isMobile ? 0 : "1rem",
+                  width: isMobile ? "100%" : "unset",
+                }}
+              >
+                <GameTime
+                  moves={[]}
+                  currentPlayer="black"
+                  players={[
+                    { name: "Player 1", color: "#7cb342" },
+                    { name: "Player 2", color: "#b0b0b0" },
+                  ]}
+                  clockTime="01:00"
+                  onAddMove={() => alert("Add move clicked")}
+                  onUndo={() => alert("Undo clicked")}
+                  onSkip={(direction) => alert(`Skip ${direction} clicked`)}
+                  onFlag={() => alert("Flag clicked")}
+                  onReset={() => alert("Reset clicked")}
                 />
               </div>
             </div>

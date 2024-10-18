@@ -1188,7 +1188,6 @@ __metadata:
     "@storybook/addon-essentials": "npm:^8.3.5"
     "@storybook/addon-interactions": "npm:^8.3.5"
     "@storybook/addon-links": "npm:^8.3.5"
-    "@storybook/addon-onboarding": "npm:^8.3.5"
     "@storybook/addon-styling-webpack": "npm:^1.0.0"
     "@storybook/addons": "npm:7.6.20"
     "@storybook/blocks": "npm:^8.3.5"
@@ -2788,17 +2787,6 @@ __metadata:
   peerDependencies:
     storybook: ^8.3.5
   checksum: 10c0/49a8f2fac76a65fc2b4fdf6c90a4996e58cccf4a3db56a7f32a17eff2a34ebeccf7ad8042a3bd3b1e8deba1d9ba95ce95f8ee57f11a98de51ce6fc29b2a127b4
-  languageName: node
-  linkType: hard
-
-"@storybook/addon-onboarding@npm:^8.3.5":
-  version: 8.3.5
-  resolution: "@storybook/addon-onboarding@npm:8.3.5"
-  dependencies:
-    react-confetti: "npm:^6.1.0"
-  peerDependencies:
-    storybook: ^8.3.5
-  checksum: 10c0/a20bcc1984de22f3db2af98faba8ec7c708b28927cedbfafec108c83e67dc69f77dd95329ebdac5d0b5943d2485054ca0e246a65db1a316a3c4b32d17a829554
   languageName: node
   linkType: hard
 
@@ -8642,17 +8630,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-confetti@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "react-confetti@npm:6.1.0"
-  dependencies:
-    tween-functions: "npm:^1.2.0"
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.1 || ^18.0.0
-  checksum: 10c0/5b4eb23eef564695f6db1d25b294ed31d5fa21ff4092c6a38e641f85cd10e3e0b50014366e3ac0f7cf772e73faaecd14614e5b11a5531336fa769dda8068ab59
-  languageName: node
-  linkType: hard
-
 "react-docgen-typescript@npm:^2.2.2":
   version: 2.2.2
   resolution: "react-docgen-typescript@npm:2.2.2"
@@ -9944,13 +9921,6 @@ __metadata:
   bin:
     turbo: bin/turbo
   checksum: 10c0/8cac3afd402a00e885d4c5481d7e7d51beba4c16d05176693f4112b9445e3496bd0b5c2b77f06af04ccdebe595977b9f957850896a8999e39e30fa42181d69ae
-  languageName: node
-  linkType: hard
-
-"tween-functions@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "tween-functions@npm:1.2.0"
-  checksum: 10c0/7e59295b8b0ee4132ed2fe335f56a9db5c87056dad6b6fd3011be72239fd20398003ddb4403bc98ad9f5c94468890830f64016edbbde35581faf95b32cda8305
   languageName: node
   linkType: hard
 

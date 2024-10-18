@@ -1,5 +1,5 @@
 import { TileColor } from "@/hooks/useTiles";
-import { memo, useMemo, useState } from "react";
+import { CSSProperties, memo, useMemo, useState } from "react";
 import { cva } from "class-variance-authority";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { ResizableBox } from "react-resizable";
@@ -71,9 +71,16 @@ export interface BoardProps {
   onTileClick: Pick<TileProps, "onTileClick">["onTileClick"];
   tiles: TileColor[][];
   lastTile?: SwaggerTypes.TileDto;
+  style?: CSSProperties;
 }
 
-export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
+export const Board = ({
+  size,
+  onTileClick,
+  tiles,
+  lastTile,
+  style,
+}: BoardProps) => {
   const isMobile = useMobileDesign();
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
 
@@ -126,7 +133,7 @@ export const Board = ({ size, onTileClick, tiles, lastTile }: BoardProps) => {
   }
 
   return (
-    <div className="rounded-lg bg-[#ba8c63] shadow-md">
+    <div className="rounded-lg bg-[#ba8c63] shadow-md" style={style}>
       <div
         className="grid rounded-lg"
         style={{
