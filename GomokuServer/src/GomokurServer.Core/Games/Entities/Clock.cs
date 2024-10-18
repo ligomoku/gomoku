@@ -17,13 +17,13 @@ public class Clock
 	}
 
 	public long RemainingTimeInSeconds =>
-		_lastStartTime.HasValue 
+		_lastStartTime.HasValue
 			? _remainingTimeInSeconds - (_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value)
 			: _remainingTimeInSeconds;
 
 	public void Start()
 	{
-		if (!_lastStartTime.HasValue) 
+		if (!_lastStartTime.HasValue)
 		{
 			_lastStartTime = _dateTimeProvider.UtcNowInPosix;
 		}

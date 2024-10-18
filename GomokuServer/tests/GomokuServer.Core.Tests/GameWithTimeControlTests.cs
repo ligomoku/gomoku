@@ -13,7 +13,7 @@ public class GameWithTimeControlTests
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
 	private GameWithTimeControl _game;
-	
+
 	[SetUp]
 	public void SetUp()
 	{
@@ -23,12 +23,12 @@ public class GameWithTimeControlTests
 		_randomProvider.GetInt(0, 2).Returns(0);
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
-		
+
 		_game = new GameWithTimeControl(15, new TimeControl(180, 2), _randomProvider, _dateTimeProvider);
 		_game.AddOpponent(_blackPlayer);
 		_game.AddOpponent(_whitePlayer);
 	}
-	
+
 	[Test]
 	public void PlaceTime_WhenTimeIsNotOver_ShouldBeSuccess()
 	{
