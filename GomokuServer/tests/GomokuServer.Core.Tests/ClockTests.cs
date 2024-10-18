@@ -13,7 +13,7 @@ public class ClockTests
 	public void SetUp()
 	{
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_timeControl = new TimeControl(3, 2);
+		_timeControl = new TimeControl(180, 2);
 		_clock = new Clock(_timeControl, _dateTimeProvider);
 	}
 
@@ -28,7 +28,7 @@ public class ClockTests
 	public void Clock_WithoutIncrement_ShouldDecreaseAmoutOfRemainingTimeAfterStop()
 	{
 		// Arrange
-		_clock = new Clock(new TimeControl(3, 0), _dateTimeProvider);
+		_clock = new Clock(new TimeControl(180, 0), _dateTimeProvider);
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
 		_clock.Start();
 		_dateTimeProvider.UtcNowInPosix.Returns(1050);
@@ -44,7 +44,7 @@ public class ClockTests
 	public void Clock_WithIncrement_ShouldDecreaseAmoutOfRemainingTimeAfterStop_AndAddIncrementSeconds()
 	{
 		// Arrange
-		_clock = new Clock(new TimeControl(3, 2), _dateTimeProvider);
+		_clock = new Clock(new TimeControl(180, 2), _dateTimeProvider);
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
 		_clock.Start();
 		_dateTimeProvider.UtcNowInPosix.Returns(1050);
@@ -60,7 +60,7 @@ public class ClockTests
 	public void Clock_MultipleStartCalls_ShouldKeepFirstSaveTime()
 	{
 		// Arrange
-		_clock = new Clock(new TimeControl(3, 0), _dateTimeProvider);
+		_clock = new Clock(new TimeControl(180, 0), _dateTimeProvider);
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
 		_clock.Start();
 		_dateTimeProvider.UtcNowInPosix.Returns(1020);

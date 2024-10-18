@@ -9,4 +9,5 @@ public enum TilePlacementValidationError
 	GameIsOver = 4,
 	PlayerIsNotInvolvedInAGame = 5,
 	NotBothPlayerAreJoinedYet = 6,
+	TimeOut = 7,
 }

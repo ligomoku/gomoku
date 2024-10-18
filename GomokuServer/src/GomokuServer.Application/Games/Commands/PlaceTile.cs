@@ -48,6 +48,8 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 
 		var game = getGameResult.Value;
 		var tileDto = request.Tile;
+
+		var currentColor = game.NextTileColor;
 		var tilePlacementResult = game.PlaceTile(new Tile(tileDto.X, tileDto.Y), request.PlayerId);
 
 		if (!tilePlacementResult.IsValid)
@@ -58,8 +60,8 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 		var saveResult = await gamesRepository.SaveAsync(game);
 		return saveResult.Map(_ =>
 		{
-			var winningSequence = tilePlacementResult.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
-			var placedTileColor = tilePlacementResult.PlacedTileColor.ToString()!.ToCamelCase();
+			var winningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList();
+			var placedTileColor = currentColor.ToString()!.ToCamelCase();
 
 			return new PlaceTileResponse(placedTileColor!, winningSequence);
 		});

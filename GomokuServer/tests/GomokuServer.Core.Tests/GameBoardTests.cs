@@ -25,27 +25,21 @@ public class GameBoardTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		result.PlacedTileColor.Should().Be(TileColor.Black);
+		_gameBoard.NextTileColor.Should().Be(TileColor.White);
 		result.WinningSequence.Should().BeNull();
 	}
 
 	[Test]
 	public void PlaceNewTile_SecondTilePlaced_ShouldSwitchToNextColor()
 	{
-		// Arrange
-		var firstTile = new Tile(7, 7);
-		var secondTile = new Tile(7, 8);
-
-		// Act
-		var firstResult = _gameBoard.PlaceNewTile(firstTile);
-		var secondResult = _gameBoard.PlaceNewTile(secondTile);
-
 		// Assert
+		var firstResult = _gameBoard.PlaceNewTile(new Tile(7, 7));
 		firstResult.IsValid.Should().BeTrue();
-		firstResult.PlacedTileColor.Should().Be(TileColor.Black);
+		_gameBoard.NextTileColor.Should().Be(TileColor.White);
 
+		var secondResult = _gameBoard.PlaceNewTile(new Tile(7, 8));
 		secondResult.IsValid.Should().BeTrue();
-		secondResult.PlacedTileColor.Should().Be(TileColor.White);
+		_gameBoard.NextTileColor.Should().Be(TileColor.Black);
 	}
 
 	[Test]

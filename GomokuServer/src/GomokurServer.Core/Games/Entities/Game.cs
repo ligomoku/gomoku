@@ -53,6 +53,8 @@ public class Game
 
 	public string PositionInGENFormat => _gameBoard.PositionInGENFormat;
 
+	public TileColor? NextTileColor => _gameBoard.NextTileColor;
+
 	public PlayerAddingResult AddOpponent(Profile newOpponent)
 	{
 		if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
@@ -107,7 +109,6 @@ public class Game
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.GameIsOver,
-				Winner = Winner,
 			};
 		}
 
@@ -173,10 +174,7 @@ public class Game
 		return new()
 		{
 			IsValid = placeNewTileResult.IsValid,
-			PlacedTileColor = placeNewTileResult.PlacedTileColor,
 			ValidationError = placeNewTileResult.ValidationError,
-			WinningSequence = placeNewTileResult.WinningSequence,
-			Winner = Winner,
 		};
 	}
 }

@@ -12,14 +12,15 @@ public class GameBoard
 	private readonly int _boardSize;
 	private readonly string[,] _board;
 	private int _movesCount = 0;
-	private TileColor _nextTileColor;
 
 	public GameBoard(int boardSize)
 	{
 		_boardSize = boardSize;
 		_board = new string[_boardSize, _boardSize];
-		_nextTileColor = TileColor.Black;
+		NextTileColor = TileColor.Black;
 	}
+
+	public TileColor NextTileColor { get; private set; }
 
 	public string PositionInGENFormat
 	{
@@ -49,7 +50,7 @@ public class GameBoard
 				gen.Append($"{row}/");
 			}
 
-			gen.Append($"{_nextTileColor.GetChar()}/{_movesCount}");
+			gen.Append($"{NextTileColor.GetChar()}/{_movesCount}");
 
 			return gen.ToString();
 		}
@@ -75,11 +76,11 @@ public class GameBoard
 			};
 		}
 
-		var newTileColor = _nextTileColor;
+		var newTileColor = NextTileColor;
 		var colorString = newTileColor.GetString();
 		_board[tile.X, tile.Y] = colorString;
 
-		_nextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+		NextTileColor = newTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
 		_movesCount++;
 
 		var winningSequence = CalculateWinningSequence(tile, colorString);
@@ -94,7 +95,6 @@ public class GameBoard
 		{
 			IsValid = true,
 			IsTieSituationAfterMove = isTieSituation,
-			PlacedTileColor = newTileColor,
 			WinningSequence = winningSequence
 		};
 	}
