@@ -9,7 +9,7 @@ export default {
   },
 } as Meta<GameTimeProps>;
 
-const Default = (args: GameTimeProps) => <GameTime {...args} />;
+export const Default = (args: GameTimeProps) => <GameTime {...args} />;
 
 Default.args = {
   timeLeft: "01:00",
