@@ -1,5 +1,6 @@
 import { Meta } from "@storybook/react";
-import { GameTime, GameTimeProps } from "./GameTime";
+import { GameTime } from "./GameTime";
+import { notification } from "@/shared/ui/notification";
 
 export default {
   title: "Components/GameTime",
@@ -7,21 +8,38 @@ export default {
   parameters: {
     layout: "centered",
   },
-} as Meta<GameTimeProps>;
+} as Meta<typeof GameTime>;
 
-export const Default = (args: GameTimeProps) => <GameTime {...args} />;
+export const Default = () => (
+  <GameTime
+    moves={[]}
+    currentPlayer="black"
+    players={[
+      { name: "Player 1", color: "#7cb342" },
+      { name: "Player 2", color: "#b0b0b0" },
+    ]}
+    clockTime="01:00"
+    onAddMove={() => alert("Add move clicked")}
+    onUndo={() => alert("Undo clicked")}
+    onSkip={(direction) => alert(`Skip ${direction} clicked`)}
+    onFlag={() => alert("Flag clicked")}
+    onReset={() => alert("Reset clicked")}
+  />
+);
 
-Default.args = {
-  timeLeft: "01:00",
-  player: {
-    name: "asd121231234",
-    rating: 1886,
-  },
-  opponent: {
-    name: "Kuprins",
-    rating: 1908,
-  },
-  isTurn: true,
-  turnMessage: "It's your turn!",
-  moveTimeMessage: "17 seconds to play the first move",
-};
+export const WithMoves = () => (
+  <GameTime
+    moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
+    currentPlayer="black"
+    players={[
+      { name: "Player 1", color: "#7cb342" },
+      { name: "Player 2", color: "#b0b0b0" },
+    ]}
+    clockTime="01:00"
+    onAddMove={() => notification.show("Add move clicked")}
+    onUndo={() => notification.show("Undo clicked")}
+    onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
+    onFlag={() => notification.show("Flag clicked")}
+    onReset={() => notification.show("Reset clicked")}
+  />
+);
