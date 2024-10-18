@@ -191,7 +191,7 @@ public class GameBoardTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		_gameBoard.GameResult.Should().Be(GameResult.BlackWon);
+		result.IsTieSituationAfterMove.Should().BeFalse();
 	}
 
 	[Test]
@@ -210,7 +210,7 @@ public class GameBoardTests
 
 		// Assert
 		result.IsValid.Should().BeTrue();
-		_gameBoard.GameResult.Should().Be(GameResult.WhiteWon);
+		result.IsTieSituationAfterMove.Should().BeFalse();
 	}
 
 	[Test]
@@ -228,7 +228,7 @@ public class GameBoardTests
 		// Assert
 		result.IsValid.Should().BeTrue();
 		result.WinningSequence.Should().BeNull();
-		gameBoard.GameResult.Should().Be(GameResult.Tie);
+		result.IsTieSituationAfterMove.Should().BeTrue();
 	}
 
 	[Test]
