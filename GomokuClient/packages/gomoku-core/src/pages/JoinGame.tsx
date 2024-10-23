@@ -31,16 +31,6 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     jwtDecodedInfo?.username,
   );
 
-  const transformMoves = (
-    movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
-  ) => {
-    const movesArray: string[] = [];
-    for (const move in movesHistory) {
-      movesArray.push(`x${movesHistory[move].x} - y${movesHistory[move].y}`);
-    }
-    return movesArray;
-  };
-
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
@@ -122,6 +112,16 @@ const useInitialStateGameHistory = (
       setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
     }
   }, [gameHistory, setTiles, setLastTile]);
+};
+
+const transformMoves = (
+  movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
+) => {
+  const movesArray: string[] = [];
+  for (const move in movesHistory) {
+    movesArray.push(`x${movesHistory[move].x} - y${movesHistory[move].y}`);
+  }
+  return movesArray;
 };
 
 JoinGame.displayName = "JoinGame";

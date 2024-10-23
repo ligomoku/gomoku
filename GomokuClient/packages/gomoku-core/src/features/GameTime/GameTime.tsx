@@ -171,7 +171,7 @@ const useGameTimer = (initialTimeInSeconds: number, timeout = 1000) => {
       setSecondsLeft((prev) => prev - 1);
     }, timeout);
 
-    return () => clearInterval(timerId);
+    return () => clearTimeout(timerId);
   }, [secondsLeft, initialTimeInSeconds, timeout]);
 
   return secondsLeft;
