@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Clock,
   Rewind,
@@ -15,6 +15,7 @@ interface GameTimeProps {
   moves: string[];
   currentPlayer: string;
   players: { name: string; color: string }[];
+  initialTimeInSeconds: number;
   clockTime: string;
   onAddMove: () => void;
   onUndo: () => void;
@@ -27,6 +28,7 @@ export const GameTime = ({
   moves,
   currentPlayer,
   players,
+  initialTimeInSeconds,
   clockTime,
   onAddMove,
   onUndo,
@@ -34,10 +36,30 @@ export const GameTime = ({
   onFlag,
   onReset,
 }: GameTimeProps) => {
+  const [secondsLeft, setSecondsLeft] = useState(initialTimeInSeconds);
+
+  const secondsToString = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    const minutesString = minutes.toString().padStart(2, '0');
+    const secondsString = remainingSeconds.toString().padStart(2, '0');
+
+    return `${minutesString}:${secondsString}`;
+  }
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setSecondsLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [secondsLeft, initialTimeInSeconds]);
+
   return (
     <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
       <div className="mb-2 flex items-center justify-between">
-        <div className="font-mono text-5xl">{clockTime}</div>
+        <div className="font-mono text-5xl">{secondsToString(secondsLeft)}</div>
         <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
           <Clock className="h-6 w-6" />
         </button>

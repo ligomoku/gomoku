@@ -83,6 +83,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                     { name: "Player 1", color: "#7cb342" },
                     { name: "Player 2", color: "#b0b0b0" },
                   ]}
+                  initialTimeInSeconds={100}
                   clockTime="01:00"
                   onAddMove={() => alert("Add move clicked")}
                   onUndo={() => alert("Undo clicked")}
