@@ -12,7 +12,7 @@ import { GameTime } from "@/features/GameTime";
 import { TileColor } from "@/hooks/useTiles";
 
 interface JoinGameProps {
-  gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
+  gameHistory: SwaggerTypes.GetGameHistoryResponse;
 }
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
@@ -21,7 +21,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const isMobile = useMobileDesign(1180);
   const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
     gameID,
-    gameHistory?.boardSize || 19,
+    gameHistory.boardSize,
   );
 
   useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
@@ -30,6 +30,16 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     gameID,
     jwtDecodedInfo?.username,
   );
+
+  const transformMoves = (
+    movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
+  ) => {
+    const movesArray: string[] = [];
+    for (const move in movesHistory) {
+      movesArray.push(`x${movesHistory[move].x} - y${movesHistory[move].y}`);
+    }
+    return movesArray;
+  };
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -56,7 +66,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               <Board
                 tiles={tiles}
                 lastTile={lastTile}
-                size={gameHistory?.boardSize || 19}
+                size={gameHistory.boardSize || 19}
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
               />
@@ -70,11 +80,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 }}
               >
                 <GameTime
-                  moves={[]}
+                  moves={transformMoves(gameHistory.movesHistory)}
                   currentPlayer="black"
                   players={[
-                    { name: "Player 1", color: "#7cb342" },
-                    { name: "Player 2", color: "#b0b0b0" },
+                    {
+                      name: gameHistory.players.black || "Anonymous",
+                      color: "#7cb342",
+                    },
+                    {
+                      name: gameHistory.players.white || "Anonymous",
+                      color: "#b0b0b0",
+                    },
                   ]}
                   initialTimeInSeconds={100}
                   clockTime="01:00"
@@ -102,7 +118,7 @@ const useInitialStateGameHistory = (
   //TODO: should be done without side effect
   useEffect(() => {
     if (gameHistory) {
-      setTiles(genParser(gameHistory?.gen));
+      setTiles(genParser(gameHistory.gen));
       setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
     }
   }, [gameHistory, setTiles, setLastTile]);

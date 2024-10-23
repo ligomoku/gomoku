@@ -38,6 +38,10 @@ export const GameTime = ({
 }: GameTimeProps) => {
   const secondsLeft = useGameTimer(initialTimeInSeconds);
 
+  useEffect(() => {
+    console.debug("Moves object", moves);
+  }, [moves]);
+
   return (
     <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
       <div className="mb-2 flex items-center justify-between">
