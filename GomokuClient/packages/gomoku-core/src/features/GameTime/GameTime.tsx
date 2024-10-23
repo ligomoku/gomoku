@@ -36,25 +36,11 @@ export const GameTime = ({
   onFlag,
   onReset,
 }: GameTimeProps) => {
-  const [secondsLeft, setSecondsLeft] = useState(initialTimeInSeconds);
-
-  const secondsToString = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-
-    const minutesString = minutes.toString().padStart(2, "0");
-    const secondsString = remainingSeconds.toString().padStart(2, "0");
-
-    return `${minutesString}:${secondsString}`;
-  };
+  const secondsLeft = useGameTimer(initialTimeInSeconds);
 
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timerId);
-  }, [secondsLeft, initialTimeInSeconds]);
+    console.debug("Moves object", moves);
+  }, [moves]);
 
   return (
     <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
@@ -176,3 +162,24 @@ export const GameTime = ({
     </div>
   );
 };
+
+const useGameTimer = (initialTimeInSeconds: number, timeout = 1000) => {
+  const [secondsLeft, setSecondsLeft] = useState(initialTimeInSeconds);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setSecondsLeft((prev) => prev - 1);
+    }, timeout);
+
+    return () => clearTimeout(timerId);
+  }, [secondsLeft, initialTimeInSeconds, timeout]);
+
+  return secondsLeft;
+};
+
+const secondsToString = (seconds: number) =>
+  `${Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0")}:${Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0")}`;
