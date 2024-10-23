@@ -115,7 +115,7 @@ const useFetchActiveGames = (authToken: string) =>
   });
 
 //TODO: properly wrap with i18n
-const gameTypes: GameType[] = [
+export const gameTypes: GameType[] = [
   {
     timeLabel: "5+0",
     type: "Blitz",

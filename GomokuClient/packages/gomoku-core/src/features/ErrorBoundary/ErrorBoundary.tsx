@@ -58,7 +58,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
     if (hasError) {
       setTimeout(() => {
-        // window.location.reload();
+        window.location.replace("/");
       }, 4000);
 
       return children;

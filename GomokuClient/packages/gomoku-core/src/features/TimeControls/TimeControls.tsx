@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/shared/ui/card";
-import { TimeControlDto } from "@/api/client";
 import { GameCreatorButton } from "@/features/GameCreator";
+import { SwaggerTypes } from "@/api";
 
 export interface GameType {
   timeLabel: string;
   type: string;
-  timeControl?: TimeControlDto;
+  timeControl?: SwaggerTypes.TimeControlDto;
 }
 
 export interface TimeControlsProps {
@@ -32,3 +32,5 @@ export const TimeControls = ({ gameTypes }: TimeControlsProps) => (
     ))}
   </div>
 );
+
+TimeControls.displayName = "TimeControls";

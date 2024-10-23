@@ -5,12 +5,12 @@ import { Button } from "@/shared/ui/button";
 import { Slider } from "@/shared/ui/slider";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { useAuthToken } from "@/context";
-import { TimeControlDto } from "@/api/client";
+import { SwaggerTypes } from "@/api";
 
 interface GameCreatorProps {
   isOpen: boolean;
   onClose: () => void;
-  timeControl?: TimeControlDto;
+  timeControl?: SwaggerTypes.TimeControlDto;
 }
 
 export const GameCreator = ({
@@ -95,7 +95,7 @@ GameCreator.displayName = "GameCreator";
 
 interface GameCreatorButtonProps {
   children: ReactNode;
-  timeControl?: TimeControlDto;
+  timeControl?: SwaggerTypes.TimeControlDto;
 }
 
 export const GameCreatorButton = ({

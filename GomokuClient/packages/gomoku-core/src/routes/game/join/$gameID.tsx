@@ -75,7 +75,7 @@ const JoinGameComponent = ({
     asyncJoinGame();
   }, [gameHistory, gameID, jwtToken, playerID]);
 
-  if (isLoading || (isJoining && !playerID))
+  if (isLoading || (isJoining && !playerID) || !gameHistory)
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 

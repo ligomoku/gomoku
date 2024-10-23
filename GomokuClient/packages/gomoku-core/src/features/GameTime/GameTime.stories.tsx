@@ -13,6 +13,7 @@ export default {
 export const Default = () => (
   <GameTime
     moves={[]}
+    initialTimeInSeconds={1000}
     currentPlayer="black"
     players={[
       { name: "Player 1", color: "#7cb342" },
@@ -29,6 +30,7 @@ export const Default = () => (
 
 export const WithMoves = () => (
   <GameTime
+    initialTimeInSeconds={1000}
     moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
     currentPlayer="black"
     players={[

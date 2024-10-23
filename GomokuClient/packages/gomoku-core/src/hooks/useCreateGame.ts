@@ -3,7 +3,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerServices, SwaggerTypes } from "@/api";
 import { notification } from "@/shared/ui/notification";
-import { TimeControlDto } from "@/api/client";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
@@ -21,7 +20,7 @@ export const useCreateGameAndNavigate = ({
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
     SwaggerTypes.PostApiGameError,
-    { boardSize: number; timeControl?: TimeControlDto }
+    { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
   >({
     mutationFn: async ({ boardSize, timeControl }) => {
       const response = await SwaggerServices.postApiGame({
