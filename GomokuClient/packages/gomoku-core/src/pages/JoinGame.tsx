@@ -6,9 +6,10 @@ import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { genParser } from "@/utils/getParser";
 import { GameTime } from "@/features/GameTime";
+import { TileColor } from "@/hooks/useTiles";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse | undefined;
@@ -18,25 +19,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1180);
-  const [dynamicBoardSize, setDynamicBoardSize] = useState(19);
   const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
     gameID,
-    dynamicBoardSize,
+    gameHistory?.boardSize || 19,
   );
+
+  useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
     jwtDecodedInfo?.username,
   );
-
-  //TODO: should be done without side effect
-  useEffect(() => {
-    if (gameHistory) {
-      setDynamicBoardSize(gameHistory.boardSize);
-      setTiles(genParser(gameHistory?.gen));
-      setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
-    }
-  }, [gameHistory, setTiles, setLastTile]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -63,7 +56,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               <Board
                 tiles={tiles}
                 lastTile={lastTile}
-                size={dynamicBoardSize}
+                size={gameHistory?.boardSize || 19}
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
               />
@@ -98,6 +91,21 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       </div>
     </div>
   );
+};
+
+//TODO: should be moved to router
+const useInitialStateGameHistory = (
+  gameHistory: JoinGameProps["gameHistory"],
+  setTiles: Dispatch<SetStateAction<TileColor[][]>>,
+  setLastTile: Dispatch<SetStateAction<SwaggerTypes.TileDto>>,
+) => {
+  //TODO: should be done without side effect
+  useEffect(() => {
+    if (gameHistory) {
+      setTiles(genParser(gameHistory?.gen));
+      setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
+    }
+  }, [gameHistory, setTiles, setLastTile]);
 };
 
 JoinGame.displayName = "JoinGame";
