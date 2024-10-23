@@ -17,7 +17,7 @@ interface JoinGameProps {
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
-  const isMobile = useMobileDesign();
+  const isMobile = useMobileDesign(1180);
   const [dynamicBoardSize, setDynamicBoardSize] = useState(19);
   const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
     gameID,
@@ -65,10 +65,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 lastTile={lastTile}
                 size={dynamicBoardSize}
                 onTileClick={(x, y) => handleMove(x, y)}
-                style={{
-                  order: isMobile ? 1 : "unset",
-                  width: isMobile ? "100%" : "unset",
-                }}
+                style={{ order: isMobile ? 1 : "unset" }}
               />
               <div
                 className="mt-4 flex flex-col justify-between"
@@ -76,6 +73,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   order: isMobile ? 3 : "unset",
                   marginLeft: isMobile ? 0 : "1rem",
                   width: isMobile ? "100%" : "unset",
+                  display: isMobile ? "none" : "unset",
                 }}
               >
                 <GameTime

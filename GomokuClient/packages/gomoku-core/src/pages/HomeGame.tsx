@@ -9,19 +9,12 @@ import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerTypes, SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
-import { useEffect } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
-
-  useEffect(() => {
-    if (paginatedActiveGames) {
-      console.log("Active games", paginatedActiveGames);
-    }
-  }, [paginatedActiveGames]);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
@@ -67,7 +60,7 @@ export const HomeGame = () => {
               playWithAIText={t`PLAY WITH AI`}
             />
             <OnlinePlayersInfo
-              gamesInPlayText={t`1,892 games in play`}
+              gamesInPlayText={t`${paginatedActiveGames?.metadata.totalCount} games in play`}
               playersOnlineText={t`5,247 players online`}
             />
           </div>
