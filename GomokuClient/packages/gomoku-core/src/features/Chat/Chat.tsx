@@ -55,7 +55,7 @@ export const Chat = ({
   }, [messages]);
 
   return (
-    <Card className="border-[#2b2b2b] bg-[#2b2b2b] text-[#bababa]">
+    <Card className="h-[100%] border-[#2b2b2b] bg-[#2b2b2b] text-[#bababa]">
       <CardHeader>
         <CardTitle>{t`Chat`}</CardTitle>
       </CardHeader>
@@ -90,7 +90,7 @@ export const Chat = ({
             </div>
             <ScrollArea
               ref={scrollAreaRef}
-              className="h-[300px] w-full overflow-y-auto rounded-md border p-4"
+              className="h-[100%] max-h-[550px] min-h-[300px] w-full overflow-y-auto rounded-md border p-4"
             >
               {messages.map((msg, index) => (
                 <div
