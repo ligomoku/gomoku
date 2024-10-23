@@ -36,7 +36,12 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
         {gameID && (
           <>
-            <div className="mb-5 flex w-full flex-wrap justify-center">
+            <div
+              className="mb-5 flex w-full flex-wrap justify-center"
+              style={{
+                alignItems: isMobile ? "unset" : "center",
+              }}
+            >
               <div
                 className="mt-4 flex flex-col justify-between"
                 style={{
