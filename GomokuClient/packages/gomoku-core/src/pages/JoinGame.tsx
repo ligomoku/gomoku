@@ -19,10 +19,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1180);
-  const { tiles, lastTile, handleMove, setTiles, setLastTile } = useJoinGame(
-    gameID,
-    gameHistory.boardSize,
-  );
+
+  const {
+    tiles,
+    lastTile,
+    handleMove,
+    setTiles,
+    setLastTile,
+    blackTimeLeft,
+    whiteTimeLeft,
+    activePlayer,
+  } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 
   useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
 
@@ -65,6 +72,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
               />
+
               <div
                 className="mt-4 flex flex-col justify-between"
                 style={{
@@ -76,7 +84,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               >
                 <GameTime
                   moves={transformMoves(gameHistory.movesHistory)}
-                  currentPlayer="black"
+                  blackTimeLeft={blackTimeLeft}
+                  whiteTimeLeft={whiteTimeLeft}
+                  activePlayer={activePlayer!}
                   players={[
                     {
                       name: gameHistory.players.black || "Anonymous",
@@ -87,13 +97,10 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                       color: "#b0b0b0",
                     },
                   ]}
-                  initialTimeInSeconds={100}
-                  clockTime="01:00"
-                  onAddMove={() => alert("Add move clicked")}
                   onUndo={() => alert("Undo clicked")}
-                  onSkip={(direction) => alert(`Skip ${direction} clicked`)}
                   onFlag={() => alert("Flag clicked")}
                   onReset={() => alert("Reset clicked")}
+                  onSkip={(direction) => alert(`Skip ${direction} clicked`)}
                 />
               </div>
             </div>
@@ -110,7 +117,6 @@ const useInitialStateGameHistory = (
   setTiles: Dispatch<SetStateAction<TileColor[][]>>,
   setLastTile: Dispatch<SetStateAction<SwaggerTypes.TileDto>>,
 ) => {
-  //TODO: should be done without side effect
   useEffect(() => {
     if (gameHistory) {
       setTiles(genParser(gameHistory.gen));
