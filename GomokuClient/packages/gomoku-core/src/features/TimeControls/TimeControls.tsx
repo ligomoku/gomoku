@@ -27,7 +27,6 @@ export const TimeControls = ({
     {gameTypes.map((game, index) => (
       <GameCreatorButton
         key={index}
-        boardSize={game.boardSize}
         timeControl={game.timeControl}
         onCreateGame={onCreateGame}
         isLoading={isLoading}
