@@ -3,29 +3,23 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button } from "@/shared/ui/button";
 import { Slider } from "@/shared/ui/slider";
-import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { useAuthToken } from "@/context";
 import { SwaggerTypes } from "@/api";
 
-interface GameCreatorProps {
+export interface GameCreatorProps {
   isOpen: boolean;
   onClose: () => void;
   timeControl?: SwaggerTypes.TimeControlDto;
+  onCreate: (boardSize: number) => void;
+  isLoading: boolean;
 }
 
 export const GameCreator = ({
   isOpen,
   onClose,
-  timeControl,
+  onCreate,
+  isLoading,
 }: GameCreatorProps) => {
   const [boardSize, setBoardSize] = useState(19);
-  const { jwtToken } = useAuthToken();
-  const { createGame, isLoading: isLoadingCreateGame } =
-    useCreateGameAndNavigate({
-      authToken: jwtToken,
-      boardSizeProp: boardSize,
-      timeControl,
-    });
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -70,9 +64,9 @@ export const GameCreator = ({
 
           <Button
             className="w-full bg-[#629924] text-white hover:bg-[#58881f]"
-            onClick={createGame}
-            disabled={isLoadingCreateGame}
-            loading={isLoadingCreateGame}
+            onClick={() => onCreate(boardSize)}
+            disabled={isLoading}
+            loading={isLoading}
           >
             Create game
           </Button>
@@ -93,19 +87,31 @@ export const GameCreator = ({
 
 GameCreator.displayName = "GameCreator";
 
-interface GameCreatorButtonProps {
+export interface GameCreatorButtonProps {
   children: ReactNode;
   timeControl?: SwaggerTypes.TimeControlDto;
+  onCreateGame: (
+    boardSize: number,
+    timeControl?: SwaggerTypes.TimeControlDto,
+  ) => void;
+  isLoading: boolean;
 }
 
 export const GameCreatorButton = ({
   children,
   timeControl,
+  onCreateGame,
+  isLoading,
 }: GameCreatorButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
+
+  const handleCreate = (selectedBoardSize: number) => {
+    onCreateGame(selectedBoardSize, timeControl);
+    handleClose();
+  };
 
   return (
     <>
@@ -114,7 +120,8 @@ export const GameCreatorButton = ({
       <GameCreator
         isOpen={isModalOpen}
         onClose={handleClose}
-        timeControl={timeControl}
+        onCreate={handleCreate}
+        isLoading={isLoading}
       />
     </>
   );

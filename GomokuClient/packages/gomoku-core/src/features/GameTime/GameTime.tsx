@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Fragment } from "react";
 
-interface GameTimeProps {
+export interface GameTimeProps {
   moves: string[];
   blackTimeLeft: number;
   whiteTimeLeft: number;

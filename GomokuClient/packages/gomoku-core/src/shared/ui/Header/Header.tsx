@@ -1,6 +1,6 @@
-import { useState, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { Input } from "@/shared/ui/input";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search, Bell } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { typedStorage } from "@/shared/lib/utils";
 
@@ -24,16 +24,41 @@ export const Header = ({
   logoText,
   logoOnClick,
   menuItems,
-  SignedInComponent,
   SignedOutComponent,
   SignInButtonComponent,
   UserButtonComponent,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScrollPos < lastScrollPos) {
+        setIsHeaderVisible(true);
+      } else if (currentScrollPos > lastScrollPos) {
+        setIsHeaderVisible(false);
+      }
+      setLastScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollPos]);
+
   if (SignedOutComponent) typedStorage.clear();
 
   return (
-    <header className="bg-[#2b2b2b] p-4 sm:p-6">
+    <header
+      className={`bg-[#2b2b2b] p-4 transition-opacity duration-300 sm:p-6 ${
+        isHeaderVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
       <nav className="flex items-center justify-between">
         <div className="flex items-center">
           <span
@@ -44,14 +69,16 @@ export const Header = ({
           </span>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="sm:hidden"
+            className="text-[#bababa] sm:hidden"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         <div
-          className={`${isMenuOpen ? "flex" : "hidden"} absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
+          className={`${
+            isMenuOpen ? "flex" : "hidden"
+          } absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
           style={{ zIndex: 100 }}
         >
           {menuItems.map((item) => (
@@ -63,9 +90,31 @@ export const Header = ({
               {item.label}
             </span>
           ))}
+        </div>
 
+        <div className="flex items-center space-x-4">
+          <Input
+            className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
+            placeholder={searchPlaceholder}
+          />
+          <button
+            aria-label="Search"
+            className="text-[#bababa] hover:text-[#f0f0f0] sm:hidden"
+          >
+            <Search className="h-5 w-5" />
+          </button>
+          <button
+            aria-label="Notifications"
+            className="text-[#bababa] hover:text-[#f0f0f0]"
+          >
+            <Bell className="h-5 w-5" />
+          </button>
           {isSignedIn ? (
-            <>{SignedInComponent ? <>{UserButtonComponent}</> : null}</>
+            <>
+              <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
+                {UserButtonComponent ? <>{UserButtonComponent}</> : null}
+              </div>
+            </>
           ) : (
             <>
               {SignedOutComponent ? (
@@ -73,7 +122,8 @@ export const Header = ({
               ) : (
                 <Button
                   onClick={onSignInClick}
-                  className="cursor-pointer text-lg uppercase hover:text-[#f0f0f0] sm:text-xl"
+                  variant="ghost"
+                  className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex"
                 >
                   Sign In
                 </Button>
@@ -81,11 +131,6 @@ export const Header = ({
             </>
           )}
         </div>
-
-        <Input
-          className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
-          placeholder={searchPlaceholder}
-        />
       </nav>
     </header>
   );
