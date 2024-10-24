@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { Input } from "@/shared/ui/input";
 import { Menu, X, Search, Bell } from "lucide-react";
 import { Button } from "@/shared/ui/button";
@@ -29,11 +29,36 @@ export const Header = ({
   UserButtonComponent,
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollPos, setLastScrollPos] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScrollPos < lastScrollPos) {
+        setIsHeaderVisible(true);
+      } else if (currentScrollPos > lastScrollPos) {
+        setIsHeaderVisible(false);
+      }
+      setLastScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollPos]);
 
   if (SignedOutComponent) typedStorage.clear();
 
   return (
-    <header className="bg-[#2b2b2b] p-4 sm:p-6">
+    <header
+      className={`bg-[#2b2b2b] p-4 transition-opacity duration-300 sm:p-6 ${
+        isHeaderVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
       <nav className="flex items-center justify-between">
         <div className="flex items-center">
           <span
