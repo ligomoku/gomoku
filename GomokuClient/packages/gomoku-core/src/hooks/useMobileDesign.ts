@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-export const useMobileDesign = (mobileWidth = 768) => {
+const MobileBreakpoints = {
+  default: 768,
+  mobile: 1180,
+} as const;
+
+export const useMobileDesign = (
+  mobileWidth: (typeof MobileBreakpoints)[keyof typeof MobileBreakpoints] = MobileBreakpoints.default,
+) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

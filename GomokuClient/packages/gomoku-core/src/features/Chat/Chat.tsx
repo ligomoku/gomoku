@@ -22,7 +22,7 @@ export const Chat = ({
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobileDesign();
+  const isMobile = useMobileDesign(1180);
   const MAX_MESSAGE_LENGTH = 50;
 
   const handleSendMessage = async () => {
