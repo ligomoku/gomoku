@@ -7,22 +7,24 @@ import { notification } from "@/shared/ui/notification";
 interface CreateGameAndNavigateProps {
   authToken: string;
   boardSizeProp: SwaggerTypes.CreateGameRequest["boardSize"];
+  timeControl?: SwaggerTypes.CreateGameRequest["timeControl"];
 }
 
 export const useCreateGameAndNavigate = ({
   authToken,
   boardSizeProp,
+  timeControl,
 }: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
 
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
     SwaggerTypes.PostApiGameError,
-    { boardSize: number }
+    { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
   >({
-    mutationFn: async ({ boardSize }) => {
+    mutationFn: async ({ boardSize, timeControl }) => {
       const response = await SwaggerServices.postApiGame({
-        body: { boardSize },
+        body: { boardSize, timeControl },
         headers: getDefaultHeaders(authToken),
       });
 
@@ -33,7 +35,7 @@ export const useCreateGameAndNavigate = ({
   return {
     createGame: () => {
       createGame.mutate(
-        { boardSize: boardSizeProp },
+        { boardSize: boardSizeProp, timeControl },
         {
           onSuccess: async (data) => {
             console.log("Game created", data);

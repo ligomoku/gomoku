@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
@@ -7,9 +7,24 @@ import { SignalClientMessages, SwaggerTypes } from "@/api";
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+  initialTimeInSeconds: number,
+  incrementPerMove: number,
 ) => {
-  const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
-    useTiles(boardSize);
+  const [moves, setMoves] = useState<string[]>([]);
+  const {
+    tiles,
+    winner,
+    addTile,
+    lastTile,
+    setLastTile,
+    setTiles,
+    blackTimeLeft,
+    whiteTimeLeft,
+    activePlayer,
+  } = useTiles(boardSize, initialTimeInSeconds, incrementPerMove, (winner) => {
+    notification.show(`The winner is: ${winner}`);
+  });
+
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
@@ -20,8 +35,8 @@ export const useJoinGame = (
       });
 
       registerEventHandlers({
-        onPlayerJoined: ({ userId }) => {
-          console.log(`Player ${userId} joined game.`);
+        onPlayerJoined: () => {
+          notification.show(`You have joined the game`);
         },
         onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
@@ -31,8 +46,11 @@ export const useJoinGame = (
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
-          console.log("Player made move:", playerId, tile, placedTileColor);
+          console.log(
+            `Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`,
+          );
           addTile(tile, placedTileColor as TileColor);
+          setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
         onGameHubError: (error) => {
           notification.show("Error from game hub", "error");
@@ -40,13 +58,9 @@ export const useJoinGame = (
         },
       });
     }
-  }, [hubProxy, isConnected, gameID, registerEventHandlers, addTile]);
-
-  useEffect(() => {
-    if (winner) {
-      notification.show(`The winner is: ${winner}`);
-    }
-  }, [winner]);
+    //TODO: should be one dependecy ideally
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
@@ -68,5 +82,16 @@ export const useJoinGame = (
     }
   };
 
-  return { tiles, lastTile, setLastTile, winner, handleMove, setTiles };
+  return {
+    moves,
+    tiles,
+    lastTile,
+    setLastTile,
+    winner,
+    handleMove,
+    setTiles,
+    blackTimeLeft,
+    whiteTimeLeft,
+    activePlayer,
+  };
 };

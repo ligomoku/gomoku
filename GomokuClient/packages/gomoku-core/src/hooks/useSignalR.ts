@@ -57,27 +57,28 @@ export const useSignalR = (
 
   useEffect(() => {
     if (!connectionRef.current) {
+      const constructURL = playerID
+        ? `${import.meta.env.VITE_API_URL}/gamehub?player_id=${playerID}`
+        : `${import.meta.env.VITE_API_URL}/gamehub`;
+
       connectionRef.current = new signalR.HubConnectionBuilder()
-        .withUrl(
-          `${import.meta.env.VITE_API_URL}/gamehub?player_id=${playerID}`,
-          {
-            accessTokenFactory: async () => {
-              let token = typedStorage.getItem("jwtToken");
-              if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
-                console.log("JWT token expired, refreshing token...");
-                try {
-                  token = await getToken({ skipCache: true });
-                  if (token) {
-                    typedStorage.setItem("jwtToken", token);
-                  }
-                } catch (error) {
-                  console.error("Error refreshing token:", error);
+        .withUrl(constructURL, {
+          accessTokenFactory: async () => {
+            let token = typedStorage.getItem("jwtToken");
+            if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
+              console.log("JWT token expired, refreshing token...");
+              try {
+                token = await getToken({ skipCache: true });
+                if (token) {
+                  typedStorage.setItem("jwtToken", token);
                 }
+              } catch (error) {
+                console.error("Error refreshing token:", error);
               }
-              return token ? token : "";
-            },
+            }
+            return token ? token : "";
           },
-        )
+        })
         .withHubProtocol(new JsonHubProtocol())
         .withAutomaticReconnect()
         .build();

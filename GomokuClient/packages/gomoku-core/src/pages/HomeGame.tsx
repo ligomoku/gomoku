@@ -1,12 +1,12 @@
 import { SectionList } from "@/features/SectionList";
-import { TimeControls } from "@/features/TimeControls";
+import { GameType, TimeControls } from "@/features/TimeControls";
 import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react";
 import { getDefaultHeaders } from "@/shared/lib/utils";
-import { SwaggerTypes, SwaggerServices } from "@/api";
+import { SwaggerServices, SwaggerTypes } from "@/api";
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
 
@@ -115,11 +115,27 @@ const useFetchActiveGames = (authToken: string) =>
   });
 
 //TODO: properly wrap with i18n
-const gameTypes = [
-  { time: "5+0", type: "Blitz" },
-  { time: "10+0", type: "Quick" },
-  { time: "15+5", type: "Standard" },
-  { time: "30+0", type: "Long" },
-  { time: "1 day", type: "Correspondence" },
-  { time: "Custom", type: "" },
+export const gameTypes: GameType[] = [
+  {
+    timeLabel: "5+0",
+    type: "Blitz",
+    timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
+  },
+  {
+    timeLabel: "10+0",
+    type: "Quick",
+    timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
+  },
+  {
+    timeLabel: "15+5",
+    type: "Standard",
+    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 5 },
+  },
+  {
+    timeLabel: "30+0",
+    type: "Long",
+    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
+  },
+  { timeLabel: "1 day", type: "Correspondence" },
+  { timeLabel: "Custom", type: "" },
 ];

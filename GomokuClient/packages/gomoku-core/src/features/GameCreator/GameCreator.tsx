@@ -5,17 +5,27 @@ import { Button } from "@/shared/ui/button";
 import { Slider } from "@/shared/ui/slider";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { useAuthToken } from "@/context";
+import { SwaggerTypes } from "@/api";
 
 interface GameCreatorProps {
   isOpen: boolean;
   onClose: () => void;
+  timeControl?: SwaggerTypes.TimeControlDto;
 }
 
-export const GameCreator = ({ isOpen, onClose }: GameCreatorProps) => {
+export const GameCreator = ({
+  isOpen,
+  onClose,
+  timeControl,
+}: GameCreatorProps) => {
   const [boardSize, setBoardSize] = useState(19);
   const { jwtToken } = useAuthToken();
   const { createGame, isLoading: isLoadingCreateGame } =
-    useCreateGameAndNavigate({ authToken: jwtToken, boardSizeProp: boardSize });
+    useCreateGameAndNavigate({
+      authToken: jwtToken,
+      boardSizeProp: boardSize,
+      timeControl,
+    });
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -85,9 +95,13 @@ GameCreator.displayName = "GameCreator";
 
 interface GameCreatorButtonProps {
   children: ReactNode;
+  timeControl?: SwaggerTypes.TimeControlDto;
 }
 
-export const GameCreatorButton = ({ children }: GameCreatorButtonProps) => {
+export const GameCreatorButton = ({
+  children,
+  timeControl,
+}: GameCreatorButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => setIsModalOpen(true);
@@ -97,7 +111,11 @@ export const GameCreatorButton = ({ children }: GameCreatorButtonProps) => {
     <>
       <div onClick={handleOpen}>{children}</div>
 
-      <GameCreator isOpen={isModalOpen} onClose={handleClose} />
+      <GameCreator
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        timeControl={timeControl}
+      />
     </>
   );
 };
