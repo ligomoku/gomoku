@@ -29,6 +29,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     blackTimeLeft,
     whiteTimeLeft,
     activePlayer,
+    moves,
   } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 
   useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
@@ -83,7 +84,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 }}
               >
                 <GameTime
-                  moves={transformMoves(gameHistory.movesHistory)}
+                  moves={
+                    moves.length > 0
+                      ? moves
+                      : transformMoves(gameHistory.movesHistory)
+                  }
                   blackTimeLeft={blackTimeLeft}
                   whiteTimeLeft={whiteTimeLeft}
                   activePlayer={activePlayer!}

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
@@ -10,6 +10,7 @@ export const useJoinGame = (
   initialTimeInSeconds: number,
   incrementPerMove: number,
 ) => {
+  const [moves, setMoves] = useState<string[]>([]);
   const {
     tiles,
     winner,
@@ -34,8 +35,8 @@ export const useJoinGame = (
       });
 
       registerEventHandlers({
-        onPlayerJoined: ({ userId }) => {
-          console.log(`Player ${userId} joined game.`);
+        onPlayerJoined: () => {
+          notification.show(`You have joined the game`);
         },
         onGameStarted: ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
@@ -45,8 +46,11 @@ export const useJoinGame = (
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
-          console.log("Player made move:", playerId, tile, placedTileColor);
+          console.log(
+            `Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`,
+          );
           addTile(tile, placedTileColor as TileColor);
+          setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
         onGameHubError: (error) => {
           notification.show("Error from game hub", "error");
@@ -54,7 +58,9 @@ export const useJoinGame = (
         },
       });
     }
-  }, [hubProxy, isConnected, gameID, registerEventHandlers, addTile]);
+    //TODO: should be one dependecy ideally
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
@@ -77,6 +83,7 @@ export const useJoinGame = (
   };
 
   return {
+    moves,
     tiles,
     lastTile,
     setLastTile,
