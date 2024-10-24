@@ -103,15 +103,14 @@ export const GameCreatorButton = ({
   timeControl,
   onCreateGame,
   isLoading,
-  boardSize,
 }: GameCreatorButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
 
-  const handleCreate = () => {
-    onCreateGame(boardSize, timeControl);
+  const handleCreate = (selectedBoardSize: number) => {
+    onCreateGame(selectedBoardSize, timeControl);
     handleClose();
   };
 

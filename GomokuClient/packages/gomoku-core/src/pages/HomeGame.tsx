@@ -34,6 +34,7 @@ export const HomeGame = () => {
     selectedBoardSize: number,
     selectedTimeControl?: SwaggerTypes.TimeControlDto,
   ) => {
+    console.log("Selected board size", selectedBoardSize);
     setBoardSize(selectedBoardSize);
     setTimeControl(selectedTimeControl);
     createGame();
@@ -42,14 +43,11 @@ export const HomeGame = () => {
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
   ) =>
-    games?.map((game) => {
-      console.log("Game", game);
-      return {
-        id: game.gameId,
-        title: game.opponent?.userName ?? game.gameId.slice(0, 6),
-        icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
-      };
-    });
+    games?.map((game) => ({
+      id: game.gameId,
+      title: game.opponent?.userName ?? game.gameId.slice(0, 6),
+      icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
+    }));
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">

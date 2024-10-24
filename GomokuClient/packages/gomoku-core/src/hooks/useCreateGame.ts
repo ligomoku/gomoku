@@ -38,7 +38,7 @@ export const useCreateGameAndNavigate = ({
         { boardSize: boardSizeProp, timeControl },
         {
           onSuccess: async (data) => {
-            console.log("Game created", data);
+            notification.show("Game created");
             if (data?.gameId) {
               navigate({ to: `/game/join/${data?.gameId}` });
             }
