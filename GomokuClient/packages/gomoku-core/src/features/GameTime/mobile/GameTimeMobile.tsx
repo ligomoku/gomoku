@@ -5,14 +5,13 @@ import { useMobileDesign } from "@/hooks/useMobileDesign";
 
 export const GameTimeMobile = ({
   moves,
-  currentPlayer,
   players,
-  clockTime,
-  onAddMove,
   onUndo,
   onSkip,
   onFlag,
   onReset,
+  activePlayer,
+  blackTimeLeft,
 }: GameTimeProps) => {
   const isMobile = useMobileDesign(1180);
   if (!isMobile) return null;
@@ -28,7 +27,7 @@ export const GameTimeMobile = ({
           <span className="font-bold text-[#ffa600]">{players[0].name}</span>
         </div>
         <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
-          {clockTime}
+          {blackTimeLeft}
         </div>
       </div>
 
@@ -45,7 +44,7 @@ export const GameTimeMobile = ({
               </span>
             ))
           ) : (
-            <span>{currentPlayer} plays first</span>
+            <span>{activePlayer} plays first</span>
           )}
         </div>
         <ChevronRight
@@ -69,7 +68,7 @@ export const GameTimeMobile = ({
       {moves.length > 0 ? (
         <button
           className="mt-2 w-full rounded bg-[#7cb342] py-2 text-center text-sm"
-          onClick={onAddMove}
+          onClick={onFlag}
         >
           Add move
         </button>

@@ -1,8 +1,12 @@
 import { Button } from "@/shared/ui/button";
 import { GameCreatorButton } from "@/features/GameCreator";
+import { SwaggerTypes } from "@/api";
 
 export interface GameOptionsButtonsProps {
-  onCreateGameClick?: () => void;
+  onCreateGame: (
+    boardSize: number,
+    timeControl?: SwaggerTypes.TimeControlDto,
+  ) => void;
   onPlayWithFriendClick?: () => void;
   onPlayWithAIClick?: () => void;
   createGameText: string;
@@ -11,6 +15,7 @@ export interface GameOptionsButtonsProps {
   isLoadingCreateGame?: boolean;
   isLoadingPlayWithFriend?: boolean;
   isLoadingPlayWithAI?: boolean;
+  boardSize: number;
 }
 
 const GameButton = ({
@@ -32,6 +37,7 @@ const GameButton = ({
 );
 
 export const GameOptionsButtons = ({
+  onCreateGame,
   onPlayWithFriendClick,
   onPlayWithAIClick,
   createGameText,
@@ -40,16 +46,23 @@ export const GameOptionsButtons = ({
   isLoadingCreateGame = false,
   isLoadingPlayWithFriend = false,
   isLoadingPlayWithAI = false,
+  boardSize,
 }: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
-    <GameCreatorButton>
+    <GameCreatorButton
+      boardSize={boardSize}
+      onCreateGame={onCreateGame}
+      isLoading={isLoadingCreateGame}
+    >
       <GameButton text={createGameText} loading={isLoadingCreateGame} />
     </GameCreatorButton>
+
     <GameButton
       onClick={onPlayWithFriendClick}
       text={playWithFriendText}
       loading={isLoadingPlayWithFriend}
     />
+
     <GameButton
       onClick={onPlayWithAIClick}
       text={playWithAIText}
