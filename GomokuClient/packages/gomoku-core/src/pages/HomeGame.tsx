@@ -18,7 +18,7 @@ export const HomeGame = () => {
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
 
-  const [boardSize, setBoardSize] = useState<number | undefined>(undefined);
+  const [boardSize, setBoardSize] = useState<number>(13);
   const [timeControl, setTimeControl] = useState<
     SwaggerTypes.TimeControlDto | undefined
   >(undefined);
@@ -26,7 +26,7 @@ export const HomeGame = () => {
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
       authToken: jwtToken,
-      boardSizeProp: boardSize!,
+      boardSize,
       timeControl,
     });
 
