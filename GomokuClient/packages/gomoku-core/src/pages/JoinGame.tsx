@@ -86,7 +86,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 <GameTime
                   moves={
                     moves.length > 0
-                      ? moves
+                      ? [...transformMoves(gameHistory.movesHistory), ...moves]
                       : transformMoves(gameHistory.movesHistory)
                   }
                   blackTimeLeft={blackTimeLeft}
