@@ -90,7 +90,6 @@ GameCreator.displayName = "GameCreator";
 export interface GameCreatorButtonProps {
   children: ReactNode;
   timeControl?: SwaggerTypes.TimeControlDto;
-  boardSize: number;
   onCreateGame: (
     boardSize: number,
     timeControl?: SwaggerTypes.TimeControlDto,

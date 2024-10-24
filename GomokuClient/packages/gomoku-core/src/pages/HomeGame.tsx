@@ -10,7 +10,6 @@ import { SwaggerServices, SwaggerTypes } from "@/api";
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { useEffect, useState } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -18,30 +17,19 @@ export const HomeGame = () => {
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
 
-  const [boardSize, setBoardSize] = useState<number | undefined>(undefined);
-  const [timeControl, setTimeControl] = useState<
-    SwaggerTypes.TimeControlDto | undefined
-  >(undefined);
-
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
       authToken: jwtToken,
-      boardSize: boardSize!,
-      timeControl,
     });
-
-  useEffect(() => {
-    if (boardSize) {
-      createGame();
-    }
-  }, [boardSize, createGame, timeControl]);
 
   const handleCreateGame = (
     selectedBoardSize: number,
     selectedTimeControl?: SwaggerTypes.TimeControlDto,
   ) => {
-    setBoardSize(selectedBoardSize);
-    setTimeControl(selectedTimeControl);
+    createGame({
+      boardSize: selectedBoardSize,
+      timeControl: selectedTimeControl,
+    });
   };
 
   const transformGameData = (
@@ -87,7 +75,6 @@ export const HomeGame = () => {
               createGameText={t`CREATE A GAME`}
               playWithFriendText={t`PLAY WITH A FRIEND`}
               playWithAIText={t`PLAY WITH AI`}
-              boardSize={boardSize!}
               onCreateGame={handleCreateGame}
             />
             <OnlinePlayersInfo

@@ -15,7 +15,6 @@ export interface GameOptionsButtonsProps {
   isLoadingCreateGame?: boolean;
   isLoadingPlayWithFriend?: boolean;
   isLoadingPlayWithAI?: boolean;
-  boardSize: number;
 }
 
 const GameButton = ({
@@ -46,11 +45,9 @@ export const GameOptionsButtons = ({
   isLoadingCreateGame = false,
   isLoadingPlayWithFriend = false,
   isLoadingPlayWithAI = false,
-  boardSize,
 }: GameOptionsButtonsProps) => (
   <div className="space-y-4 sm:space-y-6">
     <GameCreatorButton
-      boardSize={boardSize}
       onCreateGame={onCreateGame}
       isLoading={isLoadingCreateGame}
     >

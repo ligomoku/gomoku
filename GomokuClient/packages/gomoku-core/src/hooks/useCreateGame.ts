@@ -6,14 +6,10 @@ import { notification } from "@/shared/ui/notification";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
-  boardSize: SwaggerTypes.CreateGameRequest["boardSize"];
-  timeControl?: SwaggerTypes.CreateGameRequest["timeControl"];
 }
 
 export const useCreateGameAndNavigate = ({
   authToken,
-  boardSize,
-  timeControl,
 }: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
 
@@ -33,7 +29,13 @@ export const useCreateGameAndNavigate = ({
   });
 
   return {
-    createGame: () => {
+    createGame: ({
+      boardSize,
+      timeControl,
+    }: {
+      boardSize: number;
+      timeControl?: SwaggerTypes.TimeControlDto;
+    }) => {
       createGame.mutate(
         { boardSize, timeControl },
         {
