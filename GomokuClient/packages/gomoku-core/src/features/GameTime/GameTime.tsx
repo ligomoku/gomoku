@@ -1,4 +1,3 @@
-import { Fragment, useEffect, useState } from "react";
 import {
   Clock,
   Rewind,
@@ -10,14 +9,14 @@ import {
   Flag,
   Undo,
 } from "lucide-react";
+import { Fragment } from "react";
 
 interface GameTimeProps {
   moves: string[];
-  currentPlayer: string;
+  blackTimeLeft: number;
+  whiteTimeLeft: number;
+  activePlayer: string;
   players: { name: string; color: string }[];
-  initialTimeInSeconds: number;
-  clockTime: string;
-  onAddMove: () => void;
   onUndo: () => void;
   onSkip: (direction: "back" | "forward") => void;
   onFlag: () => void;
@@ -26,31 +25,28 @@ interface GameTimeProps {
 
 export const GameTime = ({
   moves,
-  currentPlayer,
+  blackTimeLeft,
+  whiteTimeLeft,
+  activePlayer,
   players,
-  initialTimeInSeconds,
-  clockTime,
-  onAddMove,
   onUndo,
   onSkip,
   onFlag,
   onReset,
 }: GameTimeProps) => {
-  const secondsLeft = useGameTimer(initialTimeInSeconds);
-
-  useEffect(() => {
-    console.debug("Moves object", moves);
-  }, [moves]);
-
   return (
     <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
       <div className="mb-2 flex items-center justify-between">
-        <div className="font-mono text-5xl">{secondsToString(secondsLeft)}</div>
+        {/* Display black player time */}
+        <div className="font-mono text-5xl">
+          {secondsToString(blackTimeLeft)}
+        </div>
         <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
           <Clock className="h-6 w-6" />
         </button>
       </div>
 
+      {/* Player Info and Action Buttons */}
       <div className="mb-2 rounded bg-[#363330] p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -58,7 +54,7 @@ export const GameTime = ({
               className="mr-2 h-2 w-2 rounded-full"
               style={{ backgroundColor: players[0].color }}
             ></div>
-            <span className="text-sm">{players[0].name}</span>
+            <span className="text-sm">{players[0].name} (Black)</span>
           </div>
           <div className="flex items-center">
             <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
@@ -68,6 +64,7 @@ export const GameTime = ({
           </div>
         </div>
 
+        {/* Move Controls */}
         <div className="mt-2 flex justify-between">
           <Rewind
             className="h-5 w-5 text-[#b0b0b0]"
@@ -95,7 +92,7 @@ export const GameTime = ({
             <span className="text-xl font-bold text-[#363330]">i</span>
           </div>
           <div>
-            <div className="text-sm">{currentPlayer} plays first</div>
+            <div className="text-sm">{activePlayer} plays first</div>
             <div className="text-lg font-bold">It's your turn!</div>
           </div>
         </div>
@@ -115,6 +112,7 @@ export const GameTime = ({
         </div>
       )}
 
+      {/* Undo, Flag, Reset Buttons */}
       <div className="mb-2 flex justify-between">
         <button className="rounded bg-[#363330] p-2" onClick={onReset}>
           <X className="h-5 w-5 text-[#b0b0b0]" />
@@ -134,7 +132,7 @@ export const GameTime = ({
               className="mr-2 h-2 w-2 rounded-full"
               style={{ backgroundColor: players[1].color }}
             ></div>
-            <span className="text-sm">{players[1].name}</span>
+            <span className="text-sm">{players[1].name} (White)</span>
           </div>
           <div className="flex items-center">
             <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
@@ -152,31 +150,20 @@ export const GameTime = ({
       ) : (
         <button
           className="w-full rounded bg-[#7cb342] py-2 text-center text-sm"
-          onClick={onAddMove}
+          onClick={() => alert("Add move clicked")}
         >
           Add move
         </button>
       )}
 
-      <div className="mt-2 text-center font-mono text-5xl">{clockTime}</div>
+      <div className="mt-2 text-center font-mono text-5xl">
+        {secondsToString(whiteTimeLeft)}
+      </div>
     </div>
   );
 };
 
-const useGameTimer = (initialTimeInSeconds: number, timeout = 1000) => {
-  const [secondsLeft, setSecondsLeft] = useState(initialTimeInSeconds);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, timeout);
-
-    return () => clearTimeout(timerId);
-  }, [secondsLeft, initialTimeInSeconds, timeout]);
-
-  return secondsLeft;
-};
-
+// Utility function to convert seconds into MM:SS format
 const secondsToString = (seconds: number) =>
   `${Math.floor(seconds / 60)
     .toString()

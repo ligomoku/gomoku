@@ -7,9 +7,23 @@ import { SignalClientMessages, SwaggerTypes } from "@/api";
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+  initialTimeInSeconds: number,
+  incrementPerMove: number,
 ) => {
-  const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
-    useTiles(boardSize);
+  const {
+    tiles,
+    winner,
+    addTile,
+    lastTile,
+    setLastTile,
+    setTiles,
+    blackTimeLeft,
+    whiteTimeLeft,
+    activePlayer,
+  } = useTiles(boardSize, initialTimeInSeconds, incrementPerMove, (winner) => {
+    notification.show(`The winner is: ${winner}`);
+  });
+
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
 
@@ -42,12 +56,6 @@ export const useJoinGame = (
     }
   }, [hubProxy, isConnected, gameID, registerEventHandlers, addTile]);
 
-  useEffect(() => {
-    if (winner) {
-      notification.show(`The winner is: ${winner}`);
-    }
-  }, [winner]);
-
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
     y: SignalClientMessages.MakeMoveClientMessage["y"],
@@ -68,5 +76,15 @@ export const useJoinGame = (
     }
   };
 
-  return { tiles, lastTile, setLastTile, winner, handleMove, setTiles };
+  return {
+    tiles,
+    lastTile,
+    setLastTile,
+    winner,
+    handleMove,
+    setTiles,
+    blackTimeLeft,
+    whiteTimeLeft,
+    activePlayer,
+  };
 };
