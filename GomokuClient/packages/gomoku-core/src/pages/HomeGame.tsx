@@ -10,7 +10,7 @@ import { SwaggerServices, SwaggerTypes } from "@/api";
 import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export const HomeGame = () => {
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
 
-  const [boardSize, setBoardSize] = useState<number>(13);
+  const [boardSize, setBoardSize] = useState<number | undefined>(undefined);
   const [timeControl, setTimeControl] = useState<
     SwaggerTypes.TimeControlDto | undefined
   >(undefined);
@@ -26,18 +26,22 @@ export const HomeGame = () => {
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
       authToken: jwtToken,
-      boardSize,
+      boardSize: boardSize!,
       timeControl,
     });
+
+  useEffect(() => {
+    if (boardSize) {
+      createGame();
+    }
+  }, [boardSize, createGame, timeControl]);
 
   const handleCreateGame = (
     selectedBoardSize: number,
     selectedTimeControl?: SwaggerTypes.TimeControlDto,
   ) => {
-    console.log("Selected board size", selectedBoardSize);
     setBoardSize(selectedBoardSize);
     setTimeControl(selectedTimeControl);
-    createGame();
   };
 
   const transformGameData = (
@@ -151,19 +155,19 @@ export const gameTypes: GameType[] = [
   },
   {
     timeLabel: "10+0",
-    type: "Quick",
+    type: "Rapid",
     boardSize: 13,
     timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
   },
   {
     timeLabel: "15+5",
-    type: "Standard",
+    type: "Rapid",
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 900, incrementPerMove: 5 },
   },
   {
     timeLabel: "30+0",
-    type: "Long",
+    type: "Classic",
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
   },
@@ -175,6 +179,7 @@ export const gameTypes: GameType[] = [
   {
     timeLabel: "Custom",
     type: "",
-    boardSize: 19,
+    //TODO: should be logic for custom time control inside the component itself
+    boardSize: 13,
   },
 ];
