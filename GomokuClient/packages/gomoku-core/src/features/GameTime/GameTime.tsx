@@ -37,7 +37,6 @@ export const GameTime = ({
   return (
     <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
       <div className="mb-2 flex items-center justify-between">
-        {/* Display black player time */}
         <div className="font-mono text-5xl">
           {secondsToString(blackTimeLeft)}
         </div>
@@ -46,7 +45,6 @@ export const GameTime = ({
         </button>
       </div>
 
-      {/* Player Info and Action Buttons */}
       <div className="mb-2 rounded bg-[#363330] p-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -64,7 +62,6 @@ export const GameTime = ({
           </div>
         </div>
 
-        {/* Move Controls */}
         <div className="mt-2 flex justify-between">
           <Rewind
             className="h-5 w-5 text-[#b0b0b0]"
@@ -112,7 +109,6 @@ export const GameTime = ({
         </div>
       )}
 
-      {/* Undo, Flag, Reset Buttons */}
       <div className="mb-2 flex justify-between">
         <button className="rounded bg-[#363330] p-2" onClick={onReset}>
           <X className="h-5 w-5 text-[#b0b0b0]" />
