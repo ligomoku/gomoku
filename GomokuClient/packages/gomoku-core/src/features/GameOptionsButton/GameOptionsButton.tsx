@@ -12,7 +12,7 @@ export interface GameOptionsButtonsProps {
   createGameText: string;
   playWithFriendText: string;
   playWithAIText: string;
-  isLoadingCreateGame?: boolean;
+  isLoadingCreateGame: boolean;
   isLoadingPlayWithFriend?: boolean;
   isLoadingPlayWithAI?: boolean;
 }

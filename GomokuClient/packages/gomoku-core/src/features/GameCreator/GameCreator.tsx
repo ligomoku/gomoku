@@ -110,7 +110,7 @@ export const GameCreatorButton = ({
 
   const handleCreate = (selectedBoardSize: number) => {
     onCreateGame(selectedBoardSize, timeControl);
-    handleClose();
+    // handleClose();
   };
 
   return (

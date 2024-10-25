@@ -76,6 +76,7 @@ export const HomeGame = () => {
               playWithFriendText={t`PLAY WITH A FRIEND`}
               playWithAIText={t`PLAY WITH AI`}
               onCreateGame={handleCreateGame}
+              isLoadingCreateGame={isLoadingCreateGame}
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata.totalCount} games in play`}
