@@ -57,7 +57,7 @@ export const HomeGame = () => {
               noItemsText={t`No online games were created`}
             />
             <p className="text-base sm:text-lg">
-              {t`Gomoku.org is a free, open-source Five in a Row game platform.`}
+              {t`Gomoku.app is a free, open-source Five in a Row game platform.`}
             </p>
           </div>
           <div className="lg:col-span-6">

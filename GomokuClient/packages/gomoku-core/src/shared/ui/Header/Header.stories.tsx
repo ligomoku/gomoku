@@ -17,7 +17,7 @@ export const Default = Template.bind({});
 Default.args = {
   isSignedIn: true,
   searchPlaceholder: "Search",
-  logoText: "gomoku.org",
+  logoText: "gomoku.app",
   menuItems: [
     { label: "LEARN", onClick: () => notification.show("Learn clicked!") },
     { label: "WATCH", onClick: () => notification.show("Watch clicked!") },

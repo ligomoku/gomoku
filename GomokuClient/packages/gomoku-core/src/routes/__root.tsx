@@ -27,7 +27,7 @@ const RootComponent = () => {
         onSignInClick={() => {}}
         isSignedIn={isSignedIn || false}
         searchPlaceholder={"Search"}
-        logoText={"gomoku.org"}
+        logoText={"gomoku.app"}
         logoOnClick={() => navigate({ to: "/" })}
         menuItems={[
           {

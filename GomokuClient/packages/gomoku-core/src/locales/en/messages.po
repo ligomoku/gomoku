@@ -62,11 +62,11 @@ msgid "Forum Posts"
 msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:29
-msgid "gomoku.org"
+msgid "gomoku.app"
 msgstr ""
 
 #: src/pages/HomeGame.tsx:46
-msgid "Gomoku.org is a free, open-source Five in a Row game platform."
+msgid "Gomoku.app is a free, open-source Five in a Row game platform."
 msgstr ""
 
 #: src/pages/Profile.tsx:53
