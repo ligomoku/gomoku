@@ -79,7 +79,7 @@ export const HomeGame = () => {
               isLoadingCreateGame={isLoadingCreateGame}
             />
             <OnlinePlayersInfo
-              gamesInPlayText={t`${paginatedActiveGames?.metadata.totalCount} games in play`}
+              gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}
               playersOnlineText={t`5,247 players online`}
             />
           </div>
