@@ -13,11 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/HomeGame.tsx:63
-msgid "1,892 games in play"
+#: src/pages/HomeGame.tsx:82
+msgid "{0} games in play"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:64
+#: src/pages/HomeGame.tsx:63
+#~ msgid "1,892 games in play"
+#~ msgstr ""
+
+#: src/pages/HomeGame.tsx:83
 msgid "5,247 players online"
 msgstr ""
 
@@ -26,26 +30,26 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/Profile.tsx:31
-msgid "BLITZ"
-msgstr ""
+#~ msgid "BLITZ"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:70
-msgid "Blog Posts"
-msgstr ""
+#~ msgid "Blog Posts"
+#~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:95
+#: src/features/Chat/Chat.tsx:91
 msgid "characters"
 msgstr ""
 
-#: src/features/Chat/Chat.tsx:67
+#: src/features/Chat/Chat.tsx:62
 msgid "Chat"
 msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:57
-msgid "COMMUNITY"
-msgstr ""
+#~ msgid "COMMUNITY"
+#~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:118
+#: src/features/Chat/Chat.tsx:117
 msgid "Connecting..."
 msgstr ""
 
@@ -53,33 +57,33 @@ msgstr ""
 #~ msgid "Correspondence"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:58
+#: src/pages/HomeGame.tsx:75
 msgid "CREATE A GAME"
 msgstr ""
 
 #: src/pages/Profile.tsx:66
-msgid "Forum Posts"
-msgstr ""
+#~ msgid "Forum Posts"
+#~ msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:29
-msgid "gomoku.app"
-msgstr ""
+#~ msgid "gomoku.app"
+#~ msgstr ""
 
-#: src/pages/HomeGame.tsx:46
+#: src/pages/HomeGame.tsx:60
 msgid "Gomoku.app is a free, open-source Five in a Row game platform."
 msgstr ""
 
 #: src/pages/Profile.tsx:53
-msgid "GomokuMaster"
-msgstr ""
+#~ msgid "GomokuMaster"
+#~ msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:51
-msgid "LEARN"
-msgstr ""
+#~ msgid "LEARN"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:40
-msgid "LIGHTNING"
-msgstr ""
+#~ msgid "LIGHTNING"
+#~ msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:8
 #~ msgid "Long"
@@ -89,27 +93,27 @@ msgstr ""
 #~ msgid "No games available"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:120
+#: src/features/Chat/Chat.tsx:119
 msgid "No messages yet. Start the conversation!"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:43
+#: src/pages/HomeGame.tsx:57
 msgid "No online games were created"
 msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:48
-msgid "PLAY"
-msgstr ""
+#~ msgid "PLAY"
+#~ msgstr ""
 
 #: src/features/Timer/Timer.tsx:52
 #~ msgid "Play again"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:59
+#: src/pages/HomeGame.tsx:76
 msgid "PLAY WITH A FRIEND"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:60
+#: src/pages/HomeGame.tsx:77
 msgid "PLAY WITH AI"
 msgstr ""
 
@@ -117,7 +121,7 @@ msgstr ""
 #~ msgid "Quick"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:51
+#: src/pages/HomeGame.tsx:65
 msgid "Quick pairing"
 msgstr ""
 
@@ -125,23 +129,23 @@ msgstr ""
 #~ msgid "Reset"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:91
+#: src/features/Chat/Chat.tsx:87
 msgid "Send"
 msgstr ""
 
-#: src/features/Chat/Chat.tsx:91
+#: src/features/Chat/Chat.tsx:87
 msgid "Sending..."
 msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:67
-msgid "SIGN IN"
-msgstr ""
+#~ msgid "SIGN IN"
+#~ msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:7
 #~ msgid "Standard"
 #~ msgstr ""
 
-#: src/pages/Profile.tsx:22
+#: src/pages/Profile.tsx:47
 msgid "STANDARD"
 msgstr ""
 
@@ -154,17 +158,17 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/Profile.tsx:62
-msgid "Study"
-msgstr ""
+#~ msgid "Study"
+#~ msgstr ""
 
 #: src/features/Timer/Timer.tsx:41
 #~ msgid "Timer"
 #~ msgstr ""
 
 #: src/pages/Profile.tsx:58
-msgid "Tournament Points"
-msgstr ""
+#~ msgid "Tournament Points"
+#~ msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:54
-msgid "WATCH"
-msgstr ""
+#~ msgid "WATCH"
+#~ msgstr ""
