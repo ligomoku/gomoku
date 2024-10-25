@@ -14,7 +14,7 @@ export const GamePreview = ({ gen, lastTile }: GamePreviewProps) => {
   const boardSize = tiles.length;
 
   const handleTileClick = (x: number, y: number) => {
-    console.log("Clicked tile at:", x, y);
+    console.debug("Clicked tile at:", x, y);
   };
 
   return (

@@ -19,7 +19,7 @@ export const useChat = (
         onReceiveMessage: ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-          console.log("Received message:", receivedMessage);
+          console.debug("Received message:", receivedMessage);
         },
       });
 

@@ -43,7 +43,7 @@ export const useSignalR = (
       if (connection?.state === signalR.HubConnectionState.Disconnected) {
         try {
           await connection.start();
-          console.log("SignalR connection established");
+          console.debug("SignalR connection established");
           setIsConnected(true);
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
@@ -66,7 +66,7 @@ export const useSignalR = (
           accessTokenFactory: async () => {
             let token = typedStorage.getItem("jwtToken");
             if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
-              console.log("JWT token expired, refreshing token...");
+              console.debug("JWT token expired, refreshing token...");
               try {
                 token = await getToken({ skipCache: true });
                 if (token) {
@@ -110,7 +110,7 @@ export const useSignalR = (
       ) {
         connection
           .stop()
-          .then(() => console.log("SignalR connection stopped"))
+          .then(() => console.debug("SignalR connection stopped"))
           .catch((error) => {
             console.error("Error stopping SignalR connection:", error);
             notification.show("Error stopping SignalR connection", "error");
@@ -133,7 +133,7 @@ export const useSignalR = (
         return () => {};
       }
 
-      console.log("Attaching SignalR event handlers...");
+      console.debug("Attaching SignalR event handlers...");
 
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
         playerJoinedGame: async (message) => handlers.onPlayerJoined?.(message),
@@ -151,7 +151,7 @@ export const useSignalR = (
 
       return () => {
         if (disposable) {
-          console.log("Cleaning up SignalR event handlers...");
+          console.debug("Cleaning up SignalR event handlers...");
           disposable.dispose();
         }
       };

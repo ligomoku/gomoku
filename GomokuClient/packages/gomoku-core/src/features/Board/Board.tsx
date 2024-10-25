@@ -51,7 +51,7 @@ const Tile = memo(
         key={`${xIndex}-${yIndex}`}
         className="relative flex items-center justify-center border border-black"
         onClick={() => {
-          console.log("Tile clicked: x=", xIndex, "y=", yIndex);
+          console.debug("Tile clicked: x=", xIndex, "y=", yIndex);
           onTileClick(xIndex, yIndex);
         }}
       >
@@ -104,7 +104,7 @@ export const Board = ({
 }: BoardProps) => {
   const isMobile = useMobileDesign();
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
-  const [showAnnotations, setShowAnnotations] = useState(false); // State to toggle annotations
+  const [showAnnotations, setShowAnnotations] = useState(false);
 
   const tilesElements = useMemo(
     () =>

@@ -46,7 +46,7 @@ export const useJoinGame = (
           }
         },
         onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
-          console.log(
+          console.debug(
             `Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`,
           );
           addTile(tile, placedTileColor as TileColor);
