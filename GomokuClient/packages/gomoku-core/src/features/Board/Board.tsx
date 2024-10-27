@@ -154,14 +154,14 @@ export const Board = ({
               {tilesElements}
             </div>
           </div>
-        </div>
-        <div className="flex flex-col items-center">
-          <Button
-            onClick={() => setShowAnnotations(!showAnnotations)}
-            className="focus-visible:ring-ring relative mt-4 inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border-[#3e3e3e] bg-[#3e3e3e] px-4 py-2 text-base font-medium text-[#bababa] shadow transition-colors hover:bg-[#4a4a4a] focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-          >
-            {showAnnotations ? "Hide Annotations" : "Show Annotations"}
-          </Button>
+          <div className="flex flex-col items-center">
+            <Button
+              onClick={() => setShowAnnotations(!showAnnotations)}
+              className="focus-visible:ring-ring relative mt-4 inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border-[#3e3e3e] bg-[#3e3e3e] px-4 py-2 text-base font-medium text-[#bababa] shadow transition-colors hover:bg-[#4a4a4a] focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+            >
+              {showAnnotations ? "Hide Annotations" : "Show Annotations"}
+            </Button>
+          </div>
         </div>
       </ResizableBox>
     );
