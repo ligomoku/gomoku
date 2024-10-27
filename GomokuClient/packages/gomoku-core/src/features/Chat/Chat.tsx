@@ -26,7 +26,7 @@ export const Chat = ({
   const MAX_MESSAGE_LENGTH = 50;
 
   const handleSendMessage = async () => {
-    if (username && messageInput.trim()) {
+    if (messageInput.trim()) {
       setIsSending(true);
       try {
         await sendMessage(messageInput);

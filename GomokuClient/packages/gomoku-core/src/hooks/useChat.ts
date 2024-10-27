@@ -15,32 +15,27 @@ export const useChat = (
 
   useEffect(() => {
     if (isConnected && hubProxy) {
-      const unregister = registerEventHandlers({
+      registerEventHandlers({
         onReceiveMessage: ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
           console.debug("Received message:", receivedMessage);
         },
       });
-
-      return () => {
-        if (typeof unregister === "function") {
-          unregister();
-        }
-      };
     }
-
-    return;
-  }, [isConnected, hubProxy, registerEventHandlers]);
+    //TODO: should be one dependecy ideally check by git commit history previous returning function solution
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
   const sendMessage = async (
     message: SignalClientMessages.ChatMessageClientMessage["message"],
   ) => {
-    if (hubProxy && isConnected && gameID && username) {
+    if (hubProxy && isConnected && gameID) {
       try {
         await hubProxy.sendMessage({
           gameId: gameID,
-          user: username,
+          //TODO: ideally should take ID assigned by server
+          user: username || "Anonymous",
           message,
         });
       } catch (error) {
