@@ -3,6 +3,7 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
 import { SignalClientMessages, SwaggerTypes } from "@/api";
+import { formatErrorMessage } from "@/utils/errorUtils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
@@ -53,7 +54,7 @@ export const useJoinGame = (
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
         onGameHubError: (error) => {
-          notification.show("Error from game hub", "error");
+          notification.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },
       });
