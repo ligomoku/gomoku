@@ -51,13 +51,21 @@ export const Chat = ({
   };
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
+    setTimeout(() => {
+      if (scrollAreaRef.current) {
+        scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      }
+    }, 0);
   }, [messages]);
 
   return (
-    <Card className="h-[100%] w-full border-[#2b2b2b] bg-[#2b2b2b] text-[#bababa]">
+    <Card
+      className="h-[100%] w-full border-[#2b2b2b] bg-[#2b2b2b] text-[#bababa]"
+      style={{
+        maxWidth: isMobile ? "100%" : "350px",
+        minWidth: isMobile ? "100%" : "350px",
+      }}
+    >
       <CardHeader>
         <CardTitle>{t`Chat`}</CardTitle>
       </CardHeader>
@@ -100,6 +108,7 @@ export const Chat = ({
               {messages.map((msg, index) => (
                 <div
                   key={index}
+                  ref={index === messages.length - 1 ? scrollAreaRef : null}
                   className={`mb-2 rounded p-2 ${
                     msg.startsWith(`${username}:`)
                       ? "bg-blue-100 text-blue-900"

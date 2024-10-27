@@ -126,6 +126,7 @@ export const Board = ({
 
   const calculatedSize = boardSize / size;
   const calculatedMobileSize = isMobile ? 100 : 80;
+  const minConstraints = isMobile ? [300, 300] : [400, 400];
 
   if (!isMobile) {
     return (
@@ -136,6 +137,7 @@ export const Board = ({
           setBoardSize(size.width);
         }}
         resizeHandles={["se"]}
+        minConstraints={[minConstraints[0], minConstraints[1]]}
       >
         <div className="flex flex-col items-center">
           <div
