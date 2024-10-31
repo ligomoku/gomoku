@@ -36,18 +36,18 @@ public class GameHub : Hub, IGameHub
 	}
 
 	[AllowAnonymous]
-	public async Task MakeMove(MakeMoveClientMessage makeMoveMessage)
+	public async Task MakeMove(MakeMoveClientMessage message)
 	{
-		_logger.LogInformation($"Calling make move. Message: {makeMoveMessage}");
+		_logger.LogInformation($"Calling make move. Message: {message}");
 
-		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
+		var playerId = GetPlayerId();
 
-		if (playerId == null)
-		{
-			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
-		}
-
-		var placeTileCommand = new PlaceTileCommand() { GameId = makeMoveMessage.GameId, Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y), PlayerId = playerId! };
+		var placeTileCommand = new PlaceTileCommand() 
+		{ 
+			GameId = message.GameId, 
+			Tile = new TileDto(message.X, message.Y), 
+			PlayerId = playerId! 
+		};
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
 		if (placeTileResult.IsSuccess)
@@ -55,14 +55,40 @@ public class GameHub : Hub, IGameHub
 			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
 				PlayerId = playerId!,
-				Tile = new TileDto(makeMoveMessage.X, makeMoveMessage.Y),
+				Tile = new TileDto(message.X, message.Y),
 				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};
-			await Clients.Group(makeMoveMessage.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
 			return;
 		}
 
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
+	}
+
+	[AllowAnonymous]
+	public async Task Resign(ResignClientMessage message)
+	{
+		var playerId = GetPlayerId();
+
+		var resignCommand = new ResignCommand() 
+		{ 
+			GameId = message.GameId,
+			PlayerId = playerId
+		};
+		var resignResult = await _mediator.Send(resignCommand);
+
+		if (resignResult.IsSuccess)
+		{
+			var playerResignedMessage = new PlayerResignedMessage()
+			{
+				PlayerId = playerId!
+			};
+
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.PlayerResigned, playerResignedMessage);
+			return;
+		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, resignResult.GetHubError());
 	}
 
 	[AllowAnonymous]
@@ -71,5 +97,17 @@ public class GameHub : Hub, IGameHub
 		_logger.LogInformation($"SendMessage called. {messageRequest}");
 
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
+	}
+
+	private string? GetPlayerId()
+	{
+		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
+
+		if (playerId == null)
+		{
+			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
+		}
+
+		return playerId;
 	}
 }

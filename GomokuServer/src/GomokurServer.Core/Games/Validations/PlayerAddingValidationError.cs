@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Core.Games.Validation;
+﻿namespace GomokuServer.Core.Games.Validations;
 
 public enum PlayerAddingValidationError
 {

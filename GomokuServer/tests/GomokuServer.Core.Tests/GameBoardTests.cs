@@ -1,6 +1,6 @@
 ﻿using GomokuServer.Core.Games.Entities;
 using GomokuServer.Core.Games.Enums;
-using GomokuServer.Core.Games.Validation;
+using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.UnitTests;
 
