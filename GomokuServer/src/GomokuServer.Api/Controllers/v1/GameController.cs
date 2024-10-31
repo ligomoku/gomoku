@@ -50,8 +50,8 @@ public class GameController : Controller
 		var query = new GetAvailableToJoinGamesQuery
 		{
 			IsAnonymous = request.IsAnonymous,
-			Limit = request.Limit,
-			Offset = request.Offset
+			Limit = request.Limit!.Value,
+			Offset = request.Offset!.Value
 		};
 
 		var availableGamesResult = await _mediator.Send(query);
