@@ -1,7 +1,7 @@
 ﻿using GomokuServer.Core.Common.Interfaces;
 using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Results;
-using GomokuServer.Core.Games.Validation;
+using GomokuServer.Core.Games.Validations;
 using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.Games.Entities;
@@ -121,7 +121,8 @@ public class Game
 			};
 		}
 
-		if (Players.Black!.Id != playerId && Players.White!.Id != playerId)
+		var (isInvolved, currentPlayer) = IsInvolved(playerId);
+		if (!isInvolved)
 		{
 			return new()
 			{
@@ -130,7 +131,7 @@ public class Game
 			};
 		}
 
-		if (playerId != NextMoveShouldMakePlayerId)
+		if (currentPlayer!.Id != NextMoveShouldMakePlayerId)
 		{
 			return new()
 			{
@@ -139,7 +140,6 @@ public class Game
 			};
 		}
 
-		var currentPlayer = playerId == Players.Black.Id ? Players.Black : Players.White;
 		var placeNewTileResult = _gameBoard.PlaceNewTile(tile);
 
 		if (placeNewTileResult.IsValid)
@@ -150,7 +150,7 @@ public class Game
 			}
 			_movesHistory.Add(_movesHistory.Count + 1, tile);
 
-			NextMoveShouldMakePlayerId = playerId != Players.Black.Id ? Players.Black.Id : Players.White!.Id;
+			NextMoveShouldMakePlayerId = currentPlayer!.Id != Players.Black!.Id ? Players.Black.Id : Players.White!.Id;
 		}
 
 		if (placeNewTileResult.IsTieSituationAfterMove)
@@ -175,6 +175,49 @@ public class Game
 		{
 			IsValid = placeNewTileResult.IsValid,
 			ValidationError = placeNewTileResult.ValidationError,
+		};
+	}
+
+	public ResignResult Resign(string playerId)
+	{
+		if (Status == GameStatus.Completed)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = ResignValidationError.GameIsOver,
+			};
+		}
+
+		var (isInvolved, currentPlayer) = IsInvolved(playerId);
+		if (!isInvolved)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = ResignValidationError.PlayerIsNotInvolvedInAGame,
+			};
+		}
+
+		Winner = currentPlayer!.Id == Players!.Black!.Id ? Players.White : Players.Black;
+		NextMoveShouldMakePlayerId = null;
+		Result = currentPlayer!.Color == TileColor.Black ? GameResult.WhiteWon : GameResult.BlackWon;
+		Status = GameStatus.Completed;
+		CompletionReason = CompletionReason.Resign;
+
+		return new()
+		{
+			IsValid = true
+		};
+	}
+
+	public (bool isInvolved, Player? player) IsInvolved(string playerId)
+	{
+		return playerId switch
+		{
+			_ when Players?.Black?.Id == playerId => (true, Players.Black),
+			_ when Players?.White?.Id == playerId => (true, Players.White),
+			_ => (false, null)
 		};
 	}
 }

@@ -3,4 +3,4 @@ using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public record PlayerAddingResult : CoreResult<PlayerAddingValidationError>;
+public record ResignResult : CoreResult<ResignValidationError>;

@@ -1,7 +1,7 @@
 ﻿using GomokuServer.Core.Common.Interfaces;
 using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Results;
-using GomokuServer.Core.Games.Validation;
+using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Entities;
 

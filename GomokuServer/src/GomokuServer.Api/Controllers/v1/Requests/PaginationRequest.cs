@@ -3,8 +3,8 @@
 public class PaginationRequest
 {
 	[FromQuery]
-	public required int Limit { get; set; } = 5;
+	public int? Limit { get; set; } = 5;
 
 	[FromQuery]
-	public required int Offset { get; set; } = 0;
+	public int? Offset { get; set; } = 0;
 }

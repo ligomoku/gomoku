@@ -22,6 +22,12 @@ public abstract class FunctionalTestBase
 		_testDataProvider = new TestDataProvider();
 	}
 
+	[TearDown]
+	public virtual void TearDown()
+	{
+		_factory.Dispose();
+	}
+
 	protected IRegisteredGamesRepository RegisteredGamesRepository
 	{
 		get

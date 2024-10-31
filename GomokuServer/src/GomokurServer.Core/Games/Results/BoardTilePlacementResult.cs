@@ -1,14 +1,11 @@
-﻿using GomokuServer.Core.Games.Entities;
-using GomokuServer.Core.Games.Validation;
+﻿using GomokuServer.Core.Common.Results;
+using GomokuServer.Core.Games.Entities;
+using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public class BoardTilePlacementResult
+public record BoardTilePlacementResult : CoreResult<TilePlacementValidationError>
 {
-	public required bool IsValid { get; init; }
-
-	public TilePlacementValidationError? ValidationError { get; init; }
-
 	public List<Tile>? WinningSequence { get; init; }
 
 	public bool IsTieSituationAfterMove { get; init; }

@@ -332,6 +332,18 @@ export const ProfileDtoSchema = {
   additionalProperties: false,
 } as const;
 
+export const ResignClientMessageSchema = {
+  required: ["gameId"],
+  type: "object",
+  properties: {
+    gameId: {
+      minLength: 1,
+      type: "string",
+    },
+  },
+  additionalProperties: false,
+} as const;
+
 export const TileDtoSchema = {
   required: ["x", "y"],
   type: "object",

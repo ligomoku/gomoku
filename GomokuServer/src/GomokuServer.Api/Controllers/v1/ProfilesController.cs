@@ -28,7 +28,7 @@ public class ProfilesController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> GetUserGames([FromRoute] string userName, [FromQuery] PaginationRequest pagination)
 	{
-		var getUserGamesResult = await _mediator.Send(new GetGamesByUsernameQuery() { UserName = userName, Limit = pagination.Limit, Offset = pagination.Offset });
+		var getUserGamesResult = await _mediator.Send(new GetGamesByUsernameQuery() { UserName = userName, Limit = pagination.Limit!.Value, Offset = pagination.Offset!.Value });
 
 		return getUserGamesResult.ToApiResponse();
 	}

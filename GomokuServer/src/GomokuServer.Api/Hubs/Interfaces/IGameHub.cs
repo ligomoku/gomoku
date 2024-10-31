@@ -9,6 +9,8 @@ public interface IGameHub
 
 	Task MakeMove(MakeMoveClientMessage makeMoveMessage);
 
+	Task Resign(ResignClientMessage message);
+
 	Task SendMessage(ChatMessageClientMessage messageRequest);
 }
 
@@ -22,6 +24,8 @@ public interface IGameHubReceiver
 	Task GameStarted(GameStartedMessage gameStartedMessage);
 
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);
+
+	Task PlayerResigned(PlayerResignedMessage playerResignedMessage);
 
 	Task SendMessage(ChatMessageClientMessage messageRequest);
 

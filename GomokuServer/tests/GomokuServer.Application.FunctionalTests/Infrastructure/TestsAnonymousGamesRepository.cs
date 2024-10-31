@@ -6,7 +6,7 @@ using Ardalis.Result;
 using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Core.Games.Entities;
 
-namespace GomokuServer.Application.FunctionalTests.Data;
+namespace GomokuServer.Application.FunctionalTests.Infrastructure;
 
 public class TestsAnonymousGamesRepository : IAnonymousGamesRepository
 {

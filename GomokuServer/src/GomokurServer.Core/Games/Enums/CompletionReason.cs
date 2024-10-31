@@ -6,4 +6,5 @@ public enum CompletionReason
 	MadeFiveInARow = 1,
 	TieOnTheBoard = 2,
 	TimeOut = 3,
+	Resign = 4,
 }

@@ -9,12 +9,14 @@ import type {
 } from "./GomokuServer.Api.Hubs.Interfaces";
 import type {
   MakeMoveClientMessage,
+  ResignClientMessage,
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
+  PlayerResignedMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
 
@@ -97,6 +99,12 @@ class IGameHub_HubProxy implements IGameHub {
     return await this.connection.invoke("MakeMove", makeMoveMessage);
   };
 
+  public readonly resign = async (
+    message: ResignClientMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("Resign", message);
+  };
+
   public readonly sendMessage = async (
     messageRequest: ChatMessageClientMessage,
   ): Promise<void> => {
@@ -123,6 +131,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameStarted(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
+    const __playerResigned = (...args: [PlayerResignedMessage]) =>
+      receiver.playerResigned(...args);
     const __sendMessage = (...args: [ChatMessageClientMessage]) =>
       receiver.sendMessage(...args);
     const __gameHubError = (...args: [ErrorMessage]) =>
@@ -132,6 +142,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
     connection.on("PlayerMadeMove", __playerMadeMove);
+    connection.on("PlayerResigned", __playerResigned);
     connection.on("SendMessage", __sendMessage);
     connection.on("GameHubError", __gameHubError);
 
@@ -140,6 +151,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
+      { methodName: "PlayerResigned", method: __playerResigned },
       { methodName: "SendMessage", method: __sendMessage },
       { methodName: "GameHubError", method: __gameHubError },
     ];

@@ -1,10 +1,6 @@
-﻿using GomokuServer.Core.Games.Validation;
+﻿using GomokuServer.Core.Common.Results;
+using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public record GameTilePlacementResult
-{
-	public bool IsValid { get; init; }
-
-	public TilePlacementValidationError? ValidationError { get; init; }
-}
+public record GameTilePlacementResult : CoreResult<TilePlacementValidationError>;
