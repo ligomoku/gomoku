@@ -409,7 +409,7 @@ public class GameTests
 	[Test]
 	public void Resign_WhenGameIsOver_ShouldReturnValidationError()
 	{
-		_game = 
+		_game =
 
 		// 
 	}

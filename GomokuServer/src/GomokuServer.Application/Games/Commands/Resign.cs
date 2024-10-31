@@ -48,7 +48,7 @@ public class ResignCommandHandler : ICommandHandler<ResignCommand>
 		var game = getGameResult.Value;
 		var resignResult = game.Resign(playerId);
 
-		if (!resignResult.IsValid) 
+		if (!resignResult.IsValid)
 		{
 			return Result.Invalid(new ValidationError(resignResult.ValidationError.ToString()));
 		}

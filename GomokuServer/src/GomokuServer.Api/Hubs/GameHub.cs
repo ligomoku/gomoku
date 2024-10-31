@@ -42,11 +42,11 @@ public class GameHub : Hub, IGameHub
 
 		var playerId = GetPlayerId();
 
-		var placeTileCommand = new PlaceTileCommand() 
-		{ 
-			GameId = message.GameId, 
-			Tile = new TileDto(message.X, message.Y), 
-			PlayerId = playerId! 
+		var placeTileCommand = new PlaceTileCommand()
+		{
+			GameId = message.GameId,
+			Tile = new TileDto(message.X, message.Y),
+			PlayerId = playerId!
 		};
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
@@ -70,8 +70,8 @@ public class GameHub : Hub, IGameHub
 	{
 		var playerId = GetPlayerId();
 
-		var resignCommand = new ResignCommand() 
-		{ 
+		var resignCommand = new ResignCommand()
+		{
 			GameId = message.GameId,
 			PlayerId = playerId
 		};
