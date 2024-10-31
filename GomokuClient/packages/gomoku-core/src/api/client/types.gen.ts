@@ -103,6 +103,10 @@ export type ProfileDto = {
   userName: string;
 };
 
+export type ResignClientMessage = {
+  gameId: string;
+};
+
 export type TileDto = {
   x: number;
   y: number;
@@ -230,7 +234,13 @@ export type PostGamehubJoinGameGroupData = {
 
 export type PostGamehubMakeMoveData = {
   query?: {
-    makeMoveMessage?: MakeMoveClientMessage;
+    message?: MakeMoveClientMessage;
+  };
+};
+
+export type PostGamehubResignData = {
+  query?: {
+    message?: ResignClientMessage;
   };
 };
 

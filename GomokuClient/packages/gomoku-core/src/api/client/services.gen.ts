@@ -29,6 +29,7 @@ import {
   type GetApiProfilesByUserNameGamesResponse,
   type PostGamehubJoinGameGroupData,
   type PostGamehubMakeMoveData,
+  type PostGamehubResignData,
   type PostGamehubSendMessageData,
   GetApiProfilesByUserNameGamesResponseTransformer,
 } from "./types.gen";
@@ -167,6 +168,15 @@ export const postGamehubMakeMove = <ThrowOnError extends boolean = false>(
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/MakeMove",
+  });
+};
+
+export const postGamehubResign = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubResignData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/Resign",
   });
 };
 

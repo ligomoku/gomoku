@@ -28,6 +28,7 @@ import type {
   GetApiProfilesByUserNameGamesResponse,
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
+  PostGamehubResignData,
   PostGamehubSendMessageData,
 } from "../types.gen";
 import {
@@ -41,6 +42,7 @@ import {
   getApiProfilesByUserNameGames,
   postGamehubJoinGameGroup,
   postGamehubMakeMove,
+  postGamehubResign,
   postGamehubSendMessage,
 } from "../services.gen";
 
@@ -502,6 +504,46 @@ export const postGamehubMakeMoveMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postGamehubMakeMove({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubResignQueryKey = (
+  options?: Options<PostGamehubResignData>,
+) => [createQueryKey("postGamehubResign", options)];
+
+export const postGamehubResignOptions = (
+  options?: Options<PostGamehubResignData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey }) => {
+      const { data } = await postGamehubResign({
+        ...options,
+        ...queryKey[0],
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubResignQueryKey(options),
+  });
+};
+
+export const postGamehubResignMutation = (
+  options?: Partial<Options<PostGamehubResignData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubResignData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubResign({
         ...options,
         ...localOptions,
         throwOnError: true,
