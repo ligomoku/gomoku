@@ -409,9 +409,19 @@ public class GameTests
 	[Test]
 	public void Resign_WhenGameIsOver_ShouldReturnValidationError()
 	{
-		_game =
+		// Arrange
+		for (int i = 0; i < 5; i++)
+		{
+			_game.PlaceTile(new(i, 7), _game.Players!.Black!.Id);
+			_game.PlaceTile(new(i, 8), _game.Players!.White!.Id);
+		}
 
-		// 
+		// Act
+		var resignResult = _game.Resign(_game.Players!.Black!.Id);
+
+		// Assert
+		resignResult.IsValid.Should().BeFalse();
+		resignResult.ValidationError.Should().Be(ResignValidationError.GameIsOver);
 	}
 
 	[Test]
