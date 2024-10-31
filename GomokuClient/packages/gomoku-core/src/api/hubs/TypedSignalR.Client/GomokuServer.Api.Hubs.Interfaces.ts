@@ -5,12 +5,14 @@
 import type { IStreamResult, Subject } from "@microsoft/signalr";
 import type {
   MakeMoveClientMessage,
+  ResignClientMessage,
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
+  PlayerResignedMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
 
@@ -25,6 +27,11 @@ export type IGameHub = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   makeMove(makeMoveMessage: MakeMoveClientMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.ResignClientMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  resign(message: ResignClientMessage): Promise<void>;
   /**
    * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -55,6 +62,11 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   playerMadeMove(playerMadeMoveMessage: PlayerMadeMoveMessage): Promise<void>;
+  /**
+   * @param playerResignedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerResignedMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  playerResigned(playerResignedMessage: PlayerResignedMessage): Promise<void>;
   /**
    * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
    * @returns Transpiled from System.Threading.Tasks.Task
