@@ -90,7 +90,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   username={jwtDecodedInfo?.username || ""}
                 />
               </div>
-              <div className={isMobile ? "mb-4 w-full" : ""}>
+              <div
+                className={isMobile ? "mb-4 flex w-full justify-center" : ""}
+              >
                 {isMobile && (
                   <GameTimeMobile opponentView {...commonGameTimeProps} />
                 )}
@@ -102,7 +104,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
               />
-              <div className={isMobile ? "mt-4 w-full" : ""}>
+              <div
+                className={isMobile ? "mt-4 flex w-full justify-center" : ""}
+              >
                 {isMobile && <GameTimeMobile {...commonGameTimeProps} />}
               </div>
               <div
