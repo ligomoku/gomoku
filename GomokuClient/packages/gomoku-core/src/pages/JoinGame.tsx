@@ -8,8 +8,9 @@ import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { genParser } from "@/utils/getParser";
-import { GameTime } from "@/features/GameTime";
+import { GameTime, GameTimeProps } from "@/features/GameTime";
 import { TileColor } from "@/hooks/useTiles";
+import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -39,6 +40,30 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     jwtDecodedInfo?.username,
   );
 
+  const commonGameTimeProps: GameTimeProps = {
+    moves:
+      moves.length > 0
+        ? [...transformMoves(gameHistory.movesHistory), ...moves]
+        : transformMoves(gameHistory.movesHistory),
+    players: [
+      {
+        name: gameHistory.players.black || "Anonymous",
+        color: "#7cb342",
+      },
+      {
+        name: gameHistory.players.white || "Anonymous",
+        color: "#b0b0b0",
+      },
+    ],
+    activePlayer: activePlayer!,
+    whiteTimeLeft,
+    blackTimeLeft,
+    onSkip: () => alert("Skip clicked"),
+    onFlag: () => alert("Flag clicked"),
+    onReset: () => alert("Reset clicked"),
+    onUndo: () => alert("Undo clicked"),
+  };
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
@@ -65,7 +90,13 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   username={jwtDecodedInfo?.username || ""}
                 />
               </div>
-
+              <div
+                className={isMobile ? "mb-4 flex w-full justify-center" : ""}
+              >
+                {isMobile && (
+                  <GameTimeMobile opponentView {...commonGameTimeProps} />
+                )}
+              </div>
               <Board
                 tiles={tiles}
                 lastTile={lastTile}
@@ -73,7 +104,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
               />
-
+              <div
+                className={isMobile ? "mt-4 flex w-full justify-center" : ""}
+              >
+                {isMobile && <GameTimeMobile {...commonGameTimeProps} />}
+              </div>
               <div
                 className="mt-4 flex flex-col justify-between"
                 style={{
@@ -83,30 +118,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   display: isMobile ? "none" : "unset",
                 }}
               >
-                <GameTime
-                  moves={
-                    moves.length > 0
-                      ? [...transformMoves(gameHistory.movesHistory), ...moves]
-                      : transformMoves(gameHistory.movesHistory)
-                  }
-                  blackTimeLeft={blackTimeLeft}
-                  whiteTimeLeft={whiteTimeLeft}
-                  activePlayer={activePlayer!}
-                  players={[
-                    {
-                      name: gameHistory.players.black || "Anonymous",
-                      color: "#7cb342",
-                    },
-                    {
-                      name: gameHistory.players.white || "Anonymous",
-                      color: "#b0b0b0",
-                    },
-                  ]}
-                  onUndo={() => alert("Undo clicked")}
-                  onFlag={() => alert("Flag clicked")}
-                  onReset={() => alert("Reset clicked")}
-                  onSkip={(direction) => alert(`Skip ${direction} clicked`)}
-                />
+                <GameTime {...commonGameTimeProps} />
               </div>
             </div>
           </>
