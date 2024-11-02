@@ -65,7 +65,7 @@ export const useSignalR = (
 
       connectionRef.current = new signalR.HubConnectionBuilder()
         .withUrl(constructURL, {
-          accessTokenFactory: async () => await getToken() ?? "",
+          accessTokenFactory: async () => (await getToken()) ?? "",
         })
         .withHubProtocol(new JsonHubProtocol())
         .withAutomaticReconnect()

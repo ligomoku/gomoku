@@ -34,7 +34,8 @@ export const AuthTokenContext = createContext<AuthTokenContextType>({
 
 export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const { isLoaded, getToken } = useAuth();
-  const [jwtToken, setJwtToken] = useState<AuthTokenContextType["jwtToken"]>("");
+  const [jwtToken, setJwtToken] =
+    useState<AuthTokenContextType["jwtToken"]>("");
   const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
     null,
   );
