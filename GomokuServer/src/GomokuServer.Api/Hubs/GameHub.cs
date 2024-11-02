@@ -59,6 +59,17 @@ public class GameHub : Hub, IGameHub
 				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};
 			await Clients.Group(message.GameId).SendAsync(GameHubMethod.PlayerMadeMove, playerMadeMoveMessage);
+
+			var placeTileResponse = placeTileResult.Value;
+
+			if (placeTileResponse.IsWinningMove)
+			{
+				var gameResult = new GameIsOverMessage()
+				{
+					Result = $"{placeTileResponse.PlacedTileColor.ToCamelCase()}Won"
+				};
+				await Clients.Group(message.GameId).SendAsync(GameHubMethod.GameIsOver, gameResult);
+			}
 			return;
 		}
 
@@ -85,6 +96,7 @@ public class GameHub : Hub, IGameHub
 			};
 
 			await Clients.Group(message.GameId).SendAsync(GameHubMethod.PlayerResigned, playerResignedMessage);
+			// TODO: GameIsOver event
 			return;
 		}
 

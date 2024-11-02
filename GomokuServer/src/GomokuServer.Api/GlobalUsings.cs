@@ -32,3 +32,5 @@ global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.IdentityModel.Tokens;
 
 global using Swashbuckle.AspNetCore.Filters;
+
+global using Tapper;

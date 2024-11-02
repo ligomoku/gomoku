@@ -1,8 +1,8 @@
 ﻿namespace GomokuServer.Api.Hubs.Messages.Server;
 
 [TranspilationSource]
-public record PlayerResignedMessage
+public class GameIsOverMessage
 {
 	[Required]
-	public required string PlayerId { get; init; }
+	public required string Result { get; set; }
 }

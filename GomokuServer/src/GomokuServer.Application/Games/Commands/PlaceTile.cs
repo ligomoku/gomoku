@@ -54,7 +54,7 @@ public class PlaceTileCommandHandler : ICommandHandler<PlaceTileCommand, PlaceTi
 
 		if (!tilePlacementResult.IsValid)
 		{
-			return Result.Invalid(new ValidationError(tilePlacementResult.ValidationError.ToString()));
+			return Result.Invalid(new ValidationError(tilePlacementResult.ErrorDetails));
 		}
 
 		var saveResult = await gamesRepository.SaveAsync(game);

@@ -27,6 +27,8 @@ public interface IGameHubReceiver
 
 	Task PlayerResigned(PlayerResignedMessage playerResignedMessage);
 
+	Task GameIsOver(GameIsOverMessage gameIsOverMessage);
+
 	Task SendMessage(ChatMessageClientMessage messageRequest);
 
 	Task GameHubError(ErrorMessage errorMessage);

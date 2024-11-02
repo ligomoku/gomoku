@@ -9,6 +9,12 @@ export type ErrorMessage = {
   message: string;
 };
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameIsOverMessage */
+export type GameIsOverMessage = {
+  /** Transpiled from string */
+  result: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage */
 export type GameStartedMessage = {
   /** Transpiled from bool */

@@ -9,4 +9,5 @@ public class GameHubMethod
 	public const string PlayerResigned = nameof(PlayerResigned);
 	public const string SendMessage = nameof(SendMessage);
 	public const string GameHubError = nameof(GameHubError);
+	public const string GameIsOver = nameof(GameIsOver);
 }

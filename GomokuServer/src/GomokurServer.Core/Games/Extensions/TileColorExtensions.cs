@@ -2,7 +2,7 @@
 
 namespace GomokuServer.Core.Games.Extensions;
 
-public static class EnumsExtensions
+public static class TileColorExtensions
 {
 	public static string GetString(this TileColor color)
 	{
