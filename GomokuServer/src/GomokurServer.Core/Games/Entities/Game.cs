@@ -124,6 +124,7 @@ public class Game
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.NotBothPlayerAreJoinedYet,
+				ErrorDetails = "Wait for other player to join"
 			};
 		}
 
@@ -134,6 +135,7 @@ public class Game
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.PlayerIsNotInvolvedInAGame,
+				ErrorDetails = "You are spectator in this game"
 			};
 		}
 
@@ -142,7 +144,8 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow
+				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow,
+				ErrorDetails = "Now is yours opponents turn"
 			};
 		}
 
