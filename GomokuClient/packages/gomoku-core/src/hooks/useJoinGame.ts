@@ -57,7 +57,6 @@ export const useJoinGame = (
           notification.show(formatErrorMessage(result));
         },
         onGameHubError: (error) => {
-          console.log("this is here");
           notification.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },
