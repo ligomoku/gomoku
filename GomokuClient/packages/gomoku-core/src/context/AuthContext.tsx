@@ -7,7 +7,6 @@ import {
 } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
-import { typedStorage } from "@/shared/lib/utils";
 import { notification } from "@/shared/ui/notification";
 
 interface JwtTokenPayload {
@@ -29,19 +28,19 @@ interface AuthTokenContextType {
 }
 
 export const AuthTokenContext = createContext<AuthTokenContextType>({
-  jwtToken: typedStorage.getItem("jwtToken") || "",
+  jwtToken: "",
   jwtDecodedInfo: null,
 });
 
 export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const { isLoaded, getToken } = useAuth();
-  const [jwtToken, setJwtToken] = useState<string>(
-    typedStorage.getItem("jwtToken") || "",
-  );
+  const [jwtToken, setJwtToken] =
+    useState<AuthTokenContextType["jwtToken"]>("");
   const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
     null,
   );
 
+  //TODO: check if we need refetching token logic here or it's redundant
   useEffect(() => {
     let isMounted = true;
     let refreshTimeout: NodeJS.Timeout;
@@ -53,7 +52,6 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         const token = await getToken();
         if (token && isMounted) {
           setJwtToken(token);
-          typedStorage.setItem("jwtToken", token);
 
           const decoded: JwtTokenPayload = JWT.jwtDecode(token);
           setJwtDecodedInfo(decoded);

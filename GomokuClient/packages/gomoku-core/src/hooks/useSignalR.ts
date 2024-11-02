@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
-import { typedStorage } from "@/shared/lib/utils";
 import { useAuthToken } from "@/context/AuthContext";
 import { useAuth } from "@clerk/clerk-react";
 import {
@@ -66,21 +65,7 @@ export const useSignalR = (
 
       connectionRef.current = new signalR.HubConnectionBuilder()
         .withUrl(constructURL, {
-          accessTokenFactory: async () => {
-            let token = typedStorage.getItem("jwtToken");
-            if (jwtDecodedInfo && jwtDecodedInfo.exp * 1000 < Date.now()) {
-              console.debug("JWT token expired, refreshing token...");
-              try {
-                token = await getToken({ skipCache: true });
-                if (token) {
-                  typedStorage.setItem("jwtToken", token);
-                }
-              } catch (error) {
-                console.error("Error refreshing token:", error);
-              }
-            }
-            return token ? token : "";
-          },
+          accessTokenFactory: async () => (await getToken()) ?? "",
         })
         .withHubProtocol(new JsonHubProtocol())
         .withAutomaticReconnect()
