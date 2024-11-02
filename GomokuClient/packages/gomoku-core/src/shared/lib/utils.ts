@@ -35,7 +35,6 @@ export function getDefaultHeaders(
 }
 
 export interface LocalSchema {
-  jwtToken: string;
   currentGameID: string;
   chunkReloadedAt: string;
 }
