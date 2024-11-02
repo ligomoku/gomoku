@@ -1,5 +1,6 @@
 ﻿using GomokuServer.Core.Common.Interfaces;
 using GomokuServer.Core.Games.Enums;
+using GomokuServer.Core.Games.Extensions;
 using GomokuServer.Core.Games.Results;
 using GomokuServer.Core.Games.Validations;
 using GomokuServer.Core.Profiles.Entities;
@@ -62,7 +63,8 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame
+				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
+				ErrorDetails = "Player already added to game"
 			};
 		}
 
@@ -71,7 +73,8 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready
+				ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready,
+				ErrorDetails = "Both places taken already"
 			};
 		}
 
@@ -105,10 +108,13 @@ public class Game
 	{
 		if (Status == GameStatus.Completed)
 		{
+			var gameResultString = Result;
+
 			return new()
 			{
 				IsValid = false,
 				ValidationError = TilePlacementValidationError.GameIsOver,
+				ErrorDetails = $"Game is over. {Result.GetString()}"
 			};
 		}
 

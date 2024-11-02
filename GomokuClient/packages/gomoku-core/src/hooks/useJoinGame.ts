@@ -53,7 +53,11 @@ export const useJoinGame = (
           addTile(tile, placedTileColor as TileColor);
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
+        onGameIsOver: ({ result }) => {
+          notification.show(formatErrorMessage(result));
+        },
         onGameHubError: (error) => {
+          console.log("this is here");
           notification.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },

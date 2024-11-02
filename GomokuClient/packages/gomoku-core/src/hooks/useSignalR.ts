@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { useAuthToken } from "@/context/AuthContext";
@@ -12,6 +12,7 @@ import {
 } from "@/api";
 import { notification } from "@/shared/ui/notification";
 
+// TODO: Ideally, should always use type SignalHubInterfaces.IGameHubReceiver
 export interface SignalREventHandlers {
   onPlayerJoined?: (
     message: SignalServerMessages.PlayerJoinedGameMessage,
@@ -27,6 +28,7 @@ export interface SignalREventHandlers {
   onPlayerResigned?: (
     message: SignalServerMessages.PlayerResignedMessage,
   ) => void;
+  onGameIsOver?: (message: SignalServerMessages.GameIsOverMessage) => void;
 }
 
 export const useSignalR = (
@@ -132,6 +134,7 @@ export const useSignalR = (
         sendMessage: async (message) => handlers.onReceiveMessage?.(message),
         gameHubError: async (error) => handlers.onGameHubError?.(error),
         playerResigned: async (message) => handlers.onPlayerResigned?.(message),
+        gameIsOver: async (message) => handlers.onGameIsOver?.(message),
       };
 
       const disposable = SignalRClientService.getReceiverRegister(
