@@ -89,6 +89,7 @@ public class GameTests
 		firstPlacement.IsValid.Should().BeTrue();
 		secondPlacement.IsValid.Should().BeFalse();
 		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.OtherPlayerTurnNow);
+		secondPlacement.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]
@@ -209,6 +210,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.NotBothPlayerAreJoinedYet);
+		result.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]
@@ -228,6 +230,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
+		result.ErrorDetails.Should().NotBeEmpty();
 		_game.Winner.Should().Be(_game.Players!.Black);
 	}
 
@@ -260,6 +263,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(PlayerAddingValidationError.BothPlacesTakenAlready);
+		result.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]
@@ -277,6 +281,7 @@ public class GameTests
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(PlayerAddingValidationError.PlayerAlreadyAddedToGame);
+		result.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]
