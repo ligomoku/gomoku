@@ -19,7 +19,7 @@ interface JoinGameProps {
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
-  const isMobile = useMobileDesign(1180);
+  const isMobile = useMobileDesign(1488);
 
   const {
     tiles,
