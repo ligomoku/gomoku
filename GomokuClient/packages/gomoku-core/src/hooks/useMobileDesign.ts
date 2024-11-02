@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const MobileBreakpoints = {
   default: 768,
-  mobile: 1180,
+  mobile: 1488,
 } as const;
 
 export const useMobileDesign = (
