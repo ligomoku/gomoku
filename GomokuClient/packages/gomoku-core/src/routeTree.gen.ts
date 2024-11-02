@@ -23,19 +23,16 @@ const IndexLazyImport = createFileRoute("/")();
 // Create/Update Routes
 
 const ProfileLazyRoute = ProfileLazyImport.update({
-  id: "/profile",
   path: "/profile",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/profile.lazy").then((d) => d.Route));
 
 const IndexLazyRoute = IndexLazyImport.update({
-  id: "/",
   path: "/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
 
 const GameJoinGameIDRoute = GameJoinGameIDImport.update({
-  id: "/game/join/$gameID",
   path: "/game/join/$gameID",
   getParentRoute: () => rootRoute,
 } as any);

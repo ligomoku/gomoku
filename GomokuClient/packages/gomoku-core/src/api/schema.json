@@ -459,15 +459,16 @@
   "components": {
     "schemas": {
       "AddPlayerToGameResponse": {
+        "required": ["gameId", "playerId"],
         "type": "object",
         "properties": {
           "gameId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "playerId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -521,11 +522,12 @@
         "additionalProperties": false
       },
       "CreateGameResponse": {
+        "required": ["boardSize", "gameId"],
         "type": "object",
         "properties": {
           "gameId": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "boardSize": {
             "type": "integer",

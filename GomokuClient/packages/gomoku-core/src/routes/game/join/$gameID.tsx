@@ -2,7 +2,7 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { SwaggerServices, SwaggerTypes } from "@/api";
 import JoinGame from "@/pages/JoinGame";
 import { SignalRProvider, useAuthToken } from "@/context";
-import { getDefaultHeaders } from "@/shared/lib/utils";
+import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
@@ -27,10 +27,15 @@ const joinGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = await SwaggerServices.postApiGameByGameIdJoin({
+  const response = await SwaggerServices.postApiGameByGameIdJoin<true>({
+    //TODO: Investigate better error handling
     path: { gameId: gameID ? gameID : "" },
     headers: getDefaultHeaders(jwtToken),
   });
+
+  if (!response.data) {
+    throw new Error("Failed to join game!");
+  }
 
   return response.data;
 };
@@ -63,7 +68,13 @@ const JoinGameComponent = ({
       setIsJoining(true);
       try {
         const joinGameResponse = await joinGame(gameID ? gameID : "", jwtToken);
-        setPlayerID(joinGameResponse?.playerId);
+        setPlayerID(joinGameResponse.playerId);
+        if (!jwtToken) {
+          typedSessionStorage.setItem(
+            `game_${gameID}`,
+            joinGameResponse.playerId,
+          );
+        }
       } catch (err) {
         console.error("Error joining game:", err);
         notification.show("Error joining game", "error");
@@ -79,8 +90,15 @@ const JoinGameComponent = ({
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
+  let dynamicPlayerId;
+  if (jwtToken) {
+    dynamicPlayerId = playerID;
+  } else {
+    dynamicPlayerId = typedSessionStorage.getItem(`game_${gameID}`);
+  }
+
   return (
-    <SignalRProvider playerID={playerID}>
+    <SignalRProvider playerID={dynamicPlayerId}>
       <JoinGame gameHistory={gameHistory} />
     </SignalRProvider>
   );
