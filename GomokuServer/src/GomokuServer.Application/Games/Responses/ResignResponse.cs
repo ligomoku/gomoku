@@ -3,5 +3,5 @@
 public class ResignResponse
 {
 	[Required]
-	public required string WinnerColor { get; init; }
+	public required PlayerDto Winner { get; init; }
 }

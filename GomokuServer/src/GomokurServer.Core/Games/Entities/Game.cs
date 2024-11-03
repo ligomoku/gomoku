@@ -195,6 +195,7 @@ public class Game
 			{
 				IsValid = false,
 				ValidationError = ResignValidationError.GameIsOver,
+				ErrorDetails = $"Game is over. {Result.GetString()}"
 			};
 		}
 
@@ -205,6 +206,7 @@ public class Game
 			{
 				IsValid = false,
 				ValidationError = ResignValidationError.PlayerIsNotInvolvedInAGame,
+				ErrorDetails = "You are spectator in this game"
 			};
 		}
 

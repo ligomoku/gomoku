@@ -91,13 +91,12 @@ public class GameHub : Hub, IGameHub
 
 		if (resignResult.IsSuccess)
 		{
-			var playerResignedMessage = new PlayerResignedMessage()
+			var gameIsOverMessage = new GameIsOverMessage()
 			{
-				PlayerId = playerId!
+				Result = $"Winner is {resignResult.Value.Winner.Color}. Opponent resigned",
 			};
 
-			await Clients.Group(message.GameId).SendAsync(GameHubMethod.PlayerResigned, playerResignedMessage);
-			// TODO: GameIsOver event
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.GameIsOver, gameIsOverMessage);
 			return;
 		}
 
