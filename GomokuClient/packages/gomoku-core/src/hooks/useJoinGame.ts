@@ -8,7 +8,6 @@ import {
   SwaggerTypes,
 } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
-import { useNavigate } from "@tanstack/react-router";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
@@ -38,8 +37,6 @@ export const useJoinGame = (
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isConnected && gameID && hubProxy) {
@@ -79,10 +76,8 @@ export const useJoinGame = (
         },
         rematchApproved: async (message) => {
           console.log("Rematch approved", message);
-          navigate({
-            to: "/game/join/$gameID",
-            params: { gameID: message.newGameId },
-          });
+          // TODO: Replace this
+          window.location.href = `/game/join/${message.newGameId}`;
         },
       });
       return () => {
