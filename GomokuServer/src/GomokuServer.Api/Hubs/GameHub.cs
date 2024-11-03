@@ -104,6 +104,50 @@ public class GameHub : Hub, IGameHub
 	}
 
 	[AllowAnonymous]
+	public async Task RequestRematch(RematchRequestMessage message)
+	{
+		var getGameHistoryResult = await _mediator.Send(new GetGameHistoryQuery { GameId = message.GameId });
+
+		if (getGameHistoryResult.IsSuccess)
+		{
+			var gameHistory = getGameHistoryResult.Value;
+			if (!gameHistory.IsCompleted)
+			{
+				await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Game is not over yet"));
+				return;
+			}
+
+			var opponent = GetPlayerId() != gameHistory.Players.Black!.PlayerId ? gameHistory.Players.Black : gameHistory.Players.White;
+			await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.RematchRequested, gameHistory.Players.Black.PlayerId);
+			return;
+		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, getGameHistoryResult.GetHubError());
+	}
+
+	[AllowAnonymous]
+	public async Task ApproveRematch(ApproveRematchMessage message)
+	{
+		_logger.LogInformation($"Approving rematch. Message: {message}");
+
+		var rematchCommand = new RematchCommand()
+		{
+			GameId = message.GameId,
+			PlayerId = GetPlayerId()
+		};
+
+		var rematchResult = await _mediator.Send(rematchCommand);
+
+		if (rematchResult.IsSuccess)
+		{
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new RematchApprovedMessage { NewGameId = rematchResult.Value.GameId });
+			return;
+		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
+	}
+
+	[AllowAnonymous]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");

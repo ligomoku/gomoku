@@ -30,6 +30,8 @@ import type {
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
   PostGamehubResignData,
+  PostGamehubRequestRematchData,
+  PostGamehubApproveRematchData,
   PostGamehubSendMessageData,
 } from "./types.gen";
 
@@ -175,6 +177,24 @@ export const postGamehubResign = <ThrowOnError extends boolean = false>(
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/Resign",
+  });
+};
+
+export const postGamehubRequestRematch = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubRequestRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/RequestRematch",
+  });
+};
+
+export const postGamehubApproveRematch = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubApproveRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/ApproveRematch",
   });
 };
 

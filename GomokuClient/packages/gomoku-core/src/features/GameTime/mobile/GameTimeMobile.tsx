@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Repeat1 } from "lucide-react";
 import { X, Undo, Flag } from "lucide-react";
 import { GameTimeProps } from "@/features/GameTime";
 
@@ -14,6 +14,7 @@ export const GameTimeMobile = ({
   onSkip,
   onFlag,
   onReset,
+  onRematch,
   activePlayer,
   blackTimeLeft,
   opponentView,
@@ -82,6 +83,9 @@ export const GameTimeMobile = ({
         </button>
         <button className="rounded bg-[#363330] p-2" onClick={onFlag}>
           <Flag className="h-5 w-5 text-[#b0b0b0]" />
+        </button>
+        <button className="rounded bg-[#363330] p-2" onClick={onRematch}>
+          <Repeat1 className="h-5 w-5 text-[#b0b0b0]" />
         </button>
       </div>
 

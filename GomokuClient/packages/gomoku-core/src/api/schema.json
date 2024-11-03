@@ -439,6 +439,38 @@
         "security": [{}]
       }
     },
+    "/gamehub/RequestRematch": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RematchRequestMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
+    "/gamehub/ApproveRematch": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ApproveRematchMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
     "/gamehub/SendMessage": {
       "post": {
         "tags": ["GameHub"],
@@ -469,6 +501,17 @@
           "playerId": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApproveRematchMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -626,7 +669,7 @@
             "format": "int32"
           },
           "players": {
-            "$ref": "#/components/schemas/UsernamesDto"
+            "$ref": "#/components/schemas/PlayersDto"
           },
           "isCompleted": {
             "type": "boolean"
@@ -741,6 +784,37 @@
         },
         "additionalProperties": false
       },
+      "PlayerDto": {
+        "required": ["color", "playerId", "userName"],
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "userName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "color": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlayersDto": {
+        "type": "object",
+        "properties": {
+          "black": {
+            "$ref": "#/components/schemas/PlayerDto"
+          },
+          "white": {
+            "$ref": "#/components/schemas/PlayerDto"
+          }
+        },
+        "additionalProperties": false
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -777,6 +851,17 @@
             "type": "string"
           },
           "userName": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RematchRequestMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
             "minLength": 1,
             "type": "string"
           }

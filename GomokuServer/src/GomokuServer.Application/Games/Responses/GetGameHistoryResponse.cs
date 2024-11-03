@@ -12,7 +12,7 @@ public class GetGameHistoryResponse
 	public required int MovesCount { get; init; }
 
 	[Required]
-	public required UsernamesDto Players { get; init; }
+	public required PlayersDto Players { get; init; }
 
 	[Required]
 	public required bool IsCompleted { get; set; }

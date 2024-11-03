@@ -29,6 +29,8 @@ import type {
   PostGamehubJoinGameGroupData,
   PostGamehubMakeMoveData,
   PostGamehubResignData,
+  PostGamehubRequestRematchData,
+  PostGamehubApproveRematchData,
   PostGamehubSendMessageData,
 } from "../types.gen";
 import {
@@ -43,6 +45,8 @@ import {
   postGamehubJoinGameGroup,
   postGamehubMakeMove,
   postGamehubResign,
+  postGamehubRequestRematch,
+  postGamehubApproveRematch,
   postGamehubSendMessage,
 } from "../services.gen";
 
@@ -557,6 +561,88 @@ export const postGamehubResignMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postGamehubResign({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRequestRematchQueryKey = (
+  options?: Options<PostGamehubRequestRematchData>,
+) => [createQueryKey("postGamehubRequestRematch", options)];
+
+export const postGamehubRequestRematchOptions = (
+  options?: Options<PostGamehubRequestRematchData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRequestRematch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRequestRematchQueryKey(options),
+  });
+};
+
+export const postGamehubRequestRematchMutation = (
+  options?: Partial<Options<PostGamehubRequestRematchData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRequestRematchData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRequestRematch({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubApproveRematchQueryKey = (
+  options?: Options<PostGamehubApproveRematchData>,
+) => [createQueryKey("postGamehubApproveRematch", options)];
+
+export const postGamehubApproveRematchOptions = (
+  options?: Options<PostGamehubApproveRematchData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubApproveRematch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubApproveRematchQueryKey(options),
+  });
+};
+
+export const postGamehubApproveRematchMutation = (
+  options?: Partial<Options<PostGamehubApproveRematchData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubApproveRematchData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubApproveRematch({
         ...options,
         ...localOptions,
         throwOnError: true,

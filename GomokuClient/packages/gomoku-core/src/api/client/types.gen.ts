@@ -5,6 +5,10 @@ export type AddPlayerToGameResponse = {
   playerId: string;
 };
 
+export type ApproveRematchMessage = {
+  gameId: string | null;
+};
+
 export type ChatMessageClientMessage = {
   gameId: string;
   user: string;
@@ -52,7 +56,7 @@ export type GetGameHistoryResponse = {
   boardSize: number;
   gen: string;
   movesCount: number;
-  players: UsernamesDto;
+  players: PlayersDto;
   isCompleted: boolean;
   winner?: string | null;
   winningSequence?: Array<TileDto> | null;
@@ -90,6 +94,17 @@ export type PaginationMetadata = {
   totalCount: number;
 };
 
+export type PlayerDto = {
+  playerId: string;
+  userName: string;
+  color: string;
+};
+
+export type PlayersDto = {
+  black?: PlayerDto;
+  white?: PlayerDto;
+};
+
 export type ProblemDetails = {
   type?: string | null;
   title?: string | null;
@@ -102,6 +117,10 @@ export type ProblemDetails = {
 export type ProfileDto = {
   playerId: string;
   userName: string;
+};
+
+export type RematchRequestMessage = {
+  gameId: string;
 };
 
 export type ResignClientMessage = {
@@ -242,6 +261,18 @@ export type PostGamehubMakeMoveData = {
 export type PostGamehubResignData = {
   query?: {
     message?: ResignClientMessage;
+  };
+};
+
+export type PostGamehubRequestRematchData = {
+  query?: {
+    message?: RematchRequestMessage;
+  };
+};
+
+export type PostGamehubApproveRematchData = {
+  query?: {
+    message?: ApproveRematchMessage;
   };
 };
 

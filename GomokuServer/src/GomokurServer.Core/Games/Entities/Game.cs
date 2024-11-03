@@ -232,6 +232,40 @@ public class Game
 		};
 	}
 
+	public RematchResult Rematch(string playerId)
+	{
+		if (Status != GameStatus.Completed)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = RematchValidationError.GameIsNotOverYet,
+				ErrorDetails = $"Can't request rematch. Game is not over yet",
+			};
+		}
+
+		var (isInvolved, _) = IsInvolved(playerId);
+		if (!isInvolved)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = RematchValidationError.PlayerIsNotInvolvedInAGame,
+				ErrorDetails = "Player is not involved in the game"
+			};
+		}
+
+		var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
+		{
+			Opponents = new List<Profile>(Opponents),
+			Players = new Players { Black = Players.White, White = Players.Black },
+			Status = GameStatus.BothPlayersJoined,
+			NextMoveShouldMakePlayerId = Players.White?.Id
+		};
+
+		return RematchResult.Success(newGame);
+	}
+
 	public (bool isInvolved, Player? player) IsInvolved(string playerId)
 	{
 		return playerId switch

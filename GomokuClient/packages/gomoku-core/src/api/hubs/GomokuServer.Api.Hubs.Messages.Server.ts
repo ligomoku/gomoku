@@ -38,3 +38,9 @@ export type PlayerMadeMoveMessage = {
   /** Transpiled from string */
   placedTileColor: string;
 };
+
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Server.RematchApprovedMessage */
+export type RematchApprovedMessage = {
+  /** Transpiled from string */
+  newGameId: string;
+};

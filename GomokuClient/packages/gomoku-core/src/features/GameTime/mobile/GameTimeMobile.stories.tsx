@@ -21,6 +21,7 @@ export const Default = () => (
     onSkip={(direction) => alert(`Skip ${direction} clicked`)}
     onFlag={() => alert("Flag clicked")}
     onReset={() => alert("Reset clicked")}
+    onRematch={() => alert("Rematch clicked")}
   />
 );
 
@@ -35,5 +36,6 @@ export const WithMoves = () => (
     onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
     onFlag={() => notification.show("Flag clicked")}
     onReset={() => notification.show("Reset clicked")}
+    onRematch={() => notification.show("Rematch clicked")}
   />
 );
