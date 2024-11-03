@@ -132,7 +132,7 @@ export const Board = ({
           />
         )),
       ),
-    [tiles, lastTile, onTileClick, showAnnotations],
+    [tiles, lastTile, onTileClick, showAnnotations, winningSequence],
   );
 
   const calculatedSize = boardSize / size;
