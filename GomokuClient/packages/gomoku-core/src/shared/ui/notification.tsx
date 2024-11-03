@@ -24,8 +24,6 @@ export const notification = {
   },
 };
 
-//TODO: check duration logic for expiration time
-//TODO: align with .NET error messages
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [toastState, setInternalToastState] = useState<ToastState>({
     open: false,

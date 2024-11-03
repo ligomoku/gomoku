@@ -1,14 +1,16 @@
 import { createContext, ReactNode, useContext } from "react";
-import { SignalREventHandlers, useSignalR } from "@/hooks/useSignalR";
+import { useSignalR } from "@/hooks/useSignalR";
 import * as signalR from "@microsoft/signalr";
 import { SignalHubInterfaces, SwaggerTypes } from "@/api";
+
+type SignalREventHandlers = SignalHubInterfaces.IGameHubReceiver;
 
 interface SignalRContextType {
   connection: signalR.HubConnection | null;
   isConnected: boolean;
   registerEventHandlers: (
-    handlers: SignalREventHandlers,
-  ) => void | (() => void);
+    handlers: Partial<SignalREventHandlers>,
+  ) => () => void;
   hubProxy: SignalHubInterfaces.IGameHub | null;
 }
 
