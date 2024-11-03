@@ -6,7 +6,7 @@ export interface GameType {
   timeLabel: string;
   type: string;
   boardSize: number;
-  timeControl?: SwaggerTypes.TimeControlDto;
+  timeControl: SwaggerTypes.TimeControlDto;
 }
 
 export interface TimeControlsProps {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
@@ -6,15 +6,16 @@ import { useRouter } from "@tanstack/react-router";
 import {
   SignalClientMessages,
   SignalServerMessages,
+  SignalDto,
   SwaggerTypes,
 } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
+import { typedSessionStorage } from "@/shared/lib/utils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
-  initialTimeInSeconds: number,
-  incrementPerMove: number,
+  playerID?: string,
 ) => {
   //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
@@ -22,22 +23,12 @@ export const useJoinGame = (
     SignalServerMessages.GameIsOverMessage["winningSequence"]
   >([]);
   const [rematchRequested, setRematchRequested] = useState(false);
+  const [clock, setClock] = useState<SignalDto.ClockDto>();
 
   const router = useRouter();
 
-  const {
-    tiles,
-    winner,
-    addTile,
-    lastTile,
-    setLastTile,
-    setTiles,
-    blackTimeLeft,
-    whiteTimeLeft,
-    activePlayer,
-  } = useTiles(boardSize, initialTimeInSeconds, incrementPerMove, (winner) => {
-    notification.show(`The winner is: ${winner}`);
-  });
+  const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
+    useTiles(boardSize);
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
@@ -78,12 +69,14 @@ export const useJoinGame = (
           console.debug("Rematch requested", message);
           setRematchRequested(true);
         },
-        rematchApproved: async (message) => {
-          console.debug("Rematch approved", message);
+        clock: async (message) => {
+          setClock(message);
+        },
+        rematchApproved: async ({ newGameId }) => {
+          typedSessionStorage.setItem(`game_${newGameId}`, playerID!);
           await router.navigate({
-            to: `/game/join/${message.newGameId}`,
+            to: `/game/join/${newGameId}`,
           });
-          console.debug("Navigation attempt complete");
         },
       });
       return () => {
@@ -96,6 +89,12 @@ export const useJoinGame = (
     //TODO: investigate how to memoize properly addTile
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
+
+  useInterval(() => {
+    if (isConnected && gameID && hubProxy && moves.length !== 0) {
+      hubProxy.getClock({ gameId: gameID });
+    }
+  }, 800); //TODO: play with this delay value for clock sync
 
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
@@ -125,10 +124,23 @@ export const useJoinGame = (
     winner,
     handleMove,
     setTiles,
-    blackTimeLeft,
-    whiteTimeLeft,
-    activePlayer,
     winningSequence,
     rematchRequested,
+    setRematchRequested,
+    clock,
   };
+};
+
+const useInterval = (callback: () => void, delay: number) => {
+  const savedCallback = useRef(callback);
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    const tick = () => savedCallback.current();
+    const id = setInterval(tick, delay);
+    return () => clearInterval(id);
+  }, [delay]);
 };

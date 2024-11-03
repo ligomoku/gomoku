@@ -407,6 +407,22 @@
         "responses": {}
       }
     },
+    "/gamehub/GetClock": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/GetClockMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
     "/gamehub/MakeMove": {
       "post": {
         "tags": ["GameHub"],
@@ -483,8 +499,7 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": {}
       }
     }
   },
@@ -641,6 +656,17 @@
           },
           "metadata": {
             "$ref": "#/components/schemas/PaginationMetadata"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetClockMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

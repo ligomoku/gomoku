@@ -28,6 +28,7 @@ import type {
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
   PostGamehubJoinGameGroupData,
+  PostGamehubGetClockData,
   PostGamehubMakeMoveData,
   PostGamehubResignData,
   PostGamehubRequestRematchData,
@@ -159,6 +160,15 @@ export const postGamehubJoinGameGroup = <ThrowOnError extends boolean = false>(
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/JoinGameGroup",
+  });
+};
+
+export const postGamehubGetClock = <ThrowOnError extends boolean = false>(
+  options?: Options<PostGamehubGetClockData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/GetClock",
   });
 };
 

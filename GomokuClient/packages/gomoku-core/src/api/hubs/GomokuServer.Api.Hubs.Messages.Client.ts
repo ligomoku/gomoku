@@ -8,6 +8,12 @@ export type ApproveRematchMessage = {
   gameId: string;
 };
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.GetClockMessage */
+export type GetClockMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.MakeMoveClientMessage */
 export type MakeMoveClientMessage = {
   /** Transpiled from string */

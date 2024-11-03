@@ -15,8 +15,8 @@ export const Default = () => (
     moves={[]}
     activePlayer="black"
     player={{ name: "Player 1", color: "#7cb342" }}
-    blackTimeLeft={1000}
-    whiteTimeLeft={1000}
+    blackTimeLeftMobile={1000}
+    whiteTimeLeftMobile={1000}
     onUndo={() => alert("Undo clicked")}
     onSkip={(direction) => alert(`Skip ${direction} clicked`)}
     onFlag={() => alert("Flag clicked")}
@@ -30,8 +30,8 @@ export const WithMoves = () => (
     moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
     activePlayer="black"
     player={{ name: "Player 2", color: "#b0b0b0" }}
-    blackTimeLeft={1000}
-    whiteTimeLeft={1000}
+    blackTimeLeftMobile={1000}
+    whiteTimeLeftMobile={1000}
     onUndo={() => notification.show("Undo clicked")}
     onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
     onFlag={() => notification.show("Flag clicked")}

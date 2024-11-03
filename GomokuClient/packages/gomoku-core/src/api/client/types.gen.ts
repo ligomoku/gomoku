@@ -52,6 +52,10 @@ export type GetAvailableGamesResponseIEnumerablePaginatedResponse = {
   metadata: PaginationMetadata;
 };
 
+export type GetClockMessage = {
+  gameId: string;
+};
+
 export type GetGameHistoryResponse = {
   boardSize: number;
   gen: string;
@@ -249,6 +253,12 @@ export type GetApiProfilesByUserNameGamesError = unknown;
 export type PostGamehubJoinGameGroupData = {
   query?: {
     gameId?: string;
+  };
+};
+
+export type PostGamehubGetClockData = {
+  query?: {
+    message?: GetClockMessage;
   };
 };
 

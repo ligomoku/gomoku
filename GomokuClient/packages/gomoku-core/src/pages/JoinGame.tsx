@@ -15,9 +15,10 @@ import { RematchAlert } from "@/shared/ui/rematch-alert";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
+  playerID?: string;
 }
 
-const JoinGame = ({ gameHistory }: JoinGameProps) => {
+const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
@@ -28,13 +29,12 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     handleMove,
     setTiles,
     setLastTile,
-    blackTimeLeft,
-    whiteTimeLeft,
-    activePlayer,
     moves,
     winningSequence,
     rematchRequested,
-  } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
+    setRematchRequested,
+    clock,
+  } = useJoinGame(gameID, gameHistory.boardSize, playerID);
 
   const { hubProxy } = useSignalRConnection();
 
@@ -45,14 +45,15 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     jwtDecodedInfo?.username,
   );
 
-  const commonGameTimeProps: Omit<GameTimeProps, "players"> = {
+  const commonGameTimeProps: Omit<
+    GameTimeProps,
+    "players" | "blackTimeLeft" | "whiteTimeLeft"
+  > = {
     moves:
       moves.length > 0
         ? [...transformMoves(gameHistory.movesHistory), ...moves]
         : transformMoves(gameHistory.movesHistory),
-    activePlayer: activePlayer!,
-    whiteTimeLeft,
-    blackTimeLeft,
+    activePlayer: "KEK",
     onSkip: () => alert("Skip clicked"),
     //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
@@ -73,12 +74,20 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     },
   ];
 
+  const playerClock: Pick<GameTimeProps, "blackTimeLeft" | "whiteTimeLeft"> = {
+    whiteTimeLeft: clock?.white || gameHistory.clock?.white || 420, //TODO: remove later this valeus after prod testing
+    blackTimeLeft: clock?.black || gameHistory.clock?.black || 69,
+  };
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       {rematchRequested && (
         <RematchAlert
           onAccept={() => {
             hubProxy?.approveRematch({ gameId: gameID });
+          }}
+          onDecline={() => {
+            setRematchRequested(false);
           }}
         />
       )}
@@ -114,6 +123,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                     opponentView
                     {...commonGameTimeProps}
                     player={players[0]}
+                    //TODO: we should not pass both one of them should be required both not both at same time
+                    whiteTimeLeftMobile={playerClock.whiteTimeLeft}
                   />
                 )}
               </div>
@@ -132,6 +143,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   <GameTimeMobile
                     {...commonGameTimeProps}
                     player={players[1]}
+                    //TODO: we should not pass both one of them should be required both not both at same time
+                    blackTimeLeftMobile={playerClock.blackTimeLeft}
                   />
                 )}
               </div>
@@ -144,7 +157,12 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   display: isMobile ? "none" : "unset",
                 }}
               >
-                <GameTime {...commonGameTimeProps} players={players} />
+                <GameTime
+                  {...commonGameTimeProps}
+                  players={players}
+                  blackTimeLeft={playerClock.blackTimeLeft}
+                  whiteTimeLeft={playerClock.whiteTimeLeft}
+                />
               </div>
             </div>
           </>
