@@ -41,7 +41,7 @@ public class RematchCommandHandler : ICommandHandler<RematchCommand, RematchResp
 		{
 			return Result.NotFound();
 		}
-		
+
 		var game = getGameResult.Value;
 		var rematchResult = game.Rematch(request.PlayerId!);
 
