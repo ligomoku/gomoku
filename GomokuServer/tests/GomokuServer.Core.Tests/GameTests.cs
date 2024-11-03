@@ -412,6 +412,22 @@ public class GameTests
 	}
 
 	[Test]
+	public void Resign_WhenOnePlayerJoined_ShouldReturnValidationError()
+	{
+		// Arrange
+		var game = new Game(15, _randomProvider, _dateTimeProvider);
+		game.AddOpponent(_playerOne);
+
+		// Act
+		var resignResult = game.Resign(_playerOne.Id);
+
+		// Assert
+		resignResult.IsValid.Should().BeFalse();
+		resignResult.ValidationError.Should().Be(ResignValidationError.NotBothPlayerAreJoinedYet);
+		resignResult.ErrorDetails.Should().NotBeEmpty();
+	}
+
+	[Test]
 	public void Resign_WhenGameIsOver_ShouldReturnValidationError()
 	{
 		// Arrange

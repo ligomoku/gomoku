@@ -199,6 +199,16 @@ public class Game
 			};
 		}
 
+		if (Status == GameStatus.WaitingForPlayersToJoin)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = ResignValidationError.NotBothPlayerAreJoinedYet,
+				ErrorDetails = "Wait for other player to join"
+			};
+		}
+
 		var (isInvolved, currentPlayer) = IsInvolved(playerId);
 		if (!isInvolved)
 		{
