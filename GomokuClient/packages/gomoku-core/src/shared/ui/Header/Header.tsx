@@ -32,7 +32,7 @@ export const Header = ({
   if (SignedOutComponent) typedStorage.clear();
 
   return (
-    <header className="bg-[#2b2b2b] p-4 transition-opacity duration-300 sm:p-6">
+    <header className="z-30 bg-[#2b2b2b] p-4 transition-opacity duration-300 sm:p-6">
       <nav className="flex items-center justify-between">
         <div className="flex items-center">
           <span
@@ -53,7 +53,8 @@ export const Header = ({
           className={`${
             isMenuOpen ? "flex" : "hidden"
           } absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
-          style={{ zIndex: 100 }}
+          //TODO: not very good solution, should be fixed in the future
+          style={{ zIndex: 30 }}
         >
           {menuItems.map((item) => (
             <span
