@@ -2,13 +2,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { X, Undo, Flag } from "lucide-react";
 import { GameTimeProps } from "@/features/GameTime";
 
-interface GameTimeMobileProps extends GameTimeProps {
+interface GameTimeMobileProps extends Omit<GameTimeProps, "players"> {
   opponentView?: boolean; // Clock Time mode for main player who sees the board (player not opponent)
+  player: GameTimeProps["players"][0];
 }
 
 export const GameTimeMobile = ({
   moves,
-  players,
+  player,
   onUndo,
   onSkip,
   onFlag,
@@ -24,9 +25,9 @@ export const GameTimeMobile = ({
           <div className="flex items-center">
             <span
               className="mr-2 h-3 w-3 rounded-full"
-              style={{ backgroundColor: players[0].color }}
+              style={{ backgroundColor: player.color }}
             ></span>
-            <span className="font-bold text-[#ffa600]">{players[0].name}</span>
+            <span className="font-bold text-[#ffa600]">{player.name}</span>
           </div>
           <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
             {blackTimeLeft}
@@ -42,9 +43,9 @@ export const GameTimeMobile = ({
         <div className="flex items-center">
           <span
             className="mr-2 h-3 w-3 rounded-full"
-            style={{ backgroundColor: players[0].color }}
+            style={{ backgroundColor: player.color }}
           ></span>
-          <span className="font-bold text-[#ffa600]">{players[0].name}</span>
+          <span className="font-bold text-[#ffa600]">{player.name}</span>
         </div>
         <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
           {blackTimeLeft}

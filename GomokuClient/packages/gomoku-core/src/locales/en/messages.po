@@ -25,9 +25,9 @@ msgstr ""
 msgid "5,247 players online"
 msgstr ""
 
-#: src/features/TimeControls/TimeControls.tsx:5
-#~ msgid "Blitz"
-#~ msgstr ""
+#: src/pages/HomeGame.tsx:139
+msgid "Blitz"
+msgstr ""
 
 #: src/pages/Profile.tsx:31
 #~ msgid "BLITZ"
@@ -37,28 +37,36 @@ msgstr ""
 #~ msgid "Blog Posts"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:91
+#: src/features/Chat/Chat.tsx:99
 msgid "characters"
 msgstr ""
 
-#: src/features/Chat/Chat.tsx:62
+#: src/features/Chat/Chat.tsx:70
 msgid "Chat"
+msgstr ""
+
+#: src/pages/HomeGame.tsx:157
+msgid "Classic"
 msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:57
 #~ msgid "COMMUNITY"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:117
+#: src/features/Chat/Chat.tsx:126
 msgid "Connecting..."
 msgstr ""
 
-#: src/features/TimeControls/TimeControls.tsx:9
-#~ msgid "Correspondence"
-#~ msgstr ""
+#: src/pages/HomeGame.tsx:163
+msgid "Correspondence"
+msgstr ""
 
 #: src/pages/HomeGame.tsx:75
 msgid "CREATE A GAME"
+msgstr ""
+
+#: src/pages/HomeGame.tsx:162
+msgid "day"
 msgstr ""
 
 #: src/pages/Profile.tsx:66
@@ -93,7 +101,7 @@ msgstr ""
 #~ msgid "No games available"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:119
+#: src/features/Chat/Chat.tsx:128
 msgid "No messages yet. Start the conversation!"
 msgstr ""
 
@@ -125,15 +133,20 @@ msgstr ""
 msgid "Quick pairing"
 msgstr ""
 
+#: src/pages/HomeGame.tsx:145
+#: src/pages/HomeGame.tsx:151
+msgid "Rapid"
+msgstr ""
+
 #: src/features/Timer/Timer.tsx:50
 #~ msgid "Reset"
 #~ msgstr ""
 
-#: src/features/Chat/Chat.tsx:87
+#: src/features/Chat/Chat.tsx:95
 msgid "Send"
 msgstr ""
 
-#: src/features/Chat/Chat.tsx:87
+#: src/features/Chat/Chat.tsx:95
 msgid "Sending..."
 msgstr ""
 

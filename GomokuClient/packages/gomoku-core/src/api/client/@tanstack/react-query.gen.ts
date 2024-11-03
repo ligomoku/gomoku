@@ -88,10 +88,11 @@ export const getApiGameByGameIdHistoryOptions = (
   options: Options<GetApiGameByGameIdHistoryData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await getApiGameByGameIdHistory({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -108,10 +109,11 @@ export const getApiGamesAvailableToJoinOptions = (
   options: Options<GetApiGamesAvailableToJoinData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await getApiGamesAvailableToJoin({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -176,7 +178,7 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
   >(
     // @ts-ignore
     {
-      queryFn: async ({ pageParam, queryKey }) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetApiGamesAvailableToJoinData>>[0],
@@ -193,6 +195,7 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
         const { data } = await getApiGamesAvailableToJoin({
           ...options,
           ...params,
+          signal,
           throwOnError: true,
         });
         return data;
@@ -210,10 +213,11 @@ export const getApiGamesActiveOptions = (
   options: Options<GetApiGamesActiveData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await getApiGamesActive({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -244,7 +248,7 @@ export const getApiGamesActiveInfiniteOptions = (
   >(
     // @ts-ignore
     {
-      queryFn: async ({ pageParam, queryKey }) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetApiGamesActiveData>>[0],
@@ -261,6 +265,7 @@ export const getApiGamesActiveInfiniteOptions = (
         const { data } = await getApiGamesActive({
           ...options,
           ...params,
+          signal,
           throwOnError: true,
         });
         return data;
@@ -276,10 +281,11 @@ export const postApiGameQueryKey = (options: Options<PostApiGameData>) => [
 
 export const postApiGameOptions = (options: Options<PostApiGameData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postApiGame({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -316,10 +322,11 @@ export const postApiGameByGameIdJoinOptions = (
   options: Options<PostApiGameByGameIdJoinData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postApiGameByGameIdJoin({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -354,10 +361,11 @@ export const getHealthQueryKey = (options: Options<GetHealthData>) => [
 
 export const getHealthOptions = (options: Options<GetHealthData>) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await getHealth({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -374,10 +382,11 @@ export const getApiProfilesByUserNameGamesOptions = (
   options: Options<GetApiProfilesByUserNameGamesData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await getApiProfilesByUserNameGames({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -408,7 +417,7 @@ export const getApiProfilesByUserNameGamesInfiniteOptions = (
   >(
     // @ts-ignore
     {
-      queryFn: async ({ pageParam, queryKey }) => {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
           QueryKey<Options<GetApiProfilesByUserNameGamesData>>[0],
@@ -425,6 +434,7 @@ export const getApiProfilesByUserNameGamesInfiniteOptions = (
         const { data } = await getApiProfilesByUserNameGames({
           ...options,
           ...params,
+          signal,
           throwOnError: true,
         });
         return data;
@@ -442,10 +452,11 @@ export const postGamehubJoinGameGroupOptions = (
   options?: Options<PostGamehubJoinGameGroupData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postGamehubJoinGameGroup({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -482,10 +493,11 @@ export const postGamehubMakeMoveOptions = (
   options?: Options<PostGamehubMakeMoveData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postGamehubMakeMove({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -522,10 +534,11 @@ export const postGamehubResignOptions = (
   options?: Options<PostGamehubResignData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postGamehubResign({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;
@@ -562,10 +575,11 @@ export const postGamehubSendMessageOptions = (
   options?: Options<PostGamehubSendMessageData>,
 ) => {
   return queryOptions({
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey, signal }) => {
       const { data } = await postGamehubSendMessage({
         ...options,
         ...queryKey[0],
+        signal,
         throwOnError: true,
       });
       return data;

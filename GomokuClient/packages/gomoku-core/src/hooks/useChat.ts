@@ -15,17 +15,21 @@ export const useChat = (
 
   useEffect(() => {
     if (isConnected && hubProxy) {
-      registerEventHandlers({
+      const unregister = registerEventHandlers({
         onReceiveMessage: ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
           console.debug("Received message:", receivedMessage);
         },
       });
+      return () => {
+        if (typeof unregister === "function") {
+          unregister();
+        }
+      };
     }
-    //TODO: should be one dependecy ideally check by git commit history previous returning function solution
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected]);
+    return;
+  }, [hubProxy, isConnected, registerEventHandlers]);
 
   const sendMessage = async (
     message: SignalClientMessages.ChatMessageClientMessage["message"],

@@ -32,7 +32,7 @@ export type GetActiveGamesResponse = {
   timeControl?: TimeControlDto;
 };
 
-export type GetActiveGamesResponseIenumerablePaginatedResponse = {
+export type GetActiveGamesResponseIEnumerablePaginatedResponse = {
   data: Array<GetActiveGamesResponse>;
   metadata: PaginationMetadata;
 };
@@ -43,7 +43,7 @@ export type GetAvailableGamesResponse = {
   timeControl?: TimeControlDto;
 };
 
-export type GetAvailableGamesResponseIenumerablePaginatedResponse = {
+export type GetAvailableGamesResponseIEnumerablePaginatedResponse = {
   data: Array<GetAvailableGamesResponse>;
   metadata: PaginationMetadata;
 };
@@ -69,12 +69,12 @@ export type GetGamesByUsernameResponse = {
   isCompleted: boolean;
   winner?: string | null;
   gen: string;
-  date: Date;
+  date: string;
   timeControl?: TimeControlDto;
   clock?: ClockDto;
 };
 
-export type GetGamesByUsernameResponseIenumerablePaginatedResponse = {
+export type GetGamesByUsernameResponseIEnumerablePaginatedResponse = {
   data: Array<GetGamesByUsernameResponse>;
   metadata: PaginationMetadata;
 };
@@ -150,7 +150,7 @@ export type GetApiGamesAvailableToJoinData = {
 };
 
 export type GetApiGamesAvailableToJoinResponse =
-  GetAvailableGamesResponseIenumerablePaginatedResponse;
+  GetAvailableGamesResponseIEnumerablePaginatedResponse;
 
 export type GetApiGamesAvailableToJoinError = unknown;
 
@@ -167,7 +167,7 @@ export type GetApiGamesActiveData = {
 };
 
 export type GetApiGamesActiveResponse =
-  GetActiveGamesResponseIenumerablePaginatedResponse;
+  GetActiveGamesResponseIEnumerablePaginatedResponse;
 
 export type GetApiGamesActiveError = unknown;
 
@@ -223,7 +223,7 @@ export type GetApiProfilesByUserNameGamesData = {
 };
 
 export type GetApiProfilesByUserNameGamesResponse =
-  GetGamesByUsernameResponseIenumerablePaginatedResponse;
+  GetGamesByUsernameResponseIEnumerablePaginatedResponse;
 
 export type GetApiProfilesByUserNameGamesError = unknown;
 
@@ -250,38 +250,3 @@ export type PostGamehubSendMessageData = {
     messageRequest?: ChatMessageClientMessage;
   };
 };
-
-export type GetApiProfilesByUserNameGamesResponseTransformer = (
-  data: any,
-) => Promise<GetApiProfilesByUserNameGamesResponse>;
-
-export type GetGamesByUsernameResponseIenumerablePaginatedResponseModelResponseTransformer =
-  (data: any) => GetGamesByUsernameResponseIenumerablePaginatedResponse;
-
-export type GetGamesByUsernameResponseModelResponseTransformer = (
-  data: any,
-) => GetGamesByUsernameResponse;
-
-export const GetGamesByUsernameResponseModelResponseTransformer: GetGamesByUsernameResponseModelResponseTransformer =
-  (data) => {
-    if (data?.date) {
-      data.date = new Date(data.date);
-    }
-    return data;
-  };
-
-export const GetGamesByUsernameResponseIenumerablePaginatedResponseModelResponseTransformer: GetGamesByUsernameResponseIenumerablePaginatedResponseModelResponseTransformer =
-  (data) => {
-    if (Array.isArray(data?.data)) {
-      data.data.forEach(GetGamesByUsernameResponseModelResponseTransformer);
-    }
-    return data;
-  };
-
-export const GetApiProfilesByUserNameGamesResponseTransformer: GetApiProfilesByUserNameGamesResponseTransformer =
-  async (data) => {
-    GetGamesByUsernameResponseIenumerablePaginatedResponseModelResponseTransformer(
-      data,
-    );
-    return data;
-  };

@@ -43,7 +43,7 @@ export const useJoinGame = (
         console.error("Error joining game group:", error);
       });
 
-      registerEventHandlers({
+      const unregister = registerEventHandlers({
         onPlayerJoined: () => {
           notification.show(`You have joined the game`);
         },
@@ -70,10 +70,16 @@ export const useJoinGame = (
           console.warn("Error from game hub:", error.message);
         },
       });
+      return () => {
+        if (typeof unregister === "function") {
+          unregister();
+        }
+      };
     }
-    //TODO: should be one dependecy ideally
+    return;
+    //TODO: investigate how to memoise properly addTile
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected]);
+  }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],

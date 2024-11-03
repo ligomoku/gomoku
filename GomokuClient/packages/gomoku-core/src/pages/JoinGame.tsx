@@ -1,7 +1,7 @@
 import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
 import { useChat } from "@/hooks/useChat";
-import { useAuthToken } from "@/context";
+import { useAuthToken, useSignalRConnection } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
@@ -34,6 +34,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     winningSequence,
   } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 
+  const { hubProxy } = useSignalRConnection();
+
   useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
 
   const { sendMessage, messages, isConnected } = useChat(
@@ -41,29 +43,32 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     jwtDecodedInfo?.username,
   );
 
-  const commonGameTimeProps: GameTimeProps = {
+  const commonGameTimeProps: Omit<GameTimeProps, "players"> = {
     moves:
       moves.length > 0
         ? [...transformMoves(gameHistory.movesHistory), ...moves]
         : transformMoves(gameHistory.movesHistory),
-    players: [
-      {
-        name: gameHistory.players.black || "Anonymous",
-        color: "#7cb342",
-      },
-      {
-        name: gameHistory.players.white || "Anonymous",
-        color: "#b0b0b0",
-      },
-    ],
     activePlayer: activePlayer!,
     whiteTimeLeft,
     blackTimeLeft,
     onSkip: () => alert("Skip clicked"),
-    onFlag: () => alert("Flag clicked"),
+    //TODO: align IDs to match gameId and ID the ID letters to same cases
+    onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
     onUndo: () => alert("Undo clicked"),
   };
+
+  //TODD: distinguish layout on top should be always opponent
+  const players: GameTimeProps["players"] = [
+    {
+      name: gameHistory.players.black || "Anonymous",
+      color: "#7cb342",
+    },
+    {
+      name: gameHistory.players.white || "Anonymous",
+      color: "#b0b0b0",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -95,7 +100,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 className={isMobile ? "mb-4 flex w-full justify-center" : ""}
               >
                 {isMobile && (
-                  <GameTimeMobile opponentView {...commonGameTimeProps} />
+                  <GameTimeMobile
+                    opponentView
+                    {...commonGameTimeProps}
+                    player={players[0]}
+                  />
                 )}
               </div>
               <Board
@@ -109,7 +118,12 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               <div
                 className={isMobile ? "mt-4 flex w-full justify-center" : ""}
               >
-                {isMobile && <GameTimeMobile {...commonGameTimeProps} />}
+                {isMobile && (
+                  <GameTimeMobile
+                    {...commonGameTimeProps}
+                    player={players[1]}
+                  />
+                )}
               </div>
               <div
                 className="mt-4 flex flex-col justify-between"
@@ -120,7 +134,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   display: isMobile ? "none" : "unset",
                 }}
               >
-                <GameTime {...commonGameTimeProps} />
+                <GameTime {...commonGameTimeProps} players={players} />
               </div>
             </div>
           </>
