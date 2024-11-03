@@ -31,6 +31,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     whiteTimeLeft,
     activePlayer,
     moves,
+    winningSequence,
   } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 
   useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
@@ -103,6 +104,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 size={gameHistory.boardSize || 19}
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
+                winningSequence={winningSequence}
               />
               <div
                 className={isMobile ? "mt-4 flex w-full justify-center" : ""}

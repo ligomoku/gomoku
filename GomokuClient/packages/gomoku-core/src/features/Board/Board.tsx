@@ -6,6 +6,7 @@ import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import { SignalClientMessages, SwaggerTypes } from "@/api";
 import { Button } from "@/shared/ui/button";
+import { TileDto } from "@/api/client";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];
@@ -17,6 +18,7 @@ export interface TileProps {
     y: SignalClientMessages.MakeMoveClientMessage["y"],
   ) => void;
   showAnnotations: boolean;
+  winningSequence?: TileDto[]; //TODO: check maybe another type
 }
 
 const Tile = memo(
@@ -27,13 +29,17 @@ const Tile = memo(
     lastTile,
     onTileClick,
     showAnnotations,
+    winningSequence,
   }: TileProps) => {
     const isLastTile = xIndex === lastTile?.x && yIndex === lastTile?.y;
+    const isWinningTile = winningSequence?.some(
+      (tile) => tile.x === xIndex && tile.y === yIndex,
+    );
 
     return col !== null ? (
       <div
         key={`${xIndex}-${yIndex}`}
-        className={`relative flex items-center justify-center border border-black ${isLastTile ? "bg-amber-400" : ""}`}
+        className={`relative flex items-center justify-center border border-black ${isLastTile ? "bg-amber-400" : ""} ${isWinningTile ? "bg-green-400" : ""} `}
       >
         <div
           className={tileStyles({
@@ -70,7 +76,9 @@ const Tile = memo(
       prevProps.lastTile?.y === nextProps.lastTile?.y &&
       prevProps.xIndex === nextProps.xIndex &&
       prevProps.yIndex === nextProps.yIndex &&
-      prevProps.showAnnotations === nextProps.showAnnotations
+      prevProps.showAnnotations === nextProps.showAnnotations &&
+      //TODO: check if we need to do JSON.stringify here
+      prevProps.winningSequence?.length === nextProps.winningSequence?.length
     );
   },
 );
@@ -93,6 +101,7 @@ export interface BoardProps {
   tiles: TileColor[][];
   lastTile?: SwaggerTypes.TileDto;
   style?: CSSProperties;
+  winningSequence?: Pick<TileProps, "winningSequence">["winningSequence"];
 }
 
 export const Board = ({
@@ -101,6 +110,7 @@ export const Board = ({
   tiles,
   lastTile,
   style,
+  winningSequence,
 }: BoardProps) => {
   const isMobile = useMobileDesign();
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
@@ -118,6 +128,7 @@ export const Board = ({
             lastTile={lastTile}
             onTileClick={onTileClick}
             showAnnotations={showAnnotations}
+            winningSequence={winningSequence}
           />
         )),
       ),
