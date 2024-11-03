@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
+import { useRouter } from "@tanstack/react-router";
 import {
   SignalClientMessages,
   SignalServerMessages,
@@ -21,6 +22,9 @@ export const useJoinGame = (
     SignalServerMessages.GameIsOverMessage["winningSequence"]
   >([]);
   const [rematchRequested, setRematchRequested] = useState(false);
+
+  const router = useRouter();
+
   const {
     tiles,
     winner,
@@ -71,13 +75,15 @@ export const useJoinGame = (
           console.warn("Error from game hub:", error.message);
         },
         rematchRequested: async (message) => {
-          console.log("Rematch requested", message);
+          console.debug("Rematch requested", message);
           setRematchRequested(true);
         },
         rematchApproved: async (message) => {
-          console.log("Rematch approved", message);
-          // TODO: Replace this
-          window.location.href = `/game/join/${message.newGameId}`;
+          console.debug("Rematch approved", message);
+          await router.navigate({
+            to: `/game/join/${message.newGameId}`,
+          });
+          console.debug("Navigation attempt complete");
         },
       });
       return () => {

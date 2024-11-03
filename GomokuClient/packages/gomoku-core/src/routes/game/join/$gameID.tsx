@@ -111,8 +111,8 @@ export const Route = createFileRoute("/game/join/$gameID")({
     return { gameID };
   },
   component: () => {
-    //TODO: this should be done via router itself here
-    const gameID = window.location.pathname.split("/").pop();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { gameID } = Route.useParams();
     return <JoinGameComponent gameID={gameID!} />;
   },
 });
