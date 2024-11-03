@@ -133,35 +133,34 @@ const useFetchActiveGames = (authToken: string) =>
     refetchInterval: 5000,
   });
 
-//TODO: properly wrap with i18n
 export const gameTypes: GameType[] = [
   {
     timeLabel: "5+0",
-    type: "Blitz",
+    type: t`Blitz`,
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
   },
   {
     timeLabel: "10+0",
-    type: "Rapid",
+    type: t`Rapid`,
     boardSize: 13,
     timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
   },
   {
     timeLabel: "15+5",
-    type: "Rapid",
+    type: t`Rapid`,
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 900, incrementPerMove: 5 },
   },
   {
     timeLabel: "30+0",
-    type: "Classic",
+    type: t`Classic`,
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
   },
   {
-    timeLabel: "1 day",
-    type: "Correspondence",
+    timeLabel: 1 + t`day`,
+    type: t`Correspondence`,
     boardSize: 13,
   },
   {

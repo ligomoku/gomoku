@@ -40,10 +40,8 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     null,
   );
 
-  //TODO: check if we need refetching token logic here or it's redundant
   useEffect(() => {
     let isMounted = true;
-    let refreshTimeout: NodeJS.Timeout;
 
     const fetchToken = async () => {
       if (!isLoaded) return;
@@ -55,13 +53,6 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
 
           const decoded: JwtTokenPayload = JWT.jwtDecode(token);
           setJwtDecodedInfo(decoded);
-
-          const expiresAt = decoded.exp * 1000;
-
-          const timeUntilRefresh = expiresAt - Date.now() - 5 * 60 * 1000;
-          if (timeUntilRefresh > 0) {
-            refreshTimeout = setTimeout(fetchToken, timeUntilRefresh);
-          }
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
@@ -73,9 +64,6 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       isMounted = false;
-      if (refreshTimeout) {
-        clearTimeout(refreshTimeout);
-      }
     };
   }, [isLoaded, getToken]);
 
