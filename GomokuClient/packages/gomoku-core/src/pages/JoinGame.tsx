@@ -79,8 +79,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       {rematchRequested && (
         <RematchAlert
           onAccept={() => {
-            //TODO: should be done with router
-            window.location.href = `/game/join/${rematchApproved}`;
+            hubProxy?.approveRematch({ gameId: gameID });
           }}
         />
       )}

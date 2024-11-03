@@ -4,5 +4,5 @@
 public class RematchApprovedMessage
 {
 	[Required]
-	public required string GameId { get; init; }
+	public required string NewGameId { get; init; }
 }
