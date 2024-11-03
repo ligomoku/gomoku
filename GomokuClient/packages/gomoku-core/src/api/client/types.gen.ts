@@ -104,6 +104,14 @@ export type ProfileDto = {
   userName: string;
 };
 
+export type RematchApprovalMessage = {
+  gameId: string;
+};
+
+export type RematchRequestMessage = {
+  gameId: string;
+};
+
 export type ResignClientMessage = {
   gameId: string;
 };
@@ -242,6 +250,18 @@ export type PostGamehubMakeMoveData = {
 export type PostGamehubResignData = {
   query?: {
     message?: ResignClientMessage;
+  };
+};
+
+export type PostGamehubRequestRematchData = {
+  query?: {
+    message?: RematchRequestMessage;
+  };
+};
+
+export type PostGamehubApproveRematchData = {
+  query?: {
+    message?: RematchApprovalMessage;
   };
 };
 

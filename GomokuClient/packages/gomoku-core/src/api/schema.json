@@ -439,6 +439,38 @@
         "security": [{}]
       }
     },
+    "/gamehub/RequestRematch": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RematchRequestMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
+    "/gamehub/ApproveRematch": {
+      "post": {
+        "tags": ["GameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RematchApprovalMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
     "/gamehub/SendMessage": {
       "post": {
         "tags": ["GameHub"],
@@ -777,6 +809,28 @@
             "type": "string"
           },
           "userName": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RematchApprovalMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RematchRequestMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
             "minLength": 1,
             "type": "string"
           }

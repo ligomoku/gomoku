@@ -14,6 +14,9 @@ public class Game
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
+	private bool _rematchRequestedByBlack;
+	private bool _rematchRequestedByWhite;
+
 	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		_gameBoard = new GameBoard(boardSize);
@@ -230,6 +233,59 @@ public class Game
 		{
 			IsValid = true
 		};
+	}
+
+	public Game? Rematch(string playerId, bool isApproval)
+	{
+		if (Status != GameStatus.Completed)
+		{
+			return null;
+		}
+
+		var (isInvolved, currentPlayer) = IsInvolved(playerId);
+		if (!isInvolved)
+		{
+			return null;
+		}
+
+		if (!isApproval)
+		{
+			if (currentPlayer!.Color == TileColor.Black)
+			{
+				_rematchRequestedByBlack = true;
+			}
+			else if (currentPlayer!.Color == TileColor.White)
+			{
+				_rematchRequestedByWhite = true;
+			}
+
+			return null;
+		}
+		else
+		{
+			if ((currentPlayer!.Color == TileColor.Black && _rematchRequestedByWhite) ||
+				(currentPlayer.Color == TileColor.White && _rematchRequestedByBlack))
+			{
+				var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
+				{
+					Opponents = new List<Profile>(Opponents),
+					Players = new Players
+					{
+						Black = Players.Black,
+						White = Players.White
+					},
+					Status = GameStatus.BothPlayersJoined,
+					NextMoveShouldMakePlayerId = Players.Black?.Id
+				};
+
+				_rematchRequestedByBlack = false;
+				_rematchRequestedByWhite = false;
+
+				return newGame;
+			}
+
+			return null;
+		}
 	}
 
 	public (bool isInvolved, Player? player) IsInvolved(string playerId)

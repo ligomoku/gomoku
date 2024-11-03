@@ -8,6 +8,7 @@ import {
   X,
   Flag,
   Undo,
+  Repeat1,
 } from "lucide-react";
 import { Fragment } from "react";
 
@@ -21,6 +22,7 @@ export interface GameTimeProps {
   onSkip: (direction: "back" | "forward") => void;
   onFlag: () => void;
   onReset: () => void;
+  onRematch: () => void;
 }
 
 export const GameTime = ({
@@ -33,6 +35,7 @@ export const GameTime = ({
   onSkip,
   onFlag,
   onReset,
+  onRematch,
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
@@ -75,6 +78,10 @@ export const GameTime = ({
         <FastForward
           className="h-5 w-5 text-[#b0b0b0]"
           onClick={() => onSkip("forward")}
+        />
+        <Repeat1
+          className="h-5 w-5 text-[#b0b0b0]"
+          onClick={() => onRematch()}
         />
         <MoreHorizontal className="h-5 w-5 text-[#b0b0b0]" />
       </div>

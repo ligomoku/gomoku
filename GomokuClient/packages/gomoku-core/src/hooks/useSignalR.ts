@@ -111,6 +111,9 @@ export const useSignalR = (
         sendMessage: async (message) => handlers.sendMessage?.(message),
         gameHubError: async (error) => handlers.gameHubError?.(error),
         gameIsOver: async (message) => handlers.gameIsOver?.(message),
+        rematchApproved: async (message) => handlers.rematchApproved?.(message),
+        rematchRequested: async (message) =>
+          handlers.rematchRequested?.(message),
       };
 
       const disposable = SignalRClientService.getReceiverRegister(

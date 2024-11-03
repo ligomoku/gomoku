@@ -12,6 +12,18 @@ export type MakeMoveClientMessage = {
   y: number;
 };
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchApprovalMessage */
+export type RematchApprovalMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage */
+export type RematchRequestMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.ResignClientMessage */
 export type ResignClientMessage = {
   /** Transpiled from string */

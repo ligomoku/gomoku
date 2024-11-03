@@ -10,6 +10,8 @@ import type {
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
+  RematchRequestMessage,
+  RematchApprovalMessage,
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
@@ -105,6 +107,18 @@ class IGameHub_HubProxy implements IGameHub {
     return await this.connection.invoke("Resign", message);
   };
 
+  public readonly requestRematch = async (
+    message: RematchRequestMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("RequestRematch", message);
+  };
+
+  public readonly approveRematch = async (
+    message: RematchApprovalMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("ApproveRematch", message);
+  };
+
   public readonly sendMessage = async (
     messageRequest: ChatMessageClientMessage,
   ): Promise<void> => {
@@ -131,6 +145,10 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameStarted(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
+    const __rematchApproved = (...args: [RematchApprovalMessage]) =>
+      receiver.rematchApproved(...args);
+    const __rematchRequested = (...args: [RematchRequestMessage]) =>
+      receiver.rematchRequested(...args);
     const __gameIsOver = (...args: [GameIsOverMessage]) =>
       receiver.gameIsOver(...args);
     const __sendMessage = (...args: [ChatMessageClientMessage]) =>
@@ -142,6 +160,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
     connection.on("PlayerMadeMove", __playerMadeMove);
+    connection.on("RematchApproved", __rematchApproved);
+    connection.on("RematchRequested", __rematchRequested);
     connection.on("GameIsOver", __gameIsOver);
     connection.on("SendMessage", __sendMessage);
     connection.on("GameHubError", __gameHubError);
@@ -151,6 +171,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
+      { methodName: "RematchApproved", method: __rematchApproved },
+      { methodName: "RematchRequested", method: __rematchRequested },
       { methodName: "GameIsOver", method: __gameIsOver },
       { methodName: "SendMessage", method: __sendMessage },
       { methodName: "GameHubError", method: __gameHubError },

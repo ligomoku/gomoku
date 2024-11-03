@@ -11,6 +11,7 @@ import { genParser } from "@/utils/getParser";
 import { GameTime, GameTimeProps } from "@/features/GameTime";
 import { TileColor } from "@/hooks/useTiles";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
+import { RematchAlert } from "@/shared/ui/rematch-alert";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -32,6 +33,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     activePlayer,
     moves,
     winningSequence,
+    rematchApproved,
+    rematchRequested,
   } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 
   const { hubProxy } = useSignalRConnection();
@@ -56,6 +59,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
     onUndo: () => alert("Undo clicked"),
+    onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
   };
 
   //TODD: distinguish layout on top should be always opponent
@@ -72,6 +76,14 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
+      {rematchRequested && (
+        <RematchAlert
+          onAccept={() => {
+            //TODO: should be done with router
+            window.location.href = `/game/join/${rematchApproved}`;
+          }}
+        />
+      )}
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
         {gameID && (
           <>

@@ -20,6 +20,8 @@ export const useJoinGame = (
   const [winningSequence, setWinningSequence] = useState<
     SignalServerMessages.GameIsOverMessage["winningSequence"]
   >([]);
+  const [rematchRequested, setRematchRequested] = useState(false);
+  const [rematchApproved, setRematchApproved] = useState("");
   const {
     tiles,
     winner,
@@ -69,6 +71,14 @@ export const useJoinGame = (
           notification.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },
+        rematchRequested: async (message) => {
+          console.log("Rematch requested", message);
+          setRematchRequested(true);
+        },
+        rematchApproved: async (message) => {
+          console.log("Rematch approved", message);
+          setRematchApproved(message.gameId);
+        },
       });
       return () => {
         if (typeof unregister === "function") {
@@ -77,7 +87,7 @@ export const useJoinGame = (
       };
     }
     return;
-    //TODO: investigate how to memoise properly addTile
+    //TODO: investigate how to memoize properly addTile
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
@@ -113,5 +123,7 @@ export const useJoinGame = (
     whiteTimeLeft,
     activePlayer,
     winningSequence,
+    rematchRequested,
+    rematchApproved,
   };
 };

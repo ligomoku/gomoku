@@ -104,6 +104,54 @@ public class GameHub : Hub, IGameHub
 	}
 
 	[AllowAnonymous]
+	public async Task RequestRematch(RematchRequestMessage message)
+	{
+		_logger.LogInformation($"Requesting rematch. Message: {message}");
+		var playerId = GetPlayerId();
+
+		var rematchCommand = new RematchCommand()
+		{
+			GameId = message.GameId,
+			PlayerId = playerId,
+			IsApproval = false
+		};
+
+		var rematchResult = await _mediator.Send(rematchCommand);
+
+		if (rematchResult.IsSuccess)
+		{
+			await Clients.OthersInGroup(message.GameId).SendAsync(GameHubMethod.RequestRematch, playerId);
+		}
+		else
+		{
+			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
+		}
+	}
+
+	[AllowAnonymous]
+	public async Task ApproveRematch(RematchApprovalMessage message)
+	{
+		_logger.LogInformation($"Approving rematch. Message: {message}");
+
+		var rematchCommand = new RematchCommand()
+		{
+			GameId = message.GameId,
+			PlayerId = GetPlayerId()
+		};
+
+		var rematchResult = await _mediator.Send(rematchCommand);
+
+		if (rematchResult.IsSuccess)
+		{
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new { GameId = message.GameId, NewGameId = rematchResult.Value.GameId });
+		}
+		else
+		{
+			await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
+		}
+	}
+
+	[AllowAnonymous]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");
