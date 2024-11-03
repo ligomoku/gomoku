@@ -12,6 +12,10 @@ import {
 export const RematchAlert = ({ onAccept }: { onAccept: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
 
+  const handleAccept = () => {
+    setIsVisible(false);
+    onAccept();
+  };
   const handleDecline = () => setIsVisible(false);
 
   if (!isVisible) return null;
@@ -36,7 +40,7 @@ export const RematchAlert = ({ onAccept }: { onAccept: () => void }) => {
           <Button
             className="flex-1 bg-[#98C379] font-medium text-black hover:bg-[#89b46c]"
             size="lg"
-            onClick={onAccept}
+            onClick={handleAccept}
           >
             Accept
           </Button>
