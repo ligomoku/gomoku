@@ -13,13 +13,16 @@ export interface GameCreatorProps {
   isLoading: boolean;
 }
 
+const GAME_MIN_BOARD_SIZE = 13;
+const GAME_MAX_BOARD_SIZE = 19;
+
 export const GameCreator = ({
   isOpen,
   onClose,
   onCreate,
   isLoading,
 }: GameCreatorProps) => {
-  const [boardSize, setBoardSize] = useState(19);
+  const [boardSize, setBoardSize] = useState(GAME_MIN_BOARD_SIZE);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -49,10 +52,10 @@ export const GameCreator = ({
                 <Slider
                   id="boardSize"
                   //TODO: should be taken from validation of swagger schemas
-                  min={13}
-                  max={19}
+                  min={GAME_MIN_BOARD_SIZE}
+                  max={GAME_MAX_BOARD_SIZE}
                   step={2}
-                  value={[boardSize]}
+                  value={[GAME_MIN_BOARD_SIZE]}
                   onValueChange={(value) => setBoardSize(value[0])}
                 />
                 <div className="mt-1 text-center text-[#bababa]">

@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
-import { SignalClientMessages, SwaggerTypes } from "@/api";
+import {
+  SignalServerMessages,
+  SignalClientMessages,
+  SwaggerTypes,
+} from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
 
 export const useJoinGame = (
@@ -11,7 +15,11 @@ export const useJoinGame = (
   initialTimeInSeconds: number,
   incrementPerMove: number,
 ) => {
+  //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
+  const [winningSequence, setWinningSequence] = useState<
+    SignalServerMessages.GameIsOverMessage["winningSequence"]
+  >([]);
   const {
     tiles,
     winner,
@@ -53,8 +61,9 @@ export const useJoinGame = (
           addTile(tile, placedTileColor as TileColor);
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
-        onGameIsOver: ({ result }) => {
-          notification.show(formatErrorMessage(result));
+        onGameIsOver: (message) => {
+          notification.show(formatErrorMessage(message.result));
+          setWinningSequence(message.winningSequence);
         },
         onGameHubError: (error) => {
           notification.show(formatErrorMessage(error.message), "error");
@@ -97,5 +106,6 @@ export const useJoinGame = (
     blackTimeLeft,
     whiteTimeLeft,
     activePlayer,
+    winningSequence,
   };
 };
