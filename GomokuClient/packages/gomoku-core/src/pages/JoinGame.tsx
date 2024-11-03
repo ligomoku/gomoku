@@ -65,11 +65,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   //TODD: distinguish layout on top should be always opponent
   const players: GameTimeProps["players"] = [
     {
-      name: gameHistory.players.black || "Anonymous",
+      name: gameHistory.players.black?.userName || "Anonymous",
       color: "#7cb342",
     },
     {
-      name: gameHistory.players.white || "Anonymous",
+      name: gameHistory.players.white?.userName || "Anonymous",
       color: "#b0b0b0",
     },
   ];

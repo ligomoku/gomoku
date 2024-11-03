@@ -52,7 +52,7 @@ export type GetGameHistoryResponse = {
   boardSize: number;
   gen: string;
   movesCount: number;
-  players: UsernamesDto;
+  players: PlayersDto;
   isCompleted: boolean;
   winner?: string | null;
   winningSequence?: Array<TileDto> | null;
@@ -88,6 +88,17 @@ export type MakeMoveClientMessage = {
 export type PaginationMetadata = {
   hasMoreItems: boolean;
   totalCount: number;
+};
+
+export type PlayerDto = {
+  playerId: string;
+  userName: string;
+  color: string;
+};
+
+export type PlayersDto = {
+  black?: PlayerDto;
+  white?: PlayerDto;
 };
 
 export type ProblemDetails = {

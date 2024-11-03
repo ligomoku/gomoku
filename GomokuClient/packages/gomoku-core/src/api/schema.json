@@ -658,7 +658,7 @@
             "format": "int32"
           },
           "players": {
-            "$ref": "#/components/schemas/UsernamesDto"
+            "$ref": "#/components/schemas/PlayersDto"
           },
           "isCompleted": {
             "type": "boolean"
@@ -769,6 +769,37 @@
           "totalCount": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlayerDto": {
+        "required": ["color", "playerId", "userName"],
+        "type": "object",
+        "properties": {
+          "playerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "userName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "color": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlayersDto": {
+        "type": "object",
+        "properties": {
+          "black": {
+            "$ref": "#/components/schemas/PlayerDto"
+          },
+          "white": {
+            "$ref": "#/components/schemas/PlayerDto"
           }
         },
         "additionalProperties": false

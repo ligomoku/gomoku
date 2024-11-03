@@ -14,8 +14,8 @@ public class Game
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
-	private bool _rematchRequestedByBlack;
-	private bool _rematchRequestedByWhite;
+	private bool _rematchRequestedByBlack = false;
+	private bool _rematchRequestedByWhite = false;
 
 	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
@@ -235,7 +235,7 @@ public class Game
 		};
 	}
 
-	public Game? Rematch(string playerId, bool isApproval)
+	public RematchResult Rematch(string playerId, bool isApproval)
 	{
 		if (Status != GameStatus.Completed)
 		{
@@ -269,11 +269,7 @@ public class Game
 				var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
 				{
 					Opponents = new List<Profile>(Opponents),
-					Players = new Players
-					{
-						Black = Players.Black,
-						White = Players.White
-					},
+					Players = new Players { Black = Players.Black, White = Players.White },
 					Status = GameStatus.BothPlayersJoined,
 					NextMoveShouldMakePlayerId = Players.Black?.Id
 				};
@@ -281,11 +277,10 @@ public class Game
 				_rematchRequestedByBlack = false;
 				_rematchRequestedByWhite = false;
 
-				return newGame;
+				return RematchResult.Success(newGame);
 			}
-
-			return null;
 		}
+		return RematchResult.Failure(RematchValidationError.RematchNotAllowed, "Rematch not allowed. Either the game is still in progress or the player is not involved.");
 	}
 
 	public (bool isInvolved, Player? player) IsInvolved(string playerId)

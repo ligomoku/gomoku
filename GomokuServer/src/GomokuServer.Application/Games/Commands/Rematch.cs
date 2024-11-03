@@ -36,36 +36,37 @@ public class RematchCommandHandler : ICommandHandler<RematchCommand, RematchResp
 		return await ProcessRematch(getAnonymousGameResult, request);
 	}
 
-	private async Task<Result<RematchResponse>> ProcessRematch(Result<Game> getGameResult, RematchCommand request)
+	private Task<Result<RematchResponse>> ProcessRematch(Result<Game> getGameResult, RematchCommand request)
 	{
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
-			return Result.NotFound();
+			return Task.FromResult<Result<RematchResponse>>(Result.NotFound());
 		}
 
 		var game = getGameResult.Value;
 
 		if (!game.IsInvolved(request.PlayerId!).isInvolved)
 		{
-			return Result.Invalid(new ValidationError("Player is not involved in this game."));
+			return Task.FromResult<Result<RematchResponse>>(Result.Invalid(new ValidationError("Player is not involved in this game.")));
 		}
 
 		if (!request.IsApproval)
 		{
-			return Result.Success(new RematchResponse { GameId = request.GameId });
+			return Task.FromResult(Result.Success(new RematchResponse { GameId = request.GameId }));
 		}
 		else
 		{
 			var newGame = game.Rematch(request.PlayerId!, request.IsApproval);
 			if (newGame == null)
 			{
-				return Result.Invalid(new ValidationError("Rematch not allowed. Either the game is still in progress or the player is not involved."));
+				return Task.FromResult<Result<RematchResponse>>(Result.Invalid(new ValidationError("Rematch not allowed. Either the game is still in progress or the player is not involved.")));
 			}
 
-			var saveResult = await _registeredGamesRepository.SaveAsync(newGame)
-							?? await _anonymousGamesRepository.SaveAsync(newGame);
-
-			return saveResult.Map(_ => new RematchResponse { GameId = newGame.GameId });
+			// var saveResult = await _registeredGamesRepository.SaveAsync(newGame)
+			// 				?? await _anonymousGamesRepository.SaveAsync(newGame);
+			//
+			// return saveResult.Map(_ => new RematchResponse { GameId = newGame.GameId });
+			return Task.FromResult(Result.Success(new RematchResponse { GameId = newGame.NewGame!.GameId }));
 		}
 	}
 }

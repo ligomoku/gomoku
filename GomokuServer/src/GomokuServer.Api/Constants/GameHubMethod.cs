@@ -9,6 +9,6 @@ public class GameHubMethod
 	public const string SendMessage = nameof(SendMessage);
 	public const string GameHubError = nameof(GameHubError);
 	public const string GameIsOver = nameof(GameIsOver);
-	public const string RequestRematch = nameof(RequestRematch);
+	public const string RematchRequested = nameof(RematchRequested);
 	public const string RematchApproved = nameof(RematchApproved);
 }
