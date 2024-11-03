@@ -9,6 +9,7 @@ import type {
   RematchRequestMessage,
   ApproveRematchMessage,
   ChatMessageClientMessage,
+  GetClockMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
@@ -18,6 +19,7 @@ import type {
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
+import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
 
 export type IGameHub = {
   /**
@@ -50,6 +52,11 @@ export type IGameHub = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.GetClockMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  getClock(message: GetClockMessage): Promise<void>;
 };
 
 export type IGameHubReceiver = {
@@ -99,6 +106,11 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   sendMessage(messageRequest: ChatMessageClientMessage): Promise<void>;
+  /**
+   * @param clock Transpiled from GomokuServer.Application.Games.Dto.ClockDto
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  clock(clock: ClockDto): Promise<void>;
   /**
    * @param errorMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.ErrorMessage
    * @returns Transpiled from System.Threading.Tasks.Task

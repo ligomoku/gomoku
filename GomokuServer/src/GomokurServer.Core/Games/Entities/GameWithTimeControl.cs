@@ -5,7 +5,8 @@ using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Entities;
 
-public class GameWithTimeControl : Game
+public class
+	GameWithTimeControl : Game
 {
 	private readonly Clock _blackClock;
 	private readonly Clock _whiteClock;

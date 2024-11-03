@@ -36,6 +36,20 @@ public class GameHub : Hub, IGameHub
 	}
 
 	[AllowAnonymous]
+	public async Task GetClock(GetClockMessage message)
+	{
+		var getGameResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = message.GameId });
+
+		if (getGameResult.IsSuccess)
+		{
+			var game = getGameResult.Value;
+			var clock = game.Clock;
+
+			await Clients.Caller.SendAsync(GameHubMethod.Clock, clock);
+		}
+	}
+
+	[AllowAnonymous]
 	public async Task MakeMove(MakeMoveClientMessage message)
 	{
 		_logger.LogInformation($"Calling make move. Message: {message}");
@@ -147,7 +161,6 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
 	}
 
-	[AllowAnonymous]
 	public async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
 		_logger.LogInformation($"SendMessage called. {messageRequest}");

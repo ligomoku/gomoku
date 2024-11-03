@@ -44,9 +44,8 @@ const JoinGameComponent = ({
 }: {
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
-  const [playerID, setPlayerID] = useState<
-    SwaggerTypes.AddPlayerToGameResponse["playerId"] | null
-  >();
+  const [playerID, setPlayerID] =
+    useState<SwaggerTypes.AddPlayerToGameResponse["playerId"]>();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 
@@ -89,13 +88,13 @@ const JoinGameComponent = ({
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
+  const calculatePlayerID = jwtToken
+    ? playerID
+    : typedSessionStorage.getItem(`game_${gameID}`);
+
   return (
-    <SignalRProvider
-      playerID={
-        jwtToken ? playerID : typedSessionStorage.getItem(`game_${gameID}`)
-      }
-    >
-      <JoinGame gameHistory={gameHistory} />
+    <SignalRProvider playerID={calculatePlayerID}>
+      <JoinGame gameHistory={gameHistory} playerID={calculatePlayerID!} />
     </SignalRProvider>
   );
 };

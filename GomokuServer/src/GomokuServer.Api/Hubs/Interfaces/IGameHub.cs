@@ -16,6 +16,8 @@ public interface IGameHub
 	Task ApproveRematch(ApproveRematchMessage message);
 
 	Task SendMessage(ChatMessageClientMessage messageRequest);
+
+	Task GetClock(GetClockMessage message);
 }
 
 [Receiver]
@@ -36,6 +38,8 @@ public interface IGameHubReceiver
 	Task GameIsOver(GameIsOverMessage gameIsOverMessage);
 
 	Task SendMessage(ChatMessageClientMessage messageRequest);
+
+	Task Clock(ClockDto clock);
 
 	Task GameHubError(ErrorMessage errorMessage);
 }

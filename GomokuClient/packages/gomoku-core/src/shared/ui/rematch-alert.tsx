@@ -9,14 +9,22 @@ import {
   CardTitle,
 } from "./card";
 
-export const RematchAlert = ({ onAccept }: { onAccept: () => void }) => {
+interface RematchAlertProps {
+  onAccept: () => void;
+  onDecline: () => void;
+}
+
+export const RematchAlert = ({ onAccept, onDecline }: RematchAlertProps) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleAccept = () => {
-    setIsVisible(false);
+    setIsVisible(true);
     onAccept();
   };
-  const handleDecline = () => setIsVisible(false);
+  const handleDecline = () => {
+    setIsVisible(false);
+    onDecline();
+  };
 
   if (!isVisible) return null;
 

@@ -1,5 +1,8 @@
-﻿namespace GomokuServer.Application.Games.Dto;
+﻿using Tapper;
 
+namespace GomokuServer.Application.Games.Dto;
+
+[TranspilationSource]
 public record ClockDto(int Black, int White)
 {
 	[Required]

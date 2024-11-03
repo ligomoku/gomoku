@@ -163,7 +163,7 @@ export const GameTime = ({
 );
 
 // Utility function to convert seconds into MM:SS format
-const secondsToString = (seconds: number) =>
+export const secondsToString = (seconds: number) =>
   `${Math.floor(seconds / 60)
     .toString()
     .padStart(2, "0")}:${Math.floor(seconds % 60)

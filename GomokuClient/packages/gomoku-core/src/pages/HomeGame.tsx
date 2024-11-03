@@ -135,38 +135,39 @@ const useFetchActiveGames = (authToken: string) =>
 
 export const gameTypes: GameType[] = [
   {
-    timeLabel: "5+0",
-    type: t`Blitz`,
-    boardSize: 19,
+    timeLabel: "1+0",
+    type: t`Bullet`,
+    boardSize: 13,
     timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
   },
   {
-    timeLabel: "10+0",
-    type: t`Rapid`,
+    timeLabel: "5+0",
+    type: t`Blitz`,
     boardSize: 13,
     timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
   },
   {
-    timeLabel: "15+5",
+    timeLabel: "7+0",
+    type: t`Rapid`,
+    boardSize: 17,
+    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 5 },
+  },
+  {
+    timeLabel: "10+0",
+    type: t`Rapid`,
+    boardSize: 17,
+    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
+  },
+  {
+    timeLabel: "15+0",
     type: t`Rapid`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 5 },
+    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
   },
   {
     timeLabel: "30+0",
     type: t`Classic`,
     boardSize: 19,
     timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
-  },
-  {
-    timeLabel: 1 + t`day`,
-    type: t`Correspondence`,
-    boardSize: 13,
-  },
-  {
-    timeLabel: "Custom",
-    type: "",
-    //TODO: should be logic for custom time control inside the component itself
-    boardSize: 13,
   },
 ];

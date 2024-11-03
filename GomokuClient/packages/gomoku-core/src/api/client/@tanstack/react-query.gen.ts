@@ -27,6 +27,7 @@ import type {
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
   PostGamehubJoinGameGroupData,
+  PostGamehubGetClockData,
   PostGamehubMakeMoveData,
   PostGamehubResignData,
   PostGamehubRequestRematchData,
@@ -43,6 +44,7 @@ import {
   getHealth,
   getApiProfilesByUserNameGames,
   postGamehubJoinGameGroup,
+  postGamehubGetClock,
   postGamehubMakeMove,
   postGamehubResign,
   postGamehubRequestRematch,
@@ -479,6 +481,47 @@ export const postGamehubJoinGameGroupMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postGamehubJoinGameGroup({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubGetClockQueryKey = (
+  options?: Options<PostGamehubGetClockData>,
+) => [createQueryKey("postGamehubGetClock", options)];
+
+export const postGamehubGetClockOptions = (
+  options?: Options<PostGamehubGetClockData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubGetClock({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubGetClockQueryKey(options),
+  });
+};
+
+export const postGamehubGetClockMutation = (
+  options?: Partial<Options<PostGamehubGetClockData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubGetClockData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubGetClock({
         ...options,
         ...localOptions,
         throwOnError: true,

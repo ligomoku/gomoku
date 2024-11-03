@@ -114,6 +114,7 @@ export const useSignalR = (
         rematchApproved: async (message) => handlers.rematchApproved?.(message),
         rematchRequested: async (message) =>
           handlers.rematchRequested?.(message),
+        clock: async (message) => handlers.clock?.(message),
       };
 
       const disposable = SignalRClientService.getReceiverRegister(

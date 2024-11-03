@@ -17,6 +17,7 @@ const GAME_MIN_BOARD_SIZE = 13;
 const GAME_MAX_BOARD_SIZE = 19;
 
 export const GameCreator = ({
+  //TODO: extend to accept board size as custom prop in order to pass from interval to slider
   isOpen,
   onClose,
   onCreate,

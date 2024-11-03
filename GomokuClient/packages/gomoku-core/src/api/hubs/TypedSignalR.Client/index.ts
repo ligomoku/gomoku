@@ -13,6 +13,7 @@ import type {
   RematchRequestMessage,
   ApproveRematchMessage,
   ChatMessageClientMessage,
+  GetClockMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
@@ -22,6 +23,7 @@ import type {
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
+import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
 
 // components
 
@@ -125,6 +127,12 @@ class IGameHub_HubProxy implements IGameHub {
   ): Promise<void> => {
     return await this.connection.invoke("SendMessage", messageRequest);
   };
+
+  public readonly getClock = async (
+    message: GetClockMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("GetClock", message);
+  };
 }
 
 // Receiver
@@ -154,6 +162,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameIsOver(...args);
     const __sendMessage = (...args: [ChatMessageClientMessage]) =>
       receiver.sendMessage(...args);
+    const __clock = (...args: [ClockDto]) => receiver.clock(...args);
     const __gameHubError = (...args: [ErrorMessage]) =>
       receiver.gameHubError(...args);
 
@@ -165,6 +174,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("RematchRequested", __rematchRequested);
     connection.on("GameIsOver", __gameIsOver);
     connection.on("SendMessage", __sendMessage);
+    connection.on("Clock", __clock);
     connection.on("GameHubError", __gameHubError);
 
     const methodList: ReceiverMethod[] = [
@@ -176,6 +186,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "RematchRequested", method: __rematchRequested },
       { methodName: "GameIsOver", method: __gameIsOver },
       { methodName: "SendMessage", method: __sendMessage },
+      { methodName: "Clock", method: __clock },
       { methodName: "GameHubError", method: __gameHubError },
     ];
 
