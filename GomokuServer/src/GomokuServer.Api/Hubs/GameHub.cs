@@ -106,13 +106,16 @@ public class GameHub : Hub, IGameHub
 	[AllowAnonymous]
 	public async Task RequestRematch(RematchRequestMessage message)
 	{
-		var query = new GetGameHistoryQuery { GameId = message.GameId };
+		var getGameHistoryResult = await _mediator.Send(new GetGameHistoryQuery { GameId = message.GameId });
 
-		var getGameHistoryResult = await _mediator.Send(query);
+		if (getGameHistoryResult.IsSuccess)
+		{
+			var opponent = GetPlayerId() != getGameHistoryResult.Value.Players.Black!.PlayerId ? getGameHistoryResult.Value.Players.Black : getGameHistoryResult.Value.Players.White;
+			await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.RematchRequested, getGameHistoryResult.Value.Players.Black.PlayerId);
+			return;
+		}
 
-		var opponent = GetPlayerId() != getGameHistoryResult.Value.Players.Black!.PlayerId ? getGameHistoryResult.Value.Players.Black : getGameHistoryResult.Value.Players.White;
-
-		await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.RematchRequested, getGameHistoryResult.Value.Players.Black.PlayerId);
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, getGameHistoryResult.GetHubError());
 	}
 
 	[AllowAnonymous]
@@ -130,9 +133,10 @@ public class GameHub : Hub, IGameHub
 
 		if (rematchResult.IsSuccess)
 		{
-			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new { GameId = message.GameId, NewGameId = rematchResult.Value.GameId });
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new RematchApprovedMessage { GameId = message.GameId });
 			return;
 		}
+
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
 	}
 
