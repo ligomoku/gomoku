@@ -3,11 +3,12 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
 import {
-  SignalServerMessages,
   SignalClientMessages,
+  SignalServerMessages,
   SwaggerTypes,
 } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
+import { useNavigate } from "@tanstack/react-router";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
@@ -21,7 +22,6 @@ export const useJoinGame = (
     SignalServerMessages.GameIsOverMessage["winningSequence"]
   >([]);
   const [rematchRequested, setRematchRequested] = useState(false);
-  const [rematchApproved, setRematchApproved] = useState("");
   const {
     tiles,
     winner,
@@ -38,6 +38,8 @@ export const useJoinGame = (
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isConnected && gameID && hubProxy) {
@@ -77,7 +79,10 @@ export const useJoinGame = (
         },
         rematchApproved: async (message) => {
           console.log("Rematch approved", message);
-          setRematchApproved(message.gameId);
+          navigate({
+            to: "/game/join/$gameID",
+            params: { gameID: message.newGameId },
+          });
         },
       });
       return () => {
@@ -124,6 +129,5 @@ export const useJoinGame = (
     activePlayer,
     winningSequence,
     rematchRequested,
-    rematchApproved,
   };
 };

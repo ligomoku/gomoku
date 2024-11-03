@@ -2,6 +2,12 @@
 /* eslint-disable */
 /* tslint:disable */
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.ApproveRematchMessage */
+export type ApproveRematchMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.MakeMoveClientMessage */
 export type MakeMoveClientMessage = {
   /** Transpiled from string */
@@ -10,12 +16,6 @@ export type MakeMoveClientMessage = {
   x: number;
   /** Transpiled from int */
   y: number;
-};
-
-/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchApprovalMessage */
-export type RematchApprovalMessage = {
-  /** Transpiled from string */
-  gameId: string;
 };
 
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage */

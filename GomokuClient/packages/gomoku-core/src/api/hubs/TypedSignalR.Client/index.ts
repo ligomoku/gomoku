@@ -11,13 +11,14 @@ import type {
   MakeMoveClientMessage,
   ResignClientMessage,
   RematchRequestMessage,
-  RematchApprovalMessage,
+  ApproveRematchMessage,
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
+  RematchApprovedMessage,
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
@@ -114,7 +115,7 @@ class IGameHub_HubProxy implements IGameHub {
   };
 
   public readonly approveRematch = async (
-    message: RematchApprovalMessage,
+    message: ApproveRematchMessage,
   ): Promise<void> => {
     return await this.connection.invoke("ApproveRematch", message);
   };
@@ -145,7 +146,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameStarted(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
-    const __rematchApproved = (...args: [RematchApprovalMessage]) =>
+    const __rematchApproved = (...args: [RematchApprovedMessage]) =>
       receiver.rematchApproved(...args);
     const __rematchRequested = (...args: [RematchRequestMessage]) =>
       receiver.rematchRequested(...args);

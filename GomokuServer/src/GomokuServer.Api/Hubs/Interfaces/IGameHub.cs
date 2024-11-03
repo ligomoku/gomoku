@@ -13,7 +13,7 @@ public interface IGameHub
 
 	Task RequestRematch(RematchRequestMessage message);
 
-	Task ApproveRematch(RematchApprovalMessage message);
+	Task ApproveRematch(ApproveRematchMessage message);
 
 	Task SendMessage(ChatMessageClientMessage messageRequest);
 }
@@ -29,7 +29,7 @@ public interface IGameHubReceiver
 
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);
 
-	Task RematchApproved(RematchApprovalMessage rematchApprovedMessage);
+	Task RematchApproved(RematchApprovedMessage rematchApprovedMessage);
 
 	Task RematchRequested(RematchRequestMessage rematchRequestedMessage);
 

@@ -126,7 +126,7 @@ public class GameHub : Hub, IGameHub
 	}
 
 	[AllowAnonymous]
-	public async Task ApproveRematch(RematchApprovalMessage message)
+	public async Task ApproveRematch(ApproveRematchMessage message)
 	{
 		_logger.LogInformation($"Approving rematch. Message: {message}");
 

@@ -33,7 +33,6 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     activePlayer,
     moves,
     winningSequence,
-    rematchApproved,
     rematchRequested,
   } = useJoinGame(gameID, gameHistory.boardSize, 300, 10);
 

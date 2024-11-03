@@ -7,13 +7,14 @@ import type {
   MakeMoveClientMessage,
   ResignClientMessage,
   RematchRequestMessage,
-  RematchApprovalMessage,
+  ApproveRematchMessage,
   ChatMessageClientMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
+  RematchApprovedMessage,
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
@@ -40,10 +41,10 @@ export type IGameHub = {
    */
   requestRematch(message: RematchRequestMessage): Promise<void>;
   /**
-   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchApprovalMessage
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.ApproveRematchMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  approveRematch(message: RematchApprovalMessage): Promise<void>;
+  approveRematch(message: ApproveRematchMessage): Promise<void>;
   /**
    * @param messageRequest Transpiled from GomokuServer.Api.Hubs.Messages.Client.ChatMessageClientMessage
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -75,11 +76,11 @@ export type IGameHubReceiver = {
    */
   playerMadeMove(playerMadeMoveMessage: PlayerMadeMoveMessage): Promise<void>;
   /**
-   * @param rematchApprovedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchApprovalMessage
+   * @param rematchApprovedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.RematchApprovedMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   rematchApproved(
-    rematchApprovedMessage: RematchApprovalMessage,
+    rematchApprovedMessage: RematchApprovedMessage,
   ): Promise<void>;
   /**
    * @param rematchRequestedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage
