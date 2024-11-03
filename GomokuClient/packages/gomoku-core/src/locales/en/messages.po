@@ -25,7 +25,7 @@ msgstr ""
 msgid "5,247 players online"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:139
+#: src/pages/HomeGame.tsx:145
 msgid "Blitz"
 msgstr ""
 
@@ -37,6 +37,10 @@ msgstr ""
 #~ msgid "Blog Posts"
 #~ msgstr ""
 
+#: src/pages/HomeGame.tsx:139
+msgid "Bullet"
+msgstr ""
+
 #: src/features/Chat/Chat.tsx:99
 msgid "characters"
 msgstr ""
@@ -45,7 +49,7 @@ msgstr ""
 msgid "Chat"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:157
+#: src/pages/HomeGame.tsx:169
 msgid "Classic"
 msgstr ""
 
@@ -58,16 +62,16 @@ msgid "Connecting..."
 msgstr ""
 
 #: src/pages/HomeGame.tsx:163
-msgid "Correspondence"
-msgstr ""
+#~ msgid "Correspondence"
+#~ msgstr ""
 
 #: src/pages/HomeGame.tsx:75
 msgid "CREATE A GAME"
 msgstr ""
 
 #: src/pages/HomeGame.tsx:162
-msgid "day"
-msgstr ""
+#~ msgid "day"
+#~ msgstr ""
 
 #: src/pages/Profile.tsx:66
 #~ msgid "Forum Posts"
@@ -133,8 +137,9 @@ msgstr ""
 msgid "Quick pairing"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:145
 #: src/pages/HomeGame.tsx:151
+#: src/pages/HomeGame.tsx:157
+#: src/pages/HomeGame.tsx:163
 msgid "Rapid"
 msgstr ""
 
