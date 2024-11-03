@@ -46,6 +46,7 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
 				IsCompleted = game.Status == GameStatus.Completed,
 				Winner = game.Winner?.UserName,
+				WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList(),
 				MovesHistory = game.MovesHistory.ToDictionary(
 					keyValuePair => keyValuePair.Key,
 					keyValuePair => new TileDto(keyValuePair.Value.X, keyValuePair.Value.Y)

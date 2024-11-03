@@ -55,6 +55,7 @@ export type GetGameHistoryResponse = {
   players: UsernamesDto;
   isCompleted: boolean;
   winner?: string | null;
+  winningSequence?: Array<TileDto> | null;
   movesHistory: {
     [key: string]: TileDto;
   };

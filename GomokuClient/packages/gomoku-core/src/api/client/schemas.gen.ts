@@ -186,6 +186,13 @@ export const GetGameHistoryResponseSchema = {
       type: "string",
       nullable: true,
     },
+    winningSequence: {
+      type: "array",
+      items: {
+        $ref: "#/components/schemas/TileDto",
+      },
+      nullable: true,
+    },
     movesHistory: {
       type: "object",
       additionalProperties: {

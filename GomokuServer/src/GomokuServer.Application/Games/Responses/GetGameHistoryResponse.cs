@@ -19,6 +19,8 @@ public class GetGameHistoryResponse
 
 	public string? Winner { get; init; }
 
+	public List<TileDto>? WinningSequence { get; init; }
+
 	[Required]
 	public required IReadOnlyDictionary<int, TileDto> MovesHistory { get; init; }
 
