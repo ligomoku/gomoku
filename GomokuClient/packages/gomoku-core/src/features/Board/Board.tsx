@@ -39,7 +39,7 @@ const Tile = memo(
     return col !== null ? (
       <div
         key={`${xIndex}-${yIndex}`}
-        className={`relative flex items-center justify-center border border-black ${isLastTile ? "bg-amber-400" : ""} ${isWinningTile ? "bg-green-400" : ""} `}
+        className={`relative flex items-center justify-center border border-black ${isLastTile ? "bg-amber-400" : ""} ${isWinningTile ? "bg-amber-200" : ""} `}
       >
         <div
           className={tileStyles({

@@ -36,7 +36,9 @@ export const TimeControls = ({
             <h3 className="text-xl font-bold text-[#bababa] sm:text-3xl">
               {game.timeLabel}
             </h3>
-            <p className="text-sm text-[#999999] sm:text-xl">{game.type}</p>
+            <p className="truncate text-sm text-[#999999] sm:text-xl">
+              {game.type}
+            </p>
             <p className="text-xs text-[#999999] sm:text-lg">
               Board size: {game.boardSize}{" "}
             </p>

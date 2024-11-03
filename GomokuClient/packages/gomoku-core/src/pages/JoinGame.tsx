@@ -104,7 +104,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 size={gameHistory.boardSize || 19}
                 onTileClick={(x, y) => handleMove(x, y)}
                 style={{ order: isMobile ? 1 : "unset" }}
-                winningSequence={winningSequence}
+                winningSequence={gameHistory.winningSequence ?? winningSequence}
               />
               <div
                 className={isMobile ? "mt-4 flex w-full justify-center" : ""}
