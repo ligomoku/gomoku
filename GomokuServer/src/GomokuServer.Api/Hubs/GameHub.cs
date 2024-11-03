@@ -110,8 +110,15 @@ public class GameHub : Hub, IGameHub
 
 		if (getGameHistoryResult.IsSuccess)
 		{
-			var opponent = GetPlayerId() != getGameHistoryResult.Value.Players.Black!.PlayerId ? getGameHistoryResult.Value.Players.Black : getGameHistoryResult.Value.Players.White;
-			await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.RematchRequested, getGameHistoryResult.Value.Players.Black.PlayerId);
+			var gameHistory = getGameHistoryResult.Value;
+			if (!gameHistory.IsCompleted)
+			{
+				await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Game is not over yet"));
+				return;
+			}
+
+			var opponent = GetPlayerId() != gameHistory.Players.Black!.PlayerId ? gameHistory.Players.Black : gameHistory.Players.White;
+			await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.RematchRequested, gameHistory.Players.Black.PlayerId);
 			return;
 		}
 
