@@ -66,7 +66,8 @@ public class GameHub : Hub, IGameHub
 			{
 				var gameResult = new GameIsOverMessage()
 				{
-					Result = $"{placeTileResponse.PlacedTileColor.ToCamelCase()}Won"
+					Result = $"{placeTileResponse.PlacedTileColor.ToCamelCase()}Won",
+					WinningSequence = placeTileResponse.WinningSequence
 				};
 				await Clients.Group(message.GameId).SendAsync(GameHubMethod.GameIsOver, gameResult);
 			}

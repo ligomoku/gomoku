@@ -13,6 +13,8 @@ export type ErrorMessage = {
 export type GameIsOverMessage = {
   /** Transpiled from string */
   result: string;
+  /** Transpiled from System.Collections.Generic.List<GomokuServer.Application.Games.Dto.TileDto>? */
+  winningSequence?: TileDto[];
 };
 
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage */
