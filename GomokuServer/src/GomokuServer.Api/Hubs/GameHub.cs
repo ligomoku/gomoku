@@ -106,7 +106,6 @@ public class GameHub : Hub, IGameHub
 	[AllowAnonymous]
 	public async Task RequestRematch(RematchRequestMessage message)
 	{
-		Console.WriteLine("Requesting rematch. Message: {0}", message);
 		var query = new GetGameHistoryQuery { GameId = message.GameId };
 
 		var getGameHistoryResult = await _mediator.Send(query);

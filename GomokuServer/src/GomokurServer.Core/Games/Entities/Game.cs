@@ -14,9 +14,6 @@ public class Game
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
-	private bool _rematchRequestedByBlack = false;
-	private bool _rematchRequestedByWhite = false;
-
 	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		_gameBoard = new GameBoard(boardSize);
@@ -235,52 +232,38 @@ public class Game
 		};
 	}
 
-	public RematchResult Rematch(string playerId, bool isApproval)
+	public RematchResult Rematch(string playerId)
 	{
 		if (Status != GameStatus.Completed)
 		{
-			return null;
+			return new()
+			{
+				IsValid = false,
+				ValidationError = RematchValidationError.GameIsOver,
+				ErrorDetails = $"Game is over. {Result.GetString()}",
+			};
 		}
 
-		var (isInvolved, currentPlayer) = IsInvolved(playerId);
+		var (isInvolved, _) = IsInvolved(playerId);
 		if (!isInvolved)
 		{
-			return null;
+			return new()
+			{
+				IsValid = false,
+				ValidationError = RematchValidationError.PlayerIsNotInvolvedInAGame,
+				ErrorDetails = "Player is not involved in the game"
+			};
 		}
 
-		if (!isApproval)
-		{
-			if (currentPlayer!.Color == TileColor.Black)
-			{
-				_rematchRequestedByBlack = true;
-			}
-			else if (currentPlayer!.Color == TileColor.White)
-			{
-				_rematchRequestedByWhite = true;
-			}
+		var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
+        {
+         	Opponents = new List<Profile>(Opponents),
+         	Players = new Players { Black = Players.Black, White = Players.White },
+         	Status = GameStatus.BothPlayersJoined,
+         	NextMoveShouldMakePlayerId = Players.Black?.Id
+        };
 
-			return null;
-		}
-		else
-		{
-			if ((currentPlayer!.Color == TileColor.Black && _rematchRequestedByWhite) ||
-				(currentPlayer.Color == TileColor.White && _rematchRequestedByBlack))
-			{
-				var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
-				{
-					Opponents = new List<Profile>(Opponents),
-					Players = new Players { Black = Players.Black, White = Players.White },
-					Status = GameStatus.BothPlayersJoined,
-					NextMoveShouldMakePlayerId = Players.Black?.Id
-				};
-
-				_rematchRequestedByBlack = false;
-				_rematchRequestedByWhite = false;
-
-				return RematchResult.Success(newGame);
-			}
-		}
-		return RematchResult.Failure(RematchValidationError.RematchNotAllowed, "Rematch not allowed. Either the game is still in progress or the player is not involved.");
+        return RematchResult.Success(newGame);
 	}
 
 	public (bool isInvolved, Player? player) IsInvolved(string playerId)

@@ -5,7 +5,6 @@ public record RematchCommand : ICommand<RematchResponse>
 	[Required]
 	public required string GameId { get; init; }
 	public string? PlayerId { get; init; }
-	public bool IsApproval { get; init; }
 }
 
 public class RematchCommandHandler : ICommandHandler<RematchCommand, RematchResponse>
@@ -29,44 +28,30 @@ public class RematchCommandHandler : ICommandHandler<RematchCommand, RematchResp
 		var getRegisteredGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
 		if (getRegisteredGameResult.IsSuccess)
 		{
-			return await ProcessRematch(getRegisteredGameResult, request);
+			return await ProcessRematch(_registeredGamesRepository, getRegisteredGameResult, request);
 		}
 
 		var getAnonymousGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
-		return await ProcessRematch(getAnonymousGameResult, request);
+		return await ProcessRematch(_anonymousGamesRepository, getAnonymousGameResult, request);
 	}
 
-	private Task<Result<RematchResponse>> ProcessRematch(Result<Game> getGameResult, RematchCommand request)
+	private async Task<Result<RematchResponse>> ProcessRematch(IGamesRepository gamesRepository, Result<Game> getGameResult, RematchCommand request)
 	{
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
-			return Task.FromResult<Result<RematchResponse>>(Result.NotFound());
+			return Result.NotFound();
 		}
-
+		
 		var game = getGameResult.Value;
+		var rematchResult = game.Rematch(request.PlayerId!);
 
-		if (!game.IsInvolved(request.PlayerId!).isInvolved)
+		if (!rematchResult.IsValid)
 		{
-			return Task.FromResult<Result<RematchResponse>>(Result.Invalid(new ValidationError("Player is not involved in this game.")));
+			return Result.Invalid(new ValidationError(rematchResult.ErrorDetails));
 		}
 
-		if (!request.IsApproval)
-		{
-			return Task.FromResult(Result.Success(new RematchResponse { GameId = request.GameId }));
-		}
-		else
-		{
-			var newGame = game.Rematch(request.PlayerId!, request.IsApproval);
-			if (newGame == null)
-			{
-				return Task.FromResult<Result<RematchResponse>>(Result.Invalid(new ValidationError("Rematch not allowed. Either the game is still in progress or the player is not involved.")));
-			}
+		var saveResult = await gamesRepository.SaveAsync(rematchResult.NewGame!);
 
-			// var saveResult = await _registeredGamesRepository.SaveAsync(newGame)
-			// 				?? await _anonymousGamesRepository.SaveAsync(newGame);
-			//
-			// return saveResult.Map(_ => new RematchResponse { GameId = newGame.GameId });
-			return Task.FromResult(Result.Success(new RematchResponse { GameId = newGame.NewGame!.GameId }));
-		}
+		return saveResult.Map(_ => new RematchResponse() { GameId = rematchResult.NewGame!.GameId });
 	}
 }
