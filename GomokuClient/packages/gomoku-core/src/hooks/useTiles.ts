@@ -112,6 +112,7 @@ export const useTiles = (
         switchPlayer();
       }
     },
+    //TODO: causing still renders on event listening in proxy register effect hook
     [isGameOver, winner, onEndGame, switchPlayer],
   );
 
