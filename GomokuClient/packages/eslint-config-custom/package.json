@@ -10,12 +10,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@eslint/js": "^9.13.0",
+    "@eslint/js": "^9.14.0",
     "@tanstack/eslint-plugin-query": "^5.59.7",
-    "eslint": "^9.13.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc-fb9a90fa48-20240614",
-    "eslint-plugin-react-refresh": "^0.4.13",
-    "eslint-plugin-storybook": "^0.10.1",
-    "typescript-eslint": "^8.11.0"
+    "eslint": "^9.14.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "eslint-plugin-storybook": "^0.10.2",
+    "typescript-eslint": "^8.12.2"
   }
 }
