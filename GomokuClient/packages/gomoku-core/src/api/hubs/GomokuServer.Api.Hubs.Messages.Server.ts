@@ -38,9 +38,3 @@ export type PlayerMadeMoveMessage = {
   /** Transpiled from string */
   placedTileColor: string;
 };
-
-/** Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerResignedMessage */
-export type PlayerResignedMessage = {
-  /** Transpiled from string */
-  playerId: string;
-};

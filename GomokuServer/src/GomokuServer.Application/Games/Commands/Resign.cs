@@ -1,7 +1,8 @@
-﻿
+﻿using GomokuServer.Core.Games.Extensions;
+
 namespace GomokuServer.Application.Games.Commands;
 
-public record ResignCommand : ICommand
+public record ResignCommand : ICommand<ResignResponse>
 {
 	[Required]
 	public required string GameId { get; init; }
@@ -9,7 +10,7 @@ public record ResignCommand : ICommand
 	public string? PlayerId { get; init; }
 }
 
-public class ResignCommandHandler : ICommandHandler<ResignCommand>
+public class ResignCommandHandler : ICommandHandler<ResignCommand, ResignResponse>
 {
 	private readonly IRegisteredGamesRepository _registeredGamesRepository;
 	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
@@ -20,7 +21,7 @@ public class ResignCommandHandler : ICommandHandler<ResignCommand>
 		_anonymousGamesRepository = anonymousGamesRepository;
 	}
 
-	public async Task<Result> Handle(ResignCommand request, CancellationToken cancellationToken)
+	public async Task<Result<ResignResponse>> Handle(ResignCommand request, CancellationToken cancellationToken)
 	{
 		if (request.PlayerId == null)
 		{
@@ -38,7 +39,7 @@ public class ResignCommandHandler : ICommandHandler<ResignCommand>
 		return await TryResign(_anonymousGamesRepository, getAnonymousGameResult, request.PlayerId);
 	}
 
-	public async Task<Result> TryResign(IGamesRepository gamesRepository, Result<Game> getGameResult, string playerId)
+	public async Task<Result<ResignResponse>> TryResign(IGamesRepository gamesRepository, Result<Game> getGameResult, string playerId)
 	{
 		if (getGameResult.Status == ResultStatus.NotFound)
 		{
@@ -50,9 +51,11 @@ public class ResignCommandHandler : ICommandHandler<ResignCommand>
 
 		if (!resignResult.IsValid)
 		{
-			return Result.Invalid(new ValidationError(resignResult.ValidationError.ToString()));
+			return Result.Invalid(new ValidationError(resignResult.ErrorDetails));
 		}
 
-		return await gamesRepository.SaveAsync(game);
+		var saveResult = await gamesRepository.SaveAsync(game);
+
+		return saveResult.Map(_ => new ResignResponse() { Winner = new PlayerDto(game.Winner!.Id, game.Winner.UserName, game.Winner.Color.GetString()) });
 	}
 }

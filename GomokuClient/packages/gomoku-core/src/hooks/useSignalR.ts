@@ -25,9 +25,6 @@ export interface SignalREventHandlers {
     message: SignalClientMessages.ChatMessageClientMessage,
   ) => void;
   onGameHubError?: (error: SignalServerMessages.ErrorMessage) => void;
-  onPlayerResigned?: (
-    message: SignalServerMessages.PlayerResignedMessage,
-  ) => void;
   onGameIsOver?: (message: SignalServerMessages.GameIsOverMessage) => void;
 }
 
@@ -133,7 +130,6 @@ export const useSignalR = (
         playerMadeMove: async (message) => handlers.onPlayerMadeMove?.(message),
         sendMessage: async (message) => handlers.onReceiveMessage?.(message),
         gameHubError: async (error) => handlers.onGameHubError?.(error),
-        playerResigned: async (message) => handlers.onPlayerResigned?.(message),
         gameIsOver: async (message) => handlers.onGameIsOver?.(message),
       };
 

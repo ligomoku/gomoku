@@ -16,7 +16,6 @@ import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
-  PlayerResignedMessage,
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
@@ -132,8 +131,6 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameStarted(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
-    const __playerResigned = (...args: [PlayerResignedMessage]) =>
-      receiver.playerResigned(...args);
     const __gameIsOver = (...args: [GameIsOverMessage]) =>
       receiver.gameIsOver(...args);
     const __sendMessage = (...args: [ChatMessageClientMessage]) =>
@@ -145,7 +142,6 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
     connection.on("PlayerMadeMove", __playerMadeMove);
-    connection.on("PlayerResigned", __playerResigned);
     connection.on("GameIsOver", __gameIsOver);
     connection.on("SendMessage", __sendMessage);
     connection.on("GameHubError", __gameHubError);
@@ -155,7 +151,6 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
-      { methodName: "PlayerResigned", method: __playerResigned },
       { methodName: "GameIsOver", method: __gameIsOver },
       { methodName: "SendMessage", method: __sendMessage },
       { methodName: "GameHubError", method: __gameHubError },

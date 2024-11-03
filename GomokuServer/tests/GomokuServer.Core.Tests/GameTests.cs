@@ -427,6 +427,7 @@ public class GameTests
 		// Assert
 		resignResult.IsValid.Should().BeFalse();
 		resignResult.ValidationError.Should().Be(ResignValidationError.GameIsOver);
+		resignResult.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]

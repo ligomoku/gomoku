@@ -25,8 +25,6 @@ public interface IGameHubReceiver
 
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);
 
-	Task PlayerResigned(PlayerResignedMessage playerResignedMessage);
-
 	Task GameIsOver(GameIsOverMessage gameIsOverMessage);
 
 	Task SendMessage(ChatMessageClientMessage messageRequest);

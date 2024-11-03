@@ -12,7 +12,6 @@ import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   PlayerMadeMoveMessage,
-  PlayerResignedMessage,
   GameIsOverMessage,
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
@@ -63,11 +62,6 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   playerMadeMove(playerMadeMoveMessage: PlayerMadeMoveMessage): Promise<void>;
-  /**
-   * @param playerResignedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerResignedMessage
-   * @returns Transpiled from System.Threading.Tasks.Task
-   */
-  playerResigned(playerResignedMessage: PlayerResignedMessage): Promise<void>;
   /**
    * @param gameIsOverMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameIsOverMessage
    * @returns Transpiled from System.Threading.Tasks.Task
