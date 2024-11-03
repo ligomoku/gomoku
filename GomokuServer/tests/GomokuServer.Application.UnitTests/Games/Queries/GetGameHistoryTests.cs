@@ -60,8 +60,8 @@ public class GetGameHistoryTests
 		result.Status.Should().Be(ResultStatus.Ok);
 
 		var getGameResponse = result.Value;
-		getGameResponse.Players!.Black!.Should().Be(game.Players!.Black!.UserName);
-		getGameResponse.Players!.White!.Should().Be(game.Players!.White!.UserName);
+		getGameResponse.Players!.Black!.UserName!.Should().Be(game.Players!.Black!.UserName);
+		getGameResponse.Players!.White!.UserName.Should().Be(game.Players!.White!.UserName);
 		getGameResponse.MovesHistory.Should().BeEmpty();
 		getGameResponse.IsCompleted.Should().BeFalse();
 
