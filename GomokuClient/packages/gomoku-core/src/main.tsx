@@ -24,10 +24,11 @@ if (import.meta.env.MODE === "production") {
       Sentry.replayIntegration(),
     ],
     tracesSampleRate: 1.0,
-    //TODO: check if passing from .env is needed
     tracePropagationTargets: [
       "localhost",
-      /^https:\/\/gomoku-gi8o.onrender.com/,
+      new RegExp(
+        `^${import.meta.env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+      ),
     ],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,

@@ -13,7 +13,7 @@ const getGameHistory = async (
 ) => {
   const response = await SwaggerServices.getApiGameByGameIdHistory({
     headers: getDefaultHeaders(),
-    path: { gameId: gameID ? gameID : "" },
+    path: { gameId: gameID },
   });
 
   if (!response.data) {
@@ -28,8 +28,7 @@ const joinGame = async (
   jwtToken: string,
 ) => {
   const response = await SwaggerServices.postApiGameByGameIdJoin<true>({
-    //TODO: Investigate better error handling
-    path: { gameId: gameID ? gameID : "" },
+    path: { gameId: gameID },
     headers: getDefaultHeaders(jwtToken),
   });
 
@@ -67,7 +66,7 @@ const JoinGameComponent = ({
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        const joinGameResponse = await joinGame(gameID ? gameID : "", jwtToken);
+        const joinGameResponse = await joinGame(gameID, jwtToken);
         setPlayerID(joinGameResponse.playerId);
         if (!jwtToken) {
           typedSessionStorage.setItem(
@@ -90,15 +89,12 @@ const JoinGameComponent = ({
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
-  let dynamicPlayerId;
-  if (jwtToken) {
-    dynamicPlayerId = playerID;
-  } else {
-    dynamicPlayerId = typedSessionStorage.getItem(`game_${gameID}`);
-  }
-
   return (
-    <SignalRProvider playerID={dynamicPlayerId}>
+    <SignalRProvider
+      playerID={
+        jwtToken ? playerID : typedSessionStorage.getItem(`game_${gameID}`)
+      }
+    >
       <JoinGame gameHistory={gameHistory} />
     </SignalRProvider>
   );

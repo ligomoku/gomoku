@@ -88,7 +88,7 @@ export const useJoinGame = (
     if (!hubProxy || winner) return;
 
     const makeMoveMessage = {
-      gameId: gameID ? gameID : "",
+      gameId: gameID,
       x,
       y,
     };
