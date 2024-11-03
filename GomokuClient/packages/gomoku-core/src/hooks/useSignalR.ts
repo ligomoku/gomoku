@@ -3,30 +3,8 @@ import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { useAuthToken } from "@/context/AuthContext";
 import { useAuth } from "@clerk/clerk-react";
-import {
-  SignalClientMessages,
-  SignalHubInterfaces,
-  SignalRClientService,
-  SignalServerMessages,
-  SwaggerTypes,
-} from "@/api";
+import { SignalHubInterfaces, SignalRClientService, SwaggerTypes } from "@/api";
 import { notification } from "@/shared/ui/notification";
-
-// TODO: Ideally, should always use type SignalHubInterfaces.IGameHubReceiver
-export interface SignalREventHandlers {
-  onPlayerJoined?: (
-    message: SignalServerMessages.PlayerJoinedGameMessage,
-  ) => void;
-  onGameStarted?: (message: SignalServerMessages.GameStartedMessage) => void;
-  onPlayerMadeMove?: (
-    message: SignalServerMessages.PlayerMadeMoveMessage,
-  ) => void;
-  onReceiveMessage?: (
-    message: SignalClientMessages.ChatMessageClientMessage,
-  ) => void;
-  onGameHubError?: (error: SignalServerMessages.ErrorMessage) => void;
-  onGameIsOver?: (message: SignalServerMessages.GameIsOverMessage) => void;
-}
 
 export const useSignalR = (
   playerID?: SwaggerTypes.AddPlayerToGameResponse["playerId"],
@@ -107,7 +85,8 @@ export const useSignalR = (
   }, [jwtToken, jwtDecodedInfo, startConnection, getToken, playerID]);
 
   const registerEventHandlers = useCallback(
-    (handlers: SignalREventHandlers) => {
+    //TODO: investigate partial to have inference for handlers
+    (handlers: Partial<SignalHubInterfaces.IGameHubReceiver>) => {
       const { current: connection } = connectionRef;
 
       if (
@@ -123,14 +102,15 @@ export const useSignalR = (
       console.debug("Attaching SignalR event handlers...");
 
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
-        playerJoinedGame: async (message) => handlers.onPlayerJoined?.(message),
+        playerJoinedGame: async (message) =>
+          handlers.playerJoinedGame?.(message),
         gameGroupJoined: async (gameId) =>
-          handlers.onPlayerJoined?.({ userId: gameId }),
-        gameStarted: async (message) => handlers.onGameStarted?.(message),
-        playerMadeMove: async (message) => handlers.onPlayerMadeMove?.(message),
-        sendMessage: async (message) => handlers.onReceiveMessage?.(message),
-        gameHubError: async (error) => handlers.onGameHubError?.(error),
-        gameIsOver: async (message) => handlers.onGameIsOver?.(message),
+          handlers.playerJoinedGame?.({ userId: gameId }),
+        gameStarted: async (message) => handlers.gameStarted?.(message),
+        playerMadeMove: async (message) => handlers.playerMadeMove?.(message),
+        sendMessage: async (message) => handlers.sendMessage?.(message),
+        gameHubError: async (error) => handlers.gameHubError?.(error),
+        gameIsOver: async (message) => handlers.gameIsOver?.(message),
       };
 
       const disposable = SignalRClientService.getReceiverRegister(

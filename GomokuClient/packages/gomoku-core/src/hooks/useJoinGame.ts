@@ -44,28 +44,28 @@ export const useJoinGame = (
       });
 
       const unregister = registerEventHandlers({
-        onPlayerJoined: () => {
+        playerJoinedGame: async () => {
           notification.show(`You have joined the game`);
         },
-        onGameStarted: ({ isMyMoveFirst }) => {
+        gameStarted: async ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
             notification.show("It's your turn. Place your tile");
           } else {
             notification.show("Wait for your opponent's move");
           }
         },
-        onPlayerMadeMove: ({ playerId, tile, placedTileColor }) => {
+        playerMadeMove: async ({ playerId, tile, placedTileColor }) => {
           console.debug(
             `Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`,
           );
           addTile(tile, placedTileColor as TileColor);
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
-        onGameIsOver: (message) => {
+        gameIsOver: async (message) => {
           notification.show(formatErrorMessage(message.result));
           setWinningSequence(message.winningSequence);
         },
-        onGameHubError: (error) => {
+        gameHubError: async (error) => {
           notification.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },

@@ -16,7 +16,7 @@ export const useChat = (
   useEffect(() => {
     if (isConnected && hubProxy) {
       const unregister = registerEventHandlers({
-        onReceiveMessage: ({ user, message }) => {
+        sendMessage: async ({ user, message }) => {
           const receivedMessage = `${user}: ${message}`;
           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
           console.debug("Received message:", receivedMessage);
