@@ -463,7 +463,7 @@
             "name": "message",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/RematchApprovalMessage"
+              "$ref": "#/components/schemas/ApproveRematchMessage"
             }
           }
         ],
@@ -501,6 +501,17 @@
           "playerId": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApproveRematchMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -840,17 +851,6 @@
             "type": "string"
           },
           "userName": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RematchApprovalMessage": {
-        "required": ["gameId"],
-        "type": "object",
-        "properties": {
-          "gameId": {
             "minLength": 1,
             "type": "string"
           }

@@ -5,6 +5,10 @@ export type AddPlayerToGameResponse = {
   playerId: string;
 };
 
+export type ApproveRematchMessage = {
+  gameId: string | null;
+};
+
 export type ChatMessageClientMessage = {
   gameId: string;
   user: string;
@@ -113,10 +117,6 @@ export type ProblemDetails = {
 export type ProfileDto = {
   playerId: string;
   userName: string;
-};
-
-export type RematchApprovalMessage = {
-  gameId: string;
 };
 
 export type RematchRequestMessage = {
@@ -272,7 +272,7 @@ export type PostGamehubRequestRematchData = {
 
 export type PostGamehubApproveRematchData = {
   query?: {
-    message?: RematchApprovalMessage;
+    message?: ApproveRematchMessage;
   };
 };
 
