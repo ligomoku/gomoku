@@ -31,14 +31,42 @@ public class GameWithTimeControl : Game
 
 	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
-		var (currentPlayerClock, opponentsClock) = NextTileColor == TileColor.Black
-			? (_blackClock, _whiteClock)
-			: (_whiteClock, _blackClock);
+		var canPlaceTile = base.ValidateCanPlaceTile(playerId);
 
-		//TODO: Refactor to call time check before calling base.PlaceTile()
-		// To achive this, most likely needed base Game class, that has ValidateTileCanBePlaced method
-		// or something
-		// Or just duplicate logic, to validate if player by id is involved in the game
+		if (!canPlaceTile.IsValid)
+		{
+			return canPlaceTile;
+		}
+
+		if (_blackClock.RemainingTimeInSeconds <= 0)
+		{
+			Winner = Players.White;
+			Result = GameResult.WhiteWon;
+			Status = GameStatus.Completed;
+			CompletionReason = CompletionReason.TimeOut;
+
+			return new()
+			{
+				IsValid = false,
+				ValidationError = TilePlacementValidationError.TimeOut,
+				ErrorDetails = $"Time out. {Winner!.UserName} won."
+			};
+		}
+
+		if (_whiteClock.RemainingTimeInSeconds <= 0)
+		{
+			Winner = Players.Black;
+			Result = GameResult.BlackWon;
+			Status = GameStatus.Completed;
+			CompletionReason = CompletionReason.TimeOut;
+
+			return new()
+			{
+				IsValid = false,
+				ValidationError = TilePlacementValidationError.TimeOut,
+				ErrorDetails = $"Time out. {Winner!.UserName} won."
+			};
+		}
 
 		var tilePlacementResult = base.PlaceTile(tile, playerId);
 
@@ -48,37 +76,24 @@ public class GameWithTimeControl : Game
 			{
 				_blackClock.Stop();
 				_whiteClock.Stop();
-
 				return tilePlacementResult;
 			}
 
-			if (MovesHistory.Count == 0)
+			if (MovesHistory.Count == 2)
 			{
-				currentPlayerClock.Start();
-				return tilePlacementResult;
+				_blackClock.Start();
 			}
 
-			if (currentPlayerClock.RemainingTimeInSeconds > 0)
+			if (MovesHistory.Count > 2)
 			{
+				// After move CurrentPlayer is switched
+				var (currentPlayerClock, opponentsClock) = CurrentPlayer!.Color == TileColor.White
+					? (_blackClock, _whiteClock)
+					: (_whiteClock, _blackClock);
+
 				currentPlayerClock.Stop();
 				opponentsClock.Start();
-				return tilePlacementResult;
 			}
-
-			var (winner, result) = playerId == Players.Black!.Id
-				? (Players.White, GameResult.WhiteWon)
-				: (Players.Black, GameResult.BlackWon);
-
-			Winner = winner;
-			Result = result;
-			Status = GameStatus.Completed;
-			CompletionReason = CompletionReason.TimeOut;
-
-			return new()
-			{
-				IsValid = false,
-				ValidationError = TilePlacementValidationError.TimeOut
-			};
 		}
 
 		return tilePlacementResult;
