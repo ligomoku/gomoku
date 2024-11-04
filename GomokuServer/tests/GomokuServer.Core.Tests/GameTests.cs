@@ -447,6 +447,63 @@ public class GameTests
 	}
 
 	[Test]
+	public void Rematch_WhenGameIsOver_ShouldCreateNewGame()
+	{
+		// Arrange
+		for (int i = 0; i < 5; i++)
+		{
+			_game.PlaceTile(new(i, 7), _game.Players!.Black!.Id);
+			_game.PlaceTile(new(i, 8), _game.Players!.White!.Id);
+		}
+
+		// Act
+		var rematchResult = _game.Rematch(_playerOne.Id);
+
+		// Assert
+		rematchResult.IsValid.Should().BeTrue();
+		rematchResult.NewGame.Should().NotBeNull();
+		rematchResult.NewGame!.BoardSize.Should().Be(_game.BoardSize);
+		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_playerTwo);
+		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_playerOne);
+		rematchResult.NewGame!.CurrentPlayer?.Id.Should().Be(_playerTwo.Id);
+		rematchResult.NewGame!.MovesHistory.Should().BeEmpty();
+		rematchResult.NewGame!.Result.Should().Be(GameResult.NotCompletedYet);
+		rematchResult.NewGame!.Status.Should().Be(GameStatus.BothPlayersJoined);
+		rematchResult.NewGame!.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
+	}
+
+	[Test]
+	public void Rematch_WhenGameIsNotOver_ShouldReturnCorrectValidationError()
+	{
+		// Act
+		var rematchResult = _game.Rematch(_playerOne.Id);
+
+		// Assert
+		rematchResult.IsValid!.Should().BeFalse();
+		rematchResult.ValidationError.Should().Be(RematchValidationError.GameIsNotOverYet);
+		rematchResult.ErrorDetails.Should().NotBeEmpty();
+	}
+
+	[Test]
+	public void Rematch_WhenPlayerIsNotInvolved_ShouldReturnCorrectValidatioError()
+	{
+		// Arrange
+		for (int i = 0; i < 5; i++)
+		{
+			_game.PlaceTile(new(i, 7), _game.Players!.Black!.Id);
+			_game.PlaceTile(new(i, 8), _game.Players!.White!.Id);
+		}
+
+		// Act
+		var rematchResult = _game.Rematch("someId");
+
+		// Assert
+		rematchResult.IsValid!.Should().BeFalse();
+		rematchResult.ValidationError.Should().Be(RematchValidationError.PlayerIsNotInvolvedInAGame);
+		rematchResult.ErrorDetails.Should().NotBeEmpty();
+	}
+
+	[Test]
 	public void MakeMoves_MovesHistoryShouldBeCorrect()
 	{
 		// Act
