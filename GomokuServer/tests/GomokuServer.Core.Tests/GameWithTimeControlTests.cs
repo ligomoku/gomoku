@@ -24,7 +24,7 @@ public class GameWithTimeControlTests
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
 
-		_game = new GameWithTimeControl(15, new TimeControl(180, 2), _randomProvider, _dateTimeProvider);
+		_game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
 		_game.AddOpponent(_blackPlayer);
 		_game.AddOpponent(_whitePlayer);
 	}
@@ -96,25 +96,41 @@ public class GameWithTimeControlTests
 	}
 
 	[Test]
-	public void WhenGameIsOver_BecauseOfAnyReason_BothClockShouldStop()
+	public void WhenGameIsOver_AfterWinningMove_BothClockShouldStop()
 	{
 		// Arrange
 		var game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
 		game.AddOpponent(_blackPlayer);
 		game.AddOpponent(_whitePlayer);
-		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 4), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(4, 4), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 0), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(1, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(2, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(3, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 4), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(4, 4), game.CurrentPlayer!.Id);
 		_dateTimeProvider.UtcNowInPosix.Returns(2000);
 
 		// Assert
 		game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
 		game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
+	}
+
+	[Test]
+	public void WhenGameIsOver_AfterResign_BothClockShouldStop()
+	{
+		// Arrange
+		_game.PlaceTile(new Tile(0, 0), _game.CurrentPlayer!.Id);
+		_game.PlaceTile(new Tile(0, 1), _game.CurrentPlayer!.Id);
+		_game.Resign(_whitePlayer.Id);
+		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+
+		// Act
+
+		// Assert
+		_game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
+		_game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
 	}
 }

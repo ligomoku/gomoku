@@ -41,15 +41,15 @@ public class TestDataProvider
 		game.AddOpponent(new Profile("PlayerOne", "Alice"));
 		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
 
-		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 4), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(4, 4), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 0), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(1, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(2, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(3, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 4), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(4, 4), game.CurrentPlayer!.Id);
 
 		return game;
 	}
@@ -61,10 +61,10 @@ public class TestDataProvider
 		game.AddOpponent(new Profile("PlayerOne", "Alice"));
 		game.AddOpponent(new Profile("PlayerTwo", "Bob"));
 
-		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 0), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(1, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(2, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(3, 3), game.CurrentPlayer!.Id);
 
 		return game;
 	}

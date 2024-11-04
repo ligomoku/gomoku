@@ -2,11 +2,11 @@
 using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Results;
 using GomokuServer.Core.Games.Validations;
+using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.Games.Entities;
 
-public class
-	GameWithTimeControl : Game
+public class GameWithTimeControl : Game
 {
 	private readonly Clock _blackClock;
 	private readonly Clock _whiteClock;
@@ -31,12 +31,14 @@ public class
 
 	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
+		var (currentPlayerClock, opponentsClock) = NextTileColor == TileColor.Black
+			? (_blackClock, _whiteClock)
+			: (_whiteClock, _blackClock);
+
 		//TODO: Refactor to call time check before calling base.PlaceTile()
 		// To achive this, most likely needed base Game class, that has ValidateTileCanBePlaced method
 		// or something
 		// Or just duplicate logic, to validate if player by id is involved in the game
-
-		var currentColor = NextTileColor;
 
 		var tilePlacementResult = base.PlaceTile(tile, playerId);
 
@@ -49,10 +51,6 @@ public class
 
 				return tilePlacementResult;
 			}
-
-			var (currentPlayerClock, opponentsClock) = currentColor == TileColor.Black
-				? (_blackClock, _whiteClock)
-				: (_whiteClock, _blackClock);
 
 			if (MovesHistory.Count == 0)
 			{
@@ -84,6 +82,38 @@ public class
 		}
 
 		return tilePlacementResult;
+	}
+
+	public override ResignResult Resign(string playerId)
+	{
+		var resignResult = base.Resign(playerId);
+
+		if (resignResult.IsValid)
+		{
+			_blackClock.Stop();
+			_whiteClock.Stop();
+		}
+
+		return resignResult;
+	}
+
+	public override RematchResult Rematch(string playerId)
+	{
+		var canRematchResult = ValidateCanRematch(playerId);
+		if (!canRematchResult.IsValid)
+		{
+			return canRematchResult;
+		}
+
+		var newGame = new GameWithTimeControl(BoardSize, TimeControl, _randomProvider, _dateTimeProvider)
+		{
+			Opponents = new List<Profile>(Opponents),
+			Players = new Players { Black = Players.White, White = Players.Black },
+			Status = GameStatus.BothPlayersJoined,
+			CurrentPlayer = Players.White
+		};
+
+		return RematchResult.Success(newGame);
 	}
 
 	public int? GetRemainingTime(string playerId)

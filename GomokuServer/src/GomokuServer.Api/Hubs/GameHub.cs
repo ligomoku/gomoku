@@ -154,7 +154,7 @@ public class GameHub : Hub, IGameHub
 
 		if (rematchResult.IsSuccess)
 		{
-			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new RematchApprovedMessage { NewGameId = rematchResult.Value.GameId });
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.RematchApproved, new RematchApprovedMessage { NewGameId = rematchResult.Value.NewGameId });
 			return;
 		}
 

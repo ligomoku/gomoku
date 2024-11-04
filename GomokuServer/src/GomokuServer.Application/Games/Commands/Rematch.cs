@@ -52,6 +52,6 @@ public class RematchCommandHandler : ICommandHandler<RematchCommand, RematchResp
 
 		var saveResult = await gamesRepository.SaveAsync(rematchResult.NewGame!);
 
-		return saveResult.Map(_ => new RematchResponse() { GameId = rematchResult.NewGame!.GameId });
+		return saveResult.Map(_ => new RematchResponse() { NewGameId = rematchResult.NewGame!.GameId });
 	}
 }
