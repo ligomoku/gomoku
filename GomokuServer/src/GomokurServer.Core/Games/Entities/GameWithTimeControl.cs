@@ -29,6 +29,8 @@ public class GameWithTimeControl : Game
 
 	public int WhiteRemainingTimeInSeconds => _whiteClock.RemainingTimeInSeconds;
 
+	public bool IsTimeControlInitiated => MovesHistory.Count >= 2;
+
 	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
 	{
 		var canPlaceTile = base.ValidateCanPlaceTile(playerId);
@@ -79,12 +81,7 @@ public class GameWithTimeControl : Game
 				return tilePlacementResult;
 			}
 
-			if (MovesHistory.Count == 2)
-			{
-				_blackClock.Start();
-			}
-
-			if (MovesHistory.Count > 2)
+			if (IsTimeControlInitiated)
 			{
 				// After move CurrentPlayer is switched
 				var (currentPlayerClock, opponentsClock) = CurrentPlayer!.Color == TileColor.White
