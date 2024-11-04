@@ -69,7 +69,7 @@ public class GetGameCurrentStateTests
 		getGameResponse.GameId.Should().Be(game.GameId);
 		getGameResponse.HasBothPlayersJoined.Should().BeTrue();
 		getGameResponse.IsGameStarted.Should().BeFalse(); // No moves have been made
-		getGameResponse.NextMoveShouldMakePlayerId.Should().Be(game.NextMoveShouldMakePlayerId);
+		getGameResponse.NextMoveShouldMakePlayerId.Should().Be(game.CurrentPlayer?.Id);
 		getGameResponse.Players!.Black!.PlayerId.Should().Be(game.Players!.Black!.Id);
 		getGameResponse.Players!.White!.PlayerId.Should().Be(game.Players!.White!.Id);
 		getGameResponse.MovesHistory.Should().BeEmpty();

@@ -11,8 +11,8 @@ public class Game
 {
 	private readonly Dictionary<int, Tile> _movesHistory = new();
 	private readonly GameBoard _gameBoard;
-	private readonly IRandomProvider _randomProvider;
-	private readonly IDateTimeProvider _dateTimeProvider;
+	protected readonly IRandomProvider _randomProvider;
+	protected readonly IDateTimeProvider _dateTimeProvider;
 
 	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
@@ -46,7 +46,7 @@ public class Game
 
 	public CompletionReason CompletionReason { get; protected set; }
 
-	public string? NextMoveShouldMakePlayerId { get; private set; }
+	public Player? CurrentPlayer { get; protected set; }
 
 	public Player? Winner { get; protected set; }
 
@@ -93,7 +93,7 @@ public class Game
 		var firstPlayer = new Player(firstOpponent.Id, firstOpponent.UserName, TileColor.Black);
 		var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
 
-		NextMoveShouldMakePlayerId = firstPlayer.Id;
+		CurrentPlayer = firstPlayer;
 		Status = GameStatus.BothPlayersJoined;
 		Players.Black = firstPlayer;
 		Players.White = secondPlayer;
@@ -104,12 +104,10 @@ public class Game
 		};
 	}
 
-	public virtual GameTilePlacementResult PlaceTile(Tile tile, string playerId)
+	protected virtual GameTilePlacementResult ValidateCanPlaceTile(string playerId)
 	{
 		if (Status == GameStatus.Completed)
 		{
-			var gameResultString = Result;
-
 			return new()
 			{
 				IsValid = false,
@@ -128,8 +126,7 @@ public class Game
 			};
 		}
 
-		var (isInvolved, currentPlayer) = IsInvolved(playerId);
-		if (!isInvolved)
+		if (!IsInvolved(playerId))
 		{
 			return new()
 			{
@@ -139,7 +136,7 @@ public class Game
 			};
 		}
 
-		if (currentPlayer!.Id != NextMoveShouldMakePlayerId)
+		if (playerId != CurrentPlayer?.Id)
 		{
 			return new()
 			{
@@ -149,18 +146,37 @@ public class Game
 			};
 		}
 
+		return new()
+		{
+			IsValid = true,
+		};
+	}
+
+	public virtual GameTilePlacementResult PlaceTile(Tile tile, string playerId)
+	{
+		var validationResult = ValidateCanPlaceTile(playerId);
+
+		if (!validationResult.IsValid)
+		{
+			return validationResult;
+		}
+
 		var placeNewTileResult = _gameBoard.PlaceNewTile(tile);
 
-		if (placeNewTileResult.IsValid)
+		if (!placeNewTileResult.IsValid)
 		{
-			if (_movesHistory.Count == 0)
+			return new()
 			{
-				Status = GameStatus.InProgress;
-			}
-			_movesHistory.Add(_movesHistory.Count + 1, tile);
-
-			NextMoveShouldMakePlayerId = currentPlayer!.Id != Players.Black!.Id ? Players.Black.Id : Players.White!.Id;
+				IsValid = placeNewTileResult.IsValid,
+				ValidationError = placeNewTileResult.ValidationError,
+			};
 		}
+
+		if (_movesHistory.Count == 0)
+		{
+			Status = GameStatus.InProgress;
+		}
+		_movesHistory.Add(_movesHistory.Count + 1, tile);
 
 		if (placeNewTileResult.IsTieSituationAfterMove)
 		{
@@ -171,23 +187,27 @@ public class Game
 
 		if (placeNewTileResult.WinningSequence != null)
 		{
-			Result = currentPlayer!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+			Result = CurrentPlayer!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
 			Status = GameStatus.Completed;
 			CompletionReason = CompletionReason.MadeFiveInARow;
 
-			Winner = currentPlayer;
+			Winner = CurrentPlayer;
 			WinningSequence = placeNewTileResult.WinningSequence;
-			NextMoveShouldMakePlayerId = null;
+			CurrentPlayer = null;
+		}
+
+		if (Status == GameStatus.InProgress)
+		{
+			CurrentPlayer = CurrentPlayer != Players.Black ? Players.Black : Players.White;
 		}
 
 		return new()
 		{
-			IsValid = placeNewTileResult.IsValid,
-			ValidationError = placeNewTileResult.ValidationError,
+			IsValid = true,
 		};
 	}
 
-	public ResignResult Resign(string playerId)
+	public virtual ResignResult Resign(string playerId)
 	{
 		if (Status == GameStatus.Completed)
 		{
@@ -209,8 +229,7 @@ public class Game
 			};
 		}
 
-		var (isInvolved, currentPlayer) = IsInvolved(playerId);
-		if (!isInvolved)
+		if (!IsInvolved(playerId))
 		{
 			return new()
 			{
@@ -220,11 +239,12 @@ public class Game
 			};
 		}
 
-		Winner = currentPlayer!.Id == Players!.Black!.Id ? Players.White : Players.Black;
-		NextMoveShouldMakePlayerId = null;
-		Result = currentPlayer!.Color == TileColor.Black ? GameResult.WhiteWon : GameResult.BlackWon;
+		var winner = playerId == Players!.White!.Id ? Players.Black : Players.White;
+		Winner = winner;
+		Result = winner!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
 		Status = GameStatus.Completed;
 		CompletionReason = CompletionReason.Resign;
+		CurrentPlayer = null;
 
 		return new()
 		{
@@ -232,7 +252,7 @@ public class Game
 		};
 	}
 
-	public RematchResult Rematch(string playerId)
+	protected virtual RematchResult ValidateCanRematch(string playerId)
 	{
 		if (Status != GameStatus.Completed)
 		{
@@ -244,8 +264,7 @@ public class Game
 			};
 		}
 
-		var (isInvolved, _) = IsInvolved(playerId);
-		if (!isInvolved)
+		if (!IsInvolved(playerId))
 		{
 			return new()
 			{
@@ -255,24 +274,34 @@ public class Game
 			};
 		}
 
+		return new()
+		{
+			IsValid = true
+		};
+	}
+
+	public virtual RematchResult Rematch(string playerId)
+	{
+		var canRematchResult = ValidateCanRematch(playerId);
+
+		if (!canRematchResult.IsValid)
+		{
+			return canRematchResult;
+		}
+
 		var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
 		{
 			Opponents = new List<Profile>(Opponents),
 			Players = new Players { Black = Players.White, White = Players.Black },
 			Status = GameStatus.BothPlayersJoined,
-			NextMoveShouldMakePlayerId = Players.White?.Id
+			CurrentPlayer = Players.White
 		};
 
 		return RematchResult.Success(newGame);
 	}
 
-	public (bool isInvolved, Player? player) IsInvolved(string playerId)
+	public bool IsInvolved(string playerId)
 	{
-		return playerId switch
-		{
-			_ when Players?.Black?.Id == playerId => (true, Players.Black),
-			_ when Players?.White?.Id == playerId => (true, Players.White),
-			_ => (false, null)
-		};
+		return Opponents.Any(opponent => opponent.Id == playerId);
 	}
 }

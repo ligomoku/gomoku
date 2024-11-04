@@ -24,9 +24,67 @@ public class GameWithTimeControlTests
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_dateTimeProvider.UtcNowInPosix.Returns(1000);
 
-		_game = new GameWithTimeControl(15, new TimeControl(180, 2), _randomProvider, _dateTimeProvider);
+		_game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
 		_game.AddOpponent(_blackPlayer);
 		_game.AddOpponent(_whitePlayer);
+	}
+
+	[Test]
+	public void PlaceTile_ClockShouldNotTickBeforeFirstMoveIsMade()
+	{
+		// Arrange
+		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+
+		// Act
+		var result = _game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
+
+		// Assert
+		result.IsValid.Should().BeTrue();
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
+		_game.Status.Should().Be(GameStatus.InProgress);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
+	}
+
+	[Test]
+	public void PlaceTile_ClockShouldNotTickBeforeSecondMoveIsMade()
+	{
+		// Arrange
+		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
+		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+
+		// Act
+		var result = _game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
+
+		// Assert
+		result.IsValid.Should().BeTrue();
+		_game.Result.Should().Be(GameResult.NotCompletedYet);
+		_game.Status.Should().Be(GameStatus.InProgress);
+		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
+	}
+
+	[Test]
+	public void PlaceTile_BlackClockShouldTickAfterSecondMoveIsMade()
+	{
+		// Arrange
+		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
+		_game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
+		_dateTimeProvider.UtcNowInPosix.Returns(1100);
+
+		// Assert
+		_game.BlackRemainingTimeInSeconds.Should().Be(80);
+	}
+
+	[Test]
+	public void PlaceTile_WhiteClockShouldTickAfterSecondMoveIsMade()
+	{
+		// Arrange
+		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
+		_game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
+		_game.PlaceTile(new Tile(3, 3), _blackPlayer.Id);
+		_dateTimeProvider.UtcNowInPosix.Returns(1100);
+
+		// Assert
+		_game.WhiteRemainingTimeInSeconds.Should().Be(80);
 	}
 
 	[Test]
@@ -43,78 +101,60 @@ public class GameWithTimeControlTests
 	}
 
 	[Test]
-	public void PlaceTile_WhenFirstMoveIsMadeAfterLongTimeAfterCreation_ShouldBeSuccess()
-	{
-		// Arrange
-		_dateTimeProvider.UtcNowInPosix.Returns(2000);
-
-		// Act
-		var result = _game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
-
-		// Assert
-		result.IsValid.Should().BeTrue();
-		_game.Result.Should().Be(GameResult.NotCompletedYet);
-		_game.Status.Should().Be(GameStatus.InProgress);
-		_game.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
-	}
-
-	[Test]
 	public void PlaceTile_WhenTimeIsOver_ShouldBeError_AndGameStateShouldBeCorrect()
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _blackPlayer.Id);
+		_game.PlaceTile(new Tile(1, 1), _whitePlayer.Id);
 		_dateTimeProvider.UtcNowInPosix.Returns(1181);
 
 		// Act
-		var result = _game.PlaceTile(new Tile(1, 1), _whitePlayer.Id);
+		var result = _game.PlaceTile(new Tile(2, 2), _blackPlayer.Id);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
 		result.ValidationError.Should().Be(TilePlacementValidationError.TimeOut);
-		_game.Result.Should().Be(GameResult.BlackWon);
+		_game.Result.Should().Be(GameResult.WhiteWon);
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.TimeOut);
 	}
 
 	[Test]
-	public void PlaceTile_WhenTimeIsOver_AndCallingPlaceTileForTheSecondTime_ShouldBeError_AndGameStateShouldBeCorrect()
-	{
-		// Arrange
-		_game.PlaceTile(new Tile(0, 0), _blackPlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(1181);
-		_game.PlaceTile(new Tile(1, 1), _whitePlayer.Id);
-
-		// Act
-		var result = _game.PlaceTile(new Tile(1, 1), _whitePlayer.Id);
-
-		// Assert
-		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
-		_game.Result.Should().Be(GameResult.BlackWon);
-		_game.Status.Should().Be(GameStatus.Completed);
-		_game.CompletionReason.Should().Be(CompletionReason.TimeOut);
-	}
-
-	[Test]
-	public void WhenGameIsOver_BecauseOfAnyReason_BothClockShouldStop()
+	public void WhenGameIsOver_AfterWinningMove_BothClockShouldStop()
 	{
 		// Arrange
 		var game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
 		game.AddOpponent(_blackPlayer);
 		game.AddOpponent(_whitePlayer);
-		game.PlaceTile(new Tile(0, 0), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(1, 1), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(2, 2), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(3, 3), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(0, 4), game.NextMoveShouldMakePlayerId!);
-		game.PlaceTile(new Tile(4, 4), game.NextMoveShouldMakePlayerId!);
+		game.PlaceTile(new Tile(0, 0), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(1, 1), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(2, 2), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(3, 3), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(0, 4), game.CurrentPlayer!.Id);
+		game.PlaceTile(new Tile(4, 4), game.CurrentPlayer!.Id);
 		_dateTimeProvider.UtcNowInPosix.Returns(2000);
 
 		// Assert
 		game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
 		game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
+	}
+
+	[Test]
+	public void WhenGameIsOver_AfterResign_BothClockShouldStop()
+	{
+		// Arrange
+		_game.PlaceTile(new Tile(0, 0), _game.CurrentPlayer!.Id);
+		_game.PlaceTile(new Tile(0, 1), _game.CurrentPlayer!.Id);
+		_game.Resign(_whitePlayer.Id);
+		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+
+		// Act
+
+		// Assert
+		_game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
+		_game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
 	}
 }

@@ -35,7 +35,7 @@ public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentState
 			Players = game.GetPlayersDto(),
 			HasBothPlayersJoined = game.Status != GameStatus.WaitingForPlayersToJoin,
 			IsGameStarted = game.Status == GameStatus.InProgress || game.Status == GameStatus.Completed,
-			NextMoveShouldMakePlayerId = game.NextMoveShouldMakePlayerId,
+			NextMoveShouldMakePlayerId = game.CurrentPlayer?.Id,
 			Winner = game.Winner != null ? new PlayerDto(game.Winner.Id, game.Winner.UserName, game.Winner.Color.ToString()) : null,
 			WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)),
 			MovesCount = game.MovesHistory.Count,

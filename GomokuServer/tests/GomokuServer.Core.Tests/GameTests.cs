@@ -116,7 +116,7 @@ public class GameTests
 			new(4, 7)
 		});
 
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 		_game.Result.Should().Be(GameResult.BlackWon);
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
@@ -146,7 +146,7 @@ public class GameTests
 			new(7, 4)
 		});
 
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 		_game.Result.Should().Be(GameResult.BlackWon);
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
@@ -179,7 +179,7 @@ public class GameTests
 			new(4, 4)
 		});
 
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 		_game.Result.Should().Be(GameResult.BlackWon);
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.MadeFiveInARow);
@@ -363,7 +363,7 @@ public class GameTests
 		resignResult.IsValid.Should().BeTrue();
 
 		_game!.Winner!.Id.Should().Be(_playerTwo.Id);
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 
 		_game.Result.Should().Be(GameResult.WhiteWon);
 		_game.Status.Should().Be(GameStatus.Completed);
@@ -383,7 +383,7 @@ public class GameTests
 		resignResult.IsValid.Should().BeTrue();
 
 		_game!.Winner!.Id.Should().Be(_playerOne.Id);
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 
 		_game.Result.Should().Be(GameResult.BlackWon);
 		_game.Status.Should().Be(GameStatus.Completed);
@@ -404,7 +404,7 @@ public class GameTests
 		resignResult.IsValid.Should().BeTrue();
 
 		_game!.Winner!.Id.Should().Be(_playerTwo.Id);
-		_game.NextMoveShouldMakePlayerId.Should().BeNull();
+		_game.CurrentPlayer.Should().BeNull();
 
 		_game.Result.Should().Be(GameResult.WhiteWon);
 		_game.Status.Should().Be(GameStatus.Completed);
@@ -465,7 +465,7 @@ public class GameTests
 		rematchResult.NewGame!.BoardSize.Should().Be(_game.BoardSize);
 		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_playerTwo);
 		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_playerOne);
-		rematchResult.NewGame!.NextMoveShouldMakePlayerId.Should().Be(_playerTwo.Id);
+		rematchResult.NewGame!.CurrentPlayer?.Id.Should().Be(_playerTwo.Id);
 		rematchResult.NewGame!.MovesHistory.Should().BeEmpty();
 		rematchResult.NewGame!.Result.Should().Be(GameResult.NotCompletedYet);
 		rematchResult.NewGame!.Status.Should().Be(GameStatus.BothPlayersJoined);
@@ -525,14 +525,14 @@ public class GameTests
 	public void EachPlayerMakeMoves_NextMovePlayerIdShouldBeCorrect()
 	{
 		// Assert 
-		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
+		_game.CurrentPlayer?.Id.Should().Be(_playerOne.Id);
 		_game.Players!.Black!.Color.Should().Be(TileColor.Black);
 		_game.Players!.White!.Color.Should().Be(TileColor.White);
 
 		_game.PlaceTile(new(0, 0), _playerOne.Id);
-		_game.NextMoveShouldMakePlayerId.Should().Be(_playerTwo.Id);
+		_game.CurrentPlayer?.Id.Should().Be(_playerTwo.Id);
 
 		_game.PlaceTile(new(1, 1), _playerTwo.Id);
-		_game.NextMoveShouldMakePlayerId.Should().Be(_playerOne.Id);
+		_game.CurrentPlayer?.Id.Should().Be(_playerOne.Id);
 	}
 }
