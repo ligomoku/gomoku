@@ -17,6 +17,7 @@ export const Default = () => (
     onTileClick={(x, y) => console.debug("Tile clicked", x, y)}
     tiles={Array.from({ length: boardSize }, () => Array(boardSize).fill(null))}
     lastTile={{ x: 0, y: 0 }}
+    winningSequence={null}
   />
 );
 
