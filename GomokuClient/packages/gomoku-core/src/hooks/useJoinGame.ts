@@ -94,7 +94,7 @@ export const useJoinGame = (
     if (isConnected && gameID && hubProxy && moves.length !== 0) {
       hubProxy.getClock({ gameId: gameID });
     }
-  }, 800); //TODO: play with this delay value for clock sync
+  }, 500); //TODO: play with this delay value for clock sync
 
   const handleMove = async (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
