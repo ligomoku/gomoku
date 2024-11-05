@@ -31,6 +31,7 @@ public class GameHub : Hub, IGameHub
 			{
 				await Clients.User(game!.Players!.Black!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(true));
 				await Clients.User(game!.Players!.White!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(false));
+				await Clients.Group(gameId).SendAsync(GameHubMethod.BothPlayersJoined, new BothPlayersJoinedMessage(game.Players));
 			}
 		}
 	}

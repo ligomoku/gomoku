@@ -1,5 +1,6 @@
 ﻿namespace GomokuServer.Application.Games.Dto;
 
+[TranspilationSource]
 public record PlayerDto(string PlayerId, string UserName, string Color)
 {
 	[Required]

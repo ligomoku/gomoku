@@ -5,8 +5,8 @@ import { notification } from "@/shared/ui/notification";
 import { useRouter } from "@tanstack/react-router";
 import {
   SignalClientMessages,
-  SignalServerMessages,
   SignalDto,
+  SignalServerMessages,
   SwaggerTypes,
 } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
@@ -14,21 +14,25 @@ import { typedSessionStorage } from "@/shared/lib/utils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
-  boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+  gameHistory: SwaggerTypes.GetGameHistoryResponse,
   playerID?: string,
 ) => {
   //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
   const [winningSequence, setWinningSequence] = useState<
-    SignalServerMessages.GameIsOverMessage["winningSequence"]
-  >([]);
+    SignalServerMessages.GameIsOverMessage["winningSequence"] | null
+  >(gameHistory?.winningSequence);
   const [rematchRequested, setRematchRequested] = useState(false);
-  const [clock, setClock] = useState<SignalDto.ClockDto>();
+  const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(
+    gameHistory.clock,
+  );
+  const [players, setPlayers] = useState<SwaggerTypes.PlayersDto>(
+    gameHistory.players,
+  );
 
   const router = useRouter();
 
-  const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
-    useTiles(boardSize);
+  const { tiles, winner, addTile, lastTile } = useTiles(gameHistory);
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
@@ -42,6 +46,9 @@ export const useJoinGame = (
       const unregister = registerEventHandlers({
         playerJoinedGame: async () => {
           notification.show(`You have joined the game`);
+        },
+        bothPlayersJoined: async ({ players }) => {
+          setPlayers(players);
         },
         gameStarted: async ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
@@ -120,14 +127,13 @@ export const useJoinGame = (
     moves,
     tiles,
     lastTile,
-    setLastTile,
     winner,
     handleMove,
-    setTiles,
     winningSequence,
     rematchRequested,
     setRematchRequested,
     clock,
+    players,
   };
 };
 

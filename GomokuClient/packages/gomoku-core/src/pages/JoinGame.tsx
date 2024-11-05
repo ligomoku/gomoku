@@ -6,10 +6,7 @@ import { Board } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { genParser } from "@/utils/getParser";
 import { GameTime, GameTimeProps } from "@/features/GameTime";
-import { TileColor } from "@/hooks/useTiles";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { RematchAlert } from "@/shared/ui/rematch-alert";
 
@@ -27,18 +24,15 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
     tiles,
     lastTile,
     handleMove,
-    setTiles,
-    setLastTile,
     moves,
     winningSequence,
     rematchRequested,
     setRematchRequested,
     clock,
-  } = useJoinGame(gameID, gameHistory.boardSize, playerID);
+    players,
+  } = useJoinGame(gameID, gameHistory, playerID);
 
   const { hubProxy } = useSignalRConnection();
-
-  useInitialStateGameHistory(gameHistory, setTiles, setLastTile);
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,
@@ -62,21 +56,13 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
     onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
   };
 
-  //TODD: distinguish layout on top should be always opponent
-  const players: GameTimeProps["players"] = [
-    {
-      name: gameHistory.players.black?.userName || "Anonymous",
-      color: "#7cb342",
-    },
-    {
-      name: gameHistory.players.white?.userName || "Anonymous",
-      color: "#b0b0b0",
-    },
-  ];
-
-  const playerClock: Pick<GameTimeProps, "blackTimeLeft" | "whiteTimeLeft"> = {
-    whiteTimeLeft: clock?.white || gameHistory.clock?.white || 420, //TODO: remove later this valeus after prod testing
-    blackTimeLeft: clock?.black || gameHistory.clock?.black || 69,
+  const playerClock: Partial<
+    Pick<GameTimeProps, "blackTimeLeft" | "whiteTimeLeft">
+  > = {
+    whiteTimeLeft:
+      clock?.white || gameHistory.timeControl?.initialTimeInSeconds,
+    blackTimeLeft:
+      clock?.black || gameHistory.timeControl?.initialTimeInSeconds,
   };
 
   return (
@@ -122,9 +108,9 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                   <GameTimeMobile
                     opponentView
                     {...commonGameTimeProps}
-                    player={players[0]}
+                    player={players.black}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    whiteTimeLeftMobile={playerClock.whiteTimeLeft}
+                    timeLeft={playerClock.whiteTimeLeft}
                   />
                 )}
               </div>
@@ -142,9 +128,9 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                 {isMobile && (
                   <GameTimeMobile
                     {...commonGameTimeProps}
-                    player={players[1]}
+                    player={players.white}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    blackTimeLeftMobile={playerClock.blackTimeLeft}
+                    timeLeft={playerClock.blackTimeLeft}
                   />
                 )}
               </div>
@@ -170,20 +156,6 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
       </div>
     </div>
   );
-};
-
-//TODO: should be moved to router
-const useInitialStateGameHistory = (
-  gameHistory: JoinGameProps["gameHistory"],
-  setTiles: Dispatch<SetStateAction<TileColor[][]>>,
-  setLastTile: Dispatch<SetStateAction<SwaggerTypes.TileDto>>,
-) => {
-  useEffect(() => {
-    if (gameHistory) {
-      setTiles(genParser(gameHistory.gen));
-      setLastTile(gameHistory.movesHistory[gameHistory.movesCount]);
-    }
-  }, [gameHistory, setTiles, setLastTile]);
 };
 
 const transformMoves = (

@@ -15,3 +15,5 @@ global using GomokuServer.Core.Games.Entities;
 global using GomokuServer.Utils.Extensions;
 
 global using MediatR;
+
+global using Tapper;

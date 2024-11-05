@@ -14,6 +14,7 @@ import type {
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
+  BothPlayersJoinedMessage,
   PlayerMadeMoveMessage,
   RematchApprovedMessage,
   GameIsOverMessage,
@@ -77,6 +78,13 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   gameStarted(gameStartedMessage: GameStartedMessage): Promise<void>;
+  /**
+   * @param bothPlayersJoinedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.BothPlayersJoinedMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  bothPlayersJoined(
+    bothPlayersJoinedMessage: BothPlayersJoinedMessage,
+  ): Promise<void>;
   /**
    * @param playerMadeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerMadeMoveMessage
    * @returns Transpiled from System.Threading.Tasks.Task
