@@ -7,7 +7,9 @@ import { genParser } from "@/utils/getParser";
 export type TileColor = "black" | "white" | null;
 
 export const useTiles = (gameHistory: SwaggerTypes.GetGameHistoryResponse) => {
-  const [tiles, setTiles] = useState<TileColor[][]>(genParser(gameHistory.gen));
+  const [tiles, setTiles] = useState<TileColor[][]>(() =>
+    genParser(gameHistory.gen),
+  );
   const [lastTile, setLastTile] = useState<SwaggerTypes.TileDto>(
     gameHistory.movesHistory[gameHistory.movesCount],
   );
