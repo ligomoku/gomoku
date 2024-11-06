@@ -23,6 +23,9 @@ public interface IGameHub
 [Receiver]
 public interface IGameHubReceiver
 {
+	//TODO: Remove
+	Task Remove();
+
 	Task GameGroupJoined(string gameId);
 
 	Task PlayerJoinedGame(PlayerJoinedGameMessage playerJoinedGameMessage);
