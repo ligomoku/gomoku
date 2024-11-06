@@ -76,6 +76,7 @@ const Tile = memo(
       prevProps.xIndex === nextProps.xIndex &&
       prevProps.yIndex === nextProps.yIndex &&
       prevProps.showAnnotations === nextProps.showAnnotations &&
+      prevProps.onTileClick === nextProps.onTileClick &&
       //TODO: check if we need to do JSON.stringify here
       prevProps.winningSequence?.length === nextProps.winningSequence?.length
     );
