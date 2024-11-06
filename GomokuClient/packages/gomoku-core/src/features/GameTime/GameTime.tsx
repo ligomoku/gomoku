@@ -42,7 +42,7 @@ export const GameTime = ({
     <div className="mb-2 flex items-center justify-between">
       {blackTimeLeft && (
         <div className="font-mono text-5xl">
-          {secondsToString(blackTimeLeft)}
+          {secondsToString(blackTimeLeft > 0 ? blackTimeLeft : 0)}
         </div>
       )}
       {blackTimeLeft && (
@@ -165,7 +165,7 @@ export const GameTime = ({
 
     {whiteTimeLeft && (
       <div className="mt-2 text-center font-mono text-5xl">
-        {secondsToString(whiteTimeLeft)}
+        {secondsToString(whiteTimeLeft > 0 ? whiteTimeLeft : 0)}
       </div>
     )}
   </div>

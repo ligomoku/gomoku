@@ -41,7 +41,7 @@ export const GameTimeMobile = ({
           </div>
           {timeLeft && (
             <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
-              {secondsToString(timeLeft)}
+              {secondsToString(timeLeft > 0 ? timeLeft : 0)}
             </div>
           )}
         </div>
@@ -61,7 +61,7 @@ export const GameTimeMobile = ({
         </div>
         {timeLeft && (
           <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
-            {secondsToString(timeLeft)}
+            {secondsToString(timeLeft > 0 ? timeLeft : 0)}
           </div>
         )}
       </div>
