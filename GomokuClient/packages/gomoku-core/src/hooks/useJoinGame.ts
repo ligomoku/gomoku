@@ -3,12 +3,7 @@ import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
 import { useRouter } from "@tanstack/react-router";
-import {
-  SignalClientMessages,
-  SignalDto,
-  SignalServerMessages,
-  SwaggerTypes,
-} from "@/api";
+import { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
 import { typedSessionStorage } from "@/shared/lib/utils";
 
@@ -20,7 +15,7 @@ export const useJoinGame = (
   //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
   const [winningSequence, setWinningSequence] = useState<
-    SignalServerMessages.GameIsOverMessage["winningSequence"] | null
+    SwaggerTypes.GetGameHistoryResponse["winningSequence"]
   >(gameHistory?.winningSequence);
   const [rematchRequested, setRematchRequested] = useState(false);
   const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(
