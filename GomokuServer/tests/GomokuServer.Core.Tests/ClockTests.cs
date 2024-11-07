@@ -21,7 +21,7 @@ public class ClockTests
 	public void Clock_ShouldInitializeWithCorrectRemainingTime()
 	{
 		// Assert
-		_clock.RemainingTimeInSeconds.Should().Be(180);
+		_clock.RemainingTimeInMilliseconds.Should().Be(180_000);
 	}
 
 	[Test]
@@ -29,15 +29,15 @@ public class ClockTests
 	{
 		// Arrange
 		_clock = new Clock(new TimeControl(180, 0), _dateTimeProvider);
-		_dateTimeProvider.UtcNowInPosix.Returns(1000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_000_000);
 		_clock.Start();
-		_dateTimeProvider.UtcNowInPosix.Returns(1050);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_050_000);
 
 		// Act
 		_clock.Stop();
 
 		// Assert
-		_clock.RemainingTimeInSeconds.Should().Be(130);
+		_clock.RemainingTimeInMilliseconds.Should().Be(130_000);
 	}
 
 	[Test]
@@ -45,15 +45,15 @@ public class ClockTests
 	{
 		// Arrange
 		_clock = new Clock(new TimeControl(180, 2), _dateTimeProvider);
-		_dateTimeProvider.UtcNowInPosix.Returns(1000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_000_000);
 		_clock.Start();
-		_dateTimeProvider.UtcNowInPosix.Returns(1050);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_050_000);
 
 		// Act
 		_clock.Stop();
 
 		// Assert
-		_clock.RemainingTimeInSeconds.Should().Be(132);
+		_clock.RemainingTimeInMilliseconds.Should().Be(132_000);
 	}
 
 	[Test]
@@ -61,16 +61,16 @@ public class ClockTests
 	{
 		// Arrange
 		_clock = new Clock(new TimeControl(180, 0), _dateTimeProvider);
-		_dateTimeProvider.UtcNowInPosix.Returns(1000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_000_000);
 		_clock.Start();
-		_dateTimeProvider.UtcNowInPosix.Returns(1020);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_020_000);
 		_clock.Start();
-		_dateTimeProvider.UtcNowInPosix.Returns(1050);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_050_000);
 
 		// Act
 		_clock.Stop();
 
 		// Assert
-		_clock.RemainingTimeInSeconds.Should().Be(130);
+		_clock.RemainingTimeInMilliseconds.Should().Be(130_000);
 	}
 }

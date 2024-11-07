@@ -1,11 +1,11 @@
 ﻿namespace GomokuServer.Application.Games.Dto;
 
 [TranspilationSource]
-public record ClockDto(int Black, int White)
+public record ClockDto(long Black, long White)
 {
 	[Required]
-	public int Black { get; } = Black;
+	public long Black { get; } = Black;
 
 	[Required]
-	public int White { get; } = White;
+	public long White { get; } = White;
 }

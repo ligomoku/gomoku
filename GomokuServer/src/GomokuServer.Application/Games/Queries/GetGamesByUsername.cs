@@ -44,7 +44,7 @@ public class GetGamesByUsernameQueryHandler
 			Data = games.Select(game =>
 			{
 				var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
-					? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInSeconds, gameWithTimeControl.WhiteRemainingTimeInSeconds))
+					? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000))
 					: (null, null);
 
 				return new GetGamesByUsernameResponse

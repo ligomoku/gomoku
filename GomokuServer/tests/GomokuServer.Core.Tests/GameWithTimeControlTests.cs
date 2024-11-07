@@ -22,7 +22,7 @@ public class GameWithTimeControlTests
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_dateTimeProvider.UtcNowInPosix.Returns(1000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_000_000);
 
 		_game = new GameWithTimeControl(15, new TimeControl(180, 0), _randomProvider, _dateTimeProvider);
 		_game.AddOpponent(_blackPlayer);
@@ -33,7 +33,7 @@ public class GameWithTimeControlTests
 	public void PlaceTile_ClockShouldNotTickBeforeFirstMoveIsMade()
 	{
 		// Arrange
-		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2000);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
@@ -50,7 +50,7 @@ public class GameWithTimeControlTests
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2000);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
@@ -68,10 +68,10 @@ public class GameWithTimeControlTests
 		// Arrange
 		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
 		_game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(1100);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_100_000);
 
 		// Assert
-		_game.BlackRemainingTimeInSeconds.Should().Be(80);
+		_game.BlackRemainingTimeInMilliseconds.Should().Be(80_000);
 	}
 
 	[Test]
@@ -81,10 +81,10 @@ public class GameWithTimeControlTests
 		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
 		_game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
 		_game.PlaceTile(new Tile(3, 3), _blackPlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(1100);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_100_000);
 
 		// Assert
-		_game.WhiteRemainingTimeInSeconds.Should().Be(80);
+		_game.WhiteRemainingTimeInMilliseconds.Should().Be(80_000);
 	}
 
 	[Test]
@@ -106,7 +106,7 @@ public class GameWithTimeControlTests
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _blackPlayer.Id);
 		_game.PlaceTile(new Tile(1, 1), _whitePlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(1181);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_181_000);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(2, 2), _blackPlayer.Id);
@@ -135,11 +135,11 @@ public class GameWithTimeControlTests
 		game.PlaceTile(new Tile(3, 3), game.CurrentPlayer!.Id);
 		game.PlaceTile(new Tile(0, 4), game.CurrentPlayer!.Id);
 		game.PlaceTile(new Tile(4, 4), game.CurrentPlayer!.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2_000_000);
 
 		// Assert
-		game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
-		game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
+		game.GetRemainingTime(_blackPlayer.Id).Should().Be(180_000);
+		game.GetRemainingTime(_whitePlayer.Id).Should().Be(180_000);
 	}
 
 	[Test]
@@ -149,12 +149,12 @@ public class GameWithTimeControlTests
 		_game.PlaceTile(new Tile(0, 0), _game.CurrentPlayer!.Id);
 		_game.PlaceTile(new Tile(0, 1), _game.CurrentPlayer!.Id);
 		_game.Resign(_whitePlayer.Id);
-		_dateTimeProvider.UtcNowInPosix.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2_000_000);
 
 		// Act
 
 		// Assert
-		_game.GetRemainingTime(_blackPlayer.Id).Should().Be(180);
-		_game.GetRemainingTime(_whitePlayer.Id).Should().Be(180);
+		_game.GetRemainingTime(_blackPlayer.Id).Should().Be(180_000);
+		_game.GetRemainingTime(_whitePlayer.Id).Should().Be(180_000);
 	}
 }

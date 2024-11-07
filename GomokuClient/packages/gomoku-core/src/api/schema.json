@@ -556,11 +556,11 @@
         "properties": {
           "black": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64"
           },
           "white": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64"
           }
         },
         "additionalProperties": false

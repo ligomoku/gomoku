@@ -34,7 +34,7 @@ public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, Get
 			var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
 				? (
 					gameWithTimeControl.TimeControl.ToDto(),
-					new ClockDto(gameWithTimeControl.BlackRemainingTimeInSeconds, gameWithTimeControl.WhiteRemainingTimeInSeconds)
+					new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000)
 				)
 				: (null, null);
 
