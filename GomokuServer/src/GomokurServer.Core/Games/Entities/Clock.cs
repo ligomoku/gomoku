@@ -5,27 +5,36 @@ namespace GomokuServer.Core.Games.Entities;
 public class Clock
 {
 	private long? _lastStartTime;
-	private int _remainingTimeInSeconds;
+	private int _remainingTimeInMilliseconds;
 	private readonly TimeControl _timeControl;
 	private readonly IDateTimeProvider _dateTimeProvider;
 
 	public Clock(TimeControl timeControl, IDateTimeProvider dateTimeProvider)
 	{
-		_remainingTimeInSeconds = timeControl.InitialTimeInSeconds;
+		_remainingTimeInMilliseconds = timeControl.InitialTimeInSeconds * 1000;
 		_timeControl = timeControl;
 		_dateTimeProvider = dateTimeProvider;
 	}
 
-	public int RemainingTimeInSeconds =>
-		_lastStartTime.HasValue
-			? _remainingTimeInSeconds - (int)(_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value)
-			: _remainingTimeInSeconds;
+	public int RemainingTimeInMilliseconds
+	{
+		get
+		{
+			if (_lastStartTime.HasValue)
+			{
+				var res = _remainingTimeInMilliseconds - (int)(_dateTimeProvider.UtcNowUnixTimeMilliseconds - _lastStartTime.Value);
+				return res;
+			}
+
+			return _remainingTimeInMilliseconds;
+		}
+	}
 
 	public void Start()
 	{
 		if (!_lastStartTime.HasValue)
 		{
-			_lastStartTime = _dateTimeProvider.UtcNowInPosix;
+			_lastStartTime = _dateTimeProvider.UtcNowUnixTimeMilliseconds;
 		}
 	}
 
@@ -33,14 +42,9 @@ public class Clock
 	{
 		if (_lastStartTime.HasValue)
 		{
-			_remainingTimeInSeconds -= (int)(_dateTimeProvider.UtcNowInPosix - _lastStartTime.Value);
-			_remainingTimeInSeconds += _timeControl.IncrementPerMove;
+			_remainingTimeInMilliseconds -= (int)(_dateTimeProvider.UtcNowUnixTimeMilliseconds - _lastStartTime.Value);
+			_remainingTimeInMilliseconds += _timeControl.IncrementPerMove * 1000;
 			_lastStartTime = null;
 		}
-	}
-
-	public void AddTime(int incrementInSeconds)
-	{
-		_remainingTimeInSeconds += incrementInSeconds;
 	}
 }

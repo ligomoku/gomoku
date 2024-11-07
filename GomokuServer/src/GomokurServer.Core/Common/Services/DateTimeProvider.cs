@@ -6,5 +6,5 @@ public class DateTimeProvider : IDateTimeProvider
 {
 	public DateTime UtcNow => DateTime.UtcNow;
 
-	public long UtcNowInPosix => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+	public long UtcNowUnixTimeMilliseconds => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 }

@@ -25,9 +25,9 @@ public class GameWithTimeControl : Game
 
 	public TimeControl TimeControl { get; init; }
 
-	public int BlackRemainingTimeInSeconds => _blackClock.RemainingTimeInSeconds;
+	public int BlackRemainingTimeInMilliseconds => _blackClock.RemainingTimeInMilliseconds;
 
-	public int WhiteRemainingTimeInSeconds => _whiteClock.RemainingTimeInSeconds;
+	public int WhiteRemainingTimeInMilliseconds => _whiteClock.RemainingTimeInMilliseconds;
 
 	public bool IsTimeControlInitiated => MovesHistory.Count >= 2;
 
@@ -40,7 +40,7 @@ public class GameWithTimeControl : Game
 			return canPlaceTile;
 		}
 
-		if (_blackClock.RemainingTimeInSeconds <= 0)
+		if (_blackClock.RemainingTimeInMilliseconds <= 0)
 		{
 			Winner = Players.White;
 			Result = GameResult.WhiteWon;
@@ -55,7 +55,7 @@ public class GameWithTimeControl : Game
 			};
 		}
 
-		if (_whiteClock.RemainingTimeInSeconds <= 0)
+		if (_whiteClock.RemainingTimeInMilliseconds <= 0)
 		{
 			Winner = Players.Black;
 			Result = GameResult.BlackWon;
@@ -132,12 +132,12 @@ public class GameWithTimeControl : Game
 	{
 		if (playerId == Players?.Black?.Id)
 		{
-			return _blackClock.RemainingTimeInSeconds;
+			return _blackClock.RemainingTimeInMilliseconds;
 		};
 
 		if (playerId == Players?.White?.Id)
 		{
-			return _whiteClock.RemainingTimeInSeconds;
+			return _whiteClock.RemainingTimeInMilliseconds;
 		};
 
 		return null;
