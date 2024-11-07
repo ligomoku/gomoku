@@ -42,28 +42,18 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
 
   const commonGameTimeProps: Omit<
     GameTimeProps,
-    "players" | "blackTimeLeft" | "whiteTimeLeft"
+    "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
   > = {
     moves:
       moves.length > 0
         ? [...transformMoves(gameHistory.movesHistory), ...moves]
         : transformMoves(gameHistory.movesHistory),
-    activePlayer: "KEK",
     onSkip: () => alert("Skip clicked"),
     //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
     onUndo: () => alert("Undo clicked"),
     onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
-  };
-
-  const playerClock: Partial<
-    Pick<GameTimeProps, "blackTimeLeft" | "whiteTimeLeft">
-  > = {
-    whiteTimeLeft:
-      clock?.white || gameHistory.timeControl?.initialTimeInSeconds,
-    blackTimeLeft:
-      clock?.black || gameHistory.timeControl?.initialTimeInSeconds,
   };
 
   const onTileCLick = useCallback<BoardProps["onTileClick"]>(
@@ -116,7 +106,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                     {...commonGameTimeProps}
                     player={players.black}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={playerClock.blackTimeLeft}
+                    timeLeft={clock?.black}
                   />
                 )}
               </div>
@@ -136,7 +126,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                     {...commonGameTimeProps}
                     player={players.white}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={playerClock.whiteTimeLeft}
+                    timeLeft={clock?.white}
                   />
                 )}
               </div>
@@ -152,8 +142,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                 <GameTime
                   {...commonGameTimeProps}
                   players={players}
-                  blackTimeLeft={playerClock.blackTimeLeft}
-                  whiteTimeLeft={playerClock.whiteTimeLeft}
+                  clock={clock}
                 />
               </div>
             </div>

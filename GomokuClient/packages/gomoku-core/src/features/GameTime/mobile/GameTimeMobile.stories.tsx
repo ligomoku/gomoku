@@ -13,7 +13,6 @@ export default {
 export const Default = () => (
   <GameTimeMobile
     moves={[]}
-    activePlayer="black"
     player={{ playerId: "1", userName: "Player 1", color: "#7cb342" }}
     timeLeft={1000}
     onUndo={() => alert("Undo clicked")}
@@ -27,7 +26,6 @@ export const Default = () => (
 export const WithMoves = () => (
   <GameTimeMobile
     moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
-    activePlayer="black"
     player={{ playerId: "1", userName: "Player 1", color: "#b0b0b0" }}
     timeLeft={1000}
     onUndo={() => notification.show("Undo clicked")}

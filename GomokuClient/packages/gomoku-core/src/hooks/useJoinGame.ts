@@ -72,7 +72,6 @@ export const useJoinGame = (
           setRematchRequested(true);
         },
         clock: async (message) => {
-          console.log(message);
           setClock(message);
         },
         rematchApproved: async ({ newGameId }) => {
@@ -94,7 +93,7 @@ export const useJoinGame = (
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   useInterval(() => {
-    if (isConnected && gameID && hubProxy && moves.length !== 0) {
+    if (isConnected && gameID && hubProxy && moves.length !== 0 && gameHistory.timeControl) {
       hubProxy.getClock({ gameId: gameID });
     }
   }, 500); //TODO: play with this delay value for clock sync

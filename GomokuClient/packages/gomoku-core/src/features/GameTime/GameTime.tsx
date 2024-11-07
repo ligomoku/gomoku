@@ -15,9 +15,7 @@ import { SwaggerTypes } from "@/api";
 
 export interface GameTimeProps {
   moves: string[];
-  blackTimeLeft?: number;
-  whiteTimeLeft?: number;
-  activePlayer: string;
+  clock: SwaggerTypes.GetGameHistoryResponse["clock"];
   players: SwaggerTypes.GetGameHistoryResponse["players"];
   onUndo: () => void;
   onSkip: (direction: "back" | "forward") => void;
@@ -28,9 +26,7 @@ export interface GameTimeProps {
 
 export const GameTime = ({
   moves,
-  blackTimeLeft,
-  whiteTimeLeft,
-  activePlayer,
+  clock,
   players,
   onUndo,
   onSkip,
@@ -40,12 +36,12 @@ export const GameTime = ({
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
-      {blackTimeLeft && (
+      {clock?.black && (
         <div className="font-mono text-5xl">
-          {secondsToString(blackTimeLeft > 0 ? blackTimeLeft : 0)}
+          {secondsToString(clock.black > 0 ? clock.black : 0)}
         </div>
       )}
-      {blackTimeLeft && (
+      {clock?.black && (
         <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
           <Clock className="h-6 w-6" />
         </button>
@@ -100,8 +96,12 @@ export const GameTime = ({
           <span className="text-xl font-bold text-[#363330]">i</span>
         </div>
         <div>
-          <div className="text-sm">{activePlayer} plays first</div>
-          <div className="text-lg font-bold">It's your turn!</div>
+          <div className="text-sm">
+            {!players.black && !players.white && "Game will starts soon"}
+          </div>
+          <div className="text-lg font-bold">
+            {!players.black && !players.white && "Wait for your opponent"}
+          </div>
         </div>
       </div>
     ) : (
@@ -163,9 +163,9 @@ export const GameTime = ({
       </button>
     )}
 
-    {whiteTimeLeft && (
+    {clock?.white && (
       <div className="mt-2 text-center font-mono text-5xl">
-        {secondsToString(whiteTimeLeft > 0 ? whiteTimeLeft : 0)}
+        {secondsToString(clock.white > 0 ? clock.white : 0)}
       </div>
     )}
   </div>

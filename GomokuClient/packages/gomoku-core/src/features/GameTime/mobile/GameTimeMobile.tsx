@@ -10,7 +10,7 @@ import { GameTimeProps, secondsToString } from "@/features/GameTime";
 import { SwaggerTypes } from "@/api";
 
 interface GameTimeMobileProps
-  extends Omit<GameTimeProps, "players" | "blackTimeLeft" | "whiteTimeLeft"> {
+  extends Omit<GameTimeProps, "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"> {
   opponentView?: boolean; // Clock Time mode for main player who sees the board (player not opponent)
   player?: SwaggerTypes.PlayerDto;
   timeLeft?: number;
@@ -24,7 +24,6 @@ export const GameTimeMobile = ({
   onFlag,
   onReset,
   onRematch,
-  activePlayer,
   timeLeft,
   opponentView,
 }: GameTimeMobileProps) => {
@@ -78,7 +77,7 @@ export const GameTimeMobile = ({
               </span>
             ))
           ) : (
-            <span>{activePlayer} plays first</span>
+            <span>{!player && "Game will starts soon. Wait for your opponent"}</span>
           )}
         </div>
         <ChevronRight
