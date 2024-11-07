@@ -17,7 +17,7 @@ export interface TileProps {
     y: SignalClientMessages.MakeMoveClientMessage["y"],
   ) => void;
   showAnnotations: boolean;
-  winningSequence: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
+  winningSequence?: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
 }
 
 const Tile = memo(
@@ -101,7 +101,7 @@ export interface BoardProps {
   tiles: TileColor[][];
   lastTile?: SwaggerTypes.TileDto;
   style?: CSSProperties;
-  winningSequence: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
+  winningSequence?: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
 }
 
 export const Board = ({
