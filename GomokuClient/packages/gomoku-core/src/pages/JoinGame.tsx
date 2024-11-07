@@ -2,13 +2,14 @@ import { useParams } from "@tanstack/react-router";
 import { Chat } from "@/features/Chat";
 import { useChat } from "@/hooks/useChat";
 import { useAuthToken, useSignalRConnection } from "@/context";
-import { Board } from "@/features/Board/Board";
+import { Board, BoardProps } from "@/features/Board/Board";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { SwaggerTypes } from "@/api";
 import { GameTime, GameTimeProps } from "@/features/GameTime";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { RematchAlert } from "@/shared/ui/rematch-alert";
+import { useCallback } from "react";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -65,6 +66,11 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
       clock?.black || gameHistory.timeControl?.initialTimeInSeconds,
   };
 
+  const onTileCLick = useCallback<BoardProps["onTileClick"]>(
+    (x, y) => handleMove(x, y),
+    [handleMove],
+  );
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       {rematchRequested && (
@@ -118,7 +124,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                 tiles={tiles}
                 lastTile={lastTile}
                 size={gameHistory.boardSize || 19}
-                onTileClick={(x, y) => handleMove(x, y)}
+                onTileClick={onTileCLick}
                 style={{ order: isMobile ? 1 : "unset" }}
                 winningSequence={gameHistory.winningSequence ?? winningSequence}
               />

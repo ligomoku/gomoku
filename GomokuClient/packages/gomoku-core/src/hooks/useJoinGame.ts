@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
@@ -98,25 +98,28 @@ export const useJoinGame = (
     }
   }, 500); //TODO: play with this delay value for clock sync
 
-  const handleMove = async (
-    x: SignalClientMessages.MakeMoveClientMessage["x"],
-    y: SignalClientMessages.MakeMoveClientMessage["y"],
-  ) => {
-    if (!hubProxy || winner) return;
+  const handleMove = useCallback(
+    async (
+      x: SignalClientMessages.MakeMoveClientMessage["x"],
+      y: SignalClientMessages.MakeMoveClientMessage["y"],
+    ) => {
+      if (!hubProxy || winner) return;
 
-    const makeMoveMessage = {
-      gameId: gameID,
-      x,
-      y,
-    };
+      const makeMoveMessage = {
+        gameId: gameID,
+        x,
+        y,
+      };
 
-    try {
-      await hubProxy.makeMove(makeMoveMessage);
-    } catch (error) {
-      console.error("Error making move:", error);
-      notification.show("Error making move", "error");
-    }
-  };
+      try {
+        await hubProxy.makeMove(makeMoveMessage);
+      } catch (error) {
+        console.error("Error making move:", error);
+        notification.show("Error making move", "error");
+      }
+    },
+    [hubProxy, winner, gameID],
+  );
 
   return {
     moves,
