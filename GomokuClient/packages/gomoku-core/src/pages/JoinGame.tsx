@@ -116,7 +116,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                     {...commonGameTimeProps}
                     player={players.black}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={playerClock.whiteTimeLeft}
+                    timeLeft={playerClock.blackTimeLeft}
                   />
                 )}
               </div>
@@ -136,7 +136,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                     {...commonGameTimeProps}
                     player={players.white}
                     //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={playerClock.blackTimeLeft}
+                    timeLeft={playerClock.whiteTimeLeft}
                   />
                 )}
               </div>

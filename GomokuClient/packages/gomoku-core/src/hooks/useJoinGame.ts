@@ -72,6 +72,7 @@ export const useJoinGame = (
           setRematchRequested(true);
         },
         clock: async (message) => {
+          console.log(message);
           setClock(message);
         },
         rematchApproved: async ({ newGameId }) => {
