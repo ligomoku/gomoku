@@ -25,9 +25,9 @@ public class GameWithTimeControl : Game
 
 	public TimeControl TimeControl { get; init; }
 
-	public int BlackRemainingTimeInMilliseconds => _blackClock.RemainingTimeInMilliseconds;
+	public long BlackRemainingTimeInMilliseconds => _blackClock.RemainingTimeInMilliseconds;
 
-	public int WhiteRemainingTimeInMilliseconds => _whiteClock.RemainingTimeInMilliseconds;
+	public long WhiteRemainingTimeInMilliseconds => _whiteClock.RemainingTimeInMilliseconds;
 
 	public bool IsTimeControlInitiated => MovesHistory.Count >= 2;
 
@@ -128,7 +128,7 @@ public class GameWithTimeControl : Game
 		return RematchResult.Success(newGame);
 	}
 
-	public int? GetRemainingTime(string playerId)
+	public long? GetRemainingTime(string playerId)
 	{
 		if (playerId == Players?.Black?.Id)
 		{
