@@ -33,7 +33,7 @@ public class GameWithTimeControlTests
 	public void PlaceTile_ClockShouldNotTickBeforeFirstMoveIsMade()
 	{
 		// Arrange
-		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2_000_000);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
@@ -50,7 +50,7 @@ public class GameWithTimeControlTests
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(1, 1), _blackPlayer.Id);
-		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2000);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2_000_000);
 
 		// Act
 		var result = _game.PlaceTile(new Tile(2, 2), _whitePlayer.Id);
