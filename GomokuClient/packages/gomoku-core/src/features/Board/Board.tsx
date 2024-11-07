@@ -6,7 +6,6 @@ import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import { SignalClientMessages, SwaggerTypes } from "@/api";
 import { Button } from "@/shared/ui/button";
-import { TileDto } from "@/api/client";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];
@@ -18,7 +17,7 @@ export interface TileProps {
     y: SignalClientMessages.MakeMoveClientMessage["y"],
   ) => void;
   showAnnotations: boolean;
-  winningSequence?: TileDto[]; //TODO: check maybe another type
+  winningSequence?: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
 }
 
 const Tile = memo(
@@ -77,6 +76,7 @@ const Tile = memo(
       prevProps.xIndex === nextProps.xIndex &&
       prevProps.yIndex === nextProps.yIndex &&
       prevProps.showAnnotations === nextProps.showAnnotations &&
+      prevProps.onTileClick === nextProps.onTileClick &&
       //TODO: check if we need to do JSON.stringify here
       prevProps.winningSequence?.length === nextProps.winningSequence?.length
     );
@@ -101,7 +101,7 @@ export interface BoardProps {
   tiles: TileColor[][];
   lastTile?: SwaggerTypes.TileDto;
   style?: CSSProperties;
-  winningSequence?: Pick<TileProps, "winningSequence">["winningSequence"];
+  winningSequence?: SwaggerTypes.GetGameHistoryResponse["winningSequence"];
 }
 
 export const Board = ({

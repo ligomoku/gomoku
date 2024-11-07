@@ -29,6 +29,8 @@ public interface IGameHubReceiver
 
 	Task GameStarted(GameStartedMessage gameStartedMessage);
 
+	Task BothPlayersJoined(BothPlayersJoinedMessage bothPlayersJoinedMessage);
+
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);
 
 	Task RematchApproved(RematchApprovedMessage rematchApprovedMessage);

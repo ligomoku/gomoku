@@ -18,6 +18,7 @@ import type {
 import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
+  BothPlayersJoinedMessage,
   PlayerMadeMoveMessage,
   RematchApprovedMessage,
   GameIsOverMessage,
@@ -152,6 +153,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.playerJoinedGame(...args);
     const __gameStarted = (...args: [GameStartedMessage]) =>
       receiver.gameStarted(...args);
+    const __bothPlayersJoined = (...args: [BothPlayersJoinedMessage]) =>
+      receiver.bothPlayersJoined(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
     const __rematchApproved = (...args: [RematchApprovedMessage]) =>
@@ -169,6 +172,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("GameGroupJoined", __gameGroupJoined);
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
+    connection.on("BothPlayersJoined", __bothPlayersJoined);
     connection.on("PlayerMadeMove", __playerMadeMove);
     connection.on("RematchApproved", __rematchApproved);
     connection.on("RematchRequested", __rematchRequested);
@@ -181,6 +185,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "GameGroupJoined", method: __gameGroupJoined },
       { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
+      { methodName: "BothPlayersJoined", method: __bothPlayersJoined },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
       { methodName: "RematchApproved", method: __rematchApproved },
       { methodName: "RematchRequested", method: __rematchRequested },

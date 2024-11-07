@@ -24,6 +24,7 @@ export const GamePreview = ({ gen, lastTile }: GamePreviewProps) => {
         tiles={tiles}
         onTileClick={handleTileClick}
         lastTile={lastTile}
+        winningSequence={null}
       />
     </div>
   );

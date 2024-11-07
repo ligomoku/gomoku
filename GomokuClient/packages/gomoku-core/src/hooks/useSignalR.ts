@@ -104,6 +104,8 @@ export const useSignalR = (
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
         playerJoinedGame: async (message) =>
           handlers.playerJoinedGame?.(message),
+        bothPlayersJoined: async (message) =>
+          handlers.bothPlayersJoined?.(message),
         gameGroupJoined: async (gameId) =>
           handlers.playerJoinedGame?.({ userId: gameId }),
         gameStarted: async (message) => handlers.gameStarted?.(message),

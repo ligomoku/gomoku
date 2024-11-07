@@ -1,13 +1,22 @@
-import { ChevronLeft, ChevronRight, Repeat1 } from "lucide-react";
-import { X, Undo, Flag } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Flag,
+  Repeat1,
+  Undo,
+  X,
+} from "lucide-react";
 import { GameTimeProps, secondsToString } from "@/features/GameTime";
+import { SwaggerTypes } from "@/api";
 
 interface GameTimeMobileProps
-  extends Omit<GameTimeProps, "players" | "blackTimeLeft" | "whiteTimeLeft"> {
+  extends Omit<
+    GameTimeProps,
+    "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
+  > {
   opponentView?: boolean; // Clock Time mode for main player who sees the board (player not opponent)
-  player: GameTimeProps["players"][0];
-  blackTimeLeftMobile?: number;
-  whiteTimeLeftMobile?: number;
+  player?: SwaggerTypes.PlayerDto;
+  timeLeft?: number;
 }
 
 export const GameTimeMobile = ({
@@ -18,14 +27,9 @@ export const GameTimeMobile = ({
   onFlag,
   onReset,
   onRematch,
-  activePlayer,
-  blackTimeLeftMobile,
-  whiteTimeLeftMobile,
+  timeLeft,
   opponentView,
 }: GameTimeMobileProps) => {
-  const blackTimeLeft = secondsToString(blackTimeLeftMobile!);
-  const whiteTimeLeft = secondsToString(whiteTimeLeftMobile!);
-
   if (opponentView) {
     return (
       <div className="w-full max-w-md rounded-lg bg-[#2e2a24] p-2 font-mono text-white">
@@ -33,13 +37,15 @@ export const GameTimeMobile = ({
           <div className="flex items-center">
             <span
               className="mr-2 h-3 w-3 rounded-full"
-              style={{ backgroundColor: player.color }}
+              style={{ backgroundColor: player?.color }}
             ></span>
-            <span className="font-bold text-[#ffa600]">{player.name}</span>
+            <span className="font-bold text-[#ffa600]">{player?.userName}</span>
           </div>
-          <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
-            {blackTimeLeft || whiteTimeLeft}
-          </div>
+          {timeLeft && (
+            <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+              {secondsToString(timeLeft > 0 ? timeLeft : 0)}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -51,13 +57,15 @@ export const GameTimeMobile = ({
         <div className="flex items-center">
           <span
             className="mr-2 h-3 w-3 rounded-full"
-            style={{ backgroundColor: player.color }}
+            style={{ backgroundColor: player?.color }}
           ></span>
-          <span className="font-bold text-[#ffa600]">{player.name}</span>
+          <span className="font-bold text-[#ffa600]">{player?.userName}</span>
         </div>
-        <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
-          {blackTimeLeft || whiteTimeLeft}
-        </div>
+        {timeLeft && (
+          <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+            {secondsToString(timeLeft > 0 ? timeLeft : 0)}
+          </div>
+        )}
       </div>
       <div className="mb-2 flex items-center rounded bg-[#363330] text-sm">
         <ChevronLeft
@@ -72,7 +80,9 @@ export const GameTimeMobile = ({
               </span>
             ))
           ) : (
-            <span>{activePlayer} plays first</span>
+            <span>
+              {!player && "Game will starts soon. Wait for your opponent"}
+            </span>
           )}
         </div>
         <ChevronRight

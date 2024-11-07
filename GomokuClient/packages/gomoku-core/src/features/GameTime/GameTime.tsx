@@ -1,23 +1,22 @@
 import {
   Clock,
+  FastForward,
+  Flag,
+  MoreHorizontal,
+  Repeat1,
   Rewind,
   SkipBack,
   SkipForward,
-  FastForward,
-  MoreHorizontal,
-  X,
-  Flag,
   Undo,
-  Repeat1,
+  X,
 } from "lucide-react";
 import { Fragment } from "react";
+import { SwaggerTypes } from "@/api";
 
 export interface GameTimeProps {
   moves: string[];
-  blackTimeLeft: number;
-  whiteTimeLeft: number;
-  activePlayer: string;
-  players: { name: string; color: string }[];
+  clock: SwaggerTypes.GetGameHistoryResponse["clock"];
+  players: SwaggerTypes.GetGameHistoryResponse["players"];
   onUndo: () => void;
   onSkip: (direction: "back" | "forward") => void;
   onFlag: () => void;
@@ -27,9 +26,7 @@ export interface GameTimeProps {
 
 export const GameTime = ({
   moves,
-  blackTimeLeft,
-  whiteTimeLeft,
-  activePlayer,
+  clock,
   players,
   onUndo,
   onSkip,
@@ -39,10 +36,16 @@ export const GameTime = ({
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
-      <div className="font-mono text-5xl">{secondsToString(blackTimeLeft)}</div>
-      <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
-        <Clock className="h-6 w-6" />
-      </button>
+      {clock?.black && (
+        <div className="font-mono text-5xl">
+          {secondsToString(clock.black > 0 ? clock.black : 0)}
+        </div>
+      )}
+      {clock?.black && (
+        <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
+          <Clock className="h-6 w-6" />
+        </button>
+      )}
     </div>
 
     <div className="mb-2 rounded bg-[#363330] p-2">
@@ -50,9 +53,9 @@ export const GameTime = ({
         <div className="flex items-center">
           <div
             className="mr-2 h-2 w-2 rounded-full"
-            style={{ backgroundColor: players[0].color }}
+            style={{ backgroundColor: "black" }}
           ></div>
-          <span className="text-sm">{players[0].name} (Black)</span>
+          <span className="text-sm">{players.black?.userName}</span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
@@ -93,8 +96,12 @@ export const GameTime = ({
           <span className="text-xl font-bold text-[#363330]">i</span>
         </div>
         <div>
-          <div className="text-sm">{activePlayer} plays first</div>
-          <div className="text-lg font-bold">It's your turn!</div>
+          <div className="text-sm">
+            {!players.black && !players.white && "Game will starts soon"}
+          </div>
+          <div className="text-lg font-bold">
+            {!players.black && !players.white && "Wait for your opponent"}
+          </div>
         </div>
       </div>
     ) : (
@@ -130,9 +137,9 @@ export const GameTime = ({
         <div className="flex items-center">
           <div
             className="mr-2 h-2 w-2 rounded-full"
-            style={{ backgroundColor: players[1].color }}
+            style={{ backgroundColor: "white" }}
           ></div>
-          <span className="text-sm">{players[1].name} (White)</span>
+          <span className="text-sm">{players.white?.userName}</span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
@@ -156,9 +163,11 @@ export const GameTime = ({
       </button>
     )}
 
-    <div className="mt-2 text-center font-mono text-5xl">
-      {secondsToString(whiteTimeLeft)}
-    </div>
+    {clock?.white && (
+      <div className="mt-2 text-center font-mono text-5xl">
+        {secondsToString(clock.white > 0 ? clock.white : 0)}
+      </div>
+    )}
   </div>
 );
 

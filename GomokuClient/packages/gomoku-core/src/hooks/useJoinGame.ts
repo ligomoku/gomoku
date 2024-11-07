@@ -1,34 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
 import { notification } from "@/shared/ui/notification";
 import { useRouter } from "@tanstack/react-router";
-import {
-  SignalClientMessages,
-  SignalServerMessages,
-  SignalDto,
-  SwaggerTypes,
-} from "@/api";
+import { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
 import { typedSessionStorage } from "@/shared/lib/utils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
-  boardSize: SwaggerTypes.CreateGameResponse["boardSize"],
+  gameHistory: SwaggerTypes.GetGameHistoryResponse,
   playerID?: string,
 ) => {
   //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
   const [winningSequence, setWinningSequence] = useState<
-    SignalServerMessages.GameIsOverMessage["winningSequence"]
-  >([]);
+    SwaggerTypes.GetGameHistoryResponse["winningSequence"]
+  >(gameHistory?.winningSequence);
   const [rematchRequested, setRematchRequested] = useState(false);
-  const [clock, setClock] = useState<SignalDto.ClockDto>();
+  const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(
+    gameHistory.clock,
+  );
+  const [players, setPlayers] = useState<SwaggerTypes.PlayersDto>(
+    gameHistory.players,
+  );
 
   const router = useRouter();
 
-  const { tiles, winner, addTile, lastTile, setLastTile, setTiles } =
-    useTiles(boardSize);
+  const { tiles, winner, addTile, lastTile } = useTiles(gameHistory);
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
@@ -42,6 +41,9 @@ export const useJoinGame = (
       const unregister = registerEventHandlers({
         playerJoinedGame: async () => {
           notification.show(`You have joined the game`);
+        },
+        bothPlayersJoined: async ({ players }) => {
+          setPlayers(players);
         },
         gameStarted: async ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
@@ -91,43 +93,52 @@ export const useJoinGame = (
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   useInterval(() => {
-    if (isConnected && gameID && hubProxy && moves.length !== 0) {
+    if (
+      isConnected &&
+      gameID &&
+      hubProxy &&
+      moves.length !== 0 &&
+      gameHistory.timeControl
+    ) {
       hubProxy.getClock({ gameId: gameID });
     }
   }, 500); //TODO: play with this delay value for clock sync
 
-  const handleMove = async (
-    x: SignalClientMessages.MakeMoveClientMessage["x"],
-    y: SignalClientMessages.MakeMoveClientMessage["y"],
-  ) => {
-    if (!hubProxy || winner) return;
+  const handleMove = useCallback(
+    async (
+      x: SignalClientMessages.MakeMoveClientMessage["x"],
+      y: SignalClientMessages.MakeMoveClientMessage["y"],
+    ) => {
+      if (!hubProxy || winner) return;
 
-    const makeMoveMessage = {
-      gameId: gameID,
-      x,
-      y,
-    };
+      const makeMoveMessage = {
+        gameId: gameID,
+        x,
+        y,
+      };
 
-    try {
-      await hubProxy.makeMove(makeMoveMessage);
-    } catch (error) {
-      console.error("Error making move:", error);
-      notification.show("Error making move", "error");
-    }
-  };
+      try {
+        await hubProxy.makeMove(makeMoveMessage);
+      } catch (error) {
+        console.error("Error making move:", error);
+        notification.show("Error making move", "error");
+      }
+    },
+    [hubProxy, winner, gameID],
+  );
 
   return {
+    hubProxy,
     moves,
     tiles,
     lastTile,
-    setLastTile,
     winner,
     handleMove,
-    setTiles,
     winningSequence,
     rematchRequested,
     setRematchRequested,
     clock,
+    players,
   };
 };
 

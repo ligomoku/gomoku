@@ -13,35 +13,37 @@ export default {
 export const Default = () => (
   <GameTime
     moves={[]}
-    activePlayer="black"
-    players={[
-      { name: "Player 1", color: "#7cb342" },
-      { name: "Player 2", color: "#b0b0b0" },
-    ]}
+    players={{
+      black: { playerId: "1", color: "black", userName: "black player" },
+      white: { playerId: "2", color: "white", userName: "white player" },
+    }}
     onUndo={() => alert("Undo clicked")}
     onSkip={(direction) => alert(`Skip ${direction} clicked`)}
     onFlag={() => alert("Flag clicked")}
     onReset={() => alert("Reset clicked")}
     onRematch={() => alert("Rematch clicked")}
-    blackTimeLeft={1000}
-    whiteTimeLeft={1000}
+    clock={{
+      black: 1000,
+      white: 1000,
+    }}
   />
 );
 
 export const WithMoves = () => (
   <GameTime
     moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
-    activePlayer="black"
-    players={[
-      { name: "Player 1", color: "#7cb342" },
-      { name: "Player 2", color: "#b0b0b0" },
-    ]}
+    players={{
+      black: { playerId: "1", color: "black", userName: "black player" },
+      white: { playerId: "2", color: "white", userName: "white player" },
+    }}
     onUndo={() => notification.show("Undo clicked")}
     onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
     onFlag={() => notification.show("Flag clicked")}
     onReset={() => notification.show("Reset clicked")}
     onRematch={() => notification.show("Rematch clicked")}
-    blackTimeLeft={1000}
-    whiteTimeLeft={1000}
+    clock={{
+      black: 1000,
+      white: 1000,
+    }}
   />
 );
