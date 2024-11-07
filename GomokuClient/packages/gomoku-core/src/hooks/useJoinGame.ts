@@ -128,6 +128,7 @@ export const useJoinGame = (
   );
 
   return {
+    hubProxy,
     moves,
     tiles,
     lastTile,
