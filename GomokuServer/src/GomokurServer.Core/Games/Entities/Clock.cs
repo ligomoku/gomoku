@@ -41,7 +41,7 @@ public class Clock
 	{
 		if (_lastStartTime.HasValue)
 		{
-			_remainingTimeInMilliseconds -= (int)(_dateTimeProvider.UtcNowUnixTimeMilliseconds - _lastStartTime.Value);
+			_remainingTimeInMilliseconds -= (_dateTimeProvider.UtcNowUnixTimeMilliseconds - _lastStartTime.Value);
 			_remainingTimeInMilliseconds += _timeControl.IncrementPerMove * 1000;
 			_lastStartTime = null;
 		}
