@@ -15,6 +15,12 @@ public class GetGameHistoryResponse
 	public required PlayersDto Players { get; init; }
 
 	[Required]
+	public required bool IsGameStarted { get; set; }
+
+	[Required]
+	public required bool HasBothPlayersJoined { get; set; }
+
+	[Required]
 	public required bool IsCompleted { get; set; }
 
 	public string? Winner { get; init; }

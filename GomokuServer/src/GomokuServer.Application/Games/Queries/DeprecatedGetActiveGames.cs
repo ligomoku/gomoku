@@ -1,23 +1,25 @@
 namespace GomokuServer.Application.Games.Queries;
 
-public record GetActiveGamesQuery
+[Obsolete("Use new common query")]
+public record DeprecatedGetActiveGamesQuery
 	: PaginatedQuery<IEnumerable<GetActiveGamesResponse>>
 {
 	public required bool IsAnonymous { get; init; }
 }
 
-public class GetActiveGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
-	: IQueryHandler<GetActiveGamesQuery, PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>
+[Obsolete("Use new common query handler")]
+public class DeprecatedGetActiveGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
+	: IQueryHandler<DeprecatedGetActiveGamesQuery, PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>
 {
 	public async Task<Result<PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>>
-		Handle(GetActiveGamesQuery request, CancellationToken cancellationToken)
+		Handle(DeprecatedGetActiveGamesQuery request, CancellationToken cancellationToken)
 	{
 		return request.IsAnonymous
 			? await TryGetGames(_anonymousGamesRepository, request)
 			: await TryGetGames(_registeredGamesRepository, request);
 	}
 
-	private async Task<Result<PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>> TryGetGames(IGamesRepository gamesRepository, GetActiveGamesQuery request)
+	private async Task<Result<PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>> TryGetGames(IGamesRepository gamesRepository, DeprecatedGetActiveGamesQuery request)
 	{
 		Expression<Func<Game, bool>> expression =
 			game => game.Status == GameStatus.InProgress;
@@ -25,7 +27,7 @@ public class GetActiveGamesQueryHandler(IRegisteredGamesRepository _registeredGa
 		var activeGamesCount = await gamesRepository.CountAsync(expression);
 
 		var getActiveGamesResult = await gamesRepository.GetByExpressionAsync(expression,
-		query => query
+			query => query
 				.Skip(request.Offset)
 				.Take(request.Limit)
 				.OrderByDescending(game => game.CreatedAt)

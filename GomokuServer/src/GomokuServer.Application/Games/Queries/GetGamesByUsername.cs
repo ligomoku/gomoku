@@ -12,11 +12,8 @@ public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _register
 {
 	public override async Task<Result<IEnumerable<GetGamesByUsernameResponse>>> GetDataAsync(GetGamesByUsernameQuery request)
 	{
-		Expression<Func<Game, bool>> expression =
-			game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
-
 		var gamesByUsernameResult = await _registeredGamesRepository
-			.GetByExpressionAsync(expression,
+			.GetByExpressionAsync(GetExpression(request),
 				query => query
 					.Skip(request.Offset)
 					.Take(request.Limit)
@@ -46,9 +43,9 @@ public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _register
 
 	public override async Task<Result<int>> GetTotalItemsAsync(GetGamesByUsernameQuery request)
 	{
-		Expression<Func<Game, bool>> expression =
-			game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
-
-		return await _registeredGamesRepository.CountAsync(expression);
+		return await _registeredGamesRepository.CountAsync(GetExpression(request));
 	}
+
+	private Expression<Func<Game, bool>> GetExpression(GetGamesByUsernameQuery request)
+		=> game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
 }

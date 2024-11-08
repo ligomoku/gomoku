@@ -1,5 +1,7 @@
 ﻿namespace GomokuServer.Application.Games.Queries;
 
+// TODO: Remove. This is duplication of GetGameHistoryQuery logic and is unused anymore.
+// TODO: Figure out if all tests in history are covered same as this handler tests
 public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 {
 	[Required]

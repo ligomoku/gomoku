@@ -9,6 +9,7 @@ global using GomokuServer.Application.Common.Responses;
 global using GomokuServer.Application.Extensions;
 global using GomokuServer.Application.Games.Dto;
 global using GomokuServer.Application.Games.Interfaces;
+global using GomokuServer.Application.Games.Queries.Abstract;
 global using GomokuServer.Application.Games.Responses;
 global using GomokuServer.Application.Profiles.Dto;
 global using GomokuServer.Application.Profiles.Interfaces;

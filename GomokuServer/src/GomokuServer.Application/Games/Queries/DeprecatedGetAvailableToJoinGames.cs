@@ -1,23 +1,25 @@
 ﻿namespace GomokuServer.Application.Games.Queries;
 
-public record GetAvailableToJoinGamesQuery
+[Obsolete("Use specific query")]
+public record DeprecatedGetAvailableToJoinGamesQuery
 	: PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>
 {
 	public required bool IsAnonymous { get; init; }
 }
 
-public class GetAvailableToJoinGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
-	: IQueryHandler<GetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
+[Obsolete("Use specific query handler")]
+public class DeprecatedGetAvailableToJoinGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
+	: IQueryHandler<DeprecatedGetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
 	public async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>>
-	Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
+	Handle(DeprecatedGetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
 	{
 		return request.IsAnonymous
 			? await TryGetGames(_anonymousGamesRepository, request)
 			: await TryGetGames(_registeredGamesRepository, request);
 	}
 
-	private async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>> TryGetGames(IGamesRepository gamesRepository, GetAvailableToJoinGamesQuery request)
+	private async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>> TryGetGames(IGamesRepository gamesRepository, DeprecatedGetAvailableToJoinGamesQuery request)
 	{
 		Expression<Func<Game, bool>> expression =
 			game => game.Status == GameStatus.WaitingForPlayersToJoin;

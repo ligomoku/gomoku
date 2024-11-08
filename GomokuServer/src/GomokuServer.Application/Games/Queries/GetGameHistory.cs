@@ -33,6 +33,8 @@ public class GetGameHistoryQueryHandler(IRegisteredGamesRepository _registeredGa
 				Gen = game.PositionInGENFormat,
 				MovesCount = game.MovesHistory.Count,
 				Players = game.GetPlayersDto(),
+				IsGameStarted = game.Status == GameStatus.InProgress || game.Status == GameStatus.Completed,
+				HasBothPlayersJoined = game.Status != GameStatus.WaitingForPlayersToJoin,
 				IsCompleted = game.Status == GameStatus.Completed,
 				Winner = game.Winner?.UserName,
 				WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList(),
