@@ -25,6 +25,8 @@ public class GetAvailableToJoinGamesTests
 	public async Task GetAvailableToJoinGames_WhenNoGamesFound_ShouldReturnEmptySuccess()
 	{
 		// Arrange
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
@@ -49,6 +51,8 @@ public class GetAvailableToJoinGamesTests
 			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
@@ -72,6 +76,8 @@ public class GetAvailableToJoinGamesTests
 			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
