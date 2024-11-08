@@ -6,17 +6,9 @@ public record GetGameCurrentStateQuery : IQuery<GetGameCurrentStateResponse>
 	public required string GameId { get; init; }
 }
 
-public class GetGameCurrentStateQueryHandler : IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
+public class GetGameCurrentStateQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
+	: IQueryHandler<GetGameCurrentStateQuery, GetGameCurrentStateResponse>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
-
-	public GetGameCurrentStateQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymousGamesRepository anonymousGamesRepository)
-	{
-		_registeredGamesRepository = gameRepository;
-		_anonymousGamesRepository = anonymousGamesRepository;
-	}
-
 	public async Task<Result<GetGameCurrentStateResponse>> Handle(GetGameCurrentStateQuery request, CancellationToken cancellationToken)
 	{
 		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);

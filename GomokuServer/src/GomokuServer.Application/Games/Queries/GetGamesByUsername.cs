@@ -7,16 +7,9 @@ public record GetGamesByUsernameQuery
 	public required string UserName { get; set; }
 }
 
-public class GetGamesByUsernameQueryHandler
+public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _registeredGamesRepository)
 	: PaginatedQueryHandler<GetGamesByUsernameQuery, IEnumerable<GetGamesByUsernameResponse>>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-
-	public GetGamesByUsernameQueryHandler(IRegisteredGamesRepository registeredGamesRepository)
-	{
-		_registeredGamesRepository = registeredGamesRepository;
-	}
-
 	public override async Task<Result<IEnumerable<GetGamesByUsernameResponse>>> GetDataAsync(GetGamesByUsernameQuery request)
 	{
 		Expression<Func<Game, bool>> expression =

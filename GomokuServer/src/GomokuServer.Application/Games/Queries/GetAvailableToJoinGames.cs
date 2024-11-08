@@ -6,21 +6,9 @@ public record GetAvailableToJoinGamesQuery
 	public required bool IsAnonymous { get; init; }
 }
 
-public class GetAvailableToJoinGamesQueryHandler
+public class GetAvailableToJoinGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
 	: IQueryHandler<GetAvailableToJoinGamesQuery, PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
-
-	public GetAvailableToJoinGamesQueryHandler(
-		IRegisteredGamesRepository gameRepository,
-		IAnonymousGamesRepository anonymousGamesRepository
-	)
-	{
-		_registeredGamesRepository = gameRepository;
-		_anonymousGamesRepository = anonymousGamesRepository;
-	}
-
 	public async Task<Result<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>>
 	Handle(GetAvailableToJoinGamesQuery request, CancellationToken cancellationToken)
 	{

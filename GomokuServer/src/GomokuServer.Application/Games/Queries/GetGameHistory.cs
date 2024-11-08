@@ -6,17 +6,9 @@ public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 	public required string GameId { get; init; }
 }
 
-public class GetGameHistoryQueryHandler : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
+public class GetGameHistoryQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
+    : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
-
-	public GetGameHistoryQueryHandler(IRegisteredGamesRepository gameRepository, IAnonymousGamesRepository anonymousGamesRepository)
-	{
-		_registeredGamesRepository = gameRepository;
-		_anonymousGamesRepository = anonymousGamesRepository;
-	}
-
 	public async Task<Result<GetGameHistoryResponse>> Handle(GetGameHistoryQuery request, CancellationToken cancellationToken)
 	{
 		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);

@@ -6,23 +6,11 @@ public record GetActiveGamesQuery
 	public required bool IsAnonymous { get; init; }
 }
 
-public class GetActiveGamesQueryHandler
+public class GetActiveGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
 	: IQueryHandler<GetActiveGamesQuery, PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-	private readonly IAnonymousGamesRepository _anonymousGamesRepository;
-
-	public GetActiveGamesQueryHandler(
-		IRegisteredGamesRepository gameRepository,
-		IAnonymousGamesRepository anonymousGamesRepository
-	)
-	{
-		_registeredGamesRepository = gameRepository;
-		_anonymousGamesRepository = anonymousGamesRepository;
-	}
-
 	public async Task<Result<PaginatedResponse<IEnumerable<GetActiveGamesResponse>>>>
-	Handle(GetActiveGamesQuery request, CancellationToken cancellationToken)
+		Handle(GetActiveGamesQuery request, CancellationToken cancellationToken)
 	{
 		return request.IsAnonymous
 			? await TryGetGames(_anonymousGamesRepository, request)
