@@ -1,7 +1,4 @@
-﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Core.Games.Enums;
-
-namespace GomokuServer.Application.Games.Queries;
+﻿namespace GomokuServer.Application.Games.Queries;
 
 public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 {

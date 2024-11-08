@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Application.Common.Interfaces;
 
-public interface IPaginatedQuery<TResponse> : IQuery<TResponse>
+public interface IPaginatedQuery<TResponse> : IQuery<PaginatedResponse<TResponse>>
 {
 	int Limit { get; init; }
 

@@ -29,7 +29,7 @@ public class GetGamesByUsernameTests
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
 		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
-			.Returns(Task.FromResult(0));
+			.Returns(Task.FromResult(Result.Success(0)));
 
 		var query = new GetGamesByUsernameQuery { UserName = "TestUser" };
 

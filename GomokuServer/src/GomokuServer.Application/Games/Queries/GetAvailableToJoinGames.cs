@@ -1,14 +1,9 @@
-﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Core.Games.Enums;
-
-namespace GomokuServer.Application.Games.Queries;
+﻿namespace GomokuServer.Application.Games.Queries;
 
 public record GetAvailableToJoinGamesQuery
-	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>>
+	: PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>
 {
 	public required bool IsAnonymous { get; init; }
-	public int Limit { get; init; } = 5;
-	public int Offset { get; init; } = 0;
 }
 
 public class GetAvailableToJoinGamesQueryHandler
