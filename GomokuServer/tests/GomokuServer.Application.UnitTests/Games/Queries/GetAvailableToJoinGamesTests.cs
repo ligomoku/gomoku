@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using GomokuServer.Application.Games.Queries;
+using GomokuServer.Application.Games.Queries.Abstract;
 using GomokuServer.Application.UnitTests.TestData;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
@@ -9,29 +10,27 @@ public class GetAvailableToJoinGamesTests
 {
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymousGamesRepository _anonymousGamesRepository;
-	private GetAvailableToJoinGamesQueryHandler _handler;
+	private GetActiveGamesQueryHandler<GetActiveRegisteredGamesQuery> _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
-		_handler = new GetAvailableToJoinGamesQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
+		_handler = new GetActiveRegisteredGamesQueryHandler(_registeredGamesRepository);
 	}
 
 	[Test]
 	public async Task GetAvailableToJoinGames_WhenNoGamesFound_ShouldReturnEmptySuccess()
 	{
 		// Arrange
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
-
 		// Act
-		var result = await _handler.Handle(query, CancellationToken.None);
+		var result = await _handler.Handle(new GetActiveRegisteredGamesQuery(), CancellationToken.None);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
@@ -49,13 +48,13 @@ public class GetAvailableToJoinGamesTests
 			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
-
 		// Act
-		var result = await _handler.Handle(query, CancellationToken.None);
+		var result = await _handler.Handle(new GetActiveRegisteredGamesQuery(), CancellationToken.None);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
@@ -72,13 +71,13 @@ public class GetAvailableToJoinGamesTests
 			_testDataProvider.GetGame_OnePlayerJoined(),
 		};
 
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
-
 		// Act
-		var result = await _handler.Handle(query, CancellationToken.None);
+		var result = await _handler.Handle(new GetActiveRegisteredGamesQuery(), CancellationToken.None);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
@@ -91,13 +90,13 @@ public class GetAvailableToJoinGamesTests
 	public async Task GetAvailableToJoinGames_WhenRepositoryFails_ShouldReturnFailure()
 	{
 		// Arrange
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
 
-		var query = new GetAvailableToJoinGamesQuery() { IsAnonymous = false };
-
 		// Act
-		var result = await _handler.Handle(query, CancellationToken.None);
+		var result = await _handler.Handle(new GetActiveRegisteredGamesQuery(), CancellationToken.None);
 
 		// Assert
 		result.Status.Should().Be(ResultStatus.Error);

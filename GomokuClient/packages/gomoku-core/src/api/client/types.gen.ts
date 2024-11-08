@@ -61,6 +61,8 @@ export type GetGameHistoryResponse = {
   gen: string;
   movesCount: number;
   players: PlayersDto;
+  isGameStarted: boolean;
+  hasBothPlayersJoined: boolean;
   isCompleted: boolean;
   winner?: string | null;
   winningSequence?: Array<TileDto> | null;

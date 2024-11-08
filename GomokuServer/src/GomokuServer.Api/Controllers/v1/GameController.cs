@@ -47,14 +47,10 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames([FromQuery] GetAvailableGamesRequest request)
 	{
-		var query = new GetAvailableToJoinGamesQuery
-		{
-			IsAnonymous = request.IsAnonymous,
-			Limit = request.Limit!.Value,
-			Offset = request.Offset!.Value
-		};
+		var availableGamesResult = request.IsAnonymous
+			? await _mediator.Send(new GetAvailableToJoinAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value })
+			: await _mediator.Send(new GetAvailableToJoinRegisteredGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 
-		var availableGamesResult = await _mediator.Send(query);
 		return availableGamesResult.ToApiResponse();
 	}
 
@@ -67,14 +63,10 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetActiveGamesResponse>>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetActiveGames([FromQuery] GetActiveGamesRequest request)
 	{
-		var query = new GetActiveGamesQuery
-		{
-			IsAnonymous = request.IsAnonymous,
-			Limit = request.Limit,
-			Offset = request.Offset
-		};
+		var activeGamesResult = request.IsAnonymous
+			? await _mediator.Send(new GetActiveAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value })
+			: await _mediator.Send(new GetActiveRegisteredGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 
-		var activeGamesResult = await _mediator.Send(query);
 		return activeGamesResult.ToApiResponse();
 	}
 

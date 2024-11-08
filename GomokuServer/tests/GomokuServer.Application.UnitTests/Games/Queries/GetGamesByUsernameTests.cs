@@ -29,7 +29,7 @@ public class GetGamesByUsernameTests
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
 		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
-			.Returns(Task.FromResult(0));
+			.Returns(Task.FromResult(Result.Success(0)));
 
 		var query = new GetGamesByUsernameQuery { UserName = "TestUser" };
 
@@ -49,6 +49,8 @@ public class GetGamesByUsernameTests
 	public async Task GetGamesByUsername_WhenRepositoryFails_ShouldReturnFailure()
 	{
 		// Arrange
+		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
+			.Returns(Task.FromResult(Result.Success(1)));
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching games")));
 

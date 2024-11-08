@@ -2,5 +2,5 @@
 
 public interface IPaginatedRepository<T>
 {
-	Task<int> CountAsync(Expression<Func<T, bool>>? expression = null);
+	Task<Result<int>> CountAsync(Expression<Func<T, bool>>? expression = null);
 }

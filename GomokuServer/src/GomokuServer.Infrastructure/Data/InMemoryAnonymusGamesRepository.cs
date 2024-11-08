@@ -42,7 +42,7 @@ public class InMemoryAnonymousGamesRepository : IAnonymousGamesRepository
 			: Task.FromResult(Result.Success(Enumerable.Empty<Game>()));
 	}
 
-	public Task<int> CountAsync(Expression<Func<Game, bool>>? expression = null)
+	public Task<Result<int>> CountAsync(Expression<Func<Game, bool>>? expression = null)
 	{
 		var query = _games.Values.AsQueryable();
 
@@ -52,6 +52,6 @@ public class InMemoryAnonymousGamesRepository : IAnonymousGamesRepository
 		}
 
 		var count = query.Count();
-		return Task.FromResult(count);
+		return Task.FromResult(Result.Success(count));
 	}
 }
