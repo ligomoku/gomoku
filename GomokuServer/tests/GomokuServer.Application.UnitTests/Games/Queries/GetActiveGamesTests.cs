@@ -10,7 +10,7 @@ public class GetActiveGamesTests
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
 	private IAnonymousGamesRepository _anonymousGamesRepository;
-	private GetActiveGamesQueryHandler _handler;
+	private DeprecatedGetActiveGamesQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
@@ -18,7 +18,7 @@ public class GetActiveGamesTests
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
 		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
-		_handler = new GetActiveGamesQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
+		_handler = new DeprecatedGetActiveGamesQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
 	}
 
 	[Test]
@@ -30,7 +30,7 @@ public class GetActiveGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(Enumerable.Empty<Game>())));
 
-		var query = new GetActiveGamesQuery() { IsAnonymous = false };
+		var query = new DeprecatedGetActiveGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -56,7 +56,7 @@ public class GetActiveGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetActiveGamesQuery() { IsAnonymous = false };
+		var query = new DeprecatedGetActiveGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -81,7 +81,7 @@ public class GetActiveGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
 
-		var query = new GetActiveGamesQuery() { IsAnonymous = false };
+		var query = new DeprecatedGetActiveGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -100,7 +100,7 @@ public class GetActiveGamesTests
 		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
 			.Returns(Task.FromResult(Result<IEnumerable<Game>>.Error("Error fetching active games")));
 
-		var query = new GetActiveGamesQuery() { IsAnonymous = false };
+		var query = new DeprecatedGetActiveGamesQuery() { IsAnonymous = false };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
