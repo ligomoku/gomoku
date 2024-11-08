@@ -1,0 +1,6 @@
+﻿namespace GomokuServer.Application.Games.Queries;
+
+public record GetActiveAnonymousGamesQuery : GetActiveGamesQuery;
+
+public class GetActiveAnonymousGamesQueryHandler(IAnonymousGamesRepository _anonymousGamesRepository)
+	: GetActiveGamesQueryHandler<GetActiveAnonymousGamesQuery>(_anonymousGamesRepository);

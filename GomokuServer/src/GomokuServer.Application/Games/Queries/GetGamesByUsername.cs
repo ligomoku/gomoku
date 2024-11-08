@@ -1,37 +1,19 @@
-﻿using GomokuServer.Application.Extensions;
-using GomokuServer.Core.Games.Enums;
+﻿namespace GomokuServer.Application.Games.Queries;
 
-namespace GomokuServer.Application.Games.Queries;
-
-public class GetGamesByUsernameQuery
-	: IPaginatedQuery<PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>
+public record GetGamesByUsernameQuery
+	: PaginatedQuery<IEnumerable<GetGamesByUsernameResponse>>
 {
 	[Required]
 	public required string UserName { get; set; }
-	public int Limit { get; init; } = 5;
-	public int Offset { get; init; } = 0;
 }
 
-public class GetGamesByUsernameQueryHandler
-	: IQueryHandler<GetGamesByUsernameQuery, PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>
+public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _registeredGamesRepository)
+	: PaginatedQueryHandler<GetGamesByUsernameQuery, IEnumerable<GetGamesByUsernameResponse>>
 {
-	private readonly IRegisteredGamesRepository _registeredGamesRepository;
-
-	public GetGamesByUsernameQueryHandler(IRegisteredGamesRepository registeredGamesRepository)
+	public override async Task<Result<IEnumerable<GetGamesByUsernameResponse>>> GetDataAsync(GetGamesByUsernameQuery request)
 	{
-		_registeredGamesRepository = registeredGamesRepository;
-	}
-
-	public async Task<Result<PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>>>
-		Handle(GetGamesByUsernameQuery request, CancellationToken cancellationToken)
-	{
-		Expression<Func<Game, bool>> expression =
-			game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
-
-		var availableGamesCount = await _registeredGamesRepository.CountAsync(expression);
-
 		var gamesByUsernameResult = await _registeredGamesRepository
-			.GetByExpressionAsync(expression,
+			.GetByExpressionAsync(GetExpression(request),
 				query => query
 					.Skip(request.Offset)
 					.Take(request.Limit)
@@ -39,31 +21,31 @@ public class GetGamesByUsernameQueryHandler
 					.ThenByDescending(game => game.CreatedAt)
 			);
 
-		return gamesByUsernameResult.Map(games => new PaginatedResponse<IEnumerable<GetGamesByUsernameResponse>>()
+		return gamesByUsernameResult.Map(games => games.Select(game =>
 		{
-			Data = games.Select(game =>
-			{
-				var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
-					? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000))
-					: (null, null);
+			var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
+				? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000))
+				: (null, null);
 
-				return new GetGamesByUsernameResponse
-				{
-					GameId = game.GameId,
-					Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
-					IsCompleted = game.Status == GameStatus.Completed,
-					Gen = game.PositionInGENFormat,
-					Winner = game.Winner?.UserName,
-					Date = game.CreatedAt,
-					TimeControl = timeControl,
-					Clock = clock
-				};
-			}),
-			Metadata = new()
+			return new GetGamesByUsernameResponse
 			{
-				HasMoreItems = request.Offset + request.Limit < availableGamesCount,
-				TotalCount = availableGamesCount
-			}
-		});
+				GameId = game.GameId,
+				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
+				IsCompleted = game.Status == GameStatus.Completed,
+				Gen = game.PositionInGENFormat,
+				Winner = game.Winner?.UserName,
+				Date = game.CreatedAt,
+				TimeControl = timeControl,
+				Clock = clock
+			};
+		}));
 	}
+
+	public override async Task<Result<int>> GetTotalItemsAsync(GetGamesByUsernameQuery request)
+	{
+		return await _registeredGamesRepository.CountAsync(GetExpression(request));
+	}
+
+	private Expression<Func<Game, bool>> GetExpression(GetGamesByUsernameQuery request)
+		=> game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
 }
