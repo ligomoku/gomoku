@@ -4,9 +4,9 @@
 
 /** Transpiled from GomokuServer.Application.Games.Dto.ClockDto */
 export type ClockDto = {
-  /** Transpiled from int */
+  /** Transpiled from long */
   black: number;
-  /** Transpiled from int */
+  /** Transpiled from long */
   white: number;
 };
 
