@@ -4,7 +4,7 @@ public abstract record GetAvailableToJoinGamesQuery : PaginatedQuery<IEnumerable
 
 public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IGamesRepository _gamesRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetAvailableGamesResponse>>
-	where TRequest : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>
+	where TRequest : GetAvailableToJoinGamesQuery
 {
 	public override async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetDataAsync(TRequest request)
 	{
