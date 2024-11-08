@@ -5,7 +5,6 @@ public abstract record GetActiveGamesQuery : PaginatedQuery<IEnumerable<GetActiv
 public abstract class GetActiveGamesQueryHandler<TRequest>(IGamesRepository _gamesRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetActiveGamesResponse>>
 	where TRequest : PaginatedQuery<IEnumerable<GetActiveGamesResponse>>
-
 {
 	public override async Task<Result<IEnumerable<GetActiveGamesResponse>>> GetDataAsync(TRequest request)
 	{

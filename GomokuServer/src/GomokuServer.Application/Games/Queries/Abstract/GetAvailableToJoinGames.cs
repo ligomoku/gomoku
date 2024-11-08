@@ -2,7 +2,7 @@
 
 public abstract record GetAvailableToJoinGamesQuery : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>;
 
-public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IGamesRepository _gamesRepository) 
+public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IGamesRepository _gamesRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetAvailableGamesResponse>>
 	where TRequest : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>
 {

@@ -7,7 +7,7 @@ public class GetGameHistoryQuery : IQuery<GetGameHistoryResponse>
 }
 
 public class GetGameHistoryQueryHandler(IRegisteredGamesRepository _registeredGamesRepository, IAnonymousGamesRepository _anonymousGamesRepository)
-    : IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
+	: IQueryHandler<GetGameHistoryQuery, GetGameHistoryResponse>
 {
 	public async Task<Result<GetGameHistoryResponse>> Handle(GetGameHistoryQuery request, CancellationToken cancellationToken)
 	{
