@@ -20,20 +20,16 @@ public class SearchProfilesQueryHandler : IQueryHandler<SearchProfilesQuery, Pag
 
 	public async Task<Result<PaginatedResponse<IEnumerable<ProfileDto>>>> Handle(SearchProfilesQuery request, CancellationToken cancellationToken)
 	{
-		// Use the search query, limit, and offset to fetch matching profiles
 		var searchResult = await _profilesRepository.SearchAsync(request.Query, request.Limit, request.Offset);
 
 		if (!searchResult.IsSuccess)
 			return Result.Error(string.Join("; ", searchResult.Errors));
 
-		// Map profiles to DTOs for response
 		var profileDtos = searchResult.Value.Select(profile => new ProfileDto(profile.Id, profile.UserName)).ToList();
 
-		// Get total count for pagination metadata
-		var totalCount = searchResult.Value.Count();  // Adjust if total count available from repository directly
+		var totalCount = searchResult.Value.Count();
 		var hasMoreItems = request.Offset + request.Limit < totalCount;
 
-		// Return paginated response
 		return Result.Success(new PaginatedResponse<IEnumerable<ProfileDto>>()
 		{
 			Data = profileDtos,
