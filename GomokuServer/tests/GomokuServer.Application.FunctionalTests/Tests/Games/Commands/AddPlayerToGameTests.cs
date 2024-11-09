@@ -14,7 +14,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
 			GameId = game.GameId,
 			PlayerId = "1"
@@ -39,7 +39,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
 			GameId = game.GameId,
 			PlayerId = "2"
@@ -60,7 +60,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	public async Task AddPlayerToGame_PassNonExistingPlayerId_ShouldReturnNotFound()
 	{
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "gameId",
 			PlayerId = "-999"
@@ -74,7 +74,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	public async Task AddPlayerToGame_PassPlayerIdAndNonExistingGameId_ShouldReturnNotFound()
 	{
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "nonExistingGameId",
 			PlayerId = "1"
@@ -85,17 +85,16 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task AddPlayerToGame_PassNullPlayerId_ShouldSuccessfullyAddPlayerToGameInAnonymousGamesRepository()
+	public async Task AddPlayerToAnonymousGame_ShouldSuccessfullyAddPlayerToGameInAnonymousGamesRepository()
 	{
 		// Arrange
 		var game = _testDataProvider.GetGame_NoPlayersJoined();
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
-			GameId = game.GameId,
-			PlayerId = null
+			GameId = game.GameId
 		});
 
 		// Assert
@@ -110,13 +109,12 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task AddPlayerToGame_PassNullPlayerId_AndNonExistingGameId_ShouldReturnNotFound()
+	public async Task AddPlayerToAnonymousGame_PassNonExistingGameId_ShouldReturnNotFound()
 	{
 		// Act
-		var addPlayerResult = await SendAsync(new AddPlayerToGameCommand
+		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
-			GameId = "nonExistingPlayerId",
-			PlayerId = null
+			GameId = "nonExistingGameId"
 		});
 
 		// Assert

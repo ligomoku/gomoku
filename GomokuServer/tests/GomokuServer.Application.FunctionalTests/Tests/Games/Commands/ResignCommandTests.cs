@@ -15,7 +15,7 @@ public class ResignCommandTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var resignResult = await SendAsync(new ResignCommand
+		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id
@@ -40,7 +40,7 @@ public class ResignCommandTests : FunctionalTestBase
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
-		var resignResult = await SendAsync(new ResignCommand
+		var resignResult = await SendAsync(new AnonymousResignCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id
@@ -61,7 +61,7 @@ public class ResignCommandTests : FunctionalTestBase
 	public async Task Resign_PassNonExistingGameId_ShouldReturnNotFound()
 	{
 		// Act
-		var resignResult = await SendAsync(new ResignCommand
+		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
 			GameId = "nonExistingGameId",
 			PlayerId = "somePlayerId"
@@ -79,7 +79,7 @@ public class ResignCommandTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var resignResult = await SendAsync(new ResignCommand
+		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
 			GameId = game.GameId,
 			PlayerId = "nonParticipatingPlayerId"

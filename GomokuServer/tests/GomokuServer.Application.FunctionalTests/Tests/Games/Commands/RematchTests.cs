@@ -15,7 +15,7 @@ public class RematchTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var rematchResult = await SendAsync(new RematchCommand
+		var rematchResult = await SendAsync(new RegisteredRematchCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id
@@ -39,7 +39,7 @@ public class RematchTests : FunctionalTestBase
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
-		var rematchResult = await SendAsync(new RematchCommand
+		var rematchResult = await SendAsync(new AnonymousRematchCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id
@@ -63,7 +63,7 @@ public class RematchTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var rematchResult = await SendAsync(new RematchCommand
+		var rematchResult = await SendAsync(new RegisteredRematchCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id

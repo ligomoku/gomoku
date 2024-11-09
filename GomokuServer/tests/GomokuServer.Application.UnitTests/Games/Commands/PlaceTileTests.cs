@@ -10,7 +10,7 @@ public class PlaceTileTests
 	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
-	private PlaceTileCommandHandler _handler;
+	private PlaceRegisteredTileCommandHandler _handler;
 
 	[SetUp]
 	public void Setup()
@@ -20,14 +20,14 @@ public class PlaceTileTests
 		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_handler = new PlaceTileCommandHandler(_registeredGamesRepository, _anonymousGamesRepository);
+		_handler = new PlaceRegisteredTileCommandHandler(_registeredGamesRepository);
 	}
 
 	[Test]
 	public async Task PlaceTile_WithValidMove_ShouldReturnSuccess()
 	{
 		// Arrange
-		var command = new PlaceTileCommand
+		var command = new PlaceRegisteredTileCommand
 		{
 			GameId = "NonExistentGameId",
 			PlayerId = "Player1",
@@ -56,7 +56,7 @@ public class PlaceTileTests
 	public async Task PlaceTile_GameNotFound_ShouldReturnNotFound()
 	{
 		// Arrange
-		var command = new PlaceTileCommand
+		var command = new PlaceRegisteredTileCommand
 		{
 			GameId = "NonExistentGameId",
 			PlayerId = "Player1",
@@ -77,7 +77,7 @@ public class PlaceTileTests
 	public async Task PlaceTile_WhenGameNotStarted_ShouldReturnInvalid()
 	{
 		// Arrange
-		var command = new PlaceTileCommand
+		var command = new PlaceRegisteredTileCommand
 		{
 			GameId = "game1",
 			PlayerId = "player1",
@@ -99,7 +99,7 @@ public class PlaceTileTests
 	public async Task PlaceTile_WhenGameIsOver_ShouldReturnInvalid()
 	{
 		// Arrange
-		var command = new PlaceTileCommand
+		var command = new PlaceRegisteredTileCommand
 		{
 			GameId = "game1",
 			PlayerId = "player1Id",

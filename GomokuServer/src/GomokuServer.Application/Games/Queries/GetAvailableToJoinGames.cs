@@ -4,3 +4,8 @@ public record GetAvailableToJoinRegisteredGamesQuery : GetAvailableToJoinGamesQu
 
 public class GetAvailableToJoinRegisteredGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository)
 	: GetAvailableToJoinGamesQueryHandler<GetAvailableToJoinRegisteredGamesQuery>(_registeredGamesRepository);
+
+public record GetAvailableToJoinAnonymousGamesQuery : GetAvailableToJoinGamesQuery;
+
+public class GetAvailableToJoinAnonymousGamesQueryHandler(IAnonymousGamesRepository _anonymousGamesRepository)
+	: GetAvailableToJoinGamesQueryHandler<GetAvailableToJoinAnonymousGamesQuery>(_anonymousGamesRepository);
