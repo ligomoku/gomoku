@@ -47,14 +47,10 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetAvailableGames([FromQuery] GetAvailableGamesRequest request)
 	{
-		var query = new GetAvailableToJoinGamesQuery
-		{
-			IsAnonymous = request.IsAnonymous,
-			Limit = request.Limit!.Value,
-			Offset = request.Offset!.Value
-		};
+		var availableGamesResult = request.IsAnonymous
+			? await _mediator.Send(new GetAvailableToJoinAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value })
+			: await _mediator.Send(new GetAvailableToJoinRegisteredGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 
-		var availableGamesResult = await _mediator.Send(query);
 		return availableGamesResult.ToApiResponse();
 	}
 
@@ -67,14 +63,10 @@ public class GameController : Controller
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetActiveGamesResponse>>), StatusCodes.Status200OK)]
 	public async Task<IActionResult> GetActiveGames([FromQuery] GetActiveGamesRequest request)
 	{
-		var query = new GetActiveGamesQuery
-		{
-			IsAnonymous = request.IsAnonymous,
-			Limit = request.Limit,
-			Offset = request.Offset
-		};
+		var activeGamesResult = request.IsAnonymous
+			? await _mediator.Send(new GetActiveAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value })
+			: await _mediator.Send(new GetActiveRegisteredGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 
-		var activeGamesResult = await _mediator.Send(query);
 		return activeGamesResult.ToApiResponse();
 	}
 
@@ -89,12 +81,11 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var createGameResult = await _mediator.Send(new CreateGameCommand
-		{
-			BoardSize = request.BoardSize,
-			TimeControl = request.TimeControl,
-			PlayerId = User.Claims.Get(JwtClaims.UserId)
-		});
+		var playerId = User.Claims.Get(JwtClaims.UserId);
+
+		var createGameResult = playerId == null
+			? await _mediator.Send(new CreateAnonymousGameCommand() { BoardSize = request.BoardSize, TimeControl = request.TimeControl })
+			: await _mediator.Send(new CreateRegisteredGameCommand() { BoardSize = request.BoardSize, TimeControl = request.TimeControl, PlayerId = playerId });
 
 		return createGameResult.ToApiResponse();
 	}
@@ -111,11 +102,11 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> AddPlayerToGame([FromRoute] string gameId)
 	{
-		var addPlayerToGameResult = await _mediator.Send(new AddPlayerToGameCommand
-		{
-			GameId = gameId,
-			PlayerId = User.Claims.Get(JwtClaims.UserId),
-		});
+		var playerId = User.Claims.Get(JwtClaims.UserId);
+
+		var addPlayerToGameResult = playerId == null
+			? await _mediator.Send(new AddAnonymousPlayerToGameCommand() { GameId = gameId })
+			: await _mediator.Send(new AddRegisteredPlayerToGameCommand() { GameId = gameId, PlayerId = playerId });
 
 		if (addPlayerToGameResult.IsSuccess)
 		{

@@ -1,3 +1,6 @@
+using GomokuServer.Api.Hubs.Exceptions;
+using GomokuServer.Application.Games.Commands.Abstract;
+
 using Microsoft.AspNetCore.Authorization;
 
 using SignalRSwaggerGen.Attributes;
@@ -21,7 +24,7 @@ public class GameHub : Hub, IGameHub
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 		await Clients.Caller.SendAsync(GameHubMethod.GameGroupJoined, gameId);
 
-		var getGameResult = await _mediator.Send(new GetGameCurrentStateQuery() { GameId = gameId });
+		var getGameResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = gameId });
 
 		if (getGameResult.IsSuccess)
 		{
@@ -57,12 +60,7 @@ public class GameHub : Hub, IGameHub
 
 		var playerId = GetPlayerId();
 
-		var placeTileCommand = new PlaceTileCommand()
-		{
-			GameId = message.GameId,
-			Tile = new TileDto(message.X, message.Y),
-			PlayerId = playerId!
-		};
+		var placeTileCommand = GetPlaceTileCommand(message.GameId, new TileDto(message.X, message.Y));
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
 		if (placeTileResult.IsSuccess)
@@ -95,14 +93,7 @@ public class GameHub : Hub, IGameHub
 	[AllowAnonymous]
 	public async Task Resign(ResignClientMessage message)
 	{
-		var playerId = GetPlayerId();
-
-		var resignCommand = new ResignCommand()
-		{
-			GameId = message.GameId,
-			PlayerId = playerId
-		};
-		var resignResult = await _mediator.Send(resignCommand);
+		var resignResult = await _mediator.Send(GetResignCommand(message.GameId));
 
 		if (resignResult.IsSuccess)
 		{
@@ -145,13 +136,7 @@ public class GameHub : Hub, IGameHub
 	{
 		_logger.LogInformation($"Approving rematch. Message: {message}");
 
-		var rematchCommand = new RematchCommand()
-		{
-			GameId = message.GameId,
-			PlayerId = GetPlayerId()
-		};
-
-		var rematchResult = await _mediator.Send(rematchCommand);
+		var rematchResult = await _mediator.Send(GetRematchCommand(message.GameId));
 
 		if (rematchResult.IsSuccess)
 		{
@@ -169,7 +154,7 @@ public class GameHub : Hub, IGameHub
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 
-	private string? GetPlayerId()
+	private string GetPlayerId()
 	{
 		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
 
@@ -178,6 +163,83 @@ public class GameHub : Hub, IGameHub
 			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
 		}
 
+		if (playerId == null)
+		{
+			throw new PlayerIdEmptyInGameHubException();
+		}
+
 		return playerId;
+	}
+
+	// TODO: Extract logic below. Find way to consolidate.
+	private PlaceTileCommand GetPlaceTileCommand(string gameId, TileDto tile)
+	{
+		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
+		{
+			return new PlaceRegisteredTileCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+				Tile = tile
+			};
+		}
+
+		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
+		{
+			return new PlaceAnonymousTileCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
+				Tile = tile
+			};
+		}
+
+		throw new PlayerIdEmptyInGameHubException();
+	}
+
+	private RematchCommand GetRematchCommand(string gameId)
+	{
+		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
+		{
+			return new RegisteredRematchCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+			};
+		}
+
+		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
+		{
+			return new AnonymousRematchCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
+			};
+		}
+
+		throw new PlayerIdEmptyInGameHubException();
+	}
+
+	private ResignCommand GetResignCommand(string gameId)
+	{
+		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
+		{
+			return new RegisteredResignCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+			};
+		}
+
+		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
+		{
+			return new AnonymousResignCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
+			};
+		}
+
+		throw new PlayerIdEmptyInGameHubException();
 	}
 }

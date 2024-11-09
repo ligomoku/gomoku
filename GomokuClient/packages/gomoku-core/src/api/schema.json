@@ -675,7 +675,9 @@
         "required": [
           "boardSize",
           "gen",
+          "hasBothPlayersJoined",
           "isCompleted",
+          "isGameStarted",
           "movesCount",
           "movesHistory",
           "players"
@@ -696,6 +698,12 @@
           },
           "players": {
             "$ref": "#/components/schemas/PlayersDto"
+          },
+          "isGameStarted": {
+            "type": "boolean"
+          },
+          "hasBothPlayersJoined": {
+            "type": "boolean"
           },
           "isCompleted": {
             "type": "boolean"

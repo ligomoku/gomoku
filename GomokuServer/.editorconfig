@@ -398,6 +398,13 @@ dotnet_diagnostic.IDE0051.severity = error
 # IDE0005: Remove unnecessary usings
 dotnet_diagnostic.IDE0005.severity = error
 #
+# Treat unused local variables as errors
+dotnet_diagnostic.IDE0059.severity = error
+#
+# Treat unused local variables as errors
+dotnet_diagnostic.IDE1006.severity = none
+#
+#
 # CS0219: Unused variable
 dotnet_diagnostic.CS0219.severity = error
 dotnet_style_prefer_collection_expression = true:suggestion
@@ -438,6 +445,3 @@ dotnet_diagnostic.TAPP001.severity = error
 #
 # TSRTS001 Apply the TranspilationSourceAttribute
 dotnet_diagnostic.TSRTS001.severity = error
-#
-# Treat unused local variables as errors
-dotnet_diagnostic.IDE0059.severity = error
