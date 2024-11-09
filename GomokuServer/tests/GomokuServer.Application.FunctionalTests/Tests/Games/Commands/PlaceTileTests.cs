@@ -15,7 +15,7 @@ public class PlaceTileTests : FunctionalTestBase
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
-		var placeTileResult = await SendAsync(new PlaceTileCommand
+		var placeTileResult = await SendAsync(new PlaceRegisteredTileCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id,
@@ -40,7 +40,7 @@ public class PlaceTileTests : FunctionalTestBase
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
-		var placeTileResult = await SendAsync(new PlaceTileCommand
+		var placeTileResult = await SendAsync(new PlaceAnonymousTileCommand
 		{
 			GameId = game.GameId,
 			PlayerId = game.Players.Black!.Id,
@@ -61,7 +61,7 @@ public class PlaceTileTests : FunctionalTestBase
 	public async Task PlaceTile_PassNonExistingGameId_ShouldReturnNotFound()
 	{
 		// Act
-		var placeTileResult = await SendAsync(new PlaceTileCommand
+		var placeTileResult = await SendAsync(new PlaceRegisteredTileCommand
 		{
 			GameId = "nonExistingGameId",
 			PlayerId = "somePlayerId",

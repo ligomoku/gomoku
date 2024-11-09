@@ -1,3 +1,6 @@
+using GomokuServer.Api.Hubs.Exceptions;
+using GomokuServer.Application.Games.Commands.Abstract;
+
 using Microsoft.AspNetCore.Authorization;
 
 using SignalRSwaggerGen.Attributes;
@@ -57,12 +60,7 @@ public class GameHub : Hub, IGameHub
 
 		var playerId = GetPlayerId();
 
-		var placeTileCommand = new PlaceTileCommand()
-		{
-			GameId = message.GameId,
-			Tile = new TileDto(message.X, message.Y),
-			PlayerId = playerId!
-		};
+		var placeTileCommand = GetPlaceTileCommand(message.GameId, new TileDto(message.X, message.Y));
 		var placeTileResult = await _mediator.Send(placeTileCommand);
 
 		if (placeTileResult.IsSuccess)
@@ -169,7 +167,7 @@ public class GameHub : Hub, IGameHub
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 
-	private string? GetPlayerId()
+	private string GetPlayerId()
 	{
 		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
 
@@ -178,6 +176,36 @@ public class GameHub : Hub, IGameHub
 			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
 		}
 
+		if (playerId == null)
+		{
+			throw new PlayerIdEmptyInGameHubException();
+		}
+
 		return playerId;
+	}
+
+	private PlaceTileCommand GetPlaceTileCommand(string gameId, TileDto tile)
+	{
+		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
+		{
+			return new PlaceRegisteredTileCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+				Tile = tile
+			};
+		}
+
+		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
+		{
+			return new PlaceAnonymousTileCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
+				Tile = tile
+			};
+		}
+
+		throw new PlayerIdEmptyInGameHubException();
 	}
 }
