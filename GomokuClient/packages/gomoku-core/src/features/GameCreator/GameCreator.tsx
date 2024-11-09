@@ -4,6 +4,14 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button } from "@/shared/ui/button";
 import { Slider } from "@/shared/ui/slider";
 import { SwaggerTypes } from "@/api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
+import { gameTypes } from "@/pages/HomeGame";
 
 export interface GameCreatorProps {
   isOpen: boolean;
@@ -24,6 +32,14 @@ export const GameCreator = ({
   isLoading,
 }: GameCreatorProps) => {
   const [boardSize, setBoardSize] = useState(GAME_MIN_BOARD_SIZE);
+  const [selectedGameType, setSelectedGameType] = useState(gameTypes[0]);
+
+  const handleGameTypeChange = (value: string) => {
+    const newGameType = gameTypes.find((gt) => gt.timeLabel === value);
+    if (newGameType) {
+      setSelectedGameType(newGameType);
+    }
+  };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -56,11 +72,38 @@ export const GameCreator = ({
                   min={GAME_MIN_BOARD_SIZE}
                   max={GAME_MAX_BOARD_SIZE}
                   step={2}
-                  value={[GAME_MIN_BOARD_SIZE]}
+                  value={[boardSize]}
                   onValueChange={(value) => setBoardSize(value[0])}
                 />
                 <div className="mt-1 text-center text-[#bababa]">
                   {boardSize}
+                </div>
+              </div>
+              <div className="col-span-3">
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <label
+                      htmlFor="gameType"
+                      className="mb-26 text-right text-[#bababa]"
+                    >
+                      Time Control
+                    </label>
+                    <Select
+                      value={selectedGameType.timeLabel}
+                      onValueChange={handleGameTypeChange}
+                    >
+                      <SelectTrigger className="col-span-3 text-[#bababa]">
+                        <SelectValue placeholder="Select a game type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {gameTypes.map((gt) => (
+                          <SelectItem key={gt.timeLabel} value={gt.timeLabel}>
+                            {gt.timeLabel} - {gt.type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>
