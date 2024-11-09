@@ -56,7 +56,7 @@ export const GameCreator = ({
                   min={GAME_MIN_BOARD_SIZE}
                   max={GAME_MAX_BOARD_SIZE}
                   step={2}
-                  value={[GAME_MIN_BOARD_SIZE]}
+                  value={[boardSize]}
                   onValueChange={(value) => setBoardSize(value[0])}
                 />
                 <div className="mt-1 text-center text-[#bababa]">
