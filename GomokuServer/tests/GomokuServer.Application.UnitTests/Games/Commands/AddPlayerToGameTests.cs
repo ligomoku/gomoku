@@ -1,7 +1,5 @@
 ﻿using GomokuServer.Core.Profiles.Entities;
 
-using Microsoft.Extensions.Logging;
-
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class AddPlayerToGameTests
@@ -10,7 +8,7 @@ public class AddPlayerToGameTests
 	private IRegisteredGamesRepository _registeredGamesRepository;
 	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IProfilesRepository _profilesRepository;
-	private AddPlayerToGameCommandHandler _handler;
+	private AddRegisteredPlayerToGameCommandHandler _handler;
 
 	[SetUp]
 	public void Setup()
@@ -20,11 +18,9 @@ public class AddPlayerToGameTests
 		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 
-		_handler = new AddPlayerToGameCommandHandler(
+		_handler = new AddRegisteredPlayerToGameCommandHandler(
 			_registeredGamesRepository,
-			_anonymousGamesRepository,
-			_profilesRepository,
-			Substitute.For<ILogger<AddPlayerToGameCommandHandler>>()
+			_profilesRepository
 		);
 	}
 
@@ -32,7 +28,7 @@ public class AddPlayerToGameTests
 	public async Task AddPlayerToGame_AddingValidFirstPlayer_ShouldAddPlayerToGameSuccessfully()
 	{
 		// Arrange
-		var command = new AddPlayerToGameCommand
+		var command = new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "Game1",
 			PlayerId = "Player1"
@@ -58,7 +54,7 @@ public class AddPlayerToGameTests
 	public async Task AddPlayerToGame_AddingValidSecondPlayer_ShouldAddPlayerToGameSuccessfully()
 	{
 		// Arrange
-		var command = new AddPlayerToGameCommand
+		var command = new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "Game1",
 			PlayerId = "Player2"
@@ -88,7 +84,7 @@ public class AddPlayerToGameTests
 	{
 		// Arrange
 		var player = new Profile("Player1Id", "Player1UserName");
-		var command = new AddPlayerToGameCommand
+		var command = new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "NonExistentGameId",
 			PlayerId = player.Id
@@ -108,7 +104,7 @@ public class AddPlayerToGameTests
 	public async Task AddPlayerToGame_PlayerNotFound_ShouldReturnNotFound()
 	{
 		// Arrange
-		var command = new AddPlayerToGameCommand
+		var command = new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "Game1",
 			PlayerId = "NonExistentPlayerId"
@@ -130,7 +126,7 @@ public class AddPlayerToGameTests
 	public async Task AddPlayerToGame_SaveGameFails_ShouldReturnError()
 	{
 		// Arrange
-		var command = new AddPlayerToGameCommand
+		var command = new AddRegisteredPlayerToGameCommand
 		{
 			GameId = "Game1",
 			PlayerId = "Player1"

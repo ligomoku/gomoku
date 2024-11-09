@@ -106,6 +106,6 @@ public class CreateGameTests
 		var result = await _handler.Handle(command, CancellationToken.None);
 
 		// Assert
-		result.Status.Should().Be(ResultStatus.Error);
+		result.Status.Should().Be(ResultStatus.NotFound);
 	}
 }

@@ -39,7 +39,7 @@ public class CreateGameTests : FunctionalTestBase
 		});
 
 		// Assert
-		createGameResult.Status.Should().Be(ResultStatus.Error);
+		createGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
 	[Test]

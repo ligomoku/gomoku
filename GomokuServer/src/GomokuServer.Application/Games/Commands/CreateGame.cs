@@ -17,13 +17,9 @@ public class CreateRegisteredGameCommandHandler(
 {
 	public override async Task<Result<CreateGameResponse>> Handle(CreateRegisteredGameCommand request, CancellationToken cancellationToken)
 	{
-		var getProfileResult = await _profilesRepository.GetAsync(request.PlayerId);
-		if (!getProfileResult.IsSuccess)
-		{
-			return Result.Error("Cannot get user by id. See logs for more details");
-		}
-
-		return await base.Handle(request, cancellationToken);
+		return await _profilesRepository
+			.GetAsync(request.PlayerId)
+			.BindAsync(async _ => await base.Handle(request, cancellationToken));
 	}
 }
 
