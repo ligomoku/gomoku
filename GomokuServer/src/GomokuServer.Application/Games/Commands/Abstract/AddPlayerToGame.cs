@@ -1,5 +1,4 @@
 ﻿using GomokuServer.Core.Profiles.Entities;
-
 namespace GomokuServer.Application.Games.Commands.Abstract;
 
 public abstract record AddPlayerToGameCommand : ICommand<AddPlayerToGameResponse>
@@ -14,6 +13,30 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(IGamesRepository _
 {
 	public async Task<Result<AddPlayerToGameResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
+		// TODO: START Fix this part
+		//return await _gamesRepository
+		//	.GetAsync(request.GameId)
+		//	.BindAsync(async game =>
+		//	{
+		//		var getProfileResult = await GetProfileAsync(request);
+		//		return getProfileResult.MapAsync(profile => (game, profile));
+		//	})
+		//	.BindAsync(async parameters =>
+		//	{
+		//		var (game, profile) = parameters;
+		//		var addingResult = game.AddOpponent(profile);
+
+		//		if (!addingResult.IsValid)
+		//		{
+		//			return Result.Invalid(new ValidationError(addingResult.ValidationError.ToString()));
+		//		}
+
+		//		var saveResult = await _gamesRepository.SaveAsync(game);
+
+		//		return saveResult.Map(_ => new AddPlayerToGameResponse(request.GameId, profile.Value.Id));
+		//	});
+		// TODO: END Fix this part
+
 		var getGameResult = await _gamesRepository.GetAsync(request.GameId);
 
 		if (!getGameResult.IsSuccess)

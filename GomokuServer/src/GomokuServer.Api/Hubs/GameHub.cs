@@ -143,13 +143,7 @@ public class GameHub : Hub, IGameHub
 	{
 		_logger.LogInformation($"Approving rematch. Message: {message}");
 
-		var rematchCommand = new RematchCommand()
-		{
-			GameId = message.GameId,
-			PlayerId = GetPlayerId()
-		};
-
-		var rematchResult = await _mediator.Send(rematchCommand);
+		var rematchResult = await _mediator.Send(GetRematchCommand(message.GameId));
 
 		if (rematchResult.IsSuccess)
 		{
@@ -203,6 +197,29 @@ public class GameHub : Hub, IGameHub
 				GameId = gameId,
 				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
 				Tile = tile
+			};
+		}
+
+		throw new PlayerIdEmptyInGameHubException();
+	}
+
+	private RematchCommand GetRematchCommand(string gameId)
+	{
+		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
+		{
+			return new RegisteredRematchCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+			};
+		}
+
+		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
+		{
+			return new AnonymousRematchCommand()
+			{
+				GameId = gameId,
+				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
 			};
 		}
 
