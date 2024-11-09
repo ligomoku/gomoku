@@ -1,6 +1,7 @@
 ﻿using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Application.Common.Responses;
 using GomokuServer.Application.Games.Responses;
+using GomokuServer.Application.Profiles.Dto;
 
 namespace GomokuServer.Api.Controllers.v1;
 
@@ -31,5 +32,15 @@ public class ProfilesController : Controller
 		var getUserGamesResult = await _mediator.Send(new GetGamesByUsernameQuery() { UserName = userName, Limit = pagination.Limit!.Value, Offset = pagination.Offset!.Value });
 
 		return getUserGamesResult.ToApiResponse();
+	}
+
+	[HttpGet("search")]
+	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<ProfileDto>>), StatusCodes.Status200OK)]
+	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
+	public async Task<IActionResult> SearchUsers([FromQuery] string query, [FromQuery] PaginationRequest pagination)
+	{
+		var searchResult = await _mediator.Send(new SearchUsersQuery() { Query = query, Limit = pagination.Limit!.Value, Offset = pagination.Offset!.Value });
+
+		return searchResult.ToApiResponse();
 	}
 }

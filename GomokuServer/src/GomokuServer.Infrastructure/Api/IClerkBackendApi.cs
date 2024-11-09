@@ -4,6 +4,9 @@ public interface IClerkBackendApi
 {
 	[Get("/users/{userId}")]
 	Task<GetUserResponse> GetUserByIdAsync([AliasAs("userId")] string userId);
+
+	[Get("/users/search")]
+	Task<IEnumerable<GetUserResponse>> SearchUsersAsync([Query] string query, [Query] int limit, [Query] int offset);
 }
 
 public record GetUserResponse

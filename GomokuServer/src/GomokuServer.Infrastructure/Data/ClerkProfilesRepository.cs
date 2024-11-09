@@ -41,4 +41,27 @@ public class ClerkProfilesRepository : IProfilesRepository
 			return Result.Error();
 		}
 	}
+
+	public async Task<Result<IEnumerable<Profile>>> SearchAsync(string query, int limit, int offset)
+	{
+		try
+		{
+			var clerkUsers = await _cache.GetOrCreateAsync<IEnumerable<GetUserResponse>>($"search_{query}_{limit}_{offset}", async entry =>
+			{
+				return await _clerkBackendApiHttpClient.SearchUsersAsync(query, limit, offset);
+			}, CancellationToken.None);
+
+			var profiles = clerkUsers.Select(user => new Profile(user.Id, user.Username));
+			return Result.Success(profiles);
+		}
+		catch (ApiException apiException) when (apiException.StatusCode == System.Net.HttpStatusCode.NotFound)
+		{
+			return Result.NotFound("No users found matching the query.");
+		}
+		catch (ApiException apiException)
+		{
+			_logger.LogError(apiException, $"Failed to search user profiles: {apiException.Message}");
+			return Result.Error();
+		}
+	}
 }
