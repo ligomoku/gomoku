@@ -12,7 +12,7 @@ public class CreateGameTests : FunctionalTestBase
 	public async Task CreateGame_PassExistingPlayerId_ShouldSuccessfullyCreateGameInRegisteredGamesRepository()
 	{
 		// Act
-		var createGameResult = await SendAsync(new CreateGameCommand
+		var createGameResult = await SendAsync(new CreateRegisteredGameCommand
 		{
 			BoardSize = 19,
 			PlayerId = "1"
@@ -32,7 +32,7 @@ public class CreateGameTests : FunctionalTestBase
 	public async Task CreateGame_PassNonExistingPlayerId_ShouldReturnError()
 	{
 		// Act
-		var createGameResult = await SendAsync(new CreateGameCommand
+		var createGameResult = await SendAsync(new CreateRegisteredGameCommand
 		{
 			BoardSize = 19,
 			PlayerId = "-999"
@@ -43,10 +43,10 @@ public class CreateGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task CreateGame_PassNullPlayerId_ShouldSuccessfullyCreateGameInAnonymousGamesRepository()
+	public async Task CreateAnonymousGame_ShouldSuccessfullyCreateGameInAnonymousGamesRepository()
 	{
 		// Act
-		var createGameResult = await SendAsync(new CreateGameCommand
+		var createGameResult = await SendAsync(new CreateAnonymousGameCommand
 		{
 			BoardSize = 19
 		});
@@ -65,7 +65,7 @@ public class CreateGameTests : FunctionalTestBase
 	public async Task CreateGame_TimeControlNull_ShouldSuccessfullyCreateGame()
 	{
 		// Act
-		var createGameResult = await SendAsync(new CreateGameCommand
+		var createGameResult = await SendAsync(new CreateRegisteredGameCommand
 		{
 			BoardSize = 19,
 			PlayerId = "1",
@@ -83,7 +83,7 @@ public class CreateGameTests : FunctionalTestBase
 	public async Task CreateGame_PassTimeControl_ShouldSuccessfullyCreateGameWithTimeControl()
 	{
 		// Act
-		var createGameResult = await SendAsync(new CreateGameCommand
+		var createGameResult = await SendAsync(new CreateRegisteredGameCommand
 		{
 			BoardSize = 19,
 			PlayerId = "1",

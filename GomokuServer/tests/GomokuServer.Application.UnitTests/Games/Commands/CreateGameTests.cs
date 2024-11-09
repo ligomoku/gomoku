@@ -9,7 +9,7 @@ public class CreateGameTests
 	private IProfilesRepository _profilesRepository;
 	private IRandomProvider _randomProvider;
 	private IDateTimeProvider _dateTimeProvider;
-	private CreateGameCommandHandler _handler;
+	private CreateRegisteredGameCommandHandler _handler;
 
 	[SetUp]
 	public void Setup()
@@ -20,9 +20,8 @@ public class CreateGameTests
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 
-		_handler = new CreateGameCommandHandler(
+		_handler = new CreateRegisteredGameCommandHandler(
 			_registeredGamesRepository,
-			_anonymousGamesRepository,
 			_profilesRepository,
 			_randomProvider,
 			_dateTimeProvider);
@@ -32,7 +31,7 @@ public class CreateGameTests
 	public async Task CreateGame_WhenCommandIsValid_ShouldCreateGameSuccessfully()
 	{
 		// Arrange
-		var command = new CreateGameCommand
+		var command = new CreateRegisteredGameCommand
 		{
 			BoardSize = 15,  // Valid board size
 			PlayerId = "Player1"
@@ -55,11 +54,12 @@ public class CreateGameTests
 	public async Task CreateGame_BoardSizeTooSmall_ShouldReturnValidationError()
 	{
 		// Arrange
-		var command = new CreateGameCommand
+		var command = new CreateRegisteredGameCommand
 		{
 			BoardSize = 12,
 			PlayerId = "Player1"
 		};
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(new Profile(command.PlayerId, "Alice")));
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -74,11 +74,12 @@ public class CreateGameTests
 	public async Task CreateGame_BoardSizeTooLarge_ShouldReturnValidationError()
 	{
 		// Arrange
-		var command = new CreateGameCommand
+		var command = new CreateRegisteredGameCommand
 		{
 			BoardSize = 20,
 			PlayerId = "Player1"
 		};
+		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(new Profile(command.PlayerId, "Alice")));
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -93,7 +94,7 @@ public class CreateGameTests
 	public async Task CreateGame_PlayerNotFound_ShouldReturnError()
 	{
 		// Arrange
-		var command = new CreateGameCommand
+		var command = new CreateRegisteredGameCommand
 		{
 			BoardSize = 15,
 			PlayerId = "NonExistentPlayerId"

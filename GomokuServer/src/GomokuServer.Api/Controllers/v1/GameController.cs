@@ -81,12 +81,11 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	public async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
-		var createGameResult = await _mediator.Send(new CreateGameCommand
-		{
-			BoardSize = request.BoardSize,
-			TimeControl = request.TimeControl,
-			PlayerId = User.Claims.Get(JwtClaims.UserId)
-		});
+		var playerId = User.Claims.Get(JwtClaims.UserId);
+
+		var createGameResult = playerId == null
+			? await _mediator.Send(new CreateAnonymousGameCommand() { BoardSize = request.BoardSize, TimeControl = request.TimeControl })
+			: await _mediator.Send(new CreateRegisteredGameCommand() { BoardSize = request.BoardSize, TimeControl = request.TimeControl, PlayerId = playerId });
 
 		return createGameResult.ToApiResponse();
 	}
