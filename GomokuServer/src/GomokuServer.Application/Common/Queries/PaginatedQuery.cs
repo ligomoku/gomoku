@@ -1,9 +1,9 @@
 ﻿namespace GomokuServer.Application.Common.Queries;
 
-public abstract record PaginatedQuery<TResponse> : IPaginatedQuery<TResponse>
+public abstract record PaginatedQuery<TResponse> : IQuery<PaginatedResponse<TResponse>>
 {
-	public int Limit { get; init; } = 5;
-	public int Offset { get; init; } = 0;
+	public virtual int Limit { get; init; } = 5;
+	public virtual int Offset { get; init; } = 0;
 }
 
 public abstract class PaginatedQueryHandler<TRequest, TResponse> : IQueryHandler<TRequest, PaginatedResponse<TResponse>>
