@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TileColor, useTiles } from "@/hooks/useTiles";
 import { useSignalRConnection } from "@/context";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 import { useRouter } from "@tanstack/react-router";
 import { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import { formatErrorMessage } from "@/utils/errorUtils";
@@ -40,16 +40,16 @@ export const useJoinGame = (
 
       const unregister = registerEventHandlers({
         playerJoinedGame: async () => {
-          notification.show(`You have joined the game`);
+          toaster.show(`You have joined the game`);
         },
         bothPlayersJoined: async ({ players }) => {
           setPlayers(players);
         },
         gameStarted: async ({ isMyMoveFirst }) => {
           if (isMyMoveFirst) {
-            notification.show("It's your turn. Place your tile");
+            toaster.show("It's your turn. Place your tile");
           } else {
-            notification.show("Wait for your opponent's move");
+            toaster.show("Wait for your opponent's move");
           }
         },
         playerMadeMove: async ({ playerId, tile, placedTileColor }) => {
@@ -60,11 +60,11 @@ export const useJoinGame = (
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
         gameIsOver: async (message) => {
-          notification.show(formatErrorMessage(message.result));
+          toaster.show(formatErrorMessage(message.result));
           setWinningSequence(message.winningSequence);
         },
         gameHubError: async (error) => {
-          notification.show(formatErrorMessage(error.message), "error");
+          toaster.show(formatErrorMessage(error.message), "error");
           console.warn("Error from game hub:", error.message);
         },
         rematchRequested: async (message) => {
@@ -121,7 +121,7 @@ export const useJoinGame = (
         await hubProxy.makeMove(makeMoveMessage);
       } catch (error) {
         console.error("Error making move:", error);
-        notification.show("Error making move", "error");
+        toaster.show("Error making move", "error");
       }
     },
     [hubProxy, winner, gameID],

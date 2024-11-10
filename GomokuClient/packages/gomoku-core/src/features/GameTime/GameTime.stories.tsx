@@ -1,6 +1,6 @@
 import { Meta } from "@storybook/react";
 import { GameTime } from "./GameTime";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export default {
   title: "Components/GameTime",
@@ -36,11 +36,11 @@ export const WithMoves = () => (
       black: { playerId: "1", color: "black", userName: "black player" },
       white: { playerId: "2", color: "white", userName: "white player" },
     }}
-    onUndo={() => notification.show("Undo clicked")}
-    onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
-    onFlag={() => notification.show("Flag clicked")}
-    onReset={() => notification.show("Reset clicked")}
-    onRematch={() => notification.show("Rematch clicked")}
+    onUndo={() => toaster.show("Undo clicked")}
+    onSkip={(direction) => toaster.show(`Skip ${direction} clicked`)}
+    onFlag={() => toaster.show("Flag clicked")}
+    onReset={() => toaster.show("Reset clicked")}
+    onRematch={() => toaster.show("Rematch clicked")}
     clock={{
       black: 1000,
       white: 1000,

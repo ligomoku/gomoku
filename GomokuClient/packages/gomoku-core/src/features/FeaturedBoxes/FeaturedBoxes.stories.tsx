@@ -2,7 +2,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { FeaturedBoxes } from "./FeaturedBoxes";
 import type { FeaturedBoxesProps } from "./FeaturedBoxes";
 import { SwaggerTypes } from "@/api";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export default {
   title: "Components/FeaturedBoxes",
@@ -37,13 +37,13 @@ export const Default = Template.bind({});
 
 Default.args = {
   games: mockedGames,
-  onGameClick: (game) => notification.show(`Game clicked: ${game.gameId}`),
+  onGameClick: (game) => toaster.show(`Game clicked: ${game.gameId}`),
   noGamesText: "No games available",
 };
 
 export const NoGames = Template.bind({});
 NoGames.args = {
   games: [],
-  onGameClick: (game) => notification.show(`Game clicked: ${game.gameId}`),
+  onGameClick: (game) => toaster.show(`Game clicked: ${game.gameId}`),
   noGamesText: "No games available",
 };

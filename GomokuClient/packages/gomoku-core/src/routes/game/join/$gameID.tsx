@@ -6,7 +6,7 @@ import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 const getGameHistory = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
@@ -75,7 +75,7 @@ const JoinGameComponent = ({
         }
       } catch (err) {
         console.error("Error joining game:", err);
-        notification.show("Error joining game", "error");
+        toaster.show("Error joining game", "error");
       } finally {
         setIsJoining(false);
       }

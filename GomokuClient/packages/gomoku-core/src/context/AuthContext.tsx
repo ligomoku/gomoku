@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 interface JwtTokenPayload {
   exp: number;
@@ -56,7 +56,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
-        notification.show("Error getting auth token", "error");
+        toaster.show("Error getting auth token", "error");
       }
     };
 

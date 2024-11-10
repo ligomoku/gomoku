@@ -10,7 +10,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { lazy } from "react";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export interface MyRouterContext {
   isSignedIn: boolean;
@@ -32,15 +32,15 @@ const RootComponent = () => {
         menuItems={[
           {
             label: "LEARN",
-            onClick: () => notification.show("Learn clicked!"),
+            onClick: () => toaster.show("Learn clicked!"),
           },
           {
             label: "WATCH",
-            onClick: () => notification.show("Watch clicked!"),
+            onClick: () => toaster.show("Watch clicked!"),
           },
           {
             label: "COMMUNITY",
-            onClick: () => notification.show("Community clicked!"),
+            onClick: () => toaster.show("Community clicked!"),
           },
           { label: "PROFILE", onClick: () => navigate({ to: "/profile" }) },
         ]}

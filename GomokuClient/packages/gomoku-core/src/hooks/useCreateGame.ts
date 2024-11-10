@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { SwaggerServices, SwaggerTypes } from "@/api";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
@@ -41,13 +41,13 @@ export const useCreateGameAndNavigate = ({
         {
           onSuccess: async (data) => {
             if (data?.gameId) {
-              notification.show("Game created");
+              toaster.show("Game created");
               navigate({ to: `/game/join/${data?.gameId}` });
             }
           },
           onError: (error) => {
             console.error("Error creating game:", error);
-            notification.show("Error creating game", "error");
+            toaster.show("Error creating game", "error");
           },
         },
       );

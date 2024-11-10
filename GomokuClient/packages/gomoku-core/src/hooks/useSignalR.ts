@@ -4,7 +4,7 @@ import { JsonHubProtocol } from "@microsoft/signalr";
 import { useAuthToken } from "@/context/AuthContext";
 import { useAuth } from "@clerk/clerk-react";
 import { SignalHubInterfaces, SignalRClientService, SwaggerTypes } from "@/api";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export const useSignalR = (
   playerID?: SwaggerTypes.AddPlayerToGameResponse["playerId"],
@@ -26,7 +26,7 @@ export const useSignalR = (
           setIsConnected(true);
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
-          notification.show("Error starting SignalR connection", "error");
+          toaster.show("Error starting SignalR connection", "error");
           setTimeout(() => startConnection(connection), 5000);
         }
       }
@@ -78,7 +78,7 @@ export const useSignalR = (
           .then(() => console.debug("SignalR connection stopped"))
           .catch((error) => {
             console.error("Error stopping SignalR connection:", error);
-            notification.show("Error stopping SignalR connection", "error");
+            toaster.show("Error stopping SignalR connection", "error");
           });
       }
     };
