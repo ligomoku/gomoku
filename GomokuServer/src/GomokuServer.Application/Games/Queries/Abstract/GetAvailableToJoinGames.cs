@@ -2,36 +2,36 @@
 
 public abstract record GetAvailableToJoinGamesQuery : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>;
 
-public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IGamesRepository _gamesRepository)
+public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IAwaitingPlayersGamesRepository _awaitingPlayersGamesRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetAvailableGamesResponse>>
 	where TRequest : GetAvailableToJoinGamesQuery
 {
 	public override async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetDataAsync(TRequest request)
 	{
-		var getAvailableGamesResult = await _gamesRepository.GetByExpressionAsync(Expression,
+		var getAwaitingPlayersGamesResult = await _awaitingPlayersGamesRepository.GetByExpressionAsync(Expression,
 			query => query
 				.Skip(request.Offset)
 				.Take(request.Limit)
 				.OrderByDescending(game => game.CreatedAt)
 		);
 
-		return getAvailableGamesResult.Map(games =>
+		return getAwaitingPlayersGamesResult.Map(games =>
 			games.Select(game =>
 			{
 				var opponentDto = game.Opponents.Count > 0 ? new ProfileDto(game.Opponents[0].Id, game.Opponents[0].UserName) : null;
 
-				var timeControl = game is GameWithTimeControl gameWithTimeControl
-					? gameWithTimeControl.TimeControl.ToDto()
+				var timeControl = game.GameSettings.TimeControl != null
+					? game.GameSettings.TimeControl.ToDto()
 					: null;
 
-				return new GetAvailableGamesResponse(game.GameId) { Opponent = opponentDto, TimeControl = timeControl };
+				return new GetAvailableGamesResponse(game.GameId.ToString()) { Opponent = opponentDto, TimeControl = timeControl };
 			}));
 	}
 
 	public override async Task<Result<int>> GetTotalItemsAsync(TRequest _)
 	{
-		return await _gamesRepository.CountAsync(Expression);
+		return await _awaitingPlayersGamesRepository.CountAsync(Expression);
 	}
 
-	private Expression<Func<Game, bool>> Expression => game => game.Status == GameStatus.WaitingForPlayersToJoin;
+	private Expression<Func<AwaitingPlayersGame, bool>> Expression => _ => true;
 }

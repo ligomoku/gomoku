@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GomokuServer.Application.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GomokuServer.Utils", "src\GomokuServer.Utils\GomokuServer.Utils.csproj", "{1E32A0BF-F650-402B-9CE0-6CAF3E3331C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GomokuServer.Application.FunctionalTests", "tests\GomokuServer.Application.FunctionalTests\GomokuServer.Application.FunctionalTests.csproj", "{7E9644DB-B7CB-475B-9468-80F4F7A25825}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GomokuServer.Application.FunctionalTests", "tests\GomokuServer.Application.FunctionalTests\GomokuServer.Application.FunctionalTests.csproj", "{7E9644DB-B7CB-475B-9468-80F4F7A25825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GomokuServer.Tests.Common", "tests\GomokuServer.Tests.Common\GomokuServer.Tests.Common.csproj", "{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{7E9644DB-B7CB-475B-9468-80F4F7A25825}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9644DB-B7CB-475B-9468-80F4F7A25825}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E9644DB-B7CB-475B-9468-80F4F7A25825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{F7FC04B6-44BE-4553-BC8C-540C560A6FBD} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
 		{1E32A0BF-F650-402B-9CE0-6CAF3E3331C6} = {22455F42-1C72-4CBB-BADE-8C1D1FEBF74F}
 		{7E9644DB-B7CB-475B-9468-80F4F7A25825} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
+		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67FA876C-F398-4904-B1EB-B8F4D46F5594}

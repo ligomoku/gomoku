@@ -9,7 +9,7 @@ public abstract record CreateGameCommand : ICommand<CreateGameResponse>
 }
 
 public abstract class CreateGameCommandHandler<TRequest>(
-	IGamesRepository _gamesRepository,
+	IAwaitingPlayersGamesRepository _awaitingPlayersGamesRepository,
 	IDateTimeProvider _dateTimeProvider,
 	IRandomProvider _randomProvider)
 	: ICommandHandler<TRequest, CreateGameResponse>
@@ -25,19 +25,17 @@ public abstract class CreateGameCommandHandler<TRequest>(
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		Game game;
-
-		if (request.TimeControl != null)
+		var gameSettings = new AwaitingPlayersGameSettings
 		{
-			var timeControl = new TimeControl(request.TimeControl.InitialTimeInSeconds, request.TimeControl.IncrementPerMove);
-			game = new GameWithTimeControl(request.BoardSize, timeControl, _randomProvider, _dateTimeProvider);
-		}
-		else
-		{
-			game = new Game(request.BoardSize, _randomProvider, _dateTimeProvider);
-		}
+			BoardSize = request.BoardSize,
+			TimeControl = request.TimeControl != null
+				? new TimeControl(request.TimeControl.InitialTimeInSeconds, request.TimeControl.IncrementPerMove)
+				: null
+		};
 
-		var saveResult = await _gamesRepository.SaveAsync(game);
-		return saveResult.Map(_ => new CreateGameResponse(game.GameId, game.BoardSize));
+		var game = new AwaitingPlayersGame(gameSettings, _randomProvider, _dateTimeProvider);
+		var saveResult = await _awaitingPlayersGamesRepository.SaveAsync(game);
+
+		return saveResult.Map(_ => new CreateGameResponse(game.GameId.ToString(), request.BoardSize));
 	}
 }

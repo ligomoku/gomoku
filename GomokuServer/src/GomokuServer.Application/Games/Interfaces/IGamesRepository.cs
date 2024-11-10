@@ -2,7 +2,7 @@
 
 public interface IGamesRepository : IPaginatedRepository<Game>
 {
-	Task<Result<Game>> GetAsync(string id);
+	Task<Result<Game>> GetAsync(Guid id);
 
 	Task<Result> SaveAsync(Game game);
 

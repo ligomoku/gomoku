@@ -2,8 +2,7 @@
 
 public enum GameStatus
 {
-	WaitingForPlayersToJoin = 0,
-	BothPlayersJoined = 1,
-	InProgress = 2,
-	Completed = 3
+	NotStartedYet = 0,
+	InProgress = 1,
+	Completed = 2
 }

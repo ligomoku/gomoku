@@ -11,30 +11,32 @@ public class GetGameHistoryQueryHandler(IRegisteredGamesRepository _registeredGa
 {
 	public async Task<Result<GetGameHistoryResponse>> Handle(GetGameHistoryQuery request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _registeredGamesRepository.GetAsync(request.GameId);
+		var gameId = Guid.Parse(request.GameId);
+
+		var getGameResult = await _registeredGamesRepository.GetAsync(gameId);
 
 		if (!getGameResult.IsSuccess)
 		{
-			getGameResult = await _anonymousGamesRepository.GetAsync(request.GameId);
+			getGameResult = await _anonymousGamesRepository.GetAsync(gameId);
 		}
 
 		return getGameResult.Map(game =>
 		{
 			var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
 				? (
-					gameWithTimeControl.TimeControl.ToDto(),
+					gameWithTimeControl.GameSettings.TimeControl.ToDto(),
 					new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000)
 				)
 				: (null, null);
 
 			return new GetGameHistoryResponse()
 			{
-				BoardSize = game.BoardSize,
+				BoardSize = game.GameSettings.BoardSize,
 				Gen = game.PositionInGENFormat,
 				MovesCount = game.MovesHistory.Count,
 				Players = game.GetPlayersDto(),
 				IsGameStarted = game.Status == GameStatus.InProgress || game.Status == GameStatus.Completed,
-				HasBothPlayersJoined = game.Status != GameStatus.WaitingForPlayersToJoin,
+				HasBothPlayersJoined = true,
 				IsCompleted = game.Status == GameStatus.Completed,
 				Winner = game.Winner?.UserName,
 				WinningSequence = game.WinningSequence?.Select(tile => new TileDto(tile.X, tile.Y)).ToList(),

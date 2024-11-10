@@ -3,7 +3,6 @@ using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Extensions;
 using GomokuServer.Core.Games.Results;
 using GomokuServer.Core.Games.Validations;
-using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.Games.Entities;
 
@@ -11,32 +10,29 @@ public class Game
 {
 	private readonly Dictionary<int, Tile> _movesHistory = new();
 	private readonly GameBoard _gameBoard;
-	protected readonly IRandomProvider _randomProvider;
 	protected readonly IDateTimeProvider _dateTimeProvider;
 
-	public Game(int boardSize, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
+	public Game(GameSettings gameSettings, Players players, IDateTimeProvider dateTimeProvider)
 	{
-		_gameBoard = new GameBoard(boardSize);
-		_randomProvider = randomProvider;
+		_gameBoard = new GameBoard(gameSettings.BoardSize);
 		_dateTimeProvider = dateTimeProvider;
 
-		BoardSize = boardSize;
-		Opponents = new();
-		Players = new();
+		GameSettings = gameSettings;
+		GameId = GameSettings.GameId;
+		Players = players;
+		CurrentPlayer = Players.Black;
 		CreatedAt = _dateTimeProvider.UtcNow;
-		Status = GameStatus.WaitingForPlayersToJoin;
+		Status = GameStatus.NotStartedYet;
 		Result = GameResult.NotCompletedYet;
 	}
 
-	public int BoardSize { get; init; }
+	public GameSettings GameSettings { get; init; }
 
-	public string GameId { get; } = Guid.NewGuid().ToString();
+	public Guid GameId { get; init; }
 
 	public DateTime CreatedAt { get; init; }
 
 	public IReadOnlyDictionary<int, Tile> MovesHistory => _movesHistory.AsReadOnly();
-
-	public List<Profile> Opponents { get; init; }
 
 	public Players Players { get; init; }
 
@@ -46,7 +42,7 @@ public class Game
 
 	public CompletionReason CompletionReason { get; protected set; }
 
-	public Player? CurrentPlayer { get; protected set; }
+	public Player CurrentPlayer { get; protected set; }
 
 	public Player? Winner { get; protected set; }
 
@@ -54,55 +50,55 @@ public class Game
 
 	public string PositionInGENFormat => _gameBoard.PositionInGENFormat;
 
-	public TileColor? NextTileColor => _gameBoard.NextTileColor;
+	public TileColor NextTileColor => _gameBoard.NextTileColor;
 
-	public PlayerAddingResult AddOpponent(Profile newOpponent)
-	{
-		if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
-				ErrorDetails = "Player already added to game"
-			};
-		}
+	//public PlayerAddingResult AddOpponent(Profile newOpponent)
+	//{
+	//	if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
+	//	{
+	//		return new()
+	//		{
+	//			IsValid = false,
+	//			ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
+	//			ErrorDetails = "Player already added to game"
+	//		};
+	//	}
 
-		if (Opponents.Count >= 2)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready,
-				ErrorDetails = "Both places taken already"
-			};
-		}
+	//	if (Opponents.Count >= 2)
+	//	{
+	//		return new()
+	//		{
+	//			IsValid = false,
+	//			ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready,
+	//			ErrorDetails = "Both places taken already"
+	//		};
+	//	}
 
-		if (Opponents.Count == 0)
-		{
-			Opponents.Add(newOpponent);
-			return new()
-			{
-				IsValid = true
-			};
-		}
+	//	if (Opponents.Count == 0)
+	//	{
+	//		Opponents.Add(newOpponent);
+	//		return new()
+	//		{
+	//			IsValid = true
+	//		};
+	//	}
 
-		Opponents.Add(newOpponent);
+	//	Opponents.Add(newOpponent);
 
-		var (firstOpponent, secondOpponent) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
-		var firstPlayer = new Player(firstOpponent.Id, firstOpponent.UserName, TileColor.Black);
-		var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
+	//	var (firstOpponent, secondOpponent) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
+	//	var firstPlayer = new Player(firstOpponent.Id, firstOpponent.UserName, TileColor.Black);
+	//	var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
 
-		CurrentPlayer = firstPlayer;
-		Status = GameStatus.BothPlayersJoined;
-		Players.Black = firstPlayer;
-		Players.White = secondPlayer;
+	//	CurrentPlayer = firstPlayer;
+	//	Status = GameStatus.BothPlayersJoined;
+	//	Players.Black = firstPlayer;
+	//	Players.White = secondPlayer;
 
-		return new()
-		{
-			IsValid = true,
-		};
-	}
+	//	return new()
+	//	{
+	//		IsValid = true,
+	//	};
+	//}
 
 	protected virtual GameTilePlacementResult ValidateCanPlaceTile(string playerId)
 	{
@@ -116,15 +112,6 @@ public class Game
 			};
 		}
 
-		if (Status == GameStatus.WaitingForPlayersToJoin)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = TilePlacementValidationError.NotBothPlayerAreJoinedYet,
-				ErrorDetails = "Wait for other player to join"
-			};
-		}
 
 		if (!IsInvolved(playerId))
 		{
@@ -187,13 +174,12 @@ public class Game
 
 		if (placeNewTileResult.WinningSequence != null)
 		{
-			Result = CurrentPlayer!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+			Result = CurrentPlayer.GetGameResultFromColor();
 			Status = GameStatus.Completed;
 			CompletionReason = CompletionReason.MadeFiveInARow;
 
 			Winner = CurrentPlayer;
 			WinningSequence = placeNewTileResult.WinningSequence;
-			CurrentPlayer = null;
 		}
 
 		if (Status == GameStatus.InProgress)
@@ -219,16 +205,6 @@ public class Game
 			};
 		}
 
-		if (Status == GameStatus.WaitingForPlayersToJoin)
-		{
-			return new()
-			{
-				IsValid = false,
-				ValidationError = ResignValidationError.NotBothPlayerAreJoinedYet,
-				ErrorDetails = "Wait for other player to join"
-			};
-		}
-
 		if (!IsInvolved(playerId))
 		{
 			return new()
@@ -239,12 +215,11 @@ public class Game
 			};
 		}
 
-		var winner = playerId == Players!.White!.Id ? Players.Black : Players.White;
+		var winner = Players.GetOpponent(playerId);
 		Winner = winner;
-		Result = winner!.Color == TileColor.Black ? GameResult.BlackWon : GameResult.WhiteWon;
+		Result = winner.GetGameResultFromColor();
 		Status = GameStatus.Completed;
 		CompletionReason = CompletionReason.Resign;
-		CurrentPlayer = null;
 
 		return new()
 		{
@@ -289,19 +264,22 @@ public class Game
 			return canRematchResult;
 		}
 
-		var newGame = new Game(BoardSize, _randomProvider, _dateTimeProvider)
-		{
-			Opponents = new List<Profile>(Opponents),
-			Players = new Players { Black = Players.White, White = Players.Black },
-			Status = GameStatus.BothPlayersJoined,
-			CurrentPlayer = Players.White
-		};
-
+		var newGame = new Game(GameSettings, new Players(Players.White, Players.Black), _dateTimeProvider);
 		return RematchResult.Success(newGame);
 	}
 
 	public bool IsInvolved(string playerId)
 	{
-		return Opponents.Any(opponent => opponent.Id == playerId);
+		if (Players.Black.Id == playerId)
+		{
+			return true;
+		}
+
+		if (Players.White.Id == playerId)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

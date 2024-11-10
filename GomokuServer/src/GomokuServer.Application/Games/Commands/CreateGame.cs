@@ -9,11 +9,11 @@ public record CreateRegisteredGameCommand : CreateGameCommand
 }
 
 public class CreateRegisteredGameCommandHandler(
-	IRegisteredGamesRepository _registeredGamesRepository,
+	IRegisteredAwaitingPlayersGamesRepository _registeredAwaitingPlayersGamesRepository,
 	IProfilesRepository _profilesRepository,
 	IRandomProvider _randomProvider,
 	IDateTimeProvider _dateTimeProvider)
-	: CreateGameCommandHandler<CreateRegisteredGameCommand>(_registeredGamesRepository, _dateTimeProvider, _randomProvider)
+	: CreateGameCommandHandler<CreateRegisteredGameCommand>(_registeredAwaitingPlayersGamesRepository, _dateTimeProvider, _randomProvider)
 {
 	public override async Task<Result<CreateGameResponse>> Handle(CreateRegisteredGameCommand request, CancellationToken cancellationToken)
 	{
@@ -26,7 +26,7 @@ public class CreateRegisteredGameCommandHandler(
 public record CreateAnonymousGameCommand : CreateGameCommand;
 
 public class CreateAnonymousGameCommandHandler(
-	IAnonymousGamesRepository _registeredGamesRepository,
+	IAnonymousAwaitingPlayersGamesRepository _anonymousAwaitingPlayersGamesRepository,
 	IDateTimeProvider _dateTimeProvider,
 	IRandomProvider _randomProvider)
-	: CreateGameCommandHandler<CreateAnonymousGameCommand>(_registeredGamesRepository, _dateTimeProvider, _randomProvider);
+	: CreateGameCommandHandler<CreateAnonymousGameCommand>(_anonymousAwaitingPlayersGamesRepository, _dateTimeProvider, _randomProvider);

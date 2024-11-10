@@ -1,6 +1,6 @@
 ﻿using GomokuServer.Application.FunctionalTests.Factory;
-using GomokuServer.Application.FunctionalTests.TestData;
 using GomokuServer.Application.Games.Interfaces;
+using GomokuServer.Tests.Common;
 
 using MediatR;
 
@@ -28,12 +28,30 @@ public abstract class FunctionalTestBase
 		_factory.Dispose();
 	}
 
+	protected IRegisteredAwaitingPlayersGamesRepository RegisteredAwaitingPlayersGamesRepository
+	{
+		get
+		{
+			using var scope = _scopeFactory.CreateScope();
+			return scope.ServiceProvider.GetRequiredService<IRegisteredAwaitingPlayersGamesRepository>();
+		}
+	}
+
 	protected IRegisteredGamesRepository RegisteredGamesRepository
 	{
 		get
 		{
 			using var scope = _scopeFactory.CreateScope();
 			return scope.ServiceProvider.GetRequiredService<IRegisteredGamesRepository>();
+		}
+	}
+
+	protected IAnonymousAwaitingPlayersGamesRepository AnonymousAwaitingPlayersGamesRepository
+	{
+		get
+		{
+			using var scope = _scopeFactory.CreateScope();
+			return scope.ServiceProvider.GetRequiredService<IAnonymousAwaitingPlayersGamesRepository>();
 		}
 	}
 

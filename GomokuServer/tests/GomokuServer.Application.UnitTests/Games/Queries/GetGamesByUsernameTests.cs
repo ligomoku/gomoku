@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using GomokuServer.Application.Games.Queries;
-using GomokuServer.Application.UnitTests.TestData;
+using GomokuServer.Tests.Common;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 

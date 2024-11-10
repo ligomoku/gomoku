@@ -17,7 +17,7 @@ public class ResignCommandHandler<TRequest>(IGamesRepository _gamesRepository)
 {
 	public async Task<Result<ResignResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _gamesRepository.GetAsync(request.GameId);
+		var getGameResult = await _gamesRepository.GetAsync(Guid.Parse(request.GameId));
 
 		if (!getGameResult.IsSuccess)
 		{

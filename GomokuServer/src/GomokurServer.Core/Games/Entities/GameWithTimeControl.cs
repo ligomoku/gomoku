@@ -2,7 +2,6 @@
 using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Games.Results;
 using GomokuServer.Core.Games.Validations;
-using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.Games.Entities;
 
@@ -12,18 +11,17 @@ public class GameWithTimeControl : Game
 	private readonly Clock _whiteClock;
 
 	public GameWithTimeControl(
-		int boardSize,
-		TimeControl timeControl,
-		IRandomProvider randomProvider,
+		GameWithTimeControlSettings gameSettings,
+		Players players,
 		IDateTimeProvider dateTimeProvider
-	) : base(boardSize, randomProvider, dateTimeProvider)
+	) : base(gameSettings, players, dateTimeProvider)
 	{
-		TimeControl = timeControl;
-		_blackClock = new Clock(timeControl, dateTimeProvider);
-		_whiteClock = new Clock(timeControl, dateTimeProvider);
+		_blackClock = new Clock(gameSettings.TimeControl, dateTimeProvider);
+		_whiteClock = new Clock(gameSettings.TimeControl, dateTimeProvider);
+		GameSettings = gameSettings;
 	}
 
-	public TimeControl TimeControl { get; init; }
+	public new GameWithTimeControlSettings GameSettings { get; init; }
 
 	public long BlackRemainingTimeInMilliseconds => _blackClock.RemainingTimeInMilliseconds;
 
@@ -84,7 +82,7 @@ public class GameWithTimeControl : Game
 			if (IsTimeControlInitiated)
 			{
 				// After move CurrentPlayer is switched
-				var (currentPlayerClock, opponentsClock) = CurrentPlayer!.Color == TileColor.White
+				var (currentPlayerClock, opponentsClock) = CurrentPlayer.Color == TileColor.White
 					? (_blackClock, _whiteClock)
 					: (_whiteClock, _blackClock);
 
@@ -117,14 +115,7 @@ public class GameWithTimeControl : Game
 			return canRematchResult;
 		}
 
-		var newGame = new GameWithTimeControl(BoardSize, TimeControl, _randomProvider, _dateTimeProvider)
-		{
-			Opponents = new List<Profile>(Opponents),
-			Players = new Players { Black = Players.White, White = Players.Black },
-			Status = GameStatus.BothPlayersJoined,
-			CurrentPlayer = Players.White
-		};
-
+		var newGame = new GameWithTimeControl(GameSettings, Players, _dateTimeProvider);
 		return RematchResult.Success(newGame);
 	}
 

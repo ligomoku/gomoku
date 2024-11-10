@@ -17,17 +17,17 @@ public class RematchTests : FunctionalTestBase
 		// Act
 		var rematchResult = await SendAsync(new RegisteredRematchCommand
 		{
-			GameId = game.GameId,
-			PlayerId = game.Players.Black!.Id
+			GameId = game.GameId.ToString(),
+			PlayerId = game.Players.Black.Id
 		});
 
 		// Assert
 		rematchResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getNewGameResult = await RegisteredGamesRepository.GetAsync(rematchResult.Value.NewGameId);
+		var getNewGameResult = await RegisteredGamesRepository.GetAsync(Guid.Parse(rematchResult.Value.NewGameId));
 		getNewGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(rematchResult.Value.NewGameId);
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(Guid.Parse(rematchResult.Value.NewGameId));
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
@@ -41,17 +41,17 @@ public class RematchTests : FunctionalTestBase
 		// Act
 		var rematchResult = await SendAsync(new AnonymousRematchCommand
 		{
-			GameId = game.GameId,
-			PlayerId = game.Players.Black!.Id
+			GameId = game.GameId.ToString(),
+			PlayerId = game.Players.Black.Id
 		});
 
 		// Assert
 		rematchResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getNewGameResult = await AnonymousGamesRepository.GetAsync(rematchResult.Value.NewGameId);
+		var getNewGameResult = await AnonymousGamesRepository.GetAsync(Guid.Parse(rematchResult.Value.NewGameId));
 		getNewGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getAnonymousGameResult = await RegisteredGamesRepository.GetAsync(rematchResult.Value.NewGameId);
+		var getAnonymousGameResult = await RegisteredGamesRepository.GetAsync(Guid.Parse(rematchResult.Value.NewGameId));
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
@@ -65,14 +65,14 @@ public class RematchTests : FunctionalTestBase
 		// Act
 		var rematchResult = await SendAsync(new RegisteredRematchCommand
 		{
-			GameId = game.GameId,
-			PlayerId = game.Players.Black!.Id
+			GameId = game.GameId.ToString(),
+			PlayerId = game.Players.Black.Id
 		});
 
 		// Assert
 		rematchResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getGameResult = await RegisteredGamesRepository.GetAsync(rematchResult.Value.NewGameId);
+		var getGameResult = await RegisteredGamesRepository.GetAsync(Guid.Parse(rematchResult.Value.NewGameId));
 		getGameResult.Status.Should().Be(ResultStatus.Ok);
 		getGameResult.Value.Should().BeOfType<GameWithTimeControl>();
 	}

@@ -24,12 +24,12 @@ public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _register
 		return gamesByUsernameResult.Map(games => games.Select(game =>
 		{
 			var (timeControl, clock) = game is GameWithTimeControl gameWithTimeControl
-				? (gameWithTimeControl.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000))
+				? (gameWithTimeControl.GameSettings.TimeControl.ToDto(), new ClockDto(gameWithTimeControl.BlackRemainingTimeInMilliseconds / 1000, gameWithTimeControl.WhiteRemainingTimeInMilliseconds / 1000))
 				: (null, null);
 
 			return new GetGamesByUsernameResponse
 			{
-				GameId = game.GameId,
+				GameId = game.GameId.ToString(),
 				Players = new UsernamesDto() { Black = game.Players.Black?.UserName, White = game.Players.White?.UserName },
 				IsCompleted = game.Status == GameStatus.Completed,
 				Gen = game.PositionInGENFormat,
@@ -47,5 +47,5 @@ public class GetGamesByUsernameQueryHandler(IRegisteredGamesRepository _register
 	}
 
 	private Expression<Func<Game, bool>> GetExpression(GetGamesByUsernameQuery request)
-		=> game => game.Opponents.Any(opponent => opponent.UserName == request.UserName);
+		=> game => game.Players.Black.UserName == request.UserName || game.Players.White.UserName == request.UserName;
 }

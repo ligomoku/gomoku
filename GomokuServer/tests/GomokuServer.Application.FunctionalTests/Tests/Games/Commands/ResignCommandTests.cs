@@ -11,13 +11,13 @@ public class ResignCommandTests : FunctionalTestBase
 	public async Task Resign_PassExistingPlayerIdAndRegisteredGameId_ShouldSuccessfullyResignInRegisteredGame()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
 		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
-			GameId = game.GameId,
+			GameId = game.GameId.ToString(),
 			PlayerId = game.Players.Black!.Id
 		});
 
@@ -36,13 +36,13 @@ public class ResignCommandTests : FunctionalTestBase
 	public async Task Resign_PassExistingPlayerIdAndAnonymousGameId_ShouldSuccessfullyResignInAnonymousGame()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
 		var resignResult = await SendAsync(new AnonymousResignCommand
 		{
-			GameId = game.GameId,
+			GameId = game.GameId.ToString(),
 			PlayerId = game.Players.Black!.Id
 		});
 
@@ -63,7 +63,7 @@ public class ResignCommandTests : FunctionalTestBase
 		// Act
 		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
-			GameId = "nonExistingGameId",
+			GameId = Guid.NewGuid().ToString(),
 			PlayerId = "somePlayerId"
 		});
 
@@ -75,13 +75,13 @@ public class ResignCommandTests : FunctionalTestBase
 	public async Task Resign_InvalidResignAttempt_ShouldReturnInvalid()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
 		var resignResult = await SendAsync(new RegisteredResignCommand
 		{
-			GameId = game.GameId,
+			GameId = game.GameId.ToString(),
 			PlayerId = "nonParticipatingPlayerId"
 		});
 

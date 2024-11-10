@@ -7,62 +7,73 @@ namespace GomokuServer.Application.FunctionalTests.Tests.Games.Commands;
 public class AddPlayerToGameTests : FunctionalTestBase
 {
 	[Test]
-	public async Task AddPlayerToGame_PassExistingPlayerId_ShouldSuccessfullyAddPlayerToGameInRegisteredGamesRepository()
+	public async Task AddPlayerToRegisteredGame_WhenAwaitingGameHasNoPlayers_ShouldSuccessfullyAddPlayerAndCreateGameInRegisteredGamesRepository()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_NoPlayersJoined();
-		await RegisteredGamesRepository.SaveAsync(game);
+		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_NoPlayersJoined();
+		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
-			GameId = game.GameId,
-			PlayerId = "1"
-		});
-
-		// Assert
-		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
-
-		var getUpdatedGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
-		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
-		getUpdatedGameResult.Value.Opponents[0].Id.Should().Be("1");
-
-		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
-		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
-	}
-
-	[Test]
-	public async Task AddPlayerToGame_WithOneOpponent_PassExistingPlayerId_ShouldSuccessfullyAddPlayerToGameInRegisteredGamesRepository()
-	{
-		// Arrange
-		var game = _testDataProvider.GetGame_OnePlayerJoined();
-		await RegisteredGamesRepository.SaveAsync(game);
-
-		// Act
-		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
-		{
-			GameId = game.GameId,
+			GameId = awaitingPlayersGame.GameId.ToString(),
 			PlayerId = "2"
 		});
 
 		// Assert
 		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getUpdatedGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
+		var getUpdatedGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
-		getUpdatedGameResult.Value.Opponents[1].Id.Should().Be("2");
+		getUpdatedGameResult.Value.Opponents.Count.Should().Be(1);
 
-		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
+		var getAnonymousGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
+
+		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(awaitingPlayersGame.GameId);
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
 	[Test]
-	public async Task AddPlayerToGame_PassNonExistingPlayerId_ShouldReturnNotFound()
+	public async Task AddPlayerToRegisteredGame_WhenAwaitingGameHasOnePlayer_ShouldSuccessfullyAddPlayerAndCreateGameInRegisteredGamesRepository()
 	{
+		// Arrange
+		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
+		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
-			GameId = "gameId",
+			GameId = awaitingPlayersGame.GameId.ToString(),
+			PlayerId = "2"
+		});
+
+		// Assert
+		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
+
+		var getUpdatedGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
+		getUpdatedGameResult.Value.Opponents.Count.Should().Be(2);
+
+		var getAnonymousGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
+
+		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		getRegisteredGameResult.Status.Should().Be(ResultStatus.Ok);
+		getRegisteredGameResult.Value.GameId.Should().Be(awaitingPlayersGame.GameId);
+	}
+
+	[Test]
+	public async Task AddPlayerToRegisteredGame_PassNonExistingPlayerId_ShouldReturnNotFound()
+	{
+		// Arrange
+		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
+		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+
+		// Act
+		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
+		{
+			GameId = awaitingPlayersGame.GameId.ToString(),
 			PlayerId = "-999"
 		});
 
@@ -71,12 +82,12 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task AddPlayerToGame_PassPlayerIdAndNonExistingGameId_ShouldReturnNotFound()
+	public async Task AddPlayerToRegisteredGame_PassPlayerIdAndNonExistingGameId_ShouldReturnNotFound()
 	{
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
 		{
-			GameId = "nonExistingGameId",
+			GameId = Guid.NewGuid().ToString(),
 			PlayerId = "1"
 		});
 
@@ -85,27 +96,31 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	}
 
 	[Test]
-	public async Task AddPlayerToAnonymousGame_ShouldSuccessfullyAddPlayerToGameInAnonymousGamesRepository()
+	public async Task AddPlayerToAnonymousGame_WhenAwaitingGameHasOnePlayer_ShouldSuccessfullyAddPlayerAndCreateGameInAnonymousGamesRepository()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_NoPlayersJoined();
-		await AnonymousGamesRepository.SaveAsync(game);
+		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
+		await AnonymousAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
-			GameId = game.GameId
+			GameId = awaitingPlayersGame.GameId.ToString()
 		});
 
 		// Assert
 		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getUpdatedGameResult = await AnonymousGamesRepository.GetAsync(game.GameId);
+		var getUpdatedGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
-		getUpdatedGameResult.Value.Opponents[0].Id.Should().Be(addPlayerResult.Value.PlayerId);
+		getUpdatedGameResult.Value.Opponents.Count.Should().Be(2);
 
-		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(game.GameId);
+		var getRegisteredGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
 		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
+
+		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		getAnonymousGameResult.Status.Should().Be(ResultStatus.Ok);
+		getAnonymousGameResult.Value.GameId.Should().Be(awaitingPlayersGame.GameId);
 	}
 
 	[Test]
@@ -114,7 +129,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		// Act
 		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
-			GameId = "nonExistingGameId"
+			GameId = Guid.NewGuid().ToString(),
 		});
 
 		// Assert

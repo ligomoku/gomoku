@@ -10,9 +10,9 @@ namespace GomokuServer.Application.FunctionalTests.Infrastructure;
 
 public class TestsAnonymousGamesRepository : IAnonymousGamesRepository
 {
-	private readonly ConcurrentDictionary<string, Game> _games = new();
+	private readonly ConcurrentDictionary<Guid, Game> _games = new();
 
-	public Task<Result<Game>> GetAsync(string id)
+	public Task<Result<Game>> GetAsync(Guid id)
 	{
 		if (_games.TryGetValue(id, out var game))
 		{

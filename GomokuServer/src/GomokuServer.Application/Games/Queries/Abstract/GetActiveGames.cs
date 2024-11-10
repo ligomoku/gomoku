@@ -18,13 +18,11 @@ public abstract class GetActiveGamesQueryHandler<TRequest>(IGamesRepository _gam
 		return getActiveGamesResult.Map(games =>
 			games.Select(game =>
 			{
-				var opponentDto = game.Opponents.Count > 0 ? new ProfileDto(game.Opponents[0].Id, game.Opponents[0].UserName) : null;
-
 				var timeControl = game is GameWithTimeControl gameWithTimeControl
-					? gameWithTimeControl.TimeControl.ToDto()
+					? gameWithTimeControl.GameSettings.TimeControl.ToDto()
 					: null;
 
-				return new GetActiveGamesResponse(game.GameId) { Opponent = opponentDto, TimeControl = timeControl };
+				return new GetActiveGamesResponse(game.GameId.ToString()) { Players = game.GetPlayersDto(), TimeControl = timeControl };
 			}));
 	}
 

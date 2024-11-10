@@ -1,10 +1,13 @@
 ﻿using GomokuServer.Application.Games.Dto;
+using GomokuServer.Core.Games.Enums;
 using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class PlaceTileTests
 {
+	private GameSettings _gameSettings;
+	private Players _players;
 	private Game _game;
 	private IRegisteredGamesRepository _registeredGamesRepository;
 	private IAnonymousGamesRepository _anonymousGamesRepository;
@@ -15,7 +18,11 @@ public class PlaceTileTests
 	[SetUp]
 	public void Setup()
 	{
-		_game = Substitute.For<Game>(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		_gameSettings = new GameSettings { GameId = Guid.NewGuid(), BoardSize = 15 };
+		var blackPlayer = new Player("Player1Id", "Player1UserName", TileColor.Black);
+		var whitePlayer = new Player("Player2Id", "Player2UserName", TileColor.White);
+		_players = new Players(blackPlayer, whitePlayer);
+		_game = Substitute.For<Game>(_gameSettings, _players, Substitute.For<IDateTimeProvider>());
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
 		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_randomProvider = Substitute.For<IRandomProvider>();
@@ -29,17 +36,15 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = "NonExistentGameId",
-			PlayerId = "Player1",
+			GameId = _gameSettings.GameId.ToString(),
+			PlayerId = _players.Black.Id,
 			Tile = new TileDto(0, 0)
 		};
 		var opponent = new Profile(command.PlayerId, "player1UserName");
 
-		var game = new Game(15, _randomProvider, _dateTimeProvider);
-		game.AddOpponent(opponent);
-		game.AddOpponent(new Profile("player2", "player2UserName"));
+		var game = new Game(_gameSettings, _players, _dateTimeProvider);
 
-		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		// Act
@@ -58,13 +63,13 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = "NonExistentGameId",
+			GameId = _gameSettings.GameId.ToString(),
 			PlayerId = "Player1",
 			Tile = new TileDto(0, 0)
 		};
 
-		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
-		_anonymousGamesRepository.GetAsync(command.GameId).Returns(Result<Game>.NotFound());
+		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result<Game>.NotFound());
+		_anonymousGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result<Game>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -79,13 +84,13 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = "game1",
+			GameId = _gameSettings.GameId.ToString(),
 			PlayerId = "player1",
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(15, _randomProvider, _dateTimeProvider);
-		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		var game = new Game(_gameSettings, _players, _dateTimeProvider);
+		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -101,17 +106,14 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = "game1",
+			GameId = _gameSettings.GameId.ToString(),
 			PlayerId = "player1Id",
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(15, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new Game(_gameSettings, _players, Substitute.For<IDateTimeProvider>());
 
-		game.AddOpponent(new Profile("player1Id", "player1UserName"));
-		game.AddOpponent(new Profile("player2Id", "player2UserName"));
-
-		_registeredGamesRepository.GetAsync(command.GameId).Returns(Result.Success(game));
+		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
 		for (int i = 0; i < 4; i++)
