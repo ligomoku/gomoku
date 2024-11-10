@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSignalRConnection } from "@/context";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 import { SignalClientMessages, SwaggerTypes } from "@/api";
 
 export const useChat = (
@@ -44,7 +44,7 @@ export const useChat = (
         });
       } catch (error) {
         console.error("Sending message failed: ", error);
-        notification.show("Error sending message", "error");
+        toaster.show("Error sending message", "error");
       }
     }
   };

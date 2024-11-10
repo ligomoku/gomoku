@@ -3,7 +3,7 @@ import {
   GameOptionsButtons,
   GameOptionsButtonsProps,
 } from "./GameOptionsButton";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export default {
   title: "Components/GameOptionsButton",
@@ -21,7 +21,7 @@ Default.args = {
   createGameText: "CREATE A GAME",
   playWithFriendText: "PLAY WITH A FRIEND",
   playWithAIText: "PLAY WITH AI",
-  onCreateGameClick: () => notification.show("Create a Game clicked!"),
-  onPlayWithFriendClick: () => notification.show("Play with a Friend clicked!"),
-  onPlayWithAIClick: () => notification.show("Play with AI clicked!"),
+  onCreateGameClick: () => toaster.show("Create a Game clicked!"),
+  onPlayWithFriendClick: () => toaster.show("Play with a Friend clicked!"),
+  onPlayWithAIClick: () => toaster.show("Play with AI clicked!"),
 };

@@ -1,6 +1,6 @@
 import { Meta } from "@storybook/react";
 import { GameTimeMobile } from "./GameTimeMobile";
-import { notification } from "@/shared/ui/notification";
+import { toaster } from "@/shared/ui/toaster";
 
 export default {
   title: "Components/GameTime/Mobile",
@@ -28,10 +28,10 @@ export const WithMoves = () => (
     moves={["x1 - y2", "x3 - y4", "x5 - y6", "x7 - y8", "x9 - y10"]}
     player={{ playerId: "1", userName: "Player 1", color: "#b0b0b0" }}
     timeLeft={1000}
-    onUndo={() => notification.show("Undo clicked")}
-    onSkip={(direction) => notification.show(`Skip ${direction} clicked`)}
-    onFlag={() => notification.show("Flag clicked")}
-    onReset={() => notification.show("Reset clicked")}
-    onRematch={() => notification.show("Rematch clicked")}
+    onUndo={() => toaster.show("Undo clicked")}
+    onSkip={(direction) => toaster.show(`Skip ${direction} clicked`)}
+    onFlag={() => toaster.show("Flag clicked")}
+    onReset={() => toaster.show("Reset clicked")}
+    onRematch={() => toaster.show("Rematch clicked")}
   />
 );
