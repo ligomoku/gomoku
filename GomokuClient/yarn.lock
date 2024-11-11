@@ -1638,6 +1638,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.14.0"
     "@tanstack/eslint-plugin-query": "npm:^5.59.20"
+    "@tanstack/eslint-plugin-router": "npm:^1.79.0"
     eslint: "npm:^9.14.0"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     eslint-plugin-react-refresh: "npm:^0.4.14"
@@ -3589,6 +3590,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/eslint-plugin-router@npm:^1.79.0":
+  version: 1.79.0
+  resolution: "@tanstack/eslint-plugin-router@npm:1.79.0"
+  dependencies:
+    "@typescript-eslint/utils": "npm:^8.12.2"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+  checksum: 10c0/cfc360fff7fdb99e847d6a6997aab396764a3e700ac5e628017a1becfc69d547ed544e57b6f126f9577ef674866c397fe68712dc894fc82643f81a322fe10801
+  languageName: node
+  linkType: hard
+
 "@tanstack/history@npm:1.61.1":
   version: 1.61.1
   resolution: "@tanstack/history@npm:1.61.1"
@@ -4332,7 +4344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.13.0":
+"@typescript-eslint/utils@npm:8.13.0, @typescript-eslint/utils@npm:^8.12.2":
   version: 8.13.0
   resolution: "@typescript-eslint/utils@npm:8.13.0"
   dependencies:

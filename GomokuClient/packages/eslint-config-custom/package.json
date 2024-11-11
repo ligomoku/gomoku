@@ -17,5 +17,8 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "eslint-plugin-storybook": "^0.11.0",
     "typescript-eslint": "^8.13.0"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-router": "^1.79.0"
   }
 }

@@ -4,6 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import pluginQuery from "@tanstack/eslint-plugin-query";
+import pluginRouter from '@tanstack/eslint-plugin-router'
 
 import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
 
@@ -23,10 +24,11 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       "@tanstack/query": pluginQuery,
-      // Registering the custom plugin here
+      "@tanstack/router": pluginRouter,
       custom: {
         rules: {
           "naming-convention-types-gen": namingConventionTypesGen,
+          "@tanstack/router/create-route-property-order": "error",
         },
       },
     },
