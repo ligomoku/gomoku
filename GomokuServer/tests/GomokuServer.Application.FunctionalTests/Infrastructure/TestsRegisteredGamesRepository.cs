@@ -19,7 +19,7 @@ public class TestsRegisteredGamesRepository : IRegisteredGamesRepository
 			return Task.FromResult(Result.Success(game));
 		}
 
-		return Task.FromResult(Result<Game>.NotFound());
+		return Task.FromResult(Result<Game>.NotFound("Game not found"));
 	}
 
 	public Task<Result> SaveAsync(Game game)

@@ -40,6 +40,9 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(
 		if (addPlayerResult.CreatedGame != null)
 		{
 			var saveResult = await _gamesRepository.SaveAsync(addPlayerResult.CreatedGame);
+
+			// TODO: Delete game from awaitingGamesRepository
+
 			if (!saveResult.IsSuccess)
 			{
 				return Result.Error("Failed to save playersAwaitingGame. See logs for more details");

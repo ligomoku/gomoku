@@ -19,7 +19,7 @@ public class TestsRegisteredPlayersAwaitingGameRepository : IRegisteredPlayersAw
 			return Task.FromResult(Result.Success(game));
 		}
 
-		return Task.FromResult(Result<PlayersAwaitingGame>.NotFound());
+		return Task.FromResult(Result<PlayersAwaitingGame>.NotFound("Game not found"));
 	}
 
 	public Task<Result> SaveAsync(PlayersAwaitingGame game)

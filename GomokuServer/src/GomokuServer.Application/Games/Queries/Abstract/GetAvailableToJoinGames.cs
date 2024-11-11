@@ -2,13 +2,13 @@
 
 public abstract record GetAvailableToJoinGamesQuery : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>;
 
-public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IPlayersAwaitingGameRepository _awaitingPlayersGamesRepository)
+public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IPlayersAwaitingGameRepository _playersAwaitingGameRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetAvailableGamesResponse>>
 	where TRequest : GetAvailableToJoinGamesQuery
 {
 	public override async Task<Result<IEnumerable<GetAvailableGamesResponse>>> GetDataAsync(TRequest request)
 	{
-		var getAwaitingPlayersGamesResult = await _awaitingPlayersGamesRepository.GetByExpressionAsync(Expression,
+		var getAwaitingPlayersGamesResult = await _playersAwaitingGameRepository.GetByExpressionAsync(Expression,
 			query => query
 				.Skip(request.Offset)
 				.Take(request.Limit)
@@ -20,18 +20,18 @@ public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IPlayersAwai
 			{
 				var opponentDto = game.Opponents.Count > 0 ? new ProfileDto(game.Opponents[0].Id, game.Opponents[0].UserName) : null;
 
-				var timeControl = game.GameSettings.TimeControl != null
-					? game.GameSettings.TimeControl.ToDto()
-					: null;
-
-				return new GetAvailableGamesResponse(game.GameId.ToString()) { Opponent = opponentDto, TimeControl = timeControl };
+				return new GetAvailableGamesResponse(game.GameId.ToString())
+				{
+					Opponent = opponentDto,
+					TimeControl = game.GameSettings.TimeControl?.ToDto()
+				};
 			}));
 	}
 
 	public override async Task<Result<int>> GetTotalItemsAsync(TRequest _)
 	{
-		return await _awaitingPlayersGamesRepository.CountAsync(Expression);
+		return await _playersAwaitingGameRepository.CountAsync(Expression);
 	}
 
-	private Expression<Func<PlayersAwaitingGame, bool>> Expression => _ => true;
+	private Expression<Func<PlayersAwaitingGame, bool>> Expression => players => players.Opponents.Count < 2;
 }

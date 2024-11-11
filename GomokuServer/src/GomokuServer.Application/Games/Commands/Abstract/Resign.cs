@@ -23,7 +23,7 @@ public class ResignCommandHandler<TRequest>(IGamesRepository _gamesRepository)
 		{
 			if (getGameResult.IsNotFound())
 			{
-				return Result.NotFound();
+				return Result.NotFound("Game not found");
 			}
 
 			return Result.Error("Can't find game");

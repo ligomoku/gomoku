@@ -73,7 +73,7 @@ public class PlayersAwaitingGame
 	private Game CreateGame()
 	{
 		var (firstOpponent, secondOpponent) = _randomProvider.GetInt(0, 2) == 0 ? (_opponents[0], _opponents[1]) : (_opponents[1], _opponents[0]);
-		var players = new Players(firstOpponent.CreatePlayer(TileColor.Black), firstOpponent.CreatePlayer(TileColor.White));
+		var players = new Players(firstOpponent.CreatePlayer(TileColor.Black), secondOpponent.CreatePlayer(TileColor.White));
 
 		if (GameSettings.TimeControl != null)
 		{
@@ -84,7 +84,7 @@ public class PlayersAwaitingGame
 			};
 			return new GameWithTimeControl(gameWithTimeControlSettings, players, _dateTimeProvider)
 			{
-				GameId = Guid.NewGuid(),
+				GameId = GameId,
 			};
 		}
 
@@ -94,7 +94,7 @@ public class PlayersAwaitingGame
 		};
 		return new Game(gameSettings, players, _dateTimeProvider)
 		{
-			GameId = Guid.NewGuid()
+			GameId = GameId
 		};
 	}
 }

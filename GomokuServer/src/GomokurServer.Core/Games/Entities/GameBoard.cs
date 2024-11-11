@@ -26,16 +26,6 @@ public class GameBoard
 	{
 		get
 		{
-			static string GetGENCharFromColor(string color)
-			{
-				return color switch
-				{
-					"black" => "X",
-					"white" => "O",
-					_ => "."
-				};
-			}
-
 			var gen = new StringBuilder();
 
 			for (var i = 0; i < _boardSize; i++)
@@ -142,5 +132,36 @@ public class GameBoard
 		}
 
 		return tiles;
+	}
+
+	public static string GetEmptyBoardGEN(int boardSize)
+	{
+		var gen = new StringBuilder();
+
+		for (var i = 0; i < boardSize; i++)
+		{
+			var row = new StringBuilder();
+
+			for (var j = 0; j < boardSize; j++)
+			{
+				row.Append('.');
+			}
+
+			gen.Append($"{row}/");
+		}
+
+		gen.Append("b/0");
+
+		return gen.ToString();
+	}
+
+	private static string GetGENCharFromColor(string color)
+	{
+		return color switch
+		{
+			"black" => "X",
+			"white" => "O",
+			_ => "."
+		};
 	}
 }

@@ -5,7 +5,7 @@ using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.UnitTests;
 
-public class AwaitingPlayersGameTests
+public class PlayersAwaitingGameTests
 {
 	private PlayersAwaitingGameSettings _gameSettings;
 	private IDateTimeProvider _dateTimeProvider;
@@ -18,6 +18,7 @@ public class AwaitingPlayersGameTests
 		_gameSettings = new PlayersAwaitingGameSettings() { BoardSize = 15 };
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_randomProvider = Substitute.For<IRandomProvider>();
+		_randomProvider.GetInt(0, 2).Returns(0);
 		_awaitingPlayersGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
 	}
 
@@ -67,12 +68,17 @@ public class AwaitingPlayersGameTests
 	[Test]
 	public void AddPlayer_WhenOnePlayersJoined_ShouldReturnSuccessAndCreatedGame()
 	{
+		// Arrange
+		_awaitingPlayersGame.AddPlayer(new Profile("id", "username"));
+
 		// Act
-		var addPlayerResult = _awaitingPlayersGame.AddPlayer(new Profile("id", "username"));
+		var addPlayerResult = _awaitingPlayersGame.AddPlayer(new Profile("id2", "username2"));
 
 		// Assert
 		addPlayerResult.IsValid.Should().BeTrue();
-		addPlayerResult.CreatedGame.Should().BeNull();
+		addPlayerResult.CreatedGame.Should().NotBeNull();
+		addPlayerResult.CreatedGame?.Players.Black.Id.Should().Be("id");
+		addPlayerResult.CreatedGame?.Players.White.Id.Should().Be("id2");
 	}
 
 	[Test]
