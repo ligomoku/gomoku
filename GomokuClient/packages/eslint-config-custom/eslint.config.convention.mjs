@@ -5,7 +5,7 @@ export default [
   ...gomokuEslintConfig,
   {
     files: ["**/*.{ts,tsx}"],
-    ignores: ["dist"],
+    ignores: ["dist", "**/*.gen.ts"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
