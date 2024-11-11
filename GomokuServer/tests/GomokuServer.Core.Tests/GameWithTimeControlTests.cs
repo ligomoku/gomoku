@@ -123,7 +123,7 @@ public class GameWithTimeControlTests
 	}
 
 	[Test]
-	public void WhenGameIsOver_AfterWinningMove_BothClockShouldStop()
+	public void PlaceTile_WhenMoveIsWinning_BothClockShouldStop()
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _game.CurrentPlayer!.Id);
@@ -143,7 +143,7 @@ public class GameWithTimeControlTests
 	}
 
 	[Test]
-	public void WhenGameIsOver_AfterResign_BothClockShouldStop()
+	public void Resign_BothClockShouldStop()
 	{
 		// Arrange
 		_game.PlaceTile(new Tile(0, 0), _game.CurrentPlayer!.Id);
@@ -151,10 +151,35 @@ public class GameWithTimeControlTests
 		_game.Resign(_game.Players.White.Id);
 		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(2_000_000);
 
-		// Act
-
 		// Assert
 		_game.GetRemainingTime(_game.Players.Black.Id).Should().Be(180_000);
 		_game.GetRemainingTime(_game.Players.White.Id).Should().Be(180_000);
+	}
+
+	[Test]
+	public void Rematch_ShouldSwitchPlayersColors()
+	{
+		// Arrange
+		for (int i = 0; i < 5; i++)
+		{
+			_game.PlaceTile(new(i, 7), _game.Players.Black.Id);
+			_game.PlaceTile(new(i, 8), _game.Players.White.Id);
+		}
+
+		// Act
+		var rematchResult = _game.Rematch(_game.Players.Black.Id);
+
+		// Assert
+		rematchResult.IsValid.Should().BeTrue();
+		rematchResult.NewGame.Should().NotBeNull();
+		rematchResult.NewGame.Should().BeOfType<GameWithTimeControl>();
+		rematchResult.NewGame!.GameSettings.Should().Be(_game.GameSettings);
+		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_game.Players.White);
+		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_game.Players.Black);
+		rematchResult.NewGame!.CurrentPlayer?.Id.Should().Be(_game.Players.White.Id);
+		rematchResult.NewGame!.MovesHistory.Should().BeEmpty();
+		rematchResult.NewGame!.Result.Should().Be(GameResult.NotCompletedYet);
+		rematchResult.NewGame!.Status.Should().Be(GameStatus.NotStartedYet);
+		rematchResult.NewGame!.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
 	}
 }
