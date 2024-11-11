@@ -18,7 +18,7 @@ public abstract class PlaceTileCommandHandler<TRequest>(IGamesRepository _gamesR
 {
 	public async Task<Result<PlaceTileResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
-		return await _gamesRepository.GetAsync(request.GameId).BindAsync(async game =>
+		return await _gamesRepository.GetAsync(Guid.Parse(request.GameId)).BindAsync(async game =>
 		{
 			var tileDto = request.Tile;
 

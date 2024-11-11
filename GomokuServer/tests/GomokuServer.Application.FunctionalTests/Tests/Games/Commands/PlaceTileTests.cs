@@ -11,13 +11,13 @@ public class PlaceTileTests : FunctionalTestBase
 	public async Task PlaceTile_PassExistingPlayerIdAndRegisteredGameId_ShouldSuccessfullyPlaceTileInRegisteredGame()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		await RegisteredGamesRepository.SaveAsync(game);
 
 		// Act
 		var placeTileResult = await SendAsync(new PlaceRegisteredTileCommand
 		{
-			GameId = game.GameId,
+			GameId = game.GameId.ToString(),
 			PlayerId = game.Players.Black!.Id,
 			Tile = new TileDto(0, 0)
 		});
@@ -36,13 +36,13 @@ public class PlaceTileTests : FunctionalTestBase
 	public async Task PlaceTile_PassExistingPlayerIdAndAnonymousGameId_ShouldSuccessfullyPlaceTileInAnonymousGame()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		await AnonymousGamesRepository.SaveAsync(game);
 
 		// Act
 		var placeTileResult = await SendAsync(new PlaceAnonymousTileCommand
 		{
-			GameId = game.GameId,
+			GameId = game.GameId.ToString(),
 			PlayerId = game.Players.Black!.Id,
 			Tile = new TileDto(0, 0)
 		});
@@ -63,7 +63,7 @@ public class PlaceTileTests : FunctionalTestBase
 		// Act
 		var placeTileResult = await SendAsync(new PlaceRegisteredTileCommand
 		{
-			GameId = "nonExistingGameId",
+			GameId = Guid.NewGuid().ToString(),
 			PlayerId = "somePlayerId",
 			Tile = new TileDto(0, 0)
 		});

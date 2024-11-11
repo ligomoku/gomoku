@@ -1,5 +1,8 @@
+using Ardalis.Result;
+
 using GomokuServer.Api.Hubs.Exceptions;
 using GomokuServer.Application.Games.Commands.Abstract;
+using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -24,7 +27,7 @@ public class GameHub : Hub, IGameHub
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 		await Clients.Caller.SendAsync(GameHubMethod.GameGroupJoined, gameId);
 
-		var getGameResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = gameId });
+		var getGameResult = await GetGameHistoryAsync(gameId);
 
 		if (getGameResult.IsSuccess)
 		{
@@ -42,7 +45,7 @@ public class GameHub : Hub, IGameHub
 	[AllowAnonymous]
 	public async Task GetClock(GetClockMessage message)
 	{
-		var getGameResult = await _mediator.Send(new GetGameHistoryQuery() { GameId = message.GameId });
+		var getGameResult = await GetGameHistoryAsync(message.GameId);
 
 		if (getGameResult.IsSuccess)
 		{
@@ -112,7 +115,7 @@ public class GameHub : Hub, IGameHub
 	[AllowAnonymous]
 	public async Task RequestRematch(RematchRequestMessage message)
 	{
-		var getGameHistoryResult = await _mediator.Send(new GetGameHistoryQuery { GameId = message.GameId });
+		var getGameHistoryResult = await GetGameHistoryAsync(message.GameId);
 
 		if (getGameHistoryResult.IsSuccess)
 		{
@@ -171,7 +174,21 @@ public class GameHub : Hub, IGameHub
 		return playerId;
 	}
 
-	// TODO: Extract logic below. Find way to consolidate.
+	// TODO: All this stuff is one big crutch. We should create abstract GameHub and inherit two hubs from that abstract
+	// TODO: Registered games hub should be marked with Authorize attribute
+
+	private async Task<Result<GetGameHistoryResponse>> GetGameHistoryAsync(string gameId)
+	{
+		var getRegisteredGameHistoryResult = await _mediator.Send(new GetRegisteredGameHistoryQuery { GameId = gameId });
+
+		if (getRegisteredGameHistoryResult.IsNotFound())
+		{
+			return await _mediator.Send(new GetAnonymousGameHistoryQuery { GameId = gameId });
+		}
+
+		return getRegisteredGameHistoryResult;
+	}
+
 	private PlaceTileCommand GetPlaceTileCommand(string gameId, TileDto tile)
 	{
 		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))

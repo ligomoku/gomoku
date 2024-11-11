@@ -2,7 +2,6 @@
 
 using GomokuServer.Application.Games.Commands;
 using GomokuServer.Application.Games.Dto;
-using GomokuServer.Core.Games.Entities;
 
 namespace GomokuServer.Application.FunctionalTests.Tests.Games.Commands;
 
@@ -21,10 +20,10 @@ public class CreateGameTests : FunctionalTestBase
 		// Assert
 		createGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getRegisteredGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getRegisteredGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getAnonymousGameResult = await AnonymousPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 	}
 
@@ -54,10 +53,10 @@ public class CreateGameTests : FunctionalTestBase
 		// Assert
 		createGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getRegisteredGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
 
-		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getAnonymousGameResult = await AnonymousPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.Ok);
 	}
 
@@ -74,9 +73,9 @@ public class CreateGameTests : FunctionalTestBase
 		// Assert
 		createGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getGameResult.Status.Should().Be(ResultStatus.Ok);
-		getGameResult.Value.Should().BeOfType<Game>();
+		getGameResult.Value.GameSettings.TimeControl.Should().BeNull();
 	}
 
 	[Test]
@@ -97,8 +96,8 @@ public class CreateGameTests : FunctionalTestBase
 		// Assert
 		createGameResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getGameResult = await RegisteredGamesRepository.GetAsync(createGameResult.Value.GameId);
+		var getGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(createGameResult.Value.GameId));
 		getGameResult.Status.Should().Be(ResultStatus.Ok);
-		getGameResult.Value.Should().BeOfType<GameWithTimeControl>();
+		getGameResult.Value.GameSettings.TimeControl.Should().NotBeNull();
 	}
 }

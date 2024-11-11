@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 using GomokuServer.Application.Games.Queries;
 using GomokuServer.Application.Games.Queries.Abstract;
-using GomokuServer.Application.UnitTests.TestData;
+using GomokuServer.Tests.Common;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 
@@ -59,30 +59,6 @@ public class GetActiveGamesTests
 		// Assert
 		result.Status.Should().Be(ResultStatus.Ok);
 		result.Value.Data.Should().HaveCount(2);
-		await _registeredGamesRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
-	}
-
-	[Test]
-	public async Task GetActiveGames_WhenPlayerOneIsSet_ShouldReturnPlayerAsOpponentInResponse()
-	{
-		// Arrange
-		var games = new List<Game>
-		{
-			_testDataProvider.GetGame_InProgress(),
-		};
-
-		_registeredGamesRepository.CountAsync(Arg.Any<Expression<Func<Game, bool>>>())
-			.Returns(Task.FromResult(Result.Success(1)));
-		_registeredGamesRepository.GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>())
-			.Returns(Task.FromResult(Result.Success(games.AsEnumerable())));
-
-		// Act
-		var result = await _handler.Handle(new GetActiveRegisteredGamesQuery(), CancellationToken.None);
-
-		// Assert
-		result.Status.Should().Be(ResultStatus.Ok);
-		result.Value.Data.Should().HaveCount(1);
-		result.Value.Data.First().Opponent!.UserName.Should().Be(games[0].Opponents[0].UserName);
 		await _registeredGamesRepository.Received(1).GetByExpressionAsync(Arg.Any<Expression<Func<Game, bool>>>(), Arg.Any<Func<IQueryable<Game>, IOrderedQueryable<Game>>>());
 	}
 

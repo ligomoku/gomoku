@@ -15,7 +15,7 @@ public abstract class RematchCommandHandler<TRequest>(IGamesRepository _gamesRep
 {
 	public async Task<Result<RematchResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
-		var getGameResult = await _gamesRepository.GetAsync(request.GameId);
+		var getGameResult = await _gamesRepository.GetAsync(Guid.Parse(request.GameId));
 		if (!getGameResult.IsSuccess)
 		{
 			return Result.Error("Can't find game");
@@ -31,6 +31,6 @@ public abstract class RematchCommandHandler<TRequest>(IGamesRepository _gamesRep
 
 		var saveResult = await _gamesRepository.SaveAsync(rematchResult.NewGame!);
 
-		return saveResult.Map(_ => new RematchResponse() { NewGameId = rematchResult.NewGame!.GameId });
+		return saveResult.Map(_ => new RematchResponse() { NewGameId = rematchResult.NewGame!.GameId.ToString() });
 	}
 }

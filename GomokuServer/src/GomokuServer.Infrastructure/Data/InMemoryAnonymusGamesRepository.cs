@@ -8,16 +8,16 @@ namespace GomokuServer.Infrastructure.Data;
 
 public class InMemoryAnonymousGamesRepository : IAnonymousGamesRepository
 {
-	private readonly ConcurrentDictionary<string, Game> _games = new();
+	private readonly ConcurrentDictionary<Guid, Game> _games = new();
 
-	public Task<Result<Game>> GetAsync(string id)
+	public Task<Result<Game>> GetAsync(Guid id)
 	{
 		if (_games.TryGetValue(id, out var game))
 		{
 			return Task.FromResult(Result.Success(game));
 		}
 
-		return Task.FromResult(Result<Game>.NotFound());
+		return Task.FromResult(Result<Game>.NotFound("Game not found"));
 	}
 
 	public Task<Result> SaveAsync(Game game)

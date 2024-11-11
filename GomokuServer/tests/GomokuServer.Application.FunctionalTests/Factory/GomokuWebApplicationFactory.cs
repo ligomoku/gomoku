@@ -16,8 +16,12 @@ public class GomokuWebApplicationFactory : WebApplicationFactory<Program>
 		builder.ConfigureTestServices(services =>
 		{
 			services
+				.RemoveAll<IRegisteredPlayersAwaitingGameRepository>()
+				.AddSingleton<IRegisteredPlayersAwaitingGameRepository, TestsRegisteredPlayersAwaitingGameRepository>()
 				.RemoveAll<IRegisteredGamesRepository>()
 				.AddSingleton<IRegisteredGamesRepository, TestsRegisteredGamesRepository>()
+				.RemoveAll<IAnonymousPlayersAwaitingGameRepository>()
+				.AddSingleton<IAnonymousPlayersAwaitingGameRepository, TestsAnonymousPlayersAwaitingGameRepository>()
 				.RemoveAll<IAnonymousGamesRepository>()
 				.AddSingleton<IAnonymousGamesRepository, TestsAnonymousGamesRepository>()
 				.RemoveAll<IProfilesRepository>()

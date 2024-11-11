@@ -25,6 +25,6 @@ public class TestsProfilesRepository : IProfilesRepository
 			return Task.FromResult(Result.Success(game));
 		}
 
-		return Task.FromResult(Result<Profile>.NotFound());
+		return Task.FromResult(Result<Profile>.NotFound("Game not found"));
 	}
 }

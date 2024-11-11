@@ -11,8 +11,8 @@ public static class GameExtensions
 
 		return new PlayersDto()
 		{
-			Black = blackPlayer != null ? new PlayerDto(blackPlayer.Id, blackPlayer.UserName, TileColor.Black.GetString()) : null,
-			White = whitePlayer != null ? new PlayerDto(whitePlayer.Id, whitePlayer.UserName, TileColor.White.GetString()) : null,
+			Black = new PlayerDto(blackPlayer.Id, blackPlayer.UserName, TileColor.Black.GetString()),
+			White = new PlayerDto(whitePlayer.Id, whitePlayer.UserName, TileColor.White.GetString()),
 		};
 	}
 }

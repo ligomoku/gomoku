@@ -1,5 +1,5 @@
 ﻿using GomokuServer.Application.Games.Queries;
-using GomokuServer.Application.UnitTests.TestData;
+using GomokuServer.Tests.Common;
 
 namespace GomokuServer.Application.UnitTests.Games.Queries;
 
@@ -7,55 +7,26 @@ public class GetGameHistoryTests
 {
 	private TestDataProvider _testDataProvider;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IAnonymousGamesRepository _anonymousGamesRepository;
-	private GetGameHistoryQueryHandler _handler;
+	private IRegisteredPlayersAwaitingGameRepository _playersAwaitingGameRepository;
+	private GetRegisteredGameHistoryQueryHandler _handler;
 
 	[SetUp]
 	public void Setup()
 	{
 		_testDataProvider = new TestDataProvider();
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
-		_handler = new GetGameHistoryQueryHandler(_registeredGamesRepository, _anonymousGamesRepository);
-	}
-
-	[Test]
-	public async Task GetGameInformation_HasGameWithOnePlayer_ShouldReturnGameHistorySuccessfully()
-	{
-		// Arrange
-		var game = _testDataProvider.GetGame_OnePlayerJoined();
-
-		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
-
-		var query = new GetGameHistoryQuery { GameId = game.GameId };
-
-		// Act
-		var result = await _handler.Handle(query, CancellationToken.None);
-
-		// Assert
-		result.Status.Should().Be(ResultStatus.Ok);
-
-		var getGameResponse = result.Value;
-		getGameResponse.HasBothPlayersJoined.Should().BeFalse();
-		getGameResponse.IsGameStarted.Should().BeFalse();
-		getGameResponse.Players!.Black!.Should().BeNull();
-		getGameResponse.Players!.White.Should().BeNull();
-		getGameResponse.HasBothPlayersJoined!.Should().BeFalse();
-		getGameResponse.MovesHistory.Should().BeEmpty();
-		getGameResponse.Winner.Should().BeNull();
-		getGameResponse.WinningSequence.Should().BeNull();
-
-		await _registeredGamesRepository.Received(1).GetAsync(game.GameId);
+		_playersAwaitingGameRepository = Substitute.For<IRegisteredPlayersAwaitingGameRepository>();
+		_handler = new GetRegisteredGameHistoryQueryHandler(_registeredGamesRepository, _playersAwaitingGameRepository);
 	}
 
 	[Test]
 	public async Task GetGameInformation_BothPlayersJoined_NoMoves_ShouldReturnGameHistorySuccessfully()
 	{
 		// Arrange
-		var game = _testDataProvider.GetGame_TwoPlayersJoined_NoMoves();
+		var game = _testDataProvider.GetGame_NoMoves();
 		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameHistoryQuery { GameId = game.GameId };
+		var query = new GetRegisteredGameHistoryQuery { GameId = game.GameId.ToString() };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -82,7 +53,7 @@ public class GetGameHistoryTests
 		var game = _testDataProvider.GetGame_HasWinner();
 		_registeredGamesRepository.GetAsync(game.GameId).Returns(Task.FromResult(Result.Success(game)));
 
-		var query = new GetGameHistoryQuery { GameId = game.GameId };
+		var query = new GetRegisteredGameHistoryQuery { GameId = game.GameId.ToString() };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);
@@ -105,14 +76,14 @@ public class GetGameHistoryTests
 	}
 
 	[Test]
-	public async Task GetGameInformation_GameNotFoundInBothRegisteredAndAnonymousRepository_ShouldReturnNotFound()
+	public async Task GetGameInformation_GameNotFoundInBothGamesAndPlayersAwaitingGameRepository_ShouldReturnNotFound()
 	{
 		// Arrange
-		var invalidGameId = "InvalidGameId";
+		var invalidGameId = Guid.NewGuid();
 		_registeredGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
-		_anonymousGamesRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<Game>.NotFound()));
+		_playersAwaitingGameRepository.GetAsync(invalidGameId).Returns(Task.FromResult(Result<PlayersAwaitingGame>.NotFound()));
 
-		var query = new GetGameHistoryQuery { GameId = invalidGameId };
+		var query = new GetRegisteredGameHistoryQuery { GameId = invalidGameId.ToString() };
 
 		// Act
 		var result = await _handler.Handle(query, CancellationToken.None);

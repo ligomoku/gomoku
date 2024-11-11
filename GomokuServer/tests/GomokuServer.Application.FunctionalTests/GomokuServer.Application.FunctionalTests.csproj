@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GomokuServer.Api\GomokuServer.Api.csproj" />
+    <ProjectReference Include="..\GomokuServer.Tests.Common\GomokuServer.Tests.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

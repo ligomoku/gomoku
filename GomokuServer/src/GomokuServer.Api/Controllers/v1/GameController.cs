@@ -1,4 +1,6 @@
-﻿using GomokuServer.Api.Swagger.Examples;
+﻿using Ardalis.Result;
+
+using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Application.Common.Responses;
 using GomokuServer.Application.Games.Responses;
 
@@ -34,8 +36,17 @@ public class GameController : Controller
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public async Task<IActionResult> GetGameHistory([FromRoute] string gameId)
 	{
-		var getGameSessionResult = await _mediator.Send(new GetGameHistoryQuery { GameId = gameId });
-		return getGameSessionResult.ToApiResponse();
+		//TODO: Probably should create abstract controller and mark registered games constroller with [Authorize]
+		var getRegisteredGameHistoryResult = await _mediator.Send(new GetRegisteredGameHistoryQuery { GameId = gameId });
+
+		if (getRegisteredGameHistoryResult.IsNotFound())
+		{
+			var getAnonymousGameHistoryResult = await _mediator.Send(new GetAnonymousGameHistoryQuery { GameId = gameId });
+
+			return getAnonymousGameHistoryResult.ToApiResponse();
+		}
+
+		return getRegisteredGameHistoryResult.ToApiResponse();
 	}
 
 	/// <summary>
