@@ -10,7 +10,7 @@ public class PlayersAwaitingGameTests
 	private PlayersAwaitingGameSettings _gameSettings;
 	private IDateTimeProvider _dateTimeProvider;
 	private IRandomProvider _randomProvider;
-	private PlayersAwaitingGame _awaitingPlayersGame;
+	private PlayersAwaitingGame _playersAwaitingGame;
 
 	[SetUp]
 	public void SetUp()
@@ -19,18 +19,18 @@ public class PlayersAwaitingGameTests
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_randomProvider = Substitute.For<IRandomProvider>();
 		_randomProvider.GetInt(0, 2).Returns(0);
-		_awaitingPlayersGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
+		_playersAwaitingGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
 	}
 
 	[Test]
 	public void AddPlayer_WhenBothPlacesAreTaken_ShouldReturnError()
 	{
 		// Arrange
-		_awaitingPlayersGame.AddPlayer(new Profile("id1", "username1"));
-		_awaitingPlayersGame.AddPlayer(new Profile("id2", "username2"));
+		_playersAwaitingGame.AddPlayer(new Profile("id1", "username1"));
+		_playersAwaitingGame.AddPlayer(new Profile("id2", "username2"));
 
 		// Act
-		var result = _awaitingPlayersGame.AddPlayer(new Profile("id3", "username3"));
+		var result = _playersAwaitingGame.AddPlayer(new Profile("id3", "username3"));
 
 		// Assert
 		result.IsValid.Should().BeFalse();
@@ -43,10 +43,10 @@ public class PlayersAwaitingGameTests
 	{
 		// Arrange
 		var player = new Profile("id", "username");
-		_awaitingPlayersGame.AddPlayer(player);
+		_playersAwaitingGame.AddPlayer(player);
 
 		// Act
-		var result = _awaitingPlayersGame.AddPlayer(player);
+		var result = _playersAwaitingGame.AddPlayer(player);
 
 		// Assert
 		result.IsValid.Should().BeFalse();
@@ -58,7 +58,7 @@ public class PlayersAwaitingGameTests
 	public void AddPlayer_WhenNoPlayersJoined_ShouldReturnSuccess()
 	{
 		// Act
-		var addPlayerResult = _awaitingPlayersGame.AddPlayer(new Profile("id", "username"));
+		var addPlayerResult = _playersAwaitingGame.AddPlayer(new Profile("id", "username"));
 
 		// Assert
 		addPlayerResult.IsValid.Should().BeTrue();
@@ -69,10 +69,10 @@ public class PlayersAwaitingGameTests
 	public void AddPlayer_WhenOnePlayersJoined_ShouldReturnSuccessAndCreatedGame()
 	{
 		// Arrange
-		_awaitingPlayersGame.AddPlayer(new Profile("id", "username"));
+		_playersAwaitingGame.AddPlayer(new Profile("id", "username"));
 
 		// Act
-		var addPlayerResult = _awaitingPlayersGame.AddPlayer(new Profile("id2", "username2"));
+		var addPlayerResult = _playersAwaitingGame.AddPlayer(new Profile("id2", "username2"));
 
 		// Assert
 		addPlayerResult.IsValid.Should().BeTrue();
@@ -86,11 +86,11 @@ public class PlayersAwaitingGameTests
 	{
 		// Arrange
 		_gameSettings = _gameSettings with { TimeControl = new TimeControl(180, 2) };
-		_awaitingPlayersGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
-		_awaitingPlayersGame.AddPlayer(new Profile("id1", "username1"));
+		_playersAwaitingGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
+		_playersAwaitingGame.AddPlayer(new Profile("id1", "username1"));
 
 		// Act
-		var addPlayerResult = _awaitingPlayersGame.AddPlayer(new Profile("id2", "username2")); ;
+		var addPlayerResult = _playersAwaitingGame.AddPlayer(new Profile("id2", "username2")); ;
 
 		// Assert
 		addPlayerResult.IsValid.Should().BeTrue();
