@@ -48,7 +48,7 @@ export default [
       },
     },
     linterOptions: {
-      noInlineConfig: true,
+      // noInlineConfig: true,
       reportUnusedDisableDirectives: "warn",
     },
     rules: {
