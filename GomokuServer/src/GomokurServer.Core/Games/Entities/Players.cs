@@ -15,4 +15,6 @@ public record Players(Player black, Player white)
 	{
 		return playerId == White.Id ? Black : White;
 	}
+
+	public Players GetSwitchedColors() => new(White, Black);
 }
