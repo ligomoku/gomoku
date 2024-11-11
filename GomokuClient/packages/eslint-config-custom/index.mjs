@@ -10,11 +10,9 @@ import pluginRouter from "@tanstack/eslint-plugin-router";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import pluginImport from "eslint-plugin-import";
 
-// import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
-
 export default [
   {
-    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**"],
+    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**", "tailwind.config.ts"],
   },
 
   js.configs.recommended,
@@ -40,7 +38,6 @@ export default [
       "@typescript-eslint": tsEslintPlugin,
       custom: {
         rules: {
-          // "naming-convention-types-gen": namingConventionTypesGen,
           "@tanstack/router/create-route-property-order": "error",
         },
       },
@@ -56,10 +53,6 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
-        { allowExpressions: true },
-      ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_" },
@@ -109,22 +102,6 @@ export default [
       "jsx-a11y/no-autofocus": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "jsx-a11y/alt-text": "error",
-      // "custom/naming-convention-types-gen": "error",
-
-      //TODO: check usefulness of this rule
-      // "import/no-extraneous-dependencies": [
-      //   "error",
-      //   {
-      //     devDependencies: [
-      //       "**/*.stories.*",
-      //       "**/*.test.*",
-      //       "**/.storybook/**",
-      //       "**/vite.config.*",
-      //       "**/*.config.*",
-      //       "**/*.spec.*",
-      //     ],
-      //   },
-      // ],
     },
   },
 ];
