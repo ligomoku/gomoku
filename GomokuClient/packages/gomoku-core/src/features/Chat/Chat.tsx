@@ -1,10 +1,13 @@
-import { useState, useEffect, useRef, KeyboardEvent } from "react";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Button } from "@/shared/ui/button";
 import { t } from "@lingui/macro";
-import { toaster } from "@/shared/ui/toaster";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useState, useEffect, useRef } from "react";
+
+import type { KeyboardEvent } from "react";
+
 import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { Button } from "@/shared/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { toaster } from "@/shared/ui/toaster";
 
 export interface ChatProps {
   messages: string[];
@@ -107,7 +110,8 @@ export const Chat = ({
             >
               {messages.map((msg, index) => (
                 <div
-                  key={index}
+                  //TODO: check if key is matching behaviour
+                  key={msg}
                   ref={index === messages.length - 1 ? scrollAreaRef : null}
                   className={`mb-2 rounded p-2 ${
                     msg.startsWith(`${username}:`)

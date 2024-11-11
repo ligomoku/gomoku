@@ -1,7 +1,9 @@
-import { Meta, StoryFn } from "@storybook/react";
 import { FeaturedBoxes } from "./FeaturedBoxes";
+
 import type { FeaturedBoxesProps } from "./FeaturedBoxes";
-import { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@/api";
+import type { Meta, StoryFn } from "@storybook/react";
+
 import { toaster } from "@/shared/ui/toaster";
 
 export default {

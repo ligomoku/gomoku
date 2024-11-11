@@ -1,5 +1,6 @@
-import { Meta } from "@storybook/react";
 import { Board } from "./Board";
+
+import type { Meta } from "@storybook/react";
 
 export default {
   title: "Components/Board",

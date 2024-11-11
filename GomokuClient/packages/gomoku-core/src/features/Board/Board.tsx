@@ -1,11 +1,15 @@
-import { TileColor } from "@/hooks/useTiles";
-import { CSSProperties, memo, useMemo, useState } from "react";
 import { cva } from "class-variance-authority";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { memo, useMemo, useState } from "react";
 import { ResizableBox } from "react-resizable";
-import "react-resizable/css/styles.css";
-import { SignalClientMessages, SwaggerTypes } from "@/api";
+
+import type { SignalClientMessages, SwaggerTypes } from "@/api";
+import type { TileColor } from "@/hooks/useTiles";
+import type { CSSProperties } from "react";
+
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { Button } from "@/shared/ui/button";
+
+import "react-resizable/css/styles.css";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];

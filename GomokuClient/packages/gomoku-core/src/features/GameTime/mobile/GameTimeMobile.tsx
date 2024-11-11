@@ -6,8 +6,11 @@ import {
   Undo,
   X,
 } from "lucide-react";
-import { GameTimeProps, secondsToString } from "@/features/GameTime";
-import { SwaggerTypes } from "@/api";
+
+import type { SwaggerTypes } from "@/api";
+import type { GameTimeProps } from "@/features/GameTime";
+
+import { secondsToString } from "@/features/GameTime";
 
 interface GameTimeMobileProps
   extends Omit<
@@ -38,7 +41,7 @@ export const GameTimeMobile = ({
             <span
               className="mr-2 h-3 w-3 rounded-full"
               style={{ backgroundColor: player?.color }}
-            ></span>
+            />
             <span className="font-bold text-[#ffa600]">{player?.userName}</span>
           </div>
           {timeLeft && (
@@ -58,7 +61,7 @@ export const GameTimeMobile = ({
           <span
             className="mr-2 h-3 w-3 rounded-full"
             style={{ backgroundColor: player?.color }}
-          ></span>
+          />
           <span className="font-bold text-[#ffa600]">{player?.userName}</span>
         </div>
         {timeLeft && (

@@ -1,7 +1,10 @@
-import { SwaggerTypes } from "@/api";
 import { useMemo } from "react";
+
+import type { SwaggerTypes } from "@/api";
+import type { BoardProps } from "@/features/Board/Board";
+
+import { Board } from "@/features/Board/Board";
 import { genParser } from "@/utils/getParser";
-import { Board, BoardProps } from "@/features/Board/Board";
 
 export interface GamePreviewProps {
   gen: SwaggerTypes.GetGameHistoryResponse["gen"];
