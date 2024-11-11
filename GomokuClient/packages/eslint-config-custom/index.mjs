@@ -10,7 +10,7 @@ import pluginRouter from "@tanstack/eslint-plugin-router";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import pluginImport from "eslint-plugin-import";
 
-import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
+// import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
 
 export default [
   {
@@ -40,7 +40,7 @@ export default [
       "@typescript-eslint": tsEslintPlugin,
       custom: {
         rules: {
-          "naming-convention-types-gen": namingConventionTypesGen,
+          // "naming-convention-types-gen": namingConventionTypesGen,
           "@tanstack/router/create-route-property-order": "error",
         },
       },
@@ -67,8 +67,14 @@ export default [
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/naming-convention": [
         "error",
-        { selector: "typeLike", format: ["PascalCase"] },
-        { selector: "variable", format: ["camelCase", "UPPER_CASE"] },
+        {
+          "selector": "variable",
+          "format": ["camelCase", "PascalCase", "UPPER_CASE"],
+        },
+        {
+          "selector": "function",
+          "format": ["camelCase", "PascalCase"],
+        },
       ],
 
       "react/prop-types": "off",
@@ -103,7 +109,7 @@ export default [
       "jsx-a11y/no-autofocus": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "jsx-a11y/alt-text": "error",
-      "custom/naming-convention-types-gen": "error",
+      // "custom/naming-convention-types-gen": "error",
 
       //TODO: check usefulness of this rule
       // "import/no-extraneous-dependencies": [
