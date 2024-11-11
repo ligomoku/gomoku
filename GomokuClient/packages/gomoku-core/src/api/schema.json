@@ -602,8 +602,8 @@
             "minLength": 1,
             "type": "string"
           },
-          "opponent": {
-            "$ref": "#/components/schemas/ProfileDto"
+          "players": {
+            "$ref": "#/components/schemas/PlayersDto"
           },
           "timeControl": {
             "$ref": "#/components/schemas/TimeControlDto"

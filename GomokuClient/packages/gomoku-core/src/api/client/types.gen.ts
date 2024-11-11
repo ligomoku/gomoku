@@ -32,7 +32,7 @@ export type CreateGameResponse = {
 
 export type GetActiveGamesResponse = {
   gameId: string;
-  opponent?: ProfileDto;
+  players?: PlayersDto;
   timeControl?: TimeControlDto;
 };
 
