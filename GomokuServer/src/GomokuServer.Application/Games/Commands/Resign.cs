@@ -4,10 +4,14 @@ namespace GomokuServer.Application.Games.Commands;
 
 public record RegisteredResignCommand : ResignCommand;
 
-public class RegisteredResignCommandHandler(IRegisteredGamesRepository _registeredGamesRepository)
-	: ResignCommandHandler<RegisteredResignCommand>(_registeredGamesRepository);
+public class RegisteredResignCommandHandler(
+	IRegisteredGamesRepository _registeredGamesRepository,
+	IRegisteredPlayersAwaitingGameRepository _playersAwaitingGameRepository)
+	: ResignCommandHandler<RegisteredResignCommand>(_registeredGamesRepository, _playersAwaitingGameRepository);
 
 public record AnonymousResignCommand : ResignCommand;
 
-public class AnonymousResignCommandHandler(IAnonymousGamesRepository _anonymousGamesRepository)
-	: ResignCommandHandler<AnonymousResignCommand>(_anonymousGamesRepository);
+public class AnonymousResignCommandHandler(
+	IAnonymousGamesRepository _anonymousGamesRepository,
+	IAnonymousPlayersAwaitingGameRepository _anonymousPlayersAwaitingGameRepository)
+	: ResignCommandHandler<AnonymousResignCommand>(_anonymousGamesRepository, _anonymousPlayersAwaitingGameRepository);
