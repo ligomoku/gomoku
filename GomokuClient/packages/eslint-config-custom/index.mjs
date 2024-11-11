@@ -8,7 +8,9 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  {
+    ignores: ["dist", "**/*.gen.ts", "messages.ts"],
+  },
   {
     // TODO: extend: "plugin:storybook/recommended"
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
