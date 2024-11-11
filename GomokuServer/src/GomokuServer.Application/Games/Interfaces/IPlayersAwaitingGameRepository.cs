@@ -6,6 +6,8 @@ public interface IPlayersAwaitingGameRepository : IPaginatedRepository<PlayersAw
 
 	Task<Result> SaveAsync(PlayersAwaitingGame game);
 
+	Task<Result> DeleteAsync(Guid id);
+
 	Task<Result<IEnumerable<PlayersAwaitingGame>>> GetByExpressionAsync(
 		Expression<Func<PlayersAwaitingGame, bool>> expression,
 		Func<IQueryable<PlayersAwaitingGame>, IOrderedQueryable<PlayersAwaitingGame>>? orderBy = null

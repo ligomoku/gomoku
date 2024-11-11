@@ -54,4 +54,10 @@ public class InMemoryRegisteredPlayersAwaitingGameRepository : IRegisteredPlayer
 			? Task.FromResult(Result.Success(filteredGames))
 			: Task.FromResult(Result.Success(Enumerable.Empty<PlayersAwaitingGame>()));
 	}
+
+	public Task<Result> DeleteAsync(Guid id)
+	{
+		_games.TryRemove(id, out _);
+		return Task.FromResult(Result.Success());
+	}
 }

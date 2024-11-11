@@ -15,7 +15,9 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(
 {
 	public async Task<Result<AddPlayerToGameResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
-		var getPlayersAwaitingGameResult = await _playersAwaitingGameRepository.GetAsync(Guid.Parse(request.GameId));
+		var gameId = Guid.Parse(request.GameId);
+
+		var getPlayersAwaitingGameResult = await _playersAwaitingGameRepository.GetAsync(gameId);
 
 		if (!getPlayersAwaitingGameResult.IsSuccess)
 		{
@@ -40,8 +42,7 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(
 		if (addPlayerResult.CreatedGame != null)
 		{
 			var saveResult = await _gamesRepository.SaveAsync(addPlayerResult.CreatedGame);
-
-			// TODO: Delete game from awaitingGamesRepository
+			await _playersAwaitingGameRepository.DeleteAsync(gameId);
 
 			if (!saveResult.IsSuccess)
 			{
