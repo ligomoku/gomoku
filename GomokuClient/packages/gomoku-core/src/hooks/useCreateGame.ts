@@ -1,7 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+
+import type { SwaggerTypes } from "@/api";
+
+import { SwaggerServices } from "@/api";
 import { getDefaultHeaders } from "@/shared/lib/utils";
-import { SwaggerServices, SwaggerTypes } from "@/api";
 import { toaster } from "@/shared/ui/toaster";
 
 interface CreateGameAndNavigateProps {

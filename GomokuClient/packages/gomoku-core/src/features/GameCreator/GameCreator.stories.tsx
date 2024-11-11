@@ -1,5 +1,8 @@
-import { Meta } from "@storybook/react";
-import { GameCreator, GameCreatorProps } from "./GameCreator";
+import { GameCreator } from "./GameCreator";
+
+import type { GameCreatorProps } from "./GameCreator";
+import type { Meta } from "@storybook/react";
+
 
 export default {
   title: "Components/GameCreator",

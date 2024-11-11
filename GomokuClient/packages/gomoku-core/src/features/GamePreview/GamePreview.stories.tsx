@@ -1,7 +1,9 @@
-import { Meta } from "@storybook/react";
+import type {
+  GamePreviewProps} from "@/features/GamePreview/GamePreview";
+import type { Meta } from "@storybook/react";
+
 import {
-  GamePreview,
-  GamePreviewProps,
+  GamePreview
 } from "@/features/GamePreview/GamePreview";
 
 export default {

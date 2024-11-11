@@ -1,13 +1,16 @@
 import { useParams } from "@tanstack/react-router";
-import { Chat } from "@/features/Chat";
-import { useChat } from "@/hooks/useChat";
+
+import type { SwaggerTypes } from "@/api";
+import type { GameTimeProps } from "@/features/GameTime";
+
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { useJoinGame } from "@/hooks/useJoinGame";
-import { SwaggerTypes } from "@/api";
-import { GameTime, GameTimeProps } from "@/features/GameTime";
+import { Chat } from "@/features/Chat";
+import { GameTime } from "@/features/GameTime";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
+import { useChat } from "@/hooks/useChat";
+import { useJoinGame } from "@/hooks/useJoinGame";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { RematchAlert } from "@/shared/ui/rematch-alert";
 
 interface JoinGameProps {
@@ -68,8 +71,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
       )}
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
         {gameID && (
-          <>
-            <div
+          <div
               className="mb-5 flex w-full flex-wrap justify-center"
               style={{
                 alignItems: isMobile ? "unset" : "center",
@@ -139,7 +141,6 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
                 />
               </div>
             </div>
-          </>
         )}
       </div>
     </div>

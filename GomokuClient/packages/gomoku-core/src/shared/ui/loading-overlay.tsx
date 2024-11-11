@@ -1,5 +1,5 @@
-import { Spinner } from "@/shared/ui/spinner";
 import { cn } from "@/shared/lib/utils";
+import { Spinner } from "@/shared/ui/spinner";
 
 interface LoadingOverlayProps {
   isVisible: boolean;

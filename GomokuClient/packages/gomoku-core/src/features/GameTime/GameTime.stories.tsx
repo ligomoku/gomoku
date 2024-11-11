@@ -1,5 +1,8 @@
-import { Meta } from "@storybook/react";
 import { GameTime } from "./GameTime";
+
+import type { Meta } from "@storybook/react";
+
+
 import { toaster } from "@/shared/ui/toaster";
 
 export default {

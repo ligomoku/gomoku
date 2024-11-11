@@ -36,7 +36,7 @@ export const GamePlayersInfo = ({
         <div key={index} className="flex items-center">
           <div
             className={`mr-2 h-2 w-2 rounded-full ${player.isCurrentPlayer ? "bg-[#7cb342]" : "border border-[#b0b0b0]"}`}
-          ></div>
+           />
           <span className="mr-1 font-medium text-[#ff9800]">
             {player.title}
           </span>

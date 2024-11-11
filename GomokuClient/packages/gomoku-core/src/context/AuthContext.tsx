@@ -1,12 +1,15 @@
+import { useAuth } from "@clerk/clerk-react";
+import * as JWT from "jwt-decode";
 import {
   useEffect,
   useState,
   createContext,
-  ReactNode,
   useContext,
 } from "react";
-import { useAuth } from "@clerk/clerk-react";
-import * as JWT from "jwt-decode";
+
+import type {
+  ReactNode} from "react";
+
 import { toaster } from "@/shared/ui/toaster";
 
 interface JwtTokenPayload {

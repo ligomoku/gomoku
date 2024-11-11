@@ -1,10 +1,13 @@
+import { t } from "@lingui/macro";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Activity, ChevronUp, Users } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import { Activity, ChevronUp, Users } from "lucide-react";
-import { t } from "@lingui/macro";
+
+import type { SwaggerTypes } from "@/api";
+
+import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { SwaggerServices, SwaggerTypes } from "@/api";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 
 export const Profile = () => {

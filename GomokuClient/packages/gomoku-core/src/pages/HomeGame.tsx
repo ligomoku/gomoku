@@ -1,15 +1,22 @@
-import { SectionList } from "@/features/SectionList";
-import { GameType, TimeControls } from "@/features/TimeControls";
-import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
-import { GameOptionsButtons } from "@/features/GameOptionsButton";
-import { useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Users } from "lucide-react";
-import { getDefaultHeaders } from "@/shared/lib/utils";
-import { SwaggerServices, SwaggerTypes } from "@/api";
-import { useAuthToken } from "@/context";
 import { t } from "@lingui/macro";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { Users } from "lucide-react";
+
+import type { SwaggerTypes } from "@/api";
+import type { GameType} from "@/features/TimeControls";
+
+import { SwaggerServices } from "@/api";
+import { useAuthToken } from "@/context";
+import { GameOptionsButtons } from "@/features/GameOptionsButton";
+import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
+import { SectionList } from "@/features/SectionList";
+import { TimeControls } from "@/features/TimeControls";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import { getDefaultHeaders } from "@/shared/lib/utils";
+
+
+
 
 export const HomeGame = () => {
   const navigate = useNavigate();

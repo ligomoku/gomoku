@@ -1,12 +1,15 @@
 import * as Toast from "@radix-ui/react-toast";
+import { X } from "lucide-react";
 import {
   useState,
-  useEffect,
+  useEffect
+} from "react";
+
+import type {
   Dispatch,
   SetStateAction,
-  ReactNode,
-} from "react";
-import { X } from "lucide-react";
+  ReactNode} from "react";
+
 
 interface ToastState {
   open: boolean;

@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { TileColor, useTiles } from "@/hooks/useTiles";
-import { useSignalRConnection } from "@/context";
-import { toaster } from "@/shared/ui/toaster";
 import { useRouter } from "@tanstack/react-router";
-import { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
-import { formatErrorMessage } from "@/utils/errorUtils";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
+import type { TileColor} from "@/hooks/useTiles";
+
+import { useSignalRConnection } from "@/context";
+import { useTiles } from "@/hooks/useTiles";
 import { typedSessionStorage } from "@/shared/lib/utils";
+import { toaster } from "@/shared/ui/toaster";
+import { formatErrorMessage } from "@/utils/errorUtils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],

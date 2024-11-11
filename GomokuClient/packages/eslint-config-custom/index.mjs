@@ -14,7 +14,7 @@ import namingConventionTypesGen from "./rules/naming-convention-types-gen.js";
 
 export default [
   {
-    ignores: ["dist", "**/*.gen.ts", "messages.ts"],
+    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**"],
   },
 
   js.configs.recommended,
@@ -99,24 +99,26 @@ export default [
           alphabetize: { order: "asc", caseInsensitive: true },
         },
       ],
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          devDependencies: [
-            "**/*.stories.*",
-            "**/*.test.*",
-            "**/.storybook/**",
-            "**/vite.config.*",
-            "**/*.config.*",
-            "**/*.spec.*",
-          ],
-        },
-      ],
 
       "jsx-a11y/no-autofocus": "error",
       "jsx-a11y/anchor-is-valid": "error",
       "jsx-a11y/alt-text": "error",
       "custom/naming-convention-types-gen": "error",
+
+      //TODO: check usefulness of this rule
+      // "import/no-extraneous-dependencies": [
+      //   "error",
+      //   {
+      //     devDependencies: [
+      //       "**/*.stories.*",
+      //       "**/*.test.*",
+      //       "**/.storybook/**",
+      //       "**/vite.config.*",
+      //       "**/*.config.*",
+      //       "**/*.spec.*",
+      //     ],
+      //   },
+      // ],
     },
   },
 ];

@@ -1,5 +1,7 @@
-import { Meta } from "@storybook/react";
 import { GamePlayersInfo } from "./GamePlayersInfo";
+
+import type { Meta } from "@storybook/react";
+
 
 export default {
   title: "Components/GamePlayersInfo",
