@@ -1,8 +1,11 @@
-import { useState, ReactNode } from "react";
-import { Input } from "@/shared/ui/input";
 import { Menu, X, Search, Bell } from "lucide-react";
-import { Button } from "@/shared/ui/button";
+import { useState } from "react";
+
+import type { ReactNode } from "react";
+
 import { typedStorage } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 
 export interface HeaderProps {
   isSignedIn: boolean;
@@ -85,25 +88,19 @@ export const Header = ({
             <Bell className="h-5 w-5" />
           </button>
           {isSignedIn ? (
-            <>
-              <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
-                {UserButtonComponent ? <>{UserButtonComponent}</> : null}
-              </div>
-            </>
+            <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
+              {UserButtonComponent ? UserButtonComponent : null}
+            </div>
+          ) : SignedOutComponent ? (
+            SignInButtonComponent
           ) : (
-            <>
-              {SignedOutComponent ? (
-                <>{SignInButtonComponent}</>
-              ) : (
-                <Button
-                  onClick={onSignInClick}
-                  variant="ghost"
-                  className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex"
-                >
-                  Sign In
-                </Button>
-              )}
-            </>
+            <Button
+              onClick={onSignInClick}
+              variant="ghost"
+              className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex"
+            >
+              Sign In
+            </Button>
           )}
         </div>
       </nav>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+
+import type { SignalClientMessages, SwaggerTypes } from "@/api";
+
 import { useSignalRConnection } from "@/context";
 import { toaster } from "@/shared/ui/toaster";
-import { SignalClientMessages, SwaggerTypes } from "@/api";
 
 export const useChat = (
   gameID?: SwaggerTypes.CreateGameResponse["gameId"],

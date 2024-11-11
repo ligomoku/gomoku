@@ -1,5 +1,8 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { Chat, ChatProps } from "./Chat";
+import { Chat } from "./Chat";
+
+import type { ChatProps } from "./Chat";
+import type { Meta, StoryFn } from "@storybook/react";
+
 import { toaster } from "@/shared/ui/toaster";
 
 export default {
@@ -22,7 +25,7 @@ const mockMessages = [
 
 const Template: StoryFn<ChatProps> = () => (
   <Chat
-    isConnected={true}
+    isConnected
     messages={mockMessages}
     sendMessage={async () => toaster.show("Sending message...")}
     username={"User1"}

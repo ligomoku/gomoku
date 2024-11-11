@@ -1,10 +1,13 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { SwaggerServices, SwaggerTypes } from "@/api";
-import JoinGame from "@/pages/JoinGame";
-import { SignalRProvider, useAuthToken } from "@/context";
-import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+
+import type { SwaggerTypes } from "@/api";
+
+import { SwaggerServices } from "@/api";
+import { SignalRProvider, useAuthToken } from "@/context";
+import JoinGame from "@/pages/JoinGame";
+import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
 import { toaster } from "@/shared/ui/toaster";
 

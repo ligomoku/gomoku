@@ -1,6 +1,9 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { SectionList, SectionListProps } from "./SectionList";
 import { Trophy, Users, Zap } from "lucide-react";
+
+import { SectionList } from "./SectionList";
+
+import type { SectionListProps } from "./SectionList";
+import type { Meta, StoryFn } from "@storybook/react";
 
 const mockItems = [
   {

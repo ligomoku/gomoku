@@ -1,5 +1,6 @@
+import type { SwaggerTypes } from "@/api";
+
 import { Card, CardContent } from "@/shared/ui/card";
-import { SwaggerTypes } from "@/api";
 import { Spinner } from "@/shared/ui/spinner";
 
 export interface FeaturedBoxesProps {
@@ -25,7 +26,7 @@ export const FeaturedBoxes = ({
         >
           <Card className="border-[#2b2b2b] bg-[#2b2b2b] hover:bg-[#3e3e3e]">
             <CardContent className="p-4 sm:p-6">
-              <div className="aspect-w-16 aspect-h-9 mb-4 bg-[#3e3e3e]"></div>
+              <div className="aspect-w-16 aspect-h-9 mb-4 bg-[#3e3e3e]" />
               <h3 className="text-xl font-bold text-[#bababa] sm:text-2xl">
                 {game.opponent?.userName ?? game.gameId.slice(0, 6)}
               </h3>

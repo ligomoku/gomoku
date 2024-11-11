@@ -1,4 +1,4 @@
-import { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@/api";
 
 type Board = string[][];
 

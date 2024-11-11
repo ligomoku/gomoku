@@ -1,11 +1,14 @@
 import * as Sentry from "@sentry/react";
-import { Component, ReactNode, ErrorInfo } from "react";
+import { Component } from "react";
+
+import type { ReactNode, ErrorInfo } from "react";
+
+import { typedStorage } from "@/shared/lib/utils";
 import {
   didChunkAlreadyReload,
   didChunkFailed,
   setChunkReloadAt,
 } from "@/utils/chunkUtils";
-import { typedStorage } from "@/shared/lib/utils";
 
 interface ErrorBoundaryProps {
   children: ReactNode;

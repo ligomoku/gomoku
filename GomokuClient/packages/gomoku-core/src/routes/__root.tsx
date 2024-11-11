@@ -1,7 +1,3 @@
-import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
-import { Header } from "@/shared/ui/Header";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import type { LoadedClerk } from "@clerk/types";
 import {
   SignedIn,
   SignedOut,
@@ -9,7 +5,13 @@ import {
   useAuth,
   UserButton,
 } from "@clerk/clerk-react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { lazy } from "react";
+
+import type { LoadedClerk } from "@clerk/types";
+
+import { Header } from "@/shared/ui/Header";
 import { toaster } from "@/shared/ui/toaster";
 
 export interface MyRouterContext {

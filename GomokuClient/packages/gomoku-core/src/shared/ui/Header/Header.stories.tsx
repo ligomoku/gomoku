@@ -1,5 +1,7 @@
-import { Meta, StoryFn } from "@storybook/react";
-import { Header, HeaderProps } from "@/shared/ui/Header/Header";
+import type { HeaderProps } from "@/shared/ui/Header/Header";
+import type { Meta, StoryFn } from "@storybook/react";
+
+import { Header } from "@/shared/ui/Header/Header";
 import { toaster } from "@/shared/ui/toaster";
 
 export default {

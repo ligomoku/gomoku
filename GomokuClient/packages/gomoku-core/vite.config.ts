@@ -1,11 +1,11 @@
-import { defineConfig, loadEnv } from "vite";
-import viteReact from "@vitejs/plugin-react";
-// @ts-expect-error
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import { sentryVitePlugin } from "@sentry/vite-plugin";
-
-// @ts-expect-error
+// @ts-ignore
 import path from "path";
+
+import { sentryVitePlugin } from "@sentry/vite-plugin";
+// @ts-ignore
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from "vite";
 
 export default ({ mode }: { mode: string }) => {
   const envDirPath = path.resolve(__dirname, "../../../envs");
