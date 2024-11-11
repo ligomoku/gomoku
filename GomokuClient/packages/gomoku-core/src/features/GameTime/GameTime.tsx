@@ -11,7 +11,8 @@ import {
   X,
 } from "lucide-react";
 import { Fragment } from "react";
-import { SwaggerTypes } from "@/api";
+
+import type { SwaggerTypes } from "@/api";
 
 export interface GameTimeProps {
   moves: string[];
@@ -54,14 +55,14 @@ export const GameTime = ({
           <div
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "black" }}
-          ></div>
+          />
           <span className="text-sm">{players.black?.userName}</span>
         </div>
         <div className="flex items-center">
-          <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-0.5 h-4 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-0.5 h-5 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-2 h-6 w-1 rounded-sm bg-[#7cb342]"></div>
+          <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-0.5 h-4 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-0.5 h-5 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-2 h-6 w-1 rounded-sm bg-[#7cb342]" />
         </div>
       </div>
 
@@ -138,14 +139,14 @@ export const GameTime = ({
           <div
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "white" }}
-          ></div>
+          />
           <span className="text-sm">{players.white?.userName}</span>
         </div>
         <div className="flex items-center">
-          <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-0.5 h-4 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-0.5 h-5 w-1 rounded-sm bg-[#7cb342]"></div>
-          <div className="mr-2 h-6 w-1 rounded-sm bg-[#7cb342]"></div>
+          <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-0.5 h-4 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-0.5 h-5 w-1 rounded-sm bg-[#7cb342]" />
+          <div className="mr-2 h-6 w-1 rounded-sm bg-[#7cb342]" />
         </div>
       </div>
     </div>

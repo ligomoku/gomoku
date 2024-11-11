@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import type { SignalHubInterfaces, SwaggerTypes } from "@/api";
+
+import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
-import { useAuth } from "@clerk/clerk-react";
-import { SignalHubInterfaces, SignalRClientService, SwaggerTypes } from "@/api";
 import { toaster } from "@/shared/ui/toaster";
 
 export const useSignalR = (

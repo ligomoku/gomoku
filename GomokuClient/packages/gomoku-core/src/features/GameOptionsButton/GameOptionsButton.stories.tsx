@@ -1,8 +1,8 @@
-import { Meta } from "@storybook/react";
-import {
-  GameOptionsButtons,
-  GameOptionsButtonsProps,
-} from "./GameOptionsButton";
+import { GameOptionsButtons } from "./GameOptionsButton";
+
+import type { GameOptionsButtonsProps } from "./GameOptionsButton";
+import type { Meta } from "@storybook/react";
+
 import { toaster } from "@/shared/ui/toaster";
 
 export default {

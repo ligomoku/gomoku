@@ -2,7 +2,6 @@
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
-import type { HubConnection, IStreamResult, Subject } from "@microsoft/signalr";
 import type {
   IGameHub,
   IGameHubReceiver,
@@ -25,6 +24,7 @@ import type {
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
 import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
+import type { HubConnection, IStreamResult, Subject } from "@microsoft/signalr";
 
 // components
 

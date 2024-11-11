@@ -1,12 +1,9 @@
-import {
-  useEffect,
-  useState,
-  createContext,
-  ReactNode,
-  useContext,
-} from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
+import { useEffect, useState, createContext, useContext, useMemo } from "react";
+
+import type { ReactNode } from "react";
+
 import { toaster } from "@/shared/ui/toaster";
 
 interface JwtTokenPayload {
@@ -67,13 +64,16 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [isLoaded, getToken]);
 
+  const memoValue = useMemo(
+    () => ({
+      jwtToken,
+      jwtDecodedInfo,
+    }),
+    [jwtToken, jwtDecodedInfo],
+  );
+
   return (
-    <AuthTokenContext.Provider
-      value={{
-        jwtToken,
-        jwtDecodedInfo,
-      }}
-    >
+    <AuthTokenContext.Provider value={memoValue}>
       {children}
     </AuthTokenContext.Provider>
   );

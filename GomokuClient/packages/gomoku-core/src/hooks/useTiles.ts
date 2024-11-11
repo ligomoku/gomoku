@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { findWinner, Winner } from "@/utils";
-import { SwaggerTypes } from "@/api";
+
+import type { SwaggerTypes } from "@/api";
+import type { Winner } from "@/utils";
+
+import { findWinner } from "@/utils";
 import { genParser } from "@/utils/getParser";
 
 //TODO: this should come from server side generated types

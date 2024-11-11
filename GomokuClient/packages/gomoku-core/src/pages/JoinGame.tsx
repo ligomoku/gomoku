@@ -1,13 +1,16 @@
 import { useParams } from "@tanstack/react-router";
-import { Chat } from "@/features/Chat";
-import { useChat } from "@/hooks/useChat";
+
+import type { SwaggerTypes } from "@/api";
+import type { GameTimeProps } from "@/features/GameTime";
+
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { useJoinGame } from "@/hooks/useJoinGame";
-import { SwaggerTypes } from "@/api";
-import { GameTime, GameTimeProps } from "@/features/GameTime";
+import { Chat } from "@/features/Chat";
+import { GameTime } from "@/features/GameTime";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
+import { useChat } from "@/hooks/useChat";
+import { useJoinGame } from "@/hooks/useJoinGame";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { RematchAlert } from "@/shared/ui/rematch-alert";
 
 interface JoinGameProps {
@@ -68,78 +71,72 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
       )}
       <div className="font-open-sans flex flex-col items-center p-4 font-light">
         {gameID && (
-          <>
+          <div
+            className="mb-5 flex w-full flex-wrap justify-center"
+            style={{
+              alignItems: isMobile ? "unset" : "center",
+            }}
+          >
             <div
-              className="mb-5 flex w-full flex-wrap justify-center"
+              className="mt-4 flex flex-col justify-between"
               style={{
-                alignItems: isMobile ? "unset" : "center",
+                order: isMobile ? 2 : "unset",
+                marginRight: isMobile ? 0 : "1rem",
+                width: isMobile ? "100%" : "unset",
               }}
             >
-              <div
-                className="mt-4 flex flex-col justify-between"
-                style={{
-                  order: isMobile ? 2 : "unset",
-                  marginRight: isMobile ? 0 : "1rem",
-                  width: isMobile ? "100%" : "unset",
-                }}
-              >
-                <Chat
-                  messages={messages}
-                  isConnected={isConnected}
-                  sendMessage={sendMessage}
-                  username={jwtDecodedInfo?.username || ""}
-                />
-              </div>
-              <div
-                className={isMobile ? "mb-4 flex w-full justify-center" : ""}
-              >
-                {isMobile && (
-                  <GameTimeMobile
-                    opponentView
-                    {...commonGameTimeProps}
-                    player={players.black}
-                    //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={clock?.black}
-                  />
-                )}
-              </div>
-              <Board
-                tiles={tiles}
-                lastTile={lastTile}
-                size={gameHistory.boardSize || 19}
-                onTileClick={handleMove}
-                style={{ order: isMobile ? 1 : "unset" }}
-                winningSequence={gameHistory.winningSequence ?? winningSequence}
+              <Chat
+                messages={messages}
+                isConnected={isConnected}
+                sendMessage={sendMessage}
+                username={jwtDecodedInfo?.username || ""}
               />
-              <div
-                className={isMobile ? "mt-4 flex w-full justify-center" : ""}
-              >
-                {isMobile && (
-                  <GameTimeMobile
-                    {...commonGameTimeProps}
-                    player={players.white}
-                    //TODO: we should not pass both one of them should be required both not both at same time
-                    timeLeft={clock?.white}
-                  />
-                )}
-              </div>
-              <div
-                className="mt-4 flex flex-col justify-between"
-                style={{
-                  order: isMobile ? 3 : "unset",
-                  marginLeft: isMobile ? 0 : "1rem",
-                  width: isMobile ? "100%" : "unset",
-                  display: isMobile ? "none" : "unset",
-                }}
-              >
-                <GameTime
-                  {...commonGameTimeProps}
-                  players={players}
-                  clock={clock}
-                />
-              </div>
             </div>
-          </>
+            <div className={isMobile ? "mb-4 flex w-full justify-center" : ""}>
+              {isMobile && (
+                <GameTimeMobile
+                  opponentView
+                  {...commonGameTimeProps}
+                  player={players.black}
+                  //TODO: we should not pass both one of them should be required both not both at same time
+                  timeLeft={clock?.black}
+                />
+              )}
+            </div>
+            <Board
+              tiles={tiles}
+              lastTile={lastTile}
+              size={gameHistory.boardSize || 19}
+              onTileClick={handleMove}
+              style={{ order: isMobile ? 1 : "unset" }}
+              winningSequence={gameHistory.winningSequence ?? winningSequence}
+            />
+            <div className={isMobile ? "mt-4 flex w-full justify-center" : ""}>
+              {isMobile && (
+                <GameTimeMobile
+                  {...commonGameTimeProps}
+                  player={players.white}
+                  //TODO: we should not pass both one of them should be required both not both at same time
+                  timeLeft={clock?.white}
+                />
+              )}
+            </div>
+            <div
+              className="mt-4 flex flex-col justify-between"
+              style={{
+                order: isMobile ? 3 : "unset",
+                marginLeft: isMobile ? 0 : "1rem",
+                width: isMobile ? "100%" : "unset",
+                display: isMobile ? "none" : "unset",
+              }}
+            >
+              <GameTime
+                {...commonGameTimeProps}
+                players={players}
+                clock={clock}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

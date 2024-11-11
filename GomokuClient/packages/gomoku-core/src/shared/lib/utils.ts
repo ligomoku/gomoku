@@ -1,7 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import TypedLocalStore, { MemoryStorage } from "typed-local-store";
-import { SwaggerTypes } from "@/api";
+
+import type { SwaggerTypes } from "@/api";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
