@@ -51,54 +51,6 @@ public class Game
 
 	public TileColor NextTileColor => _gameBoard.NextTileColor;
 
-	//public PlayerAddingResult AddOpponent(Profile newOpponent)
-	//{
-	//	if (Opponents.Any(opponent => opponent.Id == newOpponent.Id))
-	//	{
-	//		return new()
-	//		{
-	//			IsValid = false,
-	//			ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
-	//			ErrorDetails = "Player already added to game"
-	//		};
-	//	}
-
-	//	if (Opponents.Count >= 2)
-	//	{
-	//		return new()
-	//		{
-	//			IsValid = false,
-	//			ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready,
-	//			ErrorDetails = "Both places taken already"
-	//		};
-	//	}
-
-	//	if (Opponents.Count == 0)
-	//	{
-	//		Opponents.Add(newOpponent);
-	//		return new()
-	//		{
-	//			IsValid = true
-	//		};
-	//	}
-
-	//	Opponents.Add(newOpponent);
-
-	//	var (firstOpponent, secondOpponent) = _randomProvider.GetInt(0, 2) == 0 ? (Opponents[0], Opponents[1]) : (Opponents[1], Opponents[0]);
-	//	var firstPlayer = new Player(firstOpponent.Id, firstOpponent.UserName, TileColor.Black);
-	//	var secondPlayer = new Player(secondOpponent.Id, secondOpponent.UserName, TileColor.White);
-
-	//	CurrentPlayer = firstPlayer;
-	//	Status = GameStatus.BothPlayersJoined;
-	//	Players.Black = firstPlayer;
-	//	Players.White = secondPlayer;
-
-	//	return new()
-	//	{
-	//		IsValid = true,
-	//	};
-	//}
-
 	protected virtual GameTilePlacementResult ValidateCanPlaceTile(string playerId)
 	{
 		if (Status == GameStatus.Completed)
