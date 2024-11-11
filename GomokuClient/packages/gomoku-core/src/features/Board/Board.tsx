@@ -2,16 +2,14 @@ import { cva } from "class-variance-authority";
 import { memo, useMemo, useState } from "react";
 import { ResizableBox } from "react-resizable";
 
+import type { SignalClientMessages, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks/useTiles";
-import type { CSSProperties} from "react";
+import type { CSSProperties } from "react";
 
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-
+import { Button } from "@/shared/ui/button";
 
 import "react-resizable/css/styles.css";
-import type { SignalClientMessages, SwaggerTypes } from "@/api";
-
-import { Button } from "@/shared/ui/button";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];

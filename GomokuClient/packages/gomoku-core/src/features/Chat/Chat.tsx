@@ -110,7 +110,8 @@ export const Chat = ({
             >
               {messages.map((msg, index) => (
                 <div
-                  key={index}
+                  //TODO: check if key is matching behaviour
+                  key={msg}
                   ref={index === messages.length - 1 ? scrollAreaRef : null}
                   className={`mb-2 rounded p-2 ${
                     msg.startsWith(`${username}:`)

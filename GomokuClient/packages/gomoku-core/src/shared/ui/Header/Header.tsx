@@ -89,22 +89,18 @@ export const Header = ({
           </button>
           {isSignedIn ? (
             <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
-                {UserButtonComponent ? <>{UserButtonComponent}</> : null}
-              </div>
+              {UserButtonComponent ? UserButtonComponent : null}
+            </div>
+          ) : SignedOutComponent ? (
+            SignInButtonComponent
           ) : (
-            <>
-              {SignedOutComponent ? (
-                <>{SignInButtonComponent}</>
-              ) : (
-                <Button
-                  onClick={onSignInClick}
-                  variant="ghost"
-                  className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex"
-                >
-                  Sign In
-                </Button>
-              )}
-            </>
+            <Button
+              onClick={onSignInClick}
+              variant="ghost"
+              className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex"
+            >
+              Sign In
+            </Button>
           )}
         </div>
       </nav>

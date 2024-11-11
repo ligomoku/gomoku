@@ -12,7 +12,7 @@ import pluginImport from "eslint-plugin-import";
 
 export default [
   {
-    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**", "tailwind.config.ts"],
+    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**", "tailwind.config.js"],
   },
 
   js.configs.recommended,
@@ -53,6 +53,9 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
+      //TODO: check if we need indexing key not allowed
+      "react/no-array-index-key": "off",
+      "no-redeclare": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_" },
@@ -76,7 +79,6 @@ export default [
       "react/jsx-no-useless-fragment": "error",
       "react/self-closing-comp": "error",
       "react/jsx-no-constructed-context-values": "error",
-      "react/no-array-index-key": "error",
       "react/jsx-key": "error",
 
       ...reactHooks.configs.recommended.rules,

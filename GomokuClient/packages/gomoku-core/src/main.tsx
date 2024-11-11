@@ -1,23 +1,22 @@
+
+import { ClerkProvider } from "@clerk/clerk-react";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import * as Sentry from "@sentry/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles/index.css";
-import { ClerkProvider } from "@clerk/clerk-react";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 import { messages } from "./locales/en/messages";
 import { routeTree } from "./routeTree.gen";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import { SwaggerServices } from "@/api";
 import { AuthTokenProvider } from "@/context";
-
-import * as Sentry from "@sentry/react";
-import { i18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
-
 import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
 import { ToasterProvider } from "@/shared/ui/toaster";
+
+import "./styles/index.css";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
