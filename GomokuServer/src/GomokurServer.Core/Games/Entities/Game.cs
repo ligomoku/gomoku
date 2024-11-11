@@ -215,7 +215,7 @@ public class Game
 			return canRematchResult;
 		}
 
-		var newGame = new Game(GameSettings, new Players(Players.White, Players.Black), _dateTimeProvider)
+		var newGame = new Game(GameSettings, Players.GetSwitchedColors(), _dateTimeProvider)
 		{
 			GameId = Guid.NewGuid()
 		};
