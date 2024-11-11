@@ -1,4 +1,3 @@
-
 import { FeaturedBoxes } from "./FeaturedBoxes";
 
 import type { FeaturedBoxesProps } from "./FeaturedBoxes";

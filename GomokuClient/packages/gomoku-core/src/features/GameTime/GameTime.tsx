@@ -55,7 +55,7 @@ export const GameTime = ({
           <div
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "black" }}
-           />
+          />
           <span className="text-sm">{players.black?.userName}</span>
         </div>
         <div className="flex items-center">
@@ -139,7 +139,7 @@ export const GameTime = ({
           <div
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "white" }}
-           />
+          />
           <span className="text-sm">{players.white?.userName}</span>
         </div>
         <div className="flex items-center">

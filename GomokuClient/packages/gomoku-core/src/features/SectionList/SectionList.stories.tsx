@@ -5,8 +5,6 @@ import { SectionList } from "./SectionList";
 import type { SectionListProps } from "./SectionList";
 import type { Meta, StoryFn } from "@storybook/react";
 
-
-
 const mockItems = [
   {
     id: "DailyGomokuChallenge",

@@ -3,7 +3,6 @@ import { TimeControls } from "./TimeControls";
 import type { TimeControlsProps } from "./TimeControls";
 import type { Meta, StoryFn } from "@storybook/react";
 
-
 import { gameTypes } from "@/pages/HomeGame";
 
 export default {

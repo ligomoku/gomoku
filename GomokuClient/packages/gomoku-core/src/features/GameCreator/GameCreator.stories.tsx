@@ -3,7 +3,6 @@ import { GameCreator } from "./GameCreator";
 import type { GameCreatorProps } from "./GameCreator";
 import type { Meta } from "@storybook/react";
 
-
 export default {
   title: "Components/GameCreator",
   component: GameCreator,

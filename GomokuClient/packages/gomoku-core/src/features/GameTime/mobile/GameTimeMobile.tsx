@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 import type { SwaggerTypes } from "@/api";
-import type { GameTimeProps} from "@/features/GameTime";
+import type { GameTimeProps } from "@/features/GameTime";
 
 import { secondsToString } from "@/features/GameTime";
 
@@ -41,7 +41,7 @@ export const GameTimeMobile = ({
             <span
               className="mr-2 h-3 w-3 rounded-full"
               style={{ backgroundColor: player?.color }}
-             />
+            />
             <span className="font-bold text-[#ffa600]">{player?.userName}</span>
           </div>
           {timeLeft && (
@@ -61,7 +61,7 @@ export const GameTimeMobile = ({
           <span
             className="mr-2 h-3 w-3 rounded-full"
             style={{ backgroundColor: player?.color }}
-           />
+          />
           <span className="font-bold text-[#ffa600]">{player?.userName}</span>
         </div>
         {timeLeft && (

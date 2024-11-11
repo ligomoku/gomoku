@@ -3,7 +3,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 import type { SwaggerTypes } from "@/api";
-import type { ReactNode} from "react";
+import type { ReactNode } from "react";
 
 import { Button } from "@/shared/ui/button";
 import { Slider } from "@/shared/ui/slider";

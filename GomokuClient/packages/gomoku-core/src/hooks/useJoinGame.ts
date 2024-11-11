@@ -2,7 +2,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
-import type { TileColor} from "@/hooks/useTiles";
+import type { TileColor } from "@/hooks/useTiles";
 
 import { useSignalRConnection } from "@/context";
 import { useTiles } from "@/hooks/useTiles";

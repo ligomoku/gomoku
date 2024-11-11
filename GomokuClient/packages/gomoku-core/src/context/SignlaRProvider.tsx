@@ -2,10 +2,9 @@ import { createContext, useContext } from "react";
 
 import type { SignalHubInterfaces, SwaggerTypes } from "@/api";
 import type * as signalR from "@microsoft/signalr";
-import type { ReactNode} from "react";
+import type { ReactNode } from "react";
 
 import { useSignalR } from "@/hooks/useSignalR";
-
 
 type SignalREventHandlers = SignalHubInterfaces.IGameHubReceiver;
 

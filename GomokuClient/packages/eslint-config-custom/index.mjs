@@ -12,7 +12,13 @@ import pluginImport from "eslint-plugin-import";
 
 export default [
   {
-    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**", "tailwind.config.js"],
+    ignores: [
+      "dist",
+      "**/*.gen.ts",
+      "messages.ts",
+      "src/api/**",
+      "tailwind.config.js",
+    ],
   },
 
   js.configs.recommended,
@@ -33,7 +39,7 @@ export default [
       "react-refresh": reactRefresh,
       "@tanstack/query": pluginQuery,
       "@tanstack/router": pluginRouter,
-      "import": pluginImport,
+      import: pluginImport,
       "jsx-a11y": jsxA11y,
       "@typescript-eslint": tsEslintPlugin,
       custom: {
@@ -64,12 +70,12 @@ export default [
       "@typescript-eslint/naming-convention": [
         "error",
         {
-          "selector": "variable",
-          "format": ["camelCase", "PascalCase", "UPPER_CASE"],
+          selector: "variable",
+          format: ["camelCase", "PascalCase", "UPPER_CASE"],
         },
         {
-          "selector": "function",
-          "format": ["camelCase", "PascalCase"],
+          selector: "function",
+          format: ["camelCase", "PascalCase"],
         },
       ],
 

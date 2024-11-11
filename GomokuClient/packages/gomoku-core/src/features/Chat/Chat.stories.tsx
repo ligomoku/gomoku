@@ -3,7 +3,6 @@ import { Chat } from "./Chat";
 import type { ChatProps } from "./Chat";
 import type { Meta, StoryFn } from "@storybook/react";
 
-
 import { toaster } from "@/shared/ui/toaster";
 
 export default {
