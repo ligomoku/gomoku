@@ -28,12 +28,12 @@ public abstract class FunctionalTestBase
 		_factory.Dispose();
 	}
 
-	protected IRegisteredAwaitingPlayersGamesRepository RegisteredAwaitingPlayersGamesRepository
+	protected IRegisteredPlayersAwaitingGameRepository RegisteredPlayersAwaitingGameRepository
 	{
 		get
 		{
 			using var scope = _scopeFactory.CreateScope();
-			return scope.ServiceProvider.GetRequiredService<IRegisteredAwaitingPlayersGamesRepository>();
+			return scope.ServiceProvider.GetRequiredService<IRegisteredPlayersAwaitingGameRepository>();
 		}
 	}
 
@@ -46,12 +46,12 @@ public abstract class FunctionalTestBase
 		}
 	}
 
-	protected IAnonymousAwaitingPlayersGamesRepository AnonymousAwaitingPlayersGamesRepository
+	protected IAnonymousPlayersAwaitingGameRepository AnonymousPlayersAwaitingGameRepository
 	{
 		get
 		{
 			using var scope = _scopeFactory.CreateScope();
-			return scope.ServiceProvider.GetRequiredService<IAnonymousAwaitingPlayersGamesRepository>();
+			return scope.ServiceProvider.GetRequiredService<IAnonymousPlayersAwaitingGameRepository>();
 		}
 	}
 

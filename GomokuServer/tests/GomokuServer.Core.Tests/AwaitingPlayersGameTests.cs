@@ -7,18 +7,18 @@ namespace GomokuServer.Core.UnitTests;
 
 public class AwaitingPlayersGameTests
 {
-	private AwaitingPlayersGameSettings _gameSettings;
+	private PlayersAwaitingGameSettings _gameSettings;
 	private IDateTimeProvider _dateTimeProvider;
 	private IRandomProvider _randomProvider;
-	private AwaitingPlayersGame _awaitingPlayersGame;
+	private PlayersAwaitingGame _awaitingPlayersGame;
 
 	[SetUp]
 	public void SetUp()
 	{
-		_gameSettings = new AwaitingPlayersGameSettings() { BoardSize = 15 };
+		_gameSettings = new PlayersAwaitingGameSettings() { BoardSize = 15 };
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_randomProvider = Substitute.For<IRandomProvider>();
-		_awaitingPlayersGame = new AwaitingPlayersGame(_gameSettings, _randomProvider, _dateTimeProvider);
+		_awaitingPlayersGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
 	}
 
 	[Test]
@@ -80,7 +80,7 @@ public class AwaitingPlayersGameTests
 	{
 		// Arrange
 		_gameSettings = _gameSettings with { TimeControl = new TimeControl(180, 2) };
-		_awaitingPlayersGame = new AwaitingPlayersGame(_gameSettings, _randomProvider, _dateTimeProvider);
+		_awaitingPlayersGame = new PlayersAwaitingGame(_gameSettings, _randomProvider, _dateTimeProvider);
 		_awaitingPlayersGame.AddPlayer(new Profile("id1", "username1"));
 
 		// Act

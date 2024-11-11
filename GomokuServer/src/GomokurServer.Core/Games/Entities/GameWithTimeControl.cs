@@ -115,7 +115,10 @@ public class GameWithTimeControl : Game
 			return canRematchResult;
 		}
 
-		var newGame = new GameWithTimeControl(GameSettings, Players, _dateTimeProvider);
+		var newGame = new GameWithTimeControl(GameSettings, Players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 		return RematchResult.Success(newGame);
 	}
 

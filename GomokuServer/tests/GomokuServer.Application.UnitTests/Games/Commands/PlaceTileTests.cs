@@ -18,7 +18,7 @@ public class PlaceTileTests
 	[SetUp]
 	public void Setup()
 	{
-		_gameSettings = new GameSettings { GameId = Guid.NewGuid(), BoardSize = 15 };
+		_gameSettings = new GameSettings { BoardSize = 15 };
 		var blackPlayer = new Player("Player1Id", "Player1UserName", TileColor.Black);
 		var whitePlayer = new Player("Player2Id", "Player2UserName", TileColor.White);
 		_players = new Players(blackPlayer, whitePlayer);
@@ -36,13 +36,16 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = _gameSettings.GameId.ToString(),
+			GameId = _game.GameId.ToString(),
 			PlayerId = _players.Black.Id,
 			Tile = new TileDto(0, 0)
 		};
 		var opponent = new Profile(command.PlayerId, "player1UserName");
 
-		var game = new Game(_gameSettings, _players, _dateTimeProvider);
+		var game = new Game(_gameSettings, _players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 
 		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
@@ -63,7 +66,7 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = _gameSettings.GameId.ToString(),
+			GameId = _game.GameId.ToString(),
 			PlayerId = "Player1",
 			Tile = new TileDto(0, 0)
 		};
@@ -84,12 +87,15 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = _gameSettings.GameId.ToString(),
+			GameId = _game.GameId.ToString(),
 			PlayerId = "player1",
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(_gameSettings, _players, _dateTimeProvider);
+		var game = new Game(_gameSettings, _players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 
 		// Act
@@ -106,12 +112,15 @@ public class PlaceTileTests
 		// Arrange
 		var command = new PlaceRegisteredTileCommand
 		{
-			GameId = _gameSettings.GameId.ToString(),
+			GameId = _game.GameId.ToString(),
 			PlayerId = "player1Id",
 			Tile = new TileDto(0, 0)
 		};
 
-		var game = new Game(_gameSettings, _players, Substitute.For<IDateTimeProvider>());
+		var game = new Game(_gameSettings, _players, Substitute.For<IDateTimeProvider>())
+		{
+			GameId = Guid.NewGuid()
+		};
 
 		_registeredGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());

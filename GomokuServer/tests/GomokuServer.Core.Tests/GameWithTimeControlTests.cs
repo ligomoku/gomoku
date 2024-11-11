@@ -17,7 +17,6 @@ public class GameWithTimeControlTests
 	{
 		_settings = new GameWithTimeControlSettings()
 		{
-			GameId = Guid.NewGuid(),
 			BoardSize = 15,
 			TimeControl = new TimeControl(180, 0)
 		};
@@ -27,7 +26,10 @@ public class GameWithTimeControlTests
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
 		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_000_000);
 
-		_game = new GameWithTimeControl(_settings, _players, _dateTimeProvider);
+		_game = new GameWithTimeControl(_settings, _players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 	}
 
 	[Test]

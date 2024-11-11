@@ -9,7 +9,7 @@ public abstract record CreateGameCommand : ICommand<CreateGameResponse>
 }
 
 public abstract class CreateGameCommandHandler<TRequest>(
-	IAwaitingPlayersGamesRepository _awaitingPlayersGamesRepository,
+	IPlayersAwaitingGameRepository _playersAwaitingGameRepository,
 	IDateTimeProvider _dateTimeProvider,
 	IRandomProvider _randomProvider)
 	: ICommandHandler<TRequest, CreateGameResponse>
@@ -25,7 +25,7 @@ public abstract class CreateGameCommandHandler<TRequest>(
 			return Result.Invalid(new ValidationError($"Board size cannot be less than {BOARD_MIN_SIZE} and more than {BOARD_MAX_SIZE}"));
 		}
 
-		var gameSettings = new AwaitingPlayersGameSettings
+		var gameSettings = new PlayersAwaitingGameSettings
 		{
 			BoardSize = request.BoardSize,
 			TimeControl = request.TimeControl != null
@@ -33,8 +33,8 @@ public abstract class CreateGameCommandHandler<TRequest>(
 				: null
 		};
 
-		var game = new AwaitingPlayersGame(gameSettings, _randomProvider, _dateTimeProvider);
-		var saveResult = await _awaitingPlayersGamesRepository.SaveAsync(game);
+		var game = new PlayersAwaitingGame(gameSettings, _randomProvider, _dateTimeProvider);
+		var saveResult = await _playersAwaitingGameRepository.SaveAsync(game);
 
 		return saveResult.Map(_ => new CreateGameResponse(game.GameId.ToString(), request.BoardSize));
 	}

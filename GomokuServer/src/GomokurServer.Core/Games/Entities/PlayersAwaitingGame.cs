@@ -6,13 +6,13 @@ using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Core.Games.Entities;
 
-public class AwaitingPlayersGame
+public class PlayersAwaitingGame
 {
 	private readonly IRandomProvider _randomProvider;
 	private readonly IDateTimeProvider _dateTimeProvider;
 	private readonly List<Profile> _opponents;
 
-	public AwaitingPlayersGame(AwaitingPlayersGameSettings gameSettings, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
+	public PlayersAwaitingGame(PlayersAwaitingGameSettings gameSettings, IRandomProvider randomProvider, IDateTimeProvider dateTimeProvider)
 	{
 		GameSettings = gameSettings;
 		_randomProvider = randomProvider;
@@ -22,7 +22,7 @@ public class AwaitingPlayersGame
 		CreatedAt = _dateTimeProvider.UtcNow;
 	}
 
-	public AwaitingPlayersGameSettings GameSettings { get; init; }
+	public PlayersAwaitingGameSettings GameSettings { get; init; }
 
 	public Guid GameId { get; init; }
 
@@ -79,23 +79,27 @@ public class AwaitingPlayersGame
 		{
 			var gameWithTimeControlSettings = new GameWithTimeControlSettings()
 			{
-				GameId = GameId,
 				BoardSize = GameSettings.BoardSize,
 				TimeControl = GameSettings.TimeControl,
 			};
-			return new GameWithTimeControl(gameWithTimeControlSettings, players, _dateTimeProvider);
+			return new GameWithTimeControl(gameWithTimeControlSettings, players, _dateTimeProvider)
+			{
+				GameId = Guid.NewGuid(),
+			};
 		}
 
 		var gameSettings = new GameSettings()
 		{
-			GameId = GameId,
 			BoardSize = GameSettings.BoardSize,
 		};
-		return new Game(gameSettings, players, _dateTimeProvider);
+		return new Game(gameSettings, players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 	}
 }
 
-public record AwaitingPlayersGameSettings
+public record PlayersAwaitingGameSettings
 {
 	public required int BoardSize { get; init; }
 	public TimeControl? TimeControl { get; init; }

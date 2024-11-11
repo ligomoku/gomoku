@@ -8,16 +8,16 @@ public abstract record AddPlayerToGameCommand : ICommand<AddPlayerToGameResponse
 }
 
 public abstract class AddPlayerToGameCommandHandler<TRequest>(
-	IAwaitingPlayersGamesRepository _awaitingPlayersGamesRepository,
+	IPlayersAwaitingGameRepository _playersAwaitingGameRepository,
 	IGamesRepository _gamesRepository)
 	: ICommandHandler<TRequest, AddPlayerToGameResponse>
 		where TRequest : AddPlayerToGameCommand
 {
 	public async Task<Result<AddPlayerToGameResponse>> Handle(TRequest request, CancellationToken cancellationToken)
 	{
-		var getAwaitingPlayersGameResult = await _awaitingPlayersGamesRepository.GetAsync(Guid.Parse(request.GameId));
+		var getPlayersAwaitingGameResult = await _playersAwaitingGameRepository.GetAsync(Guid.Parse(request.GameId));
 
-		if (!getAwaitingPlayersGameResult.IsSuccess)
+		if (!getPlayersAwaitingGameResult.IsSuccess)
 		{
 			return Result.NotFound($"Game with ID {request.GameId} not found");
 		}
@@ -29,12 +29,12 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(
 			return Result.NotFound($"Player not found");
 		}
 
-		var awaitingPlayersGame = getAwaitingPlayersGameResult.Value;
-		var addPlayerResult = awaitingPlayersGame.AddPlayer(playerProfile);
+		var playersAwaitingGame = getPlayersAwaitingGameResult.Value;
+		var addPlayerResult = playersAwaitingGame.AddPlayer(playerProfile);
 
 		if (!addPlayerResult.IsValid)
 		{
-			return Result.Invalid(new ValidationError(addPlayerResult.ValidationError.ToString()));
+			return Result.Invalid(new ValidationError(addPlayerResult.ErrorDetails));
 		}
 
 		if (addPlayerResult.CreatedGame != null)
@@ -42,7 +42,7 @@ public abstract class AddPlayerToGameCommandHandler<TRequest>(
 			var saveResult = await _gamesRepository.SaveAsync(addPlayerResult.CreatedGame);
 			if (!saveResult.IsSuccess)
 			{
-				return Result.Error("Failed to save awaitingPlayersGame. See logs for more details");
+				return Result.Error("Failed to save playersAwaitingGame. See logs for more details");
 			}
 		}
 

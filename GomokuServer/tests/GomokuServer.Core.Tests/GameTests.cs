@@ -17,14 +17,16 @@ public class GameTests
 	{
 		_gameSettings = new GameSettings()
 		{
-			GameId = Guid.NewGuid(),
 			BoardSize = 15
 		};
 		var blackPlayer = new Player("Player1Id", "Player1UserName", TileColor.Black);
 		var whitePlayer = new Player("Player2Id", "Player2UserName", TileColor.White);
 		_players = new Players(blackPlayer, whitePlayer);
 		_dateTimeProvider = Substitute.For<IDateTimeProvider>();
-		_game = new Game(_gameSettings, _players, _dateTimeProvider);
+		_game = new Game(_gameSettings, _players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 	}
 
 	[Test]
@@ -219,8 +221,11 @@ public class GameTests
 	public void PlaceTile_AndMakeTie_ResultStatusAndReasonShouldBeCorrect()
 	{
 		// Arrage
-		var gameSettings = new GameSettings { GameId = Guid.NewGuid(), BoardSize = 1 };
-		var game = new Game(gameSettings, _players, _dateTimeProvider);
+		var gameSettings = new GameSettings { BoardSize = 1 };
+		var game = new Game(gameSettings, _players, _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 
 		// Act
 		game.PlaceTile(new(0, 0), game.Players.Black.Id);

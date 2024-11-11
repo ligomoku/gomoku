@@ -9,7 +9,7 @@ public record CreateRegisteredGameCommand : CreateGameCommand
 }
 
 public class CreateRegisteredGameCommandHandler(
-	IRegisteredAwaitingPlayersGamesRepository _registeredAwaitingPlayersGamesRepository,
+	IRegisteredPlayersAwaitingGameRepository _registeredAwaitingPlayersGamesRepository,
 	IProfilesRepository _profilesRepository,
 	IRandomProvider _randomProvider,
 	IDateTimeProvider _dateTimeProvider)
@@ -26,7 +26,7 @@ public class CreateRegisteredGameCommandHandler(
 public record CreateAnonymousGameCommand : CreateGameCommand;
 
 public class CreateAnonymousGameCommandHandler(
-	IAnonymousAwaitingPlayersGamesRepository _anonymousAwaitingPlayersGamesRepository,
+	IAnonymousPlayersAwaitingGameRepository _anonymousAwaitingPlayersGamesRepository,
 	IDateTimeProvider _dateTimeProvider,
 	IRandomProvider _randomProvider)
 	: CreateGameCommandHandler<CreateAnonymousGameCommand>(_anonymousAwaitingPlayersGamesRepository, _dateTimeProvider, _randomProvider);

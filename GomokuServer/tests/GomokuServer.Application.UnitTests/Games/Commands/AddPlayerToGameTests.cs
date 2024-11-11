@@ -6,10 +6,10 @@ namespace GomokuServer.Application.UnitTests.Games.Commands;
 
 public class AddPlayerToGameTests
 {
-	private AwaitingPlayersGameSettings _gameSettings;
+	private PlayersAwaitingGameSettings _gameSettings;
 	private Players _players;
 	private IRegisteredGamesRepository _registeredGamesRepository;
-	private IRegisteredAwaitingPlayersGamesRepository _registeredAwaitingPlayersGamesRepository;
+	private IRegisteredPlayersAwaitingGameRepository _registeredPlayersAwaitingGameRepository;
 	private IAnonymousGamesRepository _anonymousGamesRepository;
 	private IProfilesRepository _profilesRepository;
 	private AddRegisteredPlayerToGameCommandHandler _handler;
@@ -18,17 +18,17 @@ public class AddPlayerToGameTests
 	[SetUp]
 	public void Setup()
 	{
-		_gameSettings = new AwaitingPlayersGameSettings { BoardSize = 15 };
+		_gameSettings = new PlayersAwaitingGameSettings { BoardSize = 15 };
 		var blackPlayer = new Player("Player1Id", "Player1UserName", TileColor.Black);
 		var whitePlayer = new Player("Player2Id", "Player2UserName", TileColor.White);
 		_players = new Players(blackPlayer, whitePlayer);
 		_registeredGamesRepository = Substitute.For<IRegisteredGamesRepository>();
-		_registeredAwaitingPlayersGamesRepository = Substitute.For<IRegisteredAwaitingPlayersGamesRepository>();
+		_registeredPlayersAwaitingGameRepository = Substitute.For<IRegisteredPlayersAwaitingGameRepository>();
 		_anonymousGamesRepository = Substitute.For<IAnonymousGamesRepository>();
 		_profilesRepository = Substitute.For<IProfilesRepository>();
 
 		_handler = new AddRegisteredPlayerToGameCommandHandler(
-			_registeredAwaitingPlayersGamesRepository,
+			_registeredPlayersAwaitingGameRepository,
 			_registeredGamesRepository,
 			_profilesRepository
 		);
@@ -47,9 +47,9 @@ public class AddPlayerToGameTests
 		};
 
 		var player = new Profile(command.PlayerId, "Alice");
-		var game = new AwaitingPlayersGame(_gameSettings, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new PlayersAwaitingGame(_gameSettings, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
-		_registeredAwaitingPlayersGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
+		_registeredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
@@ -76,7 +76,7 @@ public class AddPlayerToGameTests
 
 		var game = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
 
-		_registeredAwaitingPlayersGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
+		_registeredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(playerTwo));
 		_registeredGamesRepository.SaveAsync(Arg.Any<Game>()).Returns(Result.Success());
 
@@ -100,7 +100,7 @@ public class AddPlayerToGameTests
 		};
 
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));
-		_registeredAwaitingPlayersGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result<AwaitingPlayersGame>.NotFound());
+		_registeredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result<PlayersAwaitingGame>.NotFound());
 
 		// Act
 		var result = await _handler.Handle(command, CancellationToken.None);
@@ -119,9 +119,9 @@ public class AddPlayerToGameTests
 			PlayerId = "NonExistentPlayerId"
 		};
 
-		var game = new AwaitingPlayersGame(_gameSettings, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
+		var game = new PlayersAwaitingGame(_gameSettings, Substitute.For<IRandomProvider>(), Substitute.For<IDateTimeProvider>());
 
-		_registeredAwaitingPlayersGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
+		_registeredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result<Profile>.NotFound());
 
 		// Act
@@ -142,7 +142,7 @@ public class AddPlayerToGameTests
 		};
 
 		var game = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
-		_registeredAwaitingPlayersGamesRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
+		_registeredPlayersAwaitingGameRepository.GetAsync(Guid.Parse(command.GameId)).Returns(Result.Success(game));
 
 		var player = new Profile(command.PlayerId, "Alice");
 		_profilesRepository.GetAsync(command.PlayerId).Returns(Result.Success(player));

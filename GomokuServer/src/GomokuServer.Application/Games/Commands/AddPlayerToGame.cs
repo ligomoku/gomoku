@@ -10,10 +10,10 @@ public record AddRegisteredPlayerToGameCommand : AddPlayerToGameCommand
 }
 
 public class AddRegisteredPlayerToGameCommandHandler(
-	IRegisteredAwaitingPlayersGamesRepository _registeredAwaitingPlayersGamesRepository,
+	IRegisteredPlayersAwaitingGameRepository _registeredPlayersAwaitingGameRepository,
 	IRegisteredGamesRepository _registeredGamesRepository,
 	IProfilesRepository _profilesRepository)
-	: AddPlayerToGameCommandHandler<AddRegisteredPlayerToGameCommand>(_registeredAwaitingPlayersGamesRepository, _registeredGamesRepository)
+	: AddPlayerToGameCommandHandler<AddRegisteredPlayerToGameCommand>(_registeredPlayersAwaitingGameRepository, _registeredGamesRepository)
 {
 	public override async Task<Result<Profile>> GetProfileAsync(AddRegisteredPlayerToGameCommand request)
 	{
@@ -24,9 +24,9 @@ public class AddRegisteredPlayerToGameCommandHandler(
 public record AddAnonymousPlayerToGameCommand : AddPlayerToGameCommand;
 
 public class AddAnonymousPlayerToGameCommandHandler(
-	IAnonymousAwaitingPlayersGamesRepository _anonymousAwaitingPlayersGamesRepository,
+	IAnonymousPlayersAwaitingGameRepository _anonymousPlayersAwaitingGameRepository,
 	IAnonymousGamesRepository _anonymousGamesRepository)
-	: AddPlayerToGameCommandHandler<AddAnonymousPlayerToGameCommand>(_anonymousAwaitingPlayersGamesRepository, _anonymousGamesRepository)
+	: AddPlayerToGameCommandHandler<AddAnonymousPlayerToGameCommand>(_anonymousPlayersAwaitingGameRepository, _anonymousGamesRepository)
 {
 	public override Task<Result<Profile>> GetProfileAsync(AddAnonymousPlayerToGameCommand _)
 	{

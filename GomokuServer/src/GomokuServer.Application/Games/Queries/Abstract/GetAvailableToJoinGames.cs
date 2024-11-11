@@ -2,7 +2,7 @@
 
 public abstract record GetAvailableToJoinGamesQuery : PaginatedQuery<IEnumerable<GetAvailableGamesResponse>>;
 
-public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IAwaitingPlayersGamesRepository _awaitingPlayersGamesRepository)
+public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IPlayersAwaitingGameRepository _awaitingPlayersGamesRepository)
 	: PaginatedQueryHandler<TRequest, IEnumerable<GetAvailableGamesResponse>>
 	where TRequest : GetAvailableToJoinGamesQuery
 {
@@ -33,5 +33,5 @@ public abstract class GetAvailableToJoinGamesQueryHandler<TRequest>(IAwaitingPla
 		return await _awaitingPlayersGamesRepository.CountAsync(Expression);
 	}
 
-	private Expression<Func<AwaitingPlayersGame, bool>> Expression => _ => true;
+	private Expression<Func<PlayersAwaitingGame, bool>> Expression => _ => true;
 }

@@ -11,7 +11,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	{
 		// Arrange
 		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_NoPlayersJoined();
-		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+		await RegisteredPlayersAwaitingGameRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
@@ -23,11 +23,11 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		// Assert
 		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getUpdatedGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getUpdatedGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents.Count.Should().Be(1);
 
-		var getAnonymousGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getAnonymousGameResult = await AnonymousPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 
 		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(awaitingPlayersGame.GameId);
@@ -39,7 +39,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	{
 		// Arrange
 		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
-		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+		await RegisteredPlayersAwaitingGameRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
@@ -51,11 +51,11 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		// Assert
 		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getUpdatedGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getUpdatedGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents.Count.Should().Be(2);
 
-		var getAnonymousGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getAnonymousGameResult = await AnonymousPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getAnonymousGameResult.Status.Should().Be(ResultStatus.NotFound);
 
 		var getRegisteredGameResult = await RegisteredGamesRepository.GetAsync(awaitingPlayersGame.GameId);
@@ -68,7 +68,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	{
 		// Arrange
 		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
-		await RegisteredAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+		await RegisteredPlayersAwaitingGameRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddRegisteredPlayerToGameCommand
@@ -100,7 +100,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 	{
 		// Arrange
 		var awaitingPlayersGame = _testDataProvider.GetAwaitingPlayersGame_OnePlayerJoined();
-		await AnonymousAwaitingPlayersGamesRepository.SaveAsync(awaitingPlayersGame);
+		await AnonymousPlayersAwaitingGameRepository.SaveAsync(awaitingPlayersGame);
 
 		// Act
 		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
@@ -111,11 +111,11 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		// Assert
 		addPlayerResult.Status.Should().Be(ResultStatus.Ok);
 
-		var getUpdatedGameResult = await AnonymousAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getUpdatedGameResult = await AnonymousPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getUpdatedGameResult.Status.Should().Be(ResultStatus.Ok);
 		getUpdatedGameResult.Value.Opponents.Count.Should().Be(2);
 
-		var getRegisteredGameResult = await RegisteredAwaitingPlayersGamesRepository.GetAsync(awaitingPlayersGame.GameId);
+		var getRegisteredGameResult = await RegisteredPlayersAwaitingGameRepository.GetAsync(awaitingPlayersGame.GameId);
 		getRegisteredGameResult.Status.Should().Be(ResultStatus.NotFound);
 
 		var getAnonymousGameResult = await AnonymousGamesRepository.GetAsync(awaitingPlayersGame.GameId);

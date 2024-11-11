@@ -18,7 +18,6 @@ public class Game
 		_dateTimeProvider = dateTimeProvider;
 
 		GameSettings = gameSettings;
-		GameId = GameSettings.GameId;
 		Players = players;
 		CurrentPlayer = Players.Black;
 		CreatedAt = _dateTimeProvider.UtcNow;
@@ -28,7 +27,7 @@ public class Game
 
 	public GameSettings GameSettings { get; init; }
 
-	public Guid GameId { get; init; }
+	public required Guid GameId { get; init; }
 
 	public DateTime CreatedAt { get; init; }
 
@@ -264,7 +263,10 @@ public class Game
 			return canRematchResult;
 		}
 
-		var newGame = new Game(GameSettings, new Players(Players.White, Players.Black), _dateTimeProvider);
+		var newGame = new Game(GameSettings, new Players(Players.White, Players.Black), _dateTimeProvider)
+		{
+			GameId = Guid.NewGuid()
+		};
 		return RematchResult.Success(newGame);
 	}
 

@@ -8,27 +8,27 @@ using GomokuServer.Core.Games.Entities;
 
 namespace GomokuServer.Application.FunctionalTests.Infrastructure;
 
-public class TestsRegisteredAwaitingPlayersGamesRepository : IRegisteredAwaitingPlayersGamesRepository
+public class TestsRegisteredPlayersAwaitingGameRepository : IRegisteredPlayersAwaitingGameRepository
 {
-	private readonly ConcurrentDictionary<Guid, AwaitingPlayersGame> _games = new();
+	private readonly ConcurrentDictionary<Guid, PlayersAwaitingGame> _games = new();
 
-	public Task<Result<AwaitingPlayersGame>> GetAsync(Guid id)
+	public Task<Result<PlayersAwaitingGame>> GetAsync(Guid id)
 	{
 		if (_games.TryGetValue(id, out var game))
 		{
 			return Task.FromResult(Result.Success(game));
 		}
 
-		return Task.FromResult(Result<AwaitingPlayersGame>.NotFound());
+		return Task.FromResult(Result<PlayersAwaitingGame>.NotFound());
 	}
 
-	public Task<Result> SaveAsync(AwaitingPlayersGame game)
+	public Task<Result> SaveAsync(PlayersAwaitingGame game)
 	{
 		_games[game.GameId] = game;
 		return Task.FromResult(Result.Success());
 	}
 
-	public Task<Result<int>> CountAsync(Expression<Func<AwaitingPlayersGame, bool>>? expression = null)
+	public Task<Result<int>> CountAsync(Expression<Func<PlayersAwaitingGame, bool>>? expression = null)
 	{
 		var query = _games.Values.AsQueryable();
 
@@ -41,7 +41,7 @@ public class TestsRegisteredAwaitingPlayersGamesRepository : IRegisteredAwaiting
 		return Task.FromResult(Result.Success(count));
 	}
 
-	public Task<Result<IEnumerable<AwaitingPlayersGame>>> GetByExpressionAsync(Expression<Func<AwaitingPlayersGame, bool>> expression, Func<IQueryable<AwaitingPlayersGame>, IOrderedQueryable<AwaitingPlayersGame>>? orderBy = null)
+	public Task<Result<IEnumerable<PlayersAwaitingGame>>> GetByExpressionAsync(Expression<Func<PlayersAwaitingGame, bool>> expression, Func<IQueryable<PlayersAwaitingGame>, IOrderedQueryable<PlayersAwaitingGame>>? orderBy = null)
 	{
 		var query = _games.Values.AsQueryable().Where(expression);
 
@@ -54,6 +54,6 @@ public class TestsRegisteredAwaitingPlayersGamesRepository : IRegisteredAwaiting
 
 		return filteredGames.Any()
 			? Task.FromResult(Result.Success(filteredGames))
-			: Task.FromResult(Result.Success(Enumerable.Empty<AwaitingPlayersGame>()));
+			: Task.FromResult(Result.Success(Enumerable.Empty<PlayersAwaitingGame>()));
 	}
 }
