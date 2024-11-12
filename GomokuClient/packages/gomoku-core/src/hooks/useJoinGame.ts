@@ -3,17 +3,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks/useTiles";
+import { useTiles } from "@/hooks/useTiles";
 
 import { useSignalRConnection } from "@/context";
-import { useTiles } from "@/hooks/useTiles";
-import { typedSessionStorage } from "@/shared/lib/utils";
 import { toaster } from "@/shared/ui/toaster";
 import { formatErrorMessage } from "@/utils/errorUtils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   gameHistory: SwaggerTypes.GetGameHistoryResponse,
-  playerID?: string,
 ) => {
   //TODO: refactor to separate hook or place inside tile hook
   const [moves, setMoves] = useState<string[]>([]);
@@ -78,7 +76,6 @@ export const useJoinGame = (
           setClock(message);
         },
         rematchApproved: async ({ newGameId }) => {
-          typedSessionStorage.setItem(`game_${newGameId}`, playerID!);
           await router.navigate({
             to: `/game/join/${newGameId}`,
           });

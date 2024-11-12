@@ -11,6 +11,7 @@ using SignalRSwaggerGen.Attributes;
 namespace GomokuServer.Api.Hubs;
 
 [SignalRHub(HubRoute.GameHub)]
+[Obsolete("Use separate RegisteredGameHub and AnonymousGameHub")]
 public class GameHub : Hub, IGameHub
 {
 	private readonly IMediator _mediator;

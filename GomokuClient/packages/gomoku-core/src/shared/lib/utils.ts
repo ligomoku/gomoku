@@ -1,8 +1,6 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import TypedLocalStore, { MemoryStorage } from "typed-local-store";
-
-import type { SwaggerTypes } from "@/api";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -41,7 +39,7 @@ export interface LocalSchema {
 }
 
 export interface SessionSchema {
-  [key: `game_${SwaggerTypes.CreateGameResponse["gameId"]}`]: string;
+  anonymousPlayerID: string;
 }
 
 const memoryStorage = new MemoryStorage();

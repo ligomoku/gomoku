@@ -3,9 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@/api";
-
 import { SwaggerServices } from "@/api";
-import { SignalRProvider, useAuthToken } from "@/context";
+import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
 import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
@@ -30,10 +29,18 @@ const joinGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = await SwaggerServices.postApiGameByGameIdJoin<true>({
-    path: { gameId: gameID },
-    headers: getDefaultHeaders(jwtToken),
-  });
+  const response = jwtToken
+    ? await SwaggerServices.postApiGameRegisteredByGameIdJoin<true>({
+        path: { gameId: gameID },
+        headers: getDefaultHeaders(jwtToken),
+      })
+    : await SwaggerServices.postApiGameAnonymousByGameIdJoin<true>({
+        path: { gameId: gameID },
+        headers: getDefaultHeaders(),
+        body: {
+          playerId: typedSessionStorage.getItem("anonymousPlayerID"), // TODO: Maybe in client this can be called just sessionId
+        },
+      });
 
   if (!response.data) {
     throw new Error("Failed to join game!");
@@ -47,8 +54,6 @@ const JoinGameComponent = ({
 }: {
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
-  const [playerID, setPlayerID] =
-    useState<SwaggerTypes.AddPlayerToGameResponse["playerId"]>();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 
@@ -62,20 +67,13 @@ const JoinGameComponent = ({
   });
 
   useEffect(() => {
-    if (!gameHistory || playerID) return;
+    if (!gameHistory) return;
 
     const asyncJoinGame = async () => {
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        const joinGameResponse = await joinGame(gameID, jwtToken);
-        setPlayerID(joinGameResponse.playerId);
-        if (!jwtToken) {
-          typedSessionStorage.setItem(
-            `game_${gameID}`,
-            joinGameResponse.playerId,
-          );
-        }
+        await joinGame(gameID, jwtToken);
       } catch (err) {
         console.error("Error joining game:", err);
         toaster.show("Error joining game", "error");
@@ -85,21 +83,13 @@ const JoinGameComponent = ({
     };
 
     asyncJoinGame();
-  }, [gameHistory, gameID, jwtToken, playerID]);
+  }, [gameHistory, gameID, jwtToken]);
 
-  if (isLoading || (isJoining && !playerID) || !gameHistory)
+  if (isLoading || isJoining || !gameHistory)
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
-  const calculatePlayerID = jwtToken
-    ? playerID
-    : typedSessionStorage.getItem(`game_${gameID}`);
-
-  return (
-    <SignalRProvider playerID={calculatePlayerID}>
-      <JoinGame gameHistory={gameHistory} playerID={calculatePlayerID!} />
-    </SignalRProvider>
-  );
+  return <JoinGame gameHistory={gameHistory} />;
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({

@@ -3,16 +3,14 @@ import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { SignalHubInterfaces, SwaggerTypes } from "@/api";
-
+import type { SignalHubInterfaces } from "@/api";
 import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
 import { toaster } from "@/shared/ui/toaster";
 
-export const useSignalR = (
-  playerID?: SwaggerTypes.AddPlayerToGameResponse["playerId"],
-) => {
-  const { jwtToken, jwtDecodedInfo } = useAuthToken();
+export const useSignalR = (hubURL: string) => {
+  console.log("hubURL in useSignalR =", hubURL);
+  const { jwtToken } = useAuthToken();
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -22,6 +20,8 @@ export const useSignalR = (
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {
+      console.log("Starting connection...........................");
+      console.log("hubURL =", hubURL);
       if (connection?.state === signalR.HubConnectionState.Disconnected) {
         try {
           await connection.start();
@@ -29,7 +29,8 @@ export const useSignalR = (
           setIsConnected(true);
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
-          toaster.show("Error starting SignalR connection", "error");
+          setIsConnected(false);
+          // toaster.show("Can't establish connection with server", "error");
           setTimeout(() => startConnection(connection), 5000);
         }
       }
@@ -38,29 +39,19 @@ export const useSignalR = (
   );
 
   useEffect(() => {
-    if (!connectionRef.current) {
-      const constructURL = playerID
-        ? `${import.meta.env.VITE_API_URL}/gamehub?player_id=${playerID}`
-        : `${import.meta.env.VITE_API_URL}/gamehub`;
-
-      connectionRef.current = new signalR.HubConnectionBuilder()
-        .withUrl(constructURL, {
-          accessTokenFactory: async () => (await getToken()) ?? "",
-        })
-        .withHubProtocol(new JsonHubProtocol())
-        .withAutomaticReconnect()
-        .build();
-    }
+    // if (!connectionRef.current) {
+    connectionRef.current = new signalR.HubConnectionBuilder()
+      .withUrl(hubURL, {
+        accessTokenFactory: async () => (await getToken()) ?? "",
+      })
+      .withHubProtocol(new JsonHubProtocol())
+      .withAutomaticReconnect()
+      .build();
+    // }
 
     const connection = connectionRef.current;
     if (connection) {
       startConnection(connection);
-
-      connection.onclose(async () => {
-        console.warn("SignalR connection lost. Attempting to reconnect...");
-        setIsConnected(false);
-        startConnection(connection);
-      });
 
       const proxy =
         SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(
@@ -72,10 +63,8 @@ export const useSignalR = (
     }
 
     return () => {
-      if (
-        connection &&
-        connection.state === signalR.HubConnectionState.Connected
-      ) {
+      if (connection) {
+        console.log("SignalR connection cleanup");
         connection
           .stop()
           .then(() => console.debug("SignalR connection stopped"))
@@ -85,7 +74,7 @@ export const useSignalR = (
           });
       }
     };
-  }, [jwtToken, jwtDecodedInfo, startConnection, getToken, playerID]);
+  }, [jwtToken, startConnection, getToken, hubURL]);
 
   const registerEventHandlers = useCallback(
     //TODO: investigate partial to have inference for handlers

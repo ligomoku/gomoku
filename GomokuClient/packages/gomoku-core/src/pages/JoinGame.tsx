@@ -2,11 +2,11 @@ import { useParams } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@/api";
 import type { GameTimeProps } from "@/features/GameTime";
+import { GameTime } from "@/features/GameTime";
 
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { Chat } from "@/features/Chat";
-import { GameTime } from "@/features/GameTime";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
@@ -15,10 +15,9 @@ import { RematchAlert } from "@/shared/ui/rematch-alert";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
-  playerID?: string;
 }
 
-const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
+const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
@@ -34,7 +33,7 @@ const JoinGame = ({ gameHistory, playerID }: JoinGameProps) => {
     setRematchRequested,
     clock,
     players,
-  } = useJoinGame(gameID, gameHistory, playerID);
+  } = useJoinGame(gameID, gameHistory);
 
   const { sendMessage, messages, isConnected } = useChat(
     gameID,

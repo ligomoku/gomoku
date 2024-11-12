@@ -3,11 +3,7 @@ using GomokuServer.Core.Profiles.Entities;
 
 namespace GomokuServer.Application.Games.Commands;
 
-public record AddRegisteredPlayerToGameCommand : AddPlayerToGameCommand
-{
-	[Required]
-	public required string PlayerId { get; init; }
-}
+public record AddRegisteredPlayerToGameCommand : AddPlayerToGameCommand;
 
 public class AddRegisteredPlayerToGameCommandHandler(
 	IRegisteredPlayersAwaitingGameRepository _registeredPlayersAwaitingGameRepository,
@@ -28,9 +24,9 @@ public class AddAnonymousPlayerToGameCommandHandler(
 	IAnonymousGamesRepository _anonymousGamesRepository)
 	: AddPlayerToGameCommandHandler<AddAnonymousPlayerToGameCommand>(_anonymousPlayersAwaitingGameRepository, _anonymousGamesRepository)
 {
-	public override Task<Result<Profile>> GetProfileAsync(AddAnonymousPlayerToGameCommand _)
+	public override Task<Result<Profile>> GetProfileAsync(AddAnonymousPlayerToGameCommand request)
 	{
-		var playerId = Guid.NewGuid().ToString();
+		var playerId = request.PlayerId;
 		return Task.FromResult(Result.Success(new Profile(playerId, $"Guest {playerId[..6]}")));
 	}
 }

@@ -14,6 +14,7 @@ namespace GomokuServer.Api.Controllers.v1;
 [EnableCors(CorsPolicyName.GomokuClient)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
+[Obsolete("Replace with RegisteredGamesControlled and AnonymousGameController")]
 public class GameController : Controller
 {
 	private readonly IMediator _mediator;
@@ -116,7 +117,7 @@ public class GameController : Controller
 		var playerId = User.Claims.Get(JwtClaims.UserId);
 
 		var addPlayerToGameResult = playerId == null
-			? await _mediator.Send(new AddAnonymousPlayerToGameCommand() { GameId = gameId })
+			? await _mediator.Send(new AddAnonymousPlayerToGameCommand() { GameId = gameId, PlayerId = Guid.NewGuid().ToString() })
 			: await _mediator.Send(new AddRegisteredPlayerToGameCommand() { GameId = gameId, PlayerId = playerId });
 
 		if (addPlayerToGameResult.IsSuccess)
