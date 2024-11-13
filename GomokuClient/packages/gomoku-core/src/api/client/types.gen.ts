@@ -261,6 +261,7 @@ export type GetApiProfilesByUserNameGamesError = unknown;
 
 export type GetApiGameRegisteredByGameIdHistoryData = {
   headers: {
+    Authorization: string;
     "Content-Type": string;
     "X-Version"?: string;
   };
@@ -276,6 +277,7 @@ export type GetApiGameRegisteredByGameIdHistoryError = ProblemDetails;
 
 export type GetApiGameRegisteredAvailableToJoinData = {
   headers: {
+    Authorization: string;
     "Content-Type": string;
     "X-Version"?: string;
   };
@@ -292,6 +294,7 @@ export type GetApiGameRegisteredAvailableToJoinError = unknown;
 
 export type GetApiGameRegisteredActiveData = {
   headers: {
+    Authorization: string;
     "Content-Type": string;
     "X-Version"?: string;
   };

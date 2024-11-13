@@ -402,6 +402,15 @@
             }
           },
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Bearer "
+            }
+          },
+          {
             "name": "Content-Type",
             "in": "header",
             "required": true,
@@ -467,7 +476,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/game/registered/available-to-join": {
@@ -498,6 +512,15 @@
             }
           },
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Bearer "
+            }
+          },
+          {
             "name": "Content-Type",
             "in": "header",
             "required": true,
@@ -528,7 +551,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/game/registered/active": {
@@ -559,6 +587,15 @@
             }
           },
           {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Bearer "
+            }
+          },
+          {
             "name": "Content-Type",
             "in": "header",
             "required": true,
@@ -589,7 +626,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/game/registered": {
@@ -947,8 +989,7 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": {}
       }
     },
     "/gamehub/registered/GetClock": {
@@ -963,8 +1004,7 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": {}
       }
     },
     "/gamehub/registered/MakeMove": {
