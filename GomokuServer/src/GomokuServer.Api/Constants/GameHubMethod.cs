@@ -13,4 +13,5 @@ public class GameHubMethod
 	public const string RematchRequested = nameof(RematchRequested);
 	public const string RematchApproved = nameof(RematchApproved);
 	public const string Clock = nameof(Clock);
+	public const string ReceiveInvitationToPlay = nameof(ReceiveInvitationToPlay);
 }

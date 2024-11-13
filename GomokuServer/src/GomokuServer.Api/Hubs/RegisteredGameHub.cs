@@ -61,6 +61,17 @@ public class RegisteredGameHub : GameHub
 		await base.SendMessage(messageRequest);
 	}
 
+	[Authorize]
+	public override async Task SendInvitationToPlay(SendInvitationToPlayMessage message)
+	{
+		var receiveInvitationMessage = new ReceiveInvitationToPlayMessage
+		{
+			InvitationFromPlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
+			InvitationFromUserName = Context?.User?.Claims.Get(JwtClaims.UserName)!
+		};
+		await Clients.User(message.PlayerId).SendAsync(GameHubMethod.ReceiveInvitationToPlay, receiveInvitationMessage);
+	}
+
 	protected override string GetPlayerId()
 	{
 		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);

@@ -7,18 +7,29 @@ import type { SwaggerTypes } from "@/api";
 import { SwaggerServices } from "@/api";
 import type { GameType } from "@/features/TimeControls";
 import { TimeControls } from "@/features/TimeControls";
-import { useAuthToken } from "@/context";
+import { useAuthToken, useSignalRConnection } from "@/context";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { SectionList } from "@/features/SectionList";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { getDefaultHeaders } from "@/shared/lib/utils";
+import { useEffect } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
+  const { hubProxy, isConnected } = useSignalRConnection();
+
+  useEffect(() => {
+    if (isConnected && hubProxy) {
+      hubProxy.sendInvitationToPlay({
+        //TODO: Remove. This is for testing
+        playerId: "test",
+      });
+    }
+  }, [isConnected, hubProxy]);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({

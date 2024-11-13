@@ -109,6 +109,8 @@ export const useSignalR = (hubURL: string) => {
         rematchRequested: async (message) =>
           handlers.rematchRequested?.(message),
         clock: async (message) => handlers.clock?.(message),
+        receiveInvitationToPlay: async (message) =>
+          handlers.receiveInvitationToPlay?.(message),
       };
 
       const disposable = SignalRClientService.getReceiverRegister(

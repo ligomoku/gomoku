@@ -130,6 +130,10 @@ public abstract class GameHub : Hub, IGameHub
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 
+	public abstract Task SendInvitationToPlay(SendInvitationToPlayMessage message);
+
+	//public abstract Task AcceptInvitationToPlay();
+
 	protected abstract string GetPlayerId();
 
 	protected abstract Task<Result<GetGameHistoryResponse>> GetGameHistoryAsync(string gameId);

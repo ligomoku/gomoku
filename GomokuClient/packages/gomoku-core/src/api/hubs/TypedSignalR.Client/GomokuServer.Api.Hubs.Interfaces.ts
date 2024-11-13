@@ -2,6 +2,7 @@
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
+import type { IStreamResult, Subject } from "@microsoft/signalr";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
@@ -9,6 +10,8 @@ import type {
   ApproveRematchMessage,
   ChatMessageClientMessage,
   GetClockMessage,
+  SendInvitationToPlayMessage,
+  ReceiveInvitationToPlayMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
@@ -20,7 +23,6 @@ import type {
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
 import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
-import type { IStreamResult, Subject } from "@microsoft/signalr";
 
 export type IGameHub = {
   /**
@@ -58,6 +60,11 @@ export type IGameHub = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   getClock(message: GetClockMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.SendInvitationToPlayMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  sendInvitationToPlay(message: SendInvitationToPlayMessage): Promise<void>;
 };
 
 export type IGameHubReceiver = {
@@ -124,4 +131,11 @@ export type IGameHubReceiver = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   gameHubError(errorMessage: ErrorMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.ReceiveInvitationToPlayMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  receiveInvitationToPlay(
+    message: ReceiveInvitationToPlayMessage,
+  ): Promise<void>;
 };
