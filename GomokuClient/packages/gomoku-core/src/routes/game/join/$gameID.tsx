@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@/api";
+
 import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";

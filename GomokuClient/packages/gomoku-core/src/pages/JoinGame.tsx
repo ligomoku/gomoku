@@ -2,11 +2,11 @@ import { useParams } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@/api";
 import type { GameTimeProps } from "@/features/GameTime";
-import { GameTime } from "@/features/GameTime";
 
 import { useAuthToken } from "@/context";
 import { Board } from "@/features/Board/Board";
 import { Chat } from "@/features/Chat";
+import { GameTime } from "@/features/GameTime";
 import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
