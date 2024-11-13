@@ -9,6 +9,8 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 import pluginRouter from "@tanstack/eslint-plugin-router";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import pluginImport from "eslint-plugin-import";
+import featureSliced from "@feature-sliced/eslint-config";
+import eslintBoundaries from "eslint-plugin-boundaries";
 
 export default [
   {
@@ -39,6 +41,8 @@ export default [
       "react-refresh": reactRefresh,
       "@tanstack/query": pluginQuery,
       "@tanstack/router": pluginRouter,
+      "feature-sliced": featureSliced,
+      "boundaries": eslintBoundaries,
       import: pluginImport,
       "jsx-a11y": jsxA11y,
       "@typescript-eslint": tsEslintPlugin,
@@ -52,6 +56,12 @@ export default [
       react: {
         version: "detect",
       },
+      "boundaries/elements": [
+        { type: "helpers", pattern: "src/helpers/*" },
+        { type: "components", pattern: "src/components/*" },
+        { type: "features", pattern: "src/features/*" },
+        { type: "styles", pattern: "src/styles/*" }
+      ]
     },
     linterOptions: {
       // noInlineConfig: true,
@@ -88,6 +98,53 @@ export default [
       "react/jsx-key": "error",
 
       ...reactHooks.configs.recommended.rules,
+
+      "boundaries/no-private": [
+        "error",
+        {
+          message: "Only public entry points should be imported from other modules"
+        }
+      ],
+
+      "import/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: "./src/features",
+              from: "./src/features/*",
+              except: ["./src/features/*/index.ts"]
+            },
+            {
+              target: "./src/components",
+              from: "./src/components/*",
+              except: ["./src/components/*/index.ts"]
+            }
+          ]
+        }
+      ],
+
+      "boundaries/element-types": [
+        "error",
+        {
+          default: "disallow",
+          rules: [
+            { from: "components", allow: ["helpers", "styles"] },
+            { from: "features", allow: ["components", "helpers", "styles"] }
+          ],
+          message: "${file.type} cannot import ${dependency.type}",
+        }
+      ],
+      "import/no-internal-modules": [
+        "warn",
+        {
+          allow: [
+            "**/src/styles/**",
+            "react-dom/client",
+            "react-resizable/css/styles.css"
+          ]
+        }
+      ],
 
       "import/order": [
         "error",
