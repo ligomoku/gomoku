@@ -39,7 +39,7 @@ export interface LocalSchema {
 }
 
 export interface SessionSchema {
-  anonymousPlayerID: string;
+  anonymousSessionID: string;
 }
 
 const memoryStorage = new MemoryStorage();

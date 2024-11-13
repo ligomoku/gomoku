@@ -16,8 +16,6 @@ import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
 import { ToasterProvider } from "@/shared/ui/toaster";
 
 import "./styles/index.css";
-import { v4 as uuidv4 } from "uuid";
-import { typedSessionStorage } from "@/shared/lib/utils";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -58,10 +56,6 @@ const queryClient = new QueryClient();
 
 i18n.load("en", messages);
 i18n.activate("en");
-
-if (!typedSessionStorage.getItem("anonymousPlayerID")) {
-  typedSessionStorage.setItem("anonymousPlayerID", uuidv4()); //TODO: Check if this is ok to generate here
-}
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

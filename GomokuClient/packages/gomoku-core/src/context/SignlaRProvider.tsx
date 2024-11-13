@@ -31,7 +31,7 @@ const getHubBaseURL = (jwtToken?: string) => {
     return `${import.meta.env.VITE_API_URL}/gamehub/registered`;
   }
 
-  return `${import.meta.env.VITE_API_URL}/gamehub/anonymous?player_id=${typedSessionStorage.getItem("anonymousPlayerID")}`;
+  return `${import.meta.env.VITE_API_URL}/gamehub/anonymous?player_id=${typedSessionStorage.getItem("anonymousSessionID")}`;
 };
 
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {

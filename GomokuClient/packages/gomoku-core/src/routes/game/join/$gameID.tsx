@@ -44,7 +44,7 @@ const joinGame = async (
         path: { gameId: gameID },
         headers: getDefaultHeaders(),
         body: {
-          playerId: typedSessionStorage.getItem("anonymousPlayerID"), // TODO: Maybe in client this can be called just sessionId
+          playerId: typedSessionStorage.getItem("anonymousSessionID"),
         },
       });
 

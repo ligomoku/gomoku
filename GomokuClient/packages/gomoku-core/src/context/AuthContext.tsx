@@ -1,10 +1,11 @@
 import { useAuth } from "@clerk/clerk-react";
 import * as JWT from "jwt-decode";
-import { useEffect, useState, createContext, useContext, useMemo } from "react";
-
 import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { toaster } from "@/shared/ui/toaster";
+import { typedSessionStorage } from "@/shared/lib/utils";
+import { v4 as uuidv4 } from "uuid";
 
 interface JwtTokenPayload {
   exp: number;
@@ -50,6 +51,10 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
 
           const decoded: JwtTokenPayload = JWT.jwtDecode(token);
           setJwtDecodedInfo(decoded);
+        }
+
+        if (!token && !typedSessionStorage.getItem("anonymousSessionID")) {
+          typedSessionStorage.setItem("anonymousSessionID", uuidv4());
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
