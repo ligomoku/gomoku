@@ -46,6 +46,7 @@ import type {
   PostGamehubAnonymousRequestRematchData,
   PostGamehubAnonymousApproveRematchData,
   PostGamehubAnonymousSendMessageData,
+  PostGamehubAnonymousSendInvitationToPlayData,
   PostGamehubRegisteredJoinGameGroupData,
   PostGamehubRegisteredGetClockData,
   PostGamehubRegisteredMakeMoveData,
@@ -53,6 +54,7 @@ import type {
   PostGamehubRegisteredRequestRematchData,
   PostGamehubRegisteredApproveRematchData,
   PostGamehubRegisteredSendMessageData,
+  PostGamehubRegisteredSendInvitationToPlayData,
 } from "../types.gen";
 import {
   client,
@@ -75,6 +77,7 @@ import {
   postGamehubAnonymousRequestRematch,
   postGamehubAnonymousApproveRematch,
   postGamehubAnonymousSendMessage,
+  postGamehubAnonymousSendInvitationToPlay,
   postGamehubRegisteredJoinGameGroup,
   postGamehubRegisteredGetClock,
   postGamehubRegisteredMakeMove,
@@ -82,6 +85,7 @@ import {
   postGamehubRegisteredRequestRematch,
   postGamehubRegisteredApproveRematch,
   postGamehubRegisteredSendMessage,
+  postGamehubRegisteredSendInvitationToPlay,
 } from "../services.gen";
 
 type QueryKey<TOptions extends Options> = [
@@ -1014,6 +1018,47 @@ export const postGamehubAnonymousSendMessageMutation = (
   return mutationOptions;
 };
 
+export const postGamehubAnonymousSendInvitationToPlayQueryKey = (
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData>,
+) => [createQueryKey("postGamehubAnonymousSendInvitationToPlay", options)];
+
+export const postGamehubAnonymousSendInvitationToPlayOptions = (
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousSendInvitationToPlay({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousSendInvitationToPlayQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousSendInvitationToPlayMutation = (
+  options?: Partial<Options<PostGamehubAnonymousSendInvitationToPlayData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousSendInvitationToPlayData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousSendInvitationToPlay({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const postGamehubRegisteredJoinGameGroupQueryKey = (
   options?: Options<PostGamehubRegisteredJoinGameGroupData>,
 ) => [createQueryKey("postGamehubRegisteredJoinGameGroup", options)];
@@ -1291,6 +1336,47 @@ export const postGamehubRegisteredSendMessageMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postGamehubRegisteredSendMessage({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredSendInvitationToPlayQueryKey = (
+  options?: Options<PostGamehubRegisteredSendInvitationToPlayData>,
+) => [createQueryKey("postGamehubRegisteredSendInvitationToPlay", options)];
+
+export const postGamehubRegisteredSendInvitationToPlayOptions = (
+  options?: Options<PostGamehubRegisteredSendInvitationToPlayData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredSendInvitationToPlay({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredSendInvitationToPlayQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredSendInvitationToPlayMutation = (
+  options?: Partial<Options<PostGamehubRegisteredSendInvitationToPlayData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredSendInvitationToPlayData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredSendInvitationToPlay({
         ...options,
         ...localOptions,
         throwOnError: true,

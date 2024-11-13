@@ -137,6 +137,10 @@ export type ResignClientMessage = {
   gameId: string;
 };
 
+export type SendInvitationToPlayMessage = {
+  playerId: string;
+};
+
 export type TileDto = {
   x: number;
   y: number;
@@ -372,6 +376,12 @@ export type PostGamehubAnonymousSendMessageData = {
   };
 };
 
+export type PostGamehubAnonymousSendInvitationToPlayData = {
+  query?: {
+    _?: SendInvitationToPlayMessage;
+  };
+};
+
 export type PostGamehubRegisteredJoinGameGroupData = {
   query?: {
     gameId?: string;
@@ -411,5 +421,11 @@ export type PostGamehubRegisteredApproveRematchData = {
 export type PostGamehubRegisteredSendMessageData = {
   query?: {
     messageRequest?: ChatMessageClientMessage;
+  };
+};
+
+export type PostGamehubRegisteredSendInvitationToPlayData = {
+  query?: {
+    message?: SendInvitationToPlayMessage;
   };
 };

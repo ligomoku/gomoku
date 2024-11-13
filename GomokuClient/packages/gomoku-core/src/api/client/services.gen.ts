@@ -49,6 +49,7 @@ import type {
   PostGamehubAnonymousRequestRematchData,
   PostGamehubAnonymousApproveRematchData,
   PostGamehubAnonymousSendMessageData,
+  PostGamehubAnonymousSendInvitationToPlayData,
   PostGamehubRegisteredJoinGameGroupData,
   PostGamehubRegisteredGetClockData,
   PostGamehubRegisteredMakeMoveData,
@@ -56,6 +57,7 @@ import type {
   PostGamehubRegisteredRequestRematchData,
   PostGamehubRegisteredApproveRematchData,
   PostGamehubRegisteredSendMessageData,
+  PostGamehubRegisteredSendInvitationToPlayData,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
@@ -321,6 +323,17 @@ export const postGamehubAnonymousSendMessage = <
   });
 };
 
+export const postGamehubAnonymousSendInvitationToPlay = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/SendInvitationToPlay",
+  });
+};
+
 export const postGamehubRegisteredJoinGameGroup = <
   ThrowOnError extends boolean = false,
 >(
@@ -395,5 +408,19 @@ export const postGamehubRegisteredSendMessage = <
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/registered/SendMessage",
+  });
+};
+
+export const postGamehubRegisteredSendInvitationToPlay = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    PostGamehubRegisteredSendInvitationToPlayData,
+    ThrowOnError
+  >,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/SendInvitationToPlay",
   });
 };

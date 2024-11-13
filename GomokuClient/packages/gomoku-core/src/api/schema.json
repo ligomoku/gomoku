@@ -920,6 +920,21 @@
         "security": [{}]
       }
     },
+    "/gamehub/anonymous/SendInvitationToPlay": {
+      "post": {
+        "tags": ["AnonymousGameHub"],
+        "parameters": [
+          {
+            "name": "_",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SendInvitationToPlayMessage"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/gamehub/registered/JoinGameGroup": {
       "post": {
         "tags": ["RegisteredGameHub"],
@@ -1021,6 +1036,21 @@
             "in": "query",
             "schema": {
               "$ref": "#/components/schemas/ChatMessageClientMessage"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/gamehub/registered/SendInvitationToPlay": {
+      "post": {
+        "tags": ["RegisteredGameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SendInvitationToPlayMessage"
             }
           }
         ],
@@ -1443,6 +1473,17 @@
         "type": "object",
         "properties": {
           "gameId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SendInvitationToPlayMessage": {
+        "required": ["playerId"],
+        "type": "object",
+        "properties": {
+          "playerId": {
             "minLength": 1,
             "type": "string"
           }
