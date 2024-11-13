@@ -1,11 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext } from "react";
 
 import type { SignalHubInterfaces } from "@/api";
 import type * as signalR from "@microsoft/signalr";
 
 import { useSignalR } from "@/hooks/useSignalR";
 import { useAuthToken } from "@/context/AuthContext";
-import { v4 as uuidv4 } from "uuid";
 import { typedSessionStorage } from "@/shared/lib/utils";
 
 type SignalREventHandlers = SignalHubInterfaces.IGameHubReceiver;
@@ -37,7 +36,6 @@ const getHubBaseURL = (jwtToken?: string) => {
 
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const { jwtToken } = useAuthToken();
-  console.log("SignalRProvider jwtToken =", jwtToken);
   const signalRState = useSignalR(getHubBaseURL(jwtToken));
 
   return (

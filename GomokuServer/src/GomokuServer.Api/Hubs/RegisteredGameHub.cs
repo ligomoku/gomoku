@@ -10,7 +10,7 @@ using SignalRSwaggerGen.Attributes;
 namespace GomokuServer.Api.Hubs;
 
 [SignalRHub(HubRoute.RegisteredGameHub)]
-public class RegisteredGameHub : GameHubBase
+public class RegisteredGameHub : GameHub
 {
 	private readonly IMediator _mediator;
 

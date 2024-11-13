@@ -33,7 +33,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseJwtClaimsValidation();
 
-app.MapHub<GameHub>(HubRoute.GameHub);
 app.MapHub<RegisteredGameHub>(HubRoute.RegisteredGameHub);
 app.MapHub<AnonymousGameHub>(HubRoute.AnonymousGameHub);
 

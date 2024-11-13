@@ -171,8 +171,7 @@ export type GetApiGameAnonymousAvailableToJoinData = {
     "Content-Type": string;
     "X-Version"?: string;
   };
-  query: {
-    isAnonymous: boolean;
+  query?: {
     limit?: number;
     offset?: number;
   };
@@ -189,7 +188,6 @@ export type GetApiGameAnonymousActiveData = {
     "X-Version"?: string;
   };
   query?: {
-    isAnonymous?: boolean;
     limit?: number;
     offset?: number;
   };
@@ -226,80 +224,6 @@ export type PostApiGameAnonymousByGameIdJoinData = {
 export type PostApiGameAnonymousByGameIdJoinResponse = AddPlayerToGameResponse;
 
 export type PostApiGameAnonymousByGameIdJoinError = ProblemDetails;
-
-export type GetApiGameByGameIdHistoryData = {
-  headers: {
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-  path: {
-    gameId: string;
-  };
-};
-
-export type GetApiGameByGameIdHistoryResponse = GetGameHistoryResponse;
-
-export type GetApiGameByGameIdHistoryError = ProblemDetails;
-
-export type GetApiGamesAvailableToJoinData = {
-  headers: {
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-  query: {
-    isAnonymous: boolean;
-    limit?: number;
-    offset?: number;
-  };
-};
-
-export type GetApiGamesAvailableToJoinResponse =
-  GetAvailableGamesResponseIEnumerablePaginatedResponse;
-
-export type GetApiGamesAvailableToJoinError = unknown;
-
-export type GetApiGamesActiveData = {
-  headers: {
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-  query?: {
-    isAnonymous?: boolean;
-    limit?: number;
-    offset?: number;
-  };
-};
-
-export type GetApiGamesActiveResponse =
-  GetActiveGamesResponseIEnumerablePaginatedResponse;
-
-export type GetApiGamesActiveError = unknown;
-
-export type PostApiGameData = {
-  body?: CreateGameRequest;
-  headers: {
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-};
-
-export type PostApiGameResponse = CreateGameResponse;
-
-export type PostApiGameError = ProblemDetails;
-
-export type PostApiGameByGameIdJoinData = {
-  headers: {
-    "Content-Type": string;
-    "X-Version"?: string;
-  };
-  path: {
-    gameId: string;
-  };
-};
-
-export type PostApiGameByGameIdJoinResponse = AddPlayerToGameResponse;
-
-export type PostApiGameByGameIdJoinError = ProblemDetails;
 
 export type GetHealthData = {
   headers: {
@@ -351,8 +275,7 @@ export type GetApiGameRegisteredAvailableToJoinData = {
     "Content-Type": string;
     "X-Version"?: string;
   };
-  query: {
-    isAnonymous: boolean;
+  query?: {
     limit?: number;
     offset?: number;
   };
@@ -369,7 +292,6 @@ export type GetApiGameRegisteredActiveData = {
     "X-Version"?: string;
   };
   query?: {
-    isAnonymous?: boolean;
     limit?: number;
     offset?: number;
   };
@@ -445,48 +367,6 @@ export type PostGamehubAnonymousApproveRematchData = {
 };
 
 export type PostGamehubAnonymousSendMessageData = {
-  query?: {
-    messageRequest?: ChatMessageClientMessage;
-  };
-};
-
-export type PostGamehubJoinGameGroupData = {
-  query?: {
-    gameId?: string;
-  };
-};
-
-export type PostGamehubGetClockData = {
-  query?: {
-    message?: GetClockMessage;
-  };
-};
-
-export type PostGamehubMakeMoveData = {
-  query?: {
-    message?: MakeMoveClientMessage;
-  };
-};
-
-export type PostGamehubResignData = {
-  query?: {
-    message?: ResignClientMessage;
-  };
-};
-
-export type PostGamehubRequestRematchData = {
-  query?: {
-    message?: RematchRequestMessage;
-  };
-};
-
-export type PostGamehubApproveRematchData = {
-  query?: {
-    message?: ApproveRematchMessage;
-  };
-};
-
-export type PostGamehubSendMessageData = {
   query?: {
     messageRequest?: ChatMessageClientMessage;
   };

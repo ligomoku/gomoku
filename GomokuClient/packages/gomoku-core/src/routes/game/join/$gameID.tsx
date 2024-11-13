@@ -1,4 +1,4 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -12,11 +12,17 @@ import { toaster } from "@/shared/ui/toaster";
 
 const getGameHistory = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
+  jwtToken?: string,
 ) => {
-  const response = await SwaggerServices.getApiGameByGameIdHistory({
-    headers: getDefaultHeaders(),
-    path: { gameId: gameID },
-  });
+  const response = jwtToken
+    ? await SwaggerServices.getApiGameRegisteredByGameIdHistory({
+        headers: getDefaultHeaders(jwtToken),
+        path: { gameId: gameID },
+      })
+    : await SwaggerServices.getApiGameAnonymousByGameIdHistory({
+        headers: getDefaultHeaders(),
+        path: { gameId: gameID },
+      });
 
   if (!response.data) {
     throw new Error("Game history not received!");
@@ -63,7 +69,7 @@ const JoinGameComponent = ({
     isLoading,
   } = useQuery({
     queryKey: ["gameHistory", gameID],
-    queryFn: () => getGameHistory(gameID),
+    queryFn: () => getGameHistory(gameID, jwtToken),
   });
 
   useEffect(() => {
@@ -93,15 +99,15 @@ const JoinGameComponent = ({
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
-  loader: async ({ params }) => {
-    const queryClient = new QueryClient();
-    const { gameID } = params;
-    await queryClient.ensureQueryData({
-      queryKey: ["gameHistory", gameID],
-      queryFn: () => getGameHistory(gameID),
-    });
-    return { gameID };
-  },
+  // loader: async ({ params }) => { // TODO: Probably this is not required. History request is done in JoinGameComponent
+  //   const queryClient = new QueryClient();
+  //   const { gameID } = params;
+  //   await queryClient.ensureQueryData({
+  //     queryKey: ["gameHistory", gameID],
+  //     queryFn: () => getGameHistory(gameID),
+  //   });
+  //   return { gameID };
+  // },
   component: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { gameID } = Route.useParams();

@@ -1,4 +1,5 @@
 ﻿using GomokuServer.Api.Swagger.Examples;
+using GomokuServer.Application.Common.Responses;
 using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace GomokuServer.Api.Controllers.v1;
 
 [Route("api/game/anonymous")]
-public class AnonymousGamesController : GameControllerBase
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
+public class AnonymousGamesController : GameController
 {
 	private readonly IMediator _mediator;
 	private readonly IHubContext<AnonymousGameHub> _hubContext;
@@ -18,6 +21,9 @@ public class AnonymousGamesController : GameControllerBase
 	}
 
 	[AllowAnonymous]
+	[ProducesResponseType(typeof(GetGameHistoryResponse), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
 	public override async Task<IActionResult> GetGameHistory([FromRoute] string gameId)
 	{
 		var getRegisteredGameHistoryResult = await _mediator.Send(new GetAnonymousGameHistoryQuery { GameId = gameId });
@@ -25,20 +31,25 @@ public class AnonymousGamesController : GameControllerBase
 	}
 
 	[AllowAnonymous]
-	public override async Task<IActionResult> GetAvailableGames([FromQuery] GetAvailableGamesRequest request)
+	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
+	public override async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
 	{
 		var availableGamesResult = await _mediator.Send(new GetAvailableToJoinAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 		return availableGamesResult.ToApiResponse();
 	}
 
 	[AllowAnonymous]
-	public override async Task<IActionResult> GetActiveGames([FromQuery] GetActiveGamesRequest request)
+	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetActiveGamesResponse>>), StatusCodes.Status200OK)]
+	public override async Task<IActionResult> GetActiveGames([FromQuery] PaginationRequest request)
 	{
 		var activeGamesResult = await _mediator.Send(new GetActiveAnonymousGamesQuery() { Limit = request.Limit!.Value, Offset = request.Offset!.Value });
 		return activeGamesResult.ToApiResponse();
 	}
 
 	[AllowAnonymous]
+	[ProducesResponseType(typeof(CreateGameResponse), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+	[SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestErrorExample))]
 	public override async Task<IActionResult> CreateNewGame([FromBody] CreateGameRequest request)
 	{
 		var createGameResult = await _mediator.Send(new CreateAnonymousGameCommand() { BoardSize = request.BoardSize, TimeControl = request.TimeControl });

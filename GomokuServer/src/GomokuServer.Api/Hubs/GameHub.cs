@@ -1,29 +1,12 @@
-using Ardalis.Result;
+﻿using Ardalis.Result;
 
-using GomokuServer.Api.Hubs.Exceptions;
-using GomokuServer.Application.Games.Commands.Abstract;
 using GomokuServer.Application.Games.Responses;
-
-using Microsoft.AspNetCore.Authorization;
-
-using SignalRSwaggerGen.Attributes;
 
 namespace GomokuServer.Api.Hubs;
 
-[SignalRHub(HubRoute.GameHub)]
-[Obsolete("Use separate RegisteredGameHub and AnonymousGameHub")]
-public class GameHub : Hub, IGameHub
+public abstract class GameHub : Hub, IGameHub
 {
-	private readonly IMediator _mediator;
-	private readonly ILogger<GameHub> _logger;
-
-	public GameHub(IMediator mediator, ILogger<GameHub> logger)
-	{
-		_mediator = mediator;
-		_logger = logger;
-	}
-
-	public async Task JoinGameGroup(string gameId)
+	public virtual async Task JoinGameGroup(string gameId)
 	{
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 		await Clients.Caller.SendAsync(GameHubMethod.GameGroupJoined, gameId);
@@ -40,11 +23,13 @@ public class GameHub : Hub, IGameHub
 				await Clients.User(game!.Players!.White!.PlayerId).SendAsync(GameHubMethod.GameStarted, new GameStartedMessage(false));
 				await Clients.Group(gameId).SendAsync(GameHubMethod.BothPlayersJoined, new BothPlayersJoinedMessage(game.Players));
 			}
+			return;
 		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Game not found"));
 	}
 
-	[AllowAnonymous]
-	public async Task GetClock(GetClockMessage message)
+	public virtual async Task GetClock(GetClockMessage message)
 	{
 		var getGameResult = await GetGameHistoryAsync(message.GameId);
 
@@ -57,21 +42,15 @@ public class GameHub : Hub, IGameHub
 		}
 	}
 
-	[AllowAnonymous]
-	public async Task MakeMove(MakeMoveClientMessage message)
+	public virtual async Task MakeMove(MakeMoveClientMessage message)
 	{
-		_logger.LogInformation($"Calling make move. Message: {message}");
-
-		var playerId = GetPlayerId();
-
-		var placeTileCommand = GetPlaceTileCommand(message.GameId, new TileDto(message.X, message.Y));
-		var placeTileResult = await _mediator.Send(placeTileCommand);
+		var placeTileResult = await PlaceTileAsync(message.GameId, new TileDto(message.X, message.Y));
 
 		if (placeTileResult.IsSuccess)
 		{
 			var playerMadeMoveMessage = new PlayerMadeMoveMessage()
 			{
-				PlayerId = playerId!,
+				PlayerId = GetPlayerId(),
 				Tile = new TileDto(message.X, message.Y),
 				PlacedTileColor = placeTileResult.Value.PlacedTileColor
 			};
@@ -94,10 +73,9 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
-	[AllowAnonymous]
-	public async Task Resign(ResignClientMessage message)
+	public virtual async Task Resign(ResignClientMessage message)
 	{
-		var resignResult = await _mediator.Send(GetResignCommand(message.GameId));
+		var resignResult = await ResignAsync(message.GameId);
 
 		if (resignResult.IsSuccess)
 		{
@@ -113,8 +91,7 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, resignResult.GetHubError());
 	}
 
-	[AllowAnonymous]
-	public async Task RequestRematch(RematchRequestMessage message)
+	public virtual async Task RequestRematch(RematchRequestMessage message)
 	{
 		var getGameHistoryResult = await GetGameHistoryAsync(message.GameId);
 
@@ -135,12 +112,9 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, getGameHistoryResult.GetHubError());
 	}
 
-	[AllowAnonymous]
-	public async Task ApproveRematch(ApproveRematchMessage message)
+	public virtual async Task ApproveRematch(ApproveRematchMessage message)
 	{
-		_logger.LogInformation($"Approving rematch. Message: {message}");
-
-		var rematchResult = await _mediator.Send(GetRematchCommand(message.GameId));
+		var rematchResult = await RematchAsync(message.GameId);
 
 		if (rematchResult.IsSuccess)
 		{
@@ -151,113 +125,18 @@ public class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, rematchResult.GetHubError());
 	}
 
-	public async Task SendMessage(ChatMessageClientMessage messageRequest)
+	public virtual async Task SendMessage(ChatMessageClientMessage messageRequest)
 	{
-		_logger.LogInformation($"SendMessage called. {messageRequest}");
-
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 
-	private string GetPlayerId()
-	{
-		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
+	protected abstract string GetPlayerId();
 
-		if (playerId == null)
-		{
-			playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
-		}
+	protected abstract Task<Result<GetGameHistoryResponse>> GetGameHistoryAsync(string gameId);
 
-		if (playerId == null)
-		{
-			throw new PlayerIdEmptyInGameHubException();
-		}
+	protected abstract Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, TileDto tileDto);
 
-		return playerId;
-	}
+	protected abstract Task<Result<ResignResponse>> ResignAsync(string gameId);
 
-	// TODO: All this stuff is one big crutch. We should create abstract GameHub and inherit two hubs from that abstract
-	// TODO: Registered games hub should be marked with Authorize attribute
-
-	private async Task<Result<GetGameHistoryResponse>> GetGameHistoryAsync(string gameId)
-	{
-		var getRegisteredGameHistoryResult = await _mediator.Send(new GetRegisteredGameHistoryQuery { GameId = gameId });
-
-		if (getRegisteredGameHistoryResult.IsNotFound())
-		{
-			return await _mediator.Send(new GetAnonymousGameHistoryQuery { GameId = gameId });
-		}
-
-		return getRegisteredGameHistoryResult;
-	}
-
-	private PlaceTileCommand GetPlaceTileCommand(string gameId, TileDto tile)
-	{
-		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
-		{
-			return new PlaceRegisteredTileCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
-				Tile = tile
-			};
-		}
-
-		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
-		{
-			return new PlaceAnonymousTileCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
-				Tile = tile
-			};
-		}
-
-		throw new PlayerIdEmptyInGameHubException();
-	}
-
-	private RematchCommand GetRematchCommand(string gameId)
-	{
-		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
-		{
-			return new RegisteredRematchCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
-			};
-		}
-
-		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
-		{
-			return new AnonymousRematchCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
-			};
-		}
-
-		throw new PlayerIdEmptyInGameHubException();
-	}
-
-	private ResignCommand GetResignCommand(string gameId)
-	{
-		if (!string.IsNullOrWhiteSpace(Context?.User?.Claims.Get(JwtClaims.UserId)))
-		{
-			return new RegisteredResignCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.User?.Claims.Get(JwtClaims.UserId)!,
-			};
-		}
-
-		if (!string.IsNullOrWhiteSpace(Context?.GetHttpContext()?.Request.Query["player_id"]))
-		{
-			return new AnonymousResignCommand()
-			{
-				GameId = gameId,
-				PlayerId = Context?.GetHttpContext()?.Request.Query["player_id"]!,
-			};
-		}
-
-		throw new PlayerIdEmptyInGameHubException();
-	}
+	protected abstract Task<Result<RematchResponse>> RematchAsync(string gameId);
 }

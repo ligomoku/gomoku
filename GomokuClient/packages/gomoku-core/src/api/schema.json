@@ -69,15 +69,6 @@
         "tags": ["AnonymousGames"],
         "parameters": [
           {
-            "name": "isAnonymous",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
-          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -128,14 +119,6 @@
       "get": {
         "tags": ["AnonymousGames"],
         "parameters": [
-          {
-            "name": "isAnonymous",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
           {
             "name": "limit",
             "in": "query",
@@ -310,310 +293,6 @@
         }
       }
     },
-    "/api/game/{gameId}/history": {
-      "get": {
-        "tags": ["Game"],
-        "summary": "Get game history by game id",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Version",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Information about game",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetGameHistoryResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Game by id not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/games/available-to-join": {
-      "get": {
-        "tags": ["Game"],
-        "summary": "Get all games available to join",
-        "parameters": [
-          {
-            "name": "isAnonymous",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "X-Version",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns list of games that are available to join",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAvailableGamesResponseIEnumerablePaginatedResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/games/active": {
-      "get": {
-        "tags": ["Game"],
-        "summary": "Get all active games",
-        "parameters": [
-          {
-            "name": "isAnonymous",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "X-Version",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns list of active games",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetActiveGamesResponseIEnumerablePaginatedResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/game": {
-      "post": {
-        "tags": ["Game"],
-        "summary": "Create new game (supports both anonymous and authenticated users)",
-        "parameters": [
-          {
-            "name": "X-Version",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGameRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Returns information about newly created game",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateGameResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/game/{gameId}/join": {
-      "post": {
-        "tags": ["Game"],
-        "summary": "Join game (supports both anonymous and authenticated users)",
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Version",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Player with specified id successfully joined the game",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddPlayerToGameResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Game or player with specified id not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/health": {
       "get": {
         "tags": ["Health"],
@@ -736,7 +415,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGameHistoryResponse"
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGameHistoryResponse"
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetGameHistoryResponse"
                 }
@@ -746,7 +435,27 @@
           "404": {
             "description": "Not Found",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
@@ -766,15 +475,6 @@
         "tags": ["RegisteredGames"],
         "parameters": [
           {
-            "name": "isAnonymous",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
-          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -811,7 +511,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAvailableGamesResponseIEnumerablePaginatedResponse"
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAvailableGamesResponseIEnumerablePaginatedResponse"
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetAvailableGamesResponseIEnumerablePaginatedResponse"
                 }
@@ -826,14 +536,6 @@
         "tags": ["RegisteredGames"],
         "parameters": [
           {
-            "name": "isAnonymous",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "deprecated": true
-            }
-          },
-          {
             "name": "limit",
             "in": "query",
             "schema": {
@@ -870,7 +572,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActiveGamesResponseIEnumerablePaginatedResponse"
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActiveGamesResponseIEnumerablePaginatedResponse"
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetActiveGamesResponseIEnumerablePaginatedResponse"
                 }
@@ -916,6 +628,16 @@
               "schema": {
                 "$ref": "#/components/schemas/CreateGameRequest"
               }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameRequest"
+              }
             }
           }
         },
@@ -923,7 +645,17 @@
           "200": {
             "description": "OK",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGameResponse"
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateGameResponse"
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateGameResponse"
                 }
@@ -933,7 +665,27 @@
           "400": {
             "description": "Bad Request",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                  "title": "Bad Request",
+                  "status": 400
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                  "title": "Bad Request",
+                  "status": 400
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
@@ -996,7 +748,17 @@
           "200": {
             "description": "Player with specified id successfully joined the game",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddPlayerToGameResponse"
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddPlayerToGameResponse"
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AddPlayerToGameResponse"
                 }
@@ -1006,7 +768,27 @@
           "404": {
             "description": "Game or player with specified id not found",
             "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
+              },
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                  "title": "Not Found",
+                  "status": 404
+                }
+              },
+              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
@@ -1136,123 +918,6 @@
         ],
         "responses": {},
         "security": [{}]
-      }
-    },
-    "/gamehub/JoinGameGroup": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "gameId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true
-      }
-    },
-    "/gamehub/GetClock": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/GetClockMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true,
-        "security": [{}]
-      }
-    },
-    "/gamehub/MakeMove": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/MakeMoveClientMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true,
-        "security": [{}]
-      }
-    },
-    "/gamehub/Resign": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/ResignClientMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true,
-        "security": [{}]
-      }
-    },
-    "/gamehub/RequestRematch": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/RematchRequestMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true,
-        "security": [{}]
-      }
-    },
-    "/gamehub/ApproveRematch": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/ApproveRematchMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true,
-        "security": [{}]
-      }
-    },
-    "/gamehub/SendMessage": {
-      "post": {
-        "tags": ["GameHub"],
-        "parameters": [
-          {
-            "name": "messageRequest",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/ChatMessageClientMessage"
-            }
-          }
-        ],
-        "responses": {},
-        "deprecated": true
       }
     },
     "/gamehub/registered/JoinGameGroup": {
@@ -1841,9 +1506,6 @@
   "tags": [
     {
       "name": "AnonymousGameHub"
-    },
-    {
-      "name": "GameHub"
     },
     {
       "name": "RegisteredGameHub"
