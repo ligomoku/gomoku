@@ -99,15 +99,6 @@ const JoinGameComponent = ({
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
-  // loader: async ({ params }) => { // TODO: Probably this is not required. History request is done in JoinGameComponent
-  //   const queryClient = new QueryClient();
-  //   const { gameID } = params;
-  //   await queryClient.ensureQueryData({
-  //     queryKey: ["gameHistory", gameID],
-  //     queryFn: () => getGameHistory(gameID),
-  //   });
-  //   return { gameID };
-  // },
   component: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { gameID } = Route.useParams();

@@ -9,8 +9,7 @@ import { useAuthToken } from "@/context/AuthContext";
 import { toaster } from "@/shared/ui/toaster";
 
 export const useSignalR = (hubURL: string) => {
-  console.log("hubURL in useSignalR =", hubURL);
-  const { jwtToken } = useAuthToken();
+  const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -20,8 +19,6 @@ export const useSignalR = (hubURL: string) => {
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {
-      console.log("Starting connection...........................");
-      console.log("hubURL =", hubURL);
       if (connection?.state === signalR.HubConnectionState.Disconnected) {
         try {
           await connection.start();
@@ -30,7 +27,7 @@ export const useSignalR = (hubURL: string) => {
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
           setIsConnected(false);
-          // toaster.show("Can't establish connection with server", "error");
+          toaster.show("Can't establish connection with server", "error");
           setTimeout(() => startConnection(connection), 5000);
         }
       }
@@ -39,7 +36,6 @@ export const useSignalR = (hubURL: string) => {
   );
 
   useEffect(() => {
-    // if (!connectionRef.current) {
     connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(hubURL, {
         accessTokenFactory: async () => (await getToken()) ?? "",
@@ -47,7 +43,6 @@ export const useSignalR = (hubURL: string) => {
       .withHubProtocol(new JsonHubProtocol())
       .withAutomaticReconnect()
       .build();
-    // }
 
     const connection = connectionRef.current;
     if (connection) {
@@ -63,8 +58,10 @@ export const useSignalR = (hubURL: string) => {
     }
 
     return () => {
-      if (connection) {
-        console.log("SignalR connection cleanup");
+      if (
+        connection &&
+        connection.state === signalR.HubConnectionState.Connected
+      ) {
         connection
           .stop()
           .then(() => console.debug("SignalR connection stopped"))
@@ -74,7 +71,7 @@ export const useSignalR = (hubURL: string) => {
           });
       }
     };
-  }, [jwtToken, startConnection, getToken, hubURL]);
+  }, [jwtToken, jwtDecodedInfo, startConnection, getToken, hubURL]);
 
   const registerEventHandlers = useCallback(
     //TODO: investigate partial to have inference for handlers
