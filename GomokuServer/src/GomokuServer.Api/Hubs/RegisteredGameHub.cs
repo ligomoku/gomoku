@@ -19,13 +19,13 @@ public class RegisteredGameHub : GameHub
 		_mediator = mediator;
 	}
 
-	[AllowAnonymous]
+	[Authorize]
 	public override async Task JoinGameGroup(string gameId)
 	{
 		await base.JoinGameGroup(gameId);
 	}
 
-	[AllowAnonymous]
+	[Authorize]
 	public override async Task GetClock(GetClockMessage message)
 	{
 		await base.GetClock(message);

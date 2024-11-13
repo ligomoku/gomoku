@@ -18,7 +18,7 @@ public class RegisteredGamesController : GameController
 		_hubContext = hubContext;
 	}
 
-	[AllowAnonymous]
+	[Authorize]
 	[ProducesResponseType(typeof(GetGameHistoryResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
 	[SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundErrorExample))]
@@ -28,7 +28,7 @@ public class RegisteredGamesController : GameController
 		return getRegisteredGameHistoryResult.ToApiResponse();
 	}
 
-	[AllowAnonymous]
+	[Authorize]
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetAvailableGamesResponse>>), StatusCodes.Status200OK)]
 	public override async Task<IActionResult> GetAvailableGames([FromQuery] PaginationRequest request)
 	{
@@ -36,7 +36,7 @@ public class RegisteredGamesController : GameController
 		return availableGamesResult.ToApiResponse();
 	}
 
-	[AllowAnonymous]
+	[Authorize]
 	[ProducesResponseType(typeof(PaginatedResponse<IEnumerable<GetActiveGamesResponse>>), StatusCodes.Status200OK)]
 	public override async Task<IActionResult> GetActiveGames([FromQuery] PaginationRequest request)
 	{
