@@ -27,17 +27,11 @@ interface SignalRProviderProps {
   children: ReactNode;
 }
 
-const getHubBaseURL = (jwtToken?: string) => {
-  if (jwtToken) {
-    return `${import.meta.env.VITE_API_URL}/gamehub/registered`;
-  }
-
-  return `${import.meta.env.VITE_API_URL}/gamehub/anonymous?player_id=${typedSessionStorage.getItem("anonymousSessionID")}`;
-};
-
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const { jwtToken } = useAuthToken();
-  const signalRState = useSignalR(getHubBaseURL(jwtToken));
+  const signalRState = useSignalR(
+    `${import.meta.env.VITE_API_URL}/gamehub/${jwtToken ? "registered" : `anonymous?player_id=${typedSessionStorage.getItem("anonymousSessionID")}`}`,
+  );
 
   return (
     <SignalRContext.Provider value={signalRState}>
