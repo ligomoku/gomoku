@@ -10,20 +10,26 @@ import JoinGame from "@/pages/JoinGame";
 import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
 import { toaster } from "@/shared/ui/toaster";
+import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
 
-const getGameHistory = async (
-  gameID: SwaggerTypes.CreateGameResponse["gameId"],
+export const getGameHistory = async (
+  gameId: string,
   jwtToken?: string,
-) => {
-  const response = jwtToken
-    ? await SwaggerServices.getApiGameRegisteredByGameIdHistory({
-        headers: getDefaultHeaders(jwtToken),
-        path: { gameId: gameID },
-      })
-    : await SwaggerServices.getApiGameAnonymousByGameIdHistory({
-        headers: getDefaultHeaders(),
-        path: { gameId: gameID },
-      });
+): Promise<SwaggerTypes.GetGameHistoryResponse> => {
+  const response =
+    await fetchWithAuthFallback<SwaggerTypes.GetGameHistoryResponse>(
+      jwtToken,
+      async (token) =>
+        SwaggerServices.getApiGameRegisteredByGameIdHistory({
+          headers: getDefaultHeaders(token),
+          path: { gameId },
+        }),
+      async () =>
+        SwaggerServices.getApiGameAnonymousByGameIdHistory({
+          headers: getDefaultHeaders(),
+          path: { gameId },
+        }),
+    );
 
   if (!response.data) {
     throw new Error("Game history not received!");
