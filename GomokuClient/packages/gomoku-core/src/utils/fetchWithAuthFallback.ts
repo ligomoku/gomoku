@@ -11,7 +11,8 @@ type ApiResponse<T> =
     } & {
       request: Request;
       response: Response;
-    });
+    })
+  | { data: undefined; error: unknown };
 
 export const fetchWithAuthFallback = async <T, R = void>(
   jwtToken: string | undefined,

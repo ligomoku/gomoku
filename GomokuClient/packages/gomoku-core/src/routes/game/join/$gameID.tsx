@@ -42,18 +42,22 @@ const joinGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = jwtToken
-    ? await SwaggerServices.postApiGameRegisteredByGameIdJoin<true>({
+  const response = await fetchWithAuthFallback(
+    jwtToken,
+    async (token) =>
+      SwaggerServices.postApiGameRegisteredByGameIdJoin({
         path: { gameId: gameID },
-        headers: getDefaultHeaders(jwtToken),
-      })
-    : await SwaggerServices.postApiGameAnonymousByGameIdJoin<true>({
+        headers: getDefaultHeaders(token),
+      }),
+    async () =>
+      SwaggerServices.postApiGameAnonymousByGameIdJoin({
         path: { gameId: gameID },
         headers: getDefaultHeaders(),
         body: {
           playerId: typedSessionStorage.getItem("anonymousSessionID"),
         },
-      });
+      }),
+  );
 
   if (!response.data) {
     throw new Error("Failed to join game!");

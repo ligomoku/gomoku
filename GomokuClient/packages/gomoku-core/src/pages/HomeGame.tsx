@@ -14,6 +14,7 @@ import { SectionList } from "@/features/SectionList";
 import { TimeControls } from "@/features/TimeControls";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { getDefaultHeaders } from "@/shared/lib/utils";
+import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -102,13 +103,17 @@ const useFetchGames = (authToken: string) =>
   >({
     queryKey: ["games", null],
     queryFn: async () => {
-      const response = authToken
-        ? await SwaggerServices.getApiGameRegisteredAvailableToJoin({
-            headers: getDefaultHeaders(authToken),
-          })
-        : await SwaggerServices.getApiGameAnonymousAvailableToJoin({
+      const response = await fetchWithAuthFallback(
+        authToken,
+        async (token) =>
+          SwaggerServices.getApiGameRegisteredAvailableToJoin({
+            headers: getDefaultHeaders(token),
+          }),
+        () =>
+          SwaggerServices.getApiGameAnonymousAvailableToJoin({
             headers: getDefaultHeaders(),
-          });
+          }),
+      );
 
       if (!response.data) {
         throw new Error("Invalid game data received");
@@ -126,13 +131,17 @@ const useFetchActiveGames = (authToken: string) =>
   >({
     queryKey: ["gamesActive", null],
     queryFn: async () => {
-      const response = authToken
-        ? await SwaggerServices.getApiGameRegisteredActive({
-            headers: getDefaultHeaders(authToken),
-          })
-        : await SwaggerServices.getApiGameAnonymousActive({
+      const response = await fetchWithAuthFallback(
+        authToken,
+        async (token) =>
+          SwaggerServices.getApiGameRegisteredActive({
+            headers: getDefaultHeaders(token),
+          }),
+        async () =>
+          SwaggerServices.getApiGameAnonymousActive({
             headers: getDefaultHeaders(),
-          });
+          }),
+      );
 
       if (!response.data) {
         throw new Error("Invalid game data received");
