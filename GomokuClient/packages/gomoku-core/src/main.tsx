@@ -64,11 +64,11 @@ createRoot(document.getElementById("root")!).render(
         <I18nProvider i18n={i18n}>
           <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
             <AuthTokenProvider>
-              <ToasterProvider>
-                <SignalRProvider>
+              <SignalRProvider>
+                <ToasterProvider>
                   <RouterProvider router={router} />
-                </SignalRProvider>
-              </ToasterProvider>
+                </ToasterProvider>
+              </SignalRProvider>
             </AuthTokenProvider>
           </ClerkProvider>
         </I18nProvider>

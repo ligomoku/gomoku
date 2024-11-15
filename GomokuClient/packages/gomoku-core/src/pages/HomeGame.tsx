@@ -2,13 +2,12 @@ import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
-import { useEffect } from "react";
 
 import type { SwaggerTypes } from "@/api";
 import type { GameType } from "@/features/TimeControls";
 
 import { SwaggerServices } from "@/api";
-import { useAuthToken, useSignalRConnection } from "@/context";
+import { useAuthToken } from "@/context";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { SectionList } from "@/features/SectionList";
@@ -21,16 +20,6 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
-  const { hubProxy, isConnected } = useSignalRConnection();
-
-  useEffect(() => {
-    if (isConnected && hubProxy) {
-      hubProxy.sendInvitationToPlay({
-        //TODO: Remove. This is for testing
-        playerId: "test",
-      });
-    }
-  }, [isConnected, hubProxy]);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
