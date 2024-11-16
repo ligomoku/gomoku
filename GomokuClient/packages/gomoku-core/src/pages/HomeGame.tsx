@@ -14,6 +14,7 @@ import { SectionList } from "@/features/SectionList";
 import { TimeControls } from "@/features/TimeControls";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
 import { getDefaultHeaders } from "@/shared/lib/utils";
+import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -95,17 +96,24 @@ export const HomeGame = () => {
 
 const useFetchGames = (authToken: string) =>
   useQuery<
-    SwaggerTypes.GetApiGamesAvailableToJoinResponse,
-    SwaggerTypes.GetApiGamesAvailableToJoinError,
-    SwaggerTypes.GetApiGamesAvailableToJoinResponse,
+    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
+    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
+    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
     [string, string | null]
   >({
     queryKey: ["games", null],
     queryFn: async () => {
-      const response = await SwaggerServices.getApiGamesAvailableToJoin({
-        headers: getDefaultHeaders(authToken),
-        query: { isAnonymous: !authToken },
-      });
+      const response = await fetchWithAuthFallback(
+        authToken,
+        async (token) =>
+          SwaggerServices.getApiGameRegisteredAvailableToJoin({
+            headers: getDefaultHeaders(token),
+          }),
+        () =>
+          SwaggerServices.getApiGameAnonymousAvailableToJoin({
+            headers: getDefaultHeaders(),
+          }),
+      );
 
       if (!response.data) {
         throw new Error("Invalid game data received");
@@ -118,15 +126,22 @@ const useFetchGames = (authToken: string) =>
 
 const useFetchActiveGames = (authToken: string) =>
   useQuery<
-    SwaggerTypes.GetApiGamesActiveResponse,
-    SwaggerTypes.GetApiGamesActiveError
+    SwaggerTypes.GetApiGameRegisteredActiveResponse,
+    SwaggerTypes.GetApiGameRegisteredActiveError
   >({
     queryKey: ["gamesActive", null],
     queryFn: async () => {
-      const response = await SwaggerServices.getApiGamesActive({
-        headers: getDefaultHeaders(authToken),
-        query: { isAnonymous: !authToken },
-      });
+      const response = await fetchWithAuthFallback(
+        authToken,
+        async (token) =>
+          SwaggerServices.getApiGameRegisteredActive({
+            headers: getDefaultHeaders(token),
+          }),
+        async () =>
+          SwaggerServices.getApiGameAnonymousActive({
+            headers: getDefaultHeaders(),
+          }),
+      );
 
       if (!response.data) {
         throw new Error("Invalid game data received");

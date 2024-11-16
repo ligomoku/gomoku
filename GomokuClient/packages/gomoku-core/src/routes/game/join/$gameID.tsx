@@ -1,23 +1,35 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@/api";
 
 import { SwaggerServices } from "@/api";
-import { SignalRProvider, useAuthToken } from "@/context";
+import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
 import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
 import { LoadingOverlay } from "@/shared/ui/loading-overlay";
 import { toaster } from "@/shared/ui/toaster";
+import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
 
-const getGameHistory = async (
-  gameID: SwaggerTypes.CreateGameResponse["gameId"],
-) => {
-  const response = await SwaggerServices.getApiGameByGameIdHistory({
-    headers: getDefaultHeaders(),
-    path: { gameId: gameID },
-  });
+export const getGameHistory = async (
+  gameId: string,
+  jwtToken?: string,
+): Promise<SwaggerTypes.GetGameHistoryResponse> => {
+  const response =
+    await fetchWithAuthFallback<SwaggerTypes.GetGameHistoryResponse>(
+      jwtToken,
+      async (token) =>
+        SwaggerServices.getApiGameRegisteredByGameIdHistory({
+          headers: getDefaultHeaders(token),
+          path: { gameId },
+        }),
+      async () =>
+        SwaggerServices.getApiGameAnonymousByGameIdHistory({
+          headers: getDefaultHeaders(),
+          path: { gameId },
+        }),
+    );
 
   if (!response.data) {
     throw new Error("Game history not received!");
@@ -30,10 +42,22 @@ const joinGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = await SwaggerServices.postApiGameByGameIdJoin<true>({
-    path: { gameId: gameID },
-    headers: getDefaultHeaders(jwtToken),
-  });
+  const response = await fetchWithAuthFallback(
+    jwtToken,
+    async (token) =>
+      SwaggerServices.postApiGameRegisteredByGameIdJoin({
+        path: { gameId: gameID },
+        headers: getDefaultHeaders(token),
+      }),
+    async () =>
+      SwaggerServices.postApiGameAnonymousByGameIdJoin({
+        path: { gameId: gameID },
+        headers: getDefaultHeaders(),
+        body: {
+          playerId: typedSessionStorage.getItem("anonymousSessionID"),
+        },
+      }),
+  );
 
   if (!response.data) {
     throw new Error("Failed to join game!");
@@ -47,8 +71,6 @@ const JoinGameComponent = ({
 }: {
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
-  const [playerID, setPlayerID] =
-    useState<SwaggerTypes.AddPlayerToGameResponse["playerId"]>();
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 
@@ -58,24 +80,17 @@ const JoinGameComponent = ({
     isLoading,
   } = useQuery({
     queryKey: ["gameHistory", gameID],
-    queryFn: () => getGameHistory(gameID),
+    queryFn: () => getGameHistory(gameID, jwtToken),
   });
 
   useEffect(() => {
-    if (!gameHistory || playerID) return;
+    if (!gameHistory) return;
 
     const asyncJoinGame = async () => {
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        const joinGameResponse = await joinGame(gameID, jwtToken);
-        setPlayerID(joinGameResponse.playerId);
-        if (!jwtToken) {
-          typedSessionStorage.setItem(
-            `game_${gameID}`,
-            joinGameResponse.playerId,
-          );
-        }
+        await joinGame(gameID, jwtToken);
       } catch (err) {
         console.error("Error joining game:", err);
         toaster.show("Error joining game", "error");
@@ -85,33 +100,16 @@ const JoinGameComponent = ({
     };
 
     asyncJoinGame();
-  }, [gameHistory, gameID, jwtToken, playerID]);
+  }, [gameHistory, gameID, jwtToken]);
 
-  if (isLoading || (isJoining && !playerID) || !gameHistory)
+  if (isLoading || isJoining || !gameHistory)
     return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
-  const calculatePlayerID = jwtToken
-    ? playerID
-    : typedSessionStorage.getItem(`game_${gameID}`);
-
-  return (
-    <SignalRProvider playerID={calculatePlayerID}>
-      <JoinGame gameHistory={gameHistory} playerID={calculatePlayerID!} />
-    </SignalRProvider>
-  );
+  return <JoinGame gameHistory={gameHistory} />;
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
-  loader: async ({ params }) => {
-    const queryClient = new QueryClient();
-    const { gameID } = params;
-    await queryClient.ensureQueryData({
-      queryKey: ["gameHistory", gameID],
-      queryFn: () => getGameHistory(gameID),
-    });
-    return { gameID };
-  },
   component: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { gameID } = Route.useParams();

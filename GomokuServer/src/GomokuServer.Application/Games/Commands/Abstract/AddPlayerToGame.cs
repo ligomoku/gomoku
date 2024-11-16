@@ -5,6 +5,9 @@ public abstract record AddPlayerToGameCommand : ICommand<AddPlayerToGameResponse
 {
 	[Required]
 	public required string GameId { get; init; }
+
+	[Required]
+	public required string PlayerId { get; init; }
 }
 
 public abstract class AddPlayerToGameCommandHandler<TRequest>(

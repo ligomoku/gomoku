@@ -2,5 +2,6 @@
 
 public static class HubRoute
 {
-	public const string GameHub = "/gamehub";
+	public const string RegisteredGameHub = "/gamehub/registered";
+	public const string AnonymousGameHub = "/gamehub/anonymous";
 }

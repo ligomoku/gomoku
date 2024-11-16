@@ -18,6 +18,8 @@ public interface IGameHub
 	Task SendMessage(ChatMessageClientMessage messageRequest);
 
 	Task GetClock(GetClockMessage message);
+
+	Task SendInvitationToPlay(SendInvitationToPlayMessage message);
 }
 
 [Receiver]
@@ -44,4 +46,6 @@ public interface IGameHubReceiver
 	Task Clock(ClockDto clock);
 
 	Task GameHubError(ErrorMessage errorMessage);
+
+	Task ReceiveInvitationToPlay(ReceiveInvitationToPlayMessage message);
 }

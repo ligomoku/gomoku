@@ -2,6 +2,7 @@
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
+import type { HubConnection, IStreamResult, Subject } from "@microsoft/signalr";
 import type {
   IGameHub,
   IGameHubReceiver,
@@ -13,6 +14,8 @@ import type {
   ApproveRematchMessage,
   ChatMessageClientMessage,
   GetClockMessage,
+  SendInvitationToPlayMessage,
+  ReceiveInvitationToPlayMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Client";
 import type {
   PlayerJoinedGameMessage,
@@ -24,7 +27,6 @@ import type {
   ErrorMessage,
 } from "../GomokuServer.Api.Hubs.Messages.Server";
 import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
-import type { HubConnection, IStreamResult, Subject } from "@microsoft/signalr";
 
 // components
 
@@ -134,6 +136,12 @@ class IGameHub_HubProxy implements IGameHub {
   ): Promise<void> => {
     return await this.connection.invoke("GetClock", message);
   };
+
+  public readonly sendInvitationToPlay = async (
+    message: SendInvitationToPlayMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("SendInvitationToPlay", message);
+  };
 }
 
 // Receiver
@@ -168,6 +176,9 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     const __clock = (...args: [ClockDto]) => receiver.clock(...args);
     const __gameHubError = (...args: [ErrorMessage]) =>
       receiver.gameHubError(...args);
+    const __receiveInvitationToPlay = (
+      ...args: [ReceiveInvitationToPlayMessage]
+    ) => receiver.receiveInvitationToPlay(...args);
 
     connection.on("GameGroupJoined", __gameGroupJoined);
     connection.on("PlayerJoinedGame", __playerJoinedGame);
@@ -180,6 +191,7 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("SendMessage", __sendMessage);
     connection.on("Clock", __clock);
     connection.on("GameHubError", __gameHubError);
+    connection.on("ReceiveInvitationToPlay", __receiveInvitationToPlay);
 
     const methodList: ReceiverMethod[] = [
       { methodName: "GameGroupJoined", method: __gameGroupJoined },
@@ -193,6 +205,10 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "SendMessage", method: __sendMessage },
       { methodName: "Clock", method: __clock },
       { methodName: "GameHubError", method: __gameHubError },
+      {
+        methodName: "ReceiveInvitationToPlay",
+        method: __receiveInvitationToPlay,
+      },
     ];
 
     return new ReceiverMethodSubscription(connection, methodList);

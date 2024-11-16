@@ -9,47 +9,83 @@ import {
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
-  GetApiGameByGameIdHistoryData,
-  GetApiGamesAvailableToJoinData,
-  GetApiGamesAvailableToJoinError,
-  GetApiGamesAvailableToJoinResponse,
-  GetApiGamesActiveData,
-  GetApiGamesActiveError,
-  GetApiGamesActiveResponse,
-  PostApiGameData,
-  PostApiGameError,
-  PostApiGameResponse,
-  PostApiGameByGameIdJoinData,
-  PostApiGameByGameIdJoinError,
-  PostApiGameByGameIdJoinResponse,
+  GetApiGameAnonymousByGameIdHistoryData,
+  GetApiGameAnonymousAvailableToJoinData,
+  GetApiGameAnonymousAvailableToJoinError,
+  GetApiGameAnonymousAvailableToJoinResponse,
+  GetApiGameAnonymousActiveData,
+  GetApiGameAnonymousActiveError,
+  GetApiGameAnonymousActiveResponse,
+  PostApiGameAnonymousData,
+  PostApiGameAnonymousError,
+  PostApiGameAnonymousResponse,
+  PostApiGameAnonymousByGameIdJoinData,
+  PostApiGameAnonymousByGameIdJoinError,
+  PostApiGameAnonymousByGameIdJoinResponse,
   GetHealthData,
   GetApiProfilesByUserNameGamesData,
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
-  PostGamehubJoinGameGroupData,
-  PostGamehubGetClockData,
-  PostGamehubMakeMoveData,
-  PostGamehubResignData,
-  PostGamehubRequestRematchData,
-  PostGamehubApproveRematchData,
-  PostGamehubSendMessageData,
+  GetApiGameRegisteredByGameIdHistoryData,
+  GetApiGameRegisteredAvailableToJoinData,
+  GetApiGameRegisteredAvailableToJoinError,
+  GetApiGameRegisteredAvailableToJoinResponse,
+  GetApiGameRegisteredActiveData,
+  GetApiGameRegisteredActiveError,
+  GetApiGameRegisteredActiveResponse,
+  PostApiGameRegisteredData,
+  PostApiGameRegisteredError,
+  PostApiGameRegisteredResponse,
+  PostApiGameRegisteredByGameIdJoinData,
+  PostApiGameRegisteredByGameIdJoinError,
+  PostApiGameRegisteredByGameIdJoinResponse,
+  PostGamehubAnonymousJoinGameGroupData,
+  PostGamehubAnonymousGetClockData,
+  PostGamehubAnonymousMakeMoveData,
+  PostGamehubAnonymousResignData,
+  PostGamehubAnonymousRequestRematchData,
+  PostGamehubAnonymousApproveRematchData,
+  PostGamehubAnonymousSendMessageData,
+  PostGamehubAnonymousSendInvitationToPlayData,
+  PostGamehubRegisteredJoinGameGroupData,
+  PostGamehubRegisteredGetClockData,
+  PostGamehubRegisteredMakeMoveData,
+  PostGamehubRegisteredResignData,
+  PostGamehubRegisteredRequestRematchData,
+  PostGamehubRegisteredApproveRematchData,
+  PostGamehubRegisteredSendMessageData,
+  PostGamehubRegisteredSendInvitationToPlayData,
 } from "../types.gen";
 import {
   client,
-  getApiGameByGameIdHistory,
-  getApiGamesAvailableToJoin,
-  getApiGamesActive,
-  postApiGame,
-  postApiGameByGameIdJoin,
+  getApiGameAnonymousByGameIdHistory,
+  getApiGameAnonymousAvailableToJoin,
+  getApiGameAnonymousActive,
+  postApiGameAnonymous,
+  postApiGameAnonymousByGameIdJoin,
   getHealth,
   getApiProfilesByUserNameGames,
-  postGamehubJoinGameGroup,
-  postGamehubGetClock,
-  postGamehubMakeMove,
-  postGamehubResign,
-  postGamehubRequestRematch,
-  postGamehubApproveRematch,
-  postGamehubSendMessage,
+  getApiGameRegisteredByGameIdHistory,
+  getApiGameRegisteredAvailableToJoin,
+  getApiGameRegisteredActive,
+  postApiGameRegistered,
+  postApiGameRegisteredByGameIdJoin,
+  postGamehubAnonymousJoinGameGroup,
+  postGamehubAnonymousGetClock,
+  postGamehubAnonymousMakeMove,
+  postGamehubAnonymousResign,
+  postGamehubAnonymousRequestRematch,
+  postGamehubAnonymousApproveRematch,
+  postGamehubAnonymousSendMessage,
+  postGamehubAnonymousSendInvitationToPlay,
+  postGamehubRegisteredJoinGameGroup,
+  postGamehubRegisteredGetClock,
+  postGamehubRegisteredMakeMove,
+  postGamehubRegisteredResign,
+  postGamehubRegisteredRequestRematch,
+  postGamehubRegisteredApproveRematch,
+  postGamehubRegisteredSendMessage,
+  postGamehubRegisteredSendInvitationToPlay,
 } from "../services.gen";
 
 type QueryKey<TOptions extends Options> = [
@@ -86,16 +122,16 @@ const createQueryKey = <TOptions extends Options>(
   return params;
 };
 
-export const getApiGameByGameIdHistoryQueryKey = (
-  options: Options<GetApiGameByGameIdHistoryData>,
-) => [createQueryKey("getApiGameByGameIdHistory", options)];
+export const getApiGameAnonymousByGameIdHistoryQueryKey = (
+  options: Options<GetApiGameAnonymousByGameIdHistoryData>,
+) => [createQueryKey("getApiGameAnonymousByGameIdHistory", options)];
 
-export const getApiGameByGameIdHistoryOptions = (
-  options: Options<GetApiGameByGameIdHistoryData>,
+export const getApiGameAnonymousByGameIdHistoryOptions = (
+  options: Options<GetApiGameAnonymousByGameIdHistoryData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGameByGameIdHistory({
+      const { data } = await getApiGameAnonymousByGameIdHistory({
         ...options,
         ...queryKey[0],
         signal,
@@ -103,20 +139,20 @@ export const getApiGameByGameIdHistoryOptions = (
       });
       return data;
     },
-    queryKey: getApiGameByGameIdHistoryQueryKey(options),
+    queryKey: getApiGameAnonymousByGameIdHistoryQueryKey(options),
   });
 };
 
-export const getApiGamesAvailableToJoinQueryKey = (
-  options: Options<GetApiGamesAvailableToJoinData>,
-) => [createQueryKey("getApiGamesAvailableToJoin", options)];
+export const getApiGameAnonymousAvailableToJoinQueryKey = (
+  options: Options<GetApiGameAnonymousAvailableToJoinData>,
+) => [createQueryKey("getApiGameAnonymousAvailableToJoin", options)];
 
-export const getApiGamesAvailableToJoinOptions = (
-  options: Options<GetApiGamesAvailableToJoinData>,
+export const getApiGameAnonymousAvailableToJoinOptions = (
+  options: Options<GetApiGameAnonymousAvailableToJoinData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGamesAvailableToJoin({
+      const { data } = await getApiGameAnonymousAvailableToJoin({
         ...options,
         ...queryKey[0],
         signal,
@@ -124,7 +160,7 @@ export const getApiGamesAvailableToJoinOptions = (
       });
       return data;
     },
-    queryKey: getApiGamesAvailableToJoinQueryKey(options),
+    queryKey: getApiGameAnonymousAvailableToJoinQueryKey(options),
   });
 };
 
@@ -162,23 +198,23 @@ const createInfiniteParams = <
   return params as unknown as typeof page;
 };
 
-export const getApiGamesAvailableToJoinInfiniteQueryKey = (
-  options: Options<GetApiGamesAvailableToJoinData>,
-): QueryKey<Options<GetApiGamesAvailableToJoinData>> => [
-  createQueryKey("getApiGamesAvailableToJoin", options, true),
+export const getApiGameAnonymousAvailableToJoinInfiniteQueryKey = (
+  options: Options<GetApiGameAnonymousAvailableToJoinData>,
+): QueryKey<Options<GetApiGameAnonymousAvailableToJoinData>> => [
+  createQueryKey("getApiGameAnonymousAvailableToJoin", options, true),
 ];
 
-export const getApiGamesAvailableToJoinInfiniteOptions = (
-  options: Options<GetApiGamesAvailableToJoinData>,
+export const getApiGameAnonymousAvailableToJoinInfiniteOptions = (
+  options: Options<GetApiGameAnonymousAvailableToJoinData>,
 ) => {
   return infiniteQueryOptions<
-    GetApiGamesAvailableToJoinResponse,
-    GetApiGamesAvailableToJoinError,
-    InfiniteData<GetApiGamesAvailableToJoinResponse>,
-    QueryKey<Options<GetApiGamesAvailableToJoinData>>,
+    GetApiGameAnonymousAvailableToJoinResponse,
+    GetApiGameAnonymousAvailableToJoinError,
+    InfiniteData<GetApiGameAnonymousAvailableToJoinResponse>,
+    QueryKey<Options<GetApiGameAnonymousAvailableToJoinData>>,
     | number
     | Pick<
-        QueryKey<Options<GetApiGamesAvailableToJoinData>>[0],
+        QueryKey<Options<GetApiGameAnonymousAvailableToJoinData>>[0],
         "body" | "headers" | "path" | "query"
       >
   >(
@@ -187,7 +223,7 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
-          QueryKey<Options<GetApiGamesAvailableToJoinData>>[0],
+          QueryKey<Options<GetApiGameAnonymousAvailableToJoinData>>[0],
           "body" | "headers" | "path" | "query"
         > =
           typeof pageParam === "object"
@@ -198,7 +234,7 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getApiGamesAvailableToJoin({
+        const { data } = await getApiGameAnonymousAvailableToJoin({
           ...options,
           ...params,
           signal,
@@ -206,21 +242,21 @@ export const getApiGamesAvailableToJoinInfiniteOptions = (
         });
         return data;
       },
-      queryKey: getApiGamesAvailableToJoinInfiniteQueryKey(options),
+      queryKey: getApiGameAnonymousAvailableToJoinInfiniteQueryKey(options),
     },
   );
 };
 
-export const getApiGamesActiveQueryKey = (
-  options: Options<GetApiGamesActiveData>,
-) => [createQueryKey("getApiGamesActive", options)];
+export const getApiGameAnonymousActiveQueryKey = (
+  options: Options<GetApiGameAnonymousActiveData>,
+) => [createQueryKey("getApiGameAnonymousActive", options)];
 
-export const getApiGamesActiveOptions = (
-  options: Options<GetApiGamesActiveData>,
+export const getApiGameAnonymousActiveOptions = (
+  options: Options<GetApiGameAnonymousActiveData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGamesActive({
+      const { data } = await getApiGameAnonymousActive({
         ...options,
         ...queryKey[0],
         signal,
@@ -228,27 +264,27 @@ export const getApiGamesActiveOptions = (
       });
       return data;
     },
-    queryKey: getApiGamesActiveQueryKey(options),
+    queryKey: getApiGameAnonymousActiveQueryKey(options),
   });
 };
 
-export const getApiGamesActiveInfiniteQueryKey = (
-  options: Options<GetApiGamesActiveData>,
-): QueryKey<Options<GetApiGamesActiveData>> => [
-  createQueryKey("getApiGamesActive", options, true),
+export const getApiGameAnonymousActiveInfiniteQueryKey = (
+  options: Options<GetApiGameAnonymousActiveData>,
+): QueryKey<Options<GetApiGameAnonymousActiveData>> => [
+  createQueryKey("getApiGameAnonymousActive", options, true),
 ];
 
-export const getApiGamesActiveInfiniteOptions = (
-  options: Options<GetApiGamesActiveData>,
+export const getApiGameAnonymousActiveInfiniteOptions = (
+  options: Options<GetApiGameAnonymousActiveData>,
 ) => {
   return infiniteQueryOptions<
-    GetApiGamesActiveResponse,
-    GetApiGamesActiveError,
-    InfiniteData<GetApiGamesActiveResponse>,
-    QueryKey<Options<GetApiGamesActiveData>>,
+    GetApiGameAnonymousActiveResponse,
+    GetApiGameAnonymousActiveError,
+    InfiniteData<GetApiGameAnonymousActiveResponse>,
+    QueryKey<Options<GetApiGameAnonymousActiveData>>,
     | number
     | Pick<
-        QueryKey<Options<GetApiGamesActiveData>>[0],
+        QueryKey<Options<GetApiGameAnonymousActiveData>>[0],
         "body" | "headers" | "path" | "query"
       >
   >(
@@ -257,7 +293,7 @@ export const getApiGamesActiveInfiniteOptions = (
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
         const page: Pick<
-          QueryKey<Options<GetApiGamesActiveData>>[0],
+          QueryKey<Options<GetApiGameAnonymousActiveData>>[0],
           "body" | "headers" | "path" | "query"
         > =
           typeof pageParam === "object"
@@ -268,7 +304,7 @@ export const getApiGamesActiveInfiniteOptions = (
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getApiGamesActive({
+        const { data } = await getApiGameAnonymousActive({
           ...options,
           ...params,
           signal,
@@ -276,19 +312,21 @@ export const getApiGamesActiveInfiniteOptions = (
         });
         return data;
       },
-      queryKey: getApiGamesActiveInfiniteQueryKey(options),
+      queryKey: getApiGameAnonymousActiveInfiniteQueryKey(options),
     },
   );
 };
 
-export const postApiGameQueryKey = (options: Options<PostApiGameData>) => [
-  createQueryKey("postApiGame", options),
-];
+export const postApiGameAnonymousQueryKey = (
+  options: Options<PostApiGameAnonymousData>,
+) => [createQueryKey("postApiGameAnonymous", options)];
 
-export const postApiGameOptions = (options: Options<PostApiGameData>) => {
+export const postApiGameAnonymousOptions = (
+  options: Options<PostApiGameAnonymousData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postApiGame({
+      const { data } = await postApiGameAnonymous({
         ...options,
         ...queryKey[0],
         signal,
@@ -296,20 +334,20 @@ export const postApiGameOptions = (options: Options<PostApiGameData>) => {
       });
       return data;
     },
-    queryKey: postApiGameQueryKey(options),
+    queryKey: postApiGameAnonymousQueryKey(options),
   });
 };
 
-export const postApiGameMutation = (
-  options?: Partial<Options<PostApiGameData>>,
+export const postApiGameAnonymousMutation = (
+  options?: Partial<Options<PostApiGameAnonymousData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    PostApiGameResponse,
-    PostApiGameError,
-    Options<PostApiGameData>
+    PostApiGameAnonymousResponse,
+    PostApiGameAnonymousError,
+    Options<PostApiGameAnonymousData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postApiGame({
+      const { data } = await postApiGameAnonymous({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -320,16 +358,16 @@ export const postApiGameMutation = (
   return mutationOptions;
 };
 
-export const postApiGameByGameIdJoinQueryKey = (
-  options: Options<PostApiGameByGameIdJoinData>,
-) => [createQueryKey("postApiGameByGameIdJoin", options)];
+export const postApiGameAnonymousByGameIdJoinQueryKey = (
+  options: Options<PostApiGameAnonymousByGameIdJoinData>,
+) => [createQueryKey("postApiGameAnonymousByGameIdJoin", options)];
 
-export const postApiGameByGameIdJoinOptions = (
-  options: Options<PostApiGameByGameIdJoinData>,
+export const postApiGameAnonymousByGameIdJoinOptions = (
+  options: Options<PostApiGameAnonymousByGameIdJoinData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postApiGameByGameIdJoin({
+      const { data } = await postApiGameAnonymousByGameIdJoin({
         ...options,
         ...queryKey[0],
         signal,
@@ -337,20 +375,20 @@ export const postApiGameByGameIdJoinOptions = (
       });
       return data;
     },
-    queryKey: postApiGameByGameIdJoinQueryKey(options),
+    queryKey: postApiGameAnonymousByGameIdJoinQueryKey(options),
   });
 };
 
-export const postApiGameByGameIdJoinMutation = (
-  options?: Partial<Options<PostApiGameByGameIdJoinData>>,
+export const postApiGameAnonymousByGameIdJoinMutation = (
+  options?: Partial<Options<PostApiGameAnonymousByGameIdJoinData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    PostApiGameByGameIdJoinResponse,
-    PostApiGameByGameIdJoinError,
-    Options<PostApiGameByGameIdJoinData>
+    PostApiGameAnonymousByGameIdJoinResponse,
+    PostApiGameAnonymousByGameIdJoinError,
+    Options<PostApiGameAnonymousByGameIdJoinData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postApiGameByGameIdJoin({
+      const { data } = await postApiGameAnonymousByGameIdJoin({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -450,16 +488,16 @@ export const getApiProfilesByUserNameGamesInfiniteOptions = (
   );
 };
 
-export const postGamehubJoinGameGroupQueryKey = (
-  options?: Options<PostGamehubJoinGameGroupData>,
-) => [createQueryKey("postGamehubJoinGameGroup", options)];
+export const getApiGameRegisteredByGameIdHistoryQueryKey = (
+  options: Options<GetApiGameRegisteredByGameIdHistoryData>,
+) => [createQueryKey("getApiGameRegisteredByGameIdHistory", options)];
 
-export const postGamehubJoinGameGroupOptions = (
-  options?: Options<PostGamehubJoinGameGroupData>,
+export const getApiGameRegisteredByGameIdHistoryOptions = (
+  options: Options<GetApiGameRegisteredByGameIdHistoryData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubJoinGameGroup({
+      const { data } = await getApiGameRegisteredByGameIdHistory({
         ...options,
         ...queryKey[0],
         signal,
@@ -467,20 +505,181 @@ export const postGamehubJoinGameGroupOptions = (
       });
       return data;
     },
-    queryKey: postGamehubJoinGameGroupQueryKey(options),
+    queryKey: getApiGameRegisteredByGameIdHistoryQueryKey(options),
   });
 };
 
-export const postGamehubJoinGameGroupMutation = (
-  options?: Partial<Options<PostGamehubJoinGameGroupData>>,
+export const getApiGameRegisteredAvailableToJoinQueryKey = (
+  options: Options<GetApiGameRegisteredAvailableToJoinData>,
+) => [createQueryKey("getApiGameRegisteredAvailableToJoin", options)];
+
+export const getApiGameRegisteredAvailableToJoinOptions = (
+  options: Options<GetApiGameRegisteredAvailableToJoinData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getApiGameRegisteredAvailableToJoin({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiGameRegisteredAvailableToJoinQueryKey(options),
+  });
+};
+
+export const getApiGameRegisteredAvailableToJoinInfiniteQueryKey = (
+  options: Options<GetApiGameRegisteredAvailableToJoinData>,
+): QueryKey<Options<GetApiGameRegisteredAvailableToJoinData>> => [
+  createQueryKey("getApiGameRegisteredAvailableToJoin", options, true),
+];
+
+export const getApiGameRegisteredAvailableToJoinInfiniteOptions = (
+  options: Options<GetApiGameRegisteredAvailableToJoinData>,
+) => {
+  return infiniteQueryOptions<
+    GetApiGameRegisteredAvailableToJoinResponse,
+    GetApiGameRegisteredAvailableToJoinError,
+    InfiniteData<GetApiGameRegisteredAvailableToJoinResponse>,
+    QueryKey<Options<GetApiGameRegisteredAvailableToJoinData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetApiGameRegisteredAvailableToJoinData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetApiGameRegisteredAvailableToJoinData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  offset: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getApiGameRegisteredAvailableToJoin({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getApiGameRegisteredAvailableToJoinInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const getApiGameRegisteredActiveQueryKey = (
+  options: Options<GetApiGameRegisteredActiveData>,
+) => [createQueryKey("getApiGameRegisteredActive", options)];
+
+export const getApiGameRegisteredActiveOptions = (
+  options: Options<GetApiGameRegisteredActiveData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getApiGameRegisteredActive({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiGameRegisteredActiveQueryKey(options),
+  });
+};
+
+export const getApiGameRegisteredActiveInfiniteQueryKey = (
+  options: Options<GetApiGameRegisteredActiveData>,
+): QueryKey<Options<GetApiGameRegisteredActiveData>> => [
+  createQueryKey("getApiGameRegisteredActive", options, true),
+];
+
+export const getApiGameRegisteredActiveInfiniteOptions = (
+  options: Options<GetApiGameRegisteredActiveData>,
+) => {
+  return infiniteQueryOptions<
+    GetApiGameRegisteredActiveResponse,
+    GetApiGameRegisteredActiveError,
+    InfiniteData<GetApiGameRegisteredActiveResponse>,
+    QueryKey<Options<GetApiGameRegisteredActiveData>>,
+    | number
+    | Pick<
+        QueryKey<Options<GetApiGameRegisteredActiveData>>[0],
+        "body" | "headers" | "path" | "query"
+      >
+  >(
+    // @ts-ignore
+    {
+      queryFn: async ({ pageParam, queryKey, signal }) => {
+        // @ts-ignore
+        const page: Pick<
+          QueryKey<Options<GetApiGameRegisteredActiveData>>[0],
+          "body" | "headers" | "path" | "query"
+        > =
+          typeof pageParam === "object"
+            ? pageParam
+            : {
+                query: {
+                  offset: pageParam,
+                },
+              };
+        const params = createInfiniteParams(queryKey, page);
+        const { data } = await getApiGameRegisteredActive({
+          ...options,
+          ...params,
+          signal,
+          throwOnError: true,
+        });
+        return data;
+      },
+      queryKey: getApiGameRegisteredActiveInfiniteQueryKey(options),
+    },
+  );
+};
+
+export const postApiGameRegisteredQueryKey = (
+  options: Options<PostApiGameRegisteredData>,
+) => [createQueryKey("postApiGameRegistered", options)];
+
+export const postApiGameRegisteredOptions = (
+  options: Options<PostApiGameRegisteredData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postApiGameRegistered({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postApiGameRegisteredQueryKey(options),
+  });
+};
+
+export const postApiGameRegisteredMutation = (
+  options?: Partial<Options<PostApiGameRegisteredData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
-    DefaultError,
-    Options<PostGamehubJoinGameGroupData>
+    PostApiGameRegisteredResponse,
+    PostApiGameRegisteredError,
+    Options<PostApiGameRegisteredData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubJoinGameGroup({
+      const { data } = await postApiGameRegistered({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -491,16 +690,16 @@ export const postGamehubJoinGameGroupMutation = (
   return mutationOptions;
 };
 
-export const postGamehubGetClockQueryKey = (
-  options?: Options<PostGamehubGetClockData>,
-) => [createQueryKey("postGamehubGetClock", options)];
+export const postApiGameRegisteredByGameIdJoinQueryKey = (
+  options: Options<PostApiGameRegisteredByGameIdJoinData>,
+) => [createQueryKey("postApiGameRegisteredByGameIdJoin", options)];
 
-export const postGamehubGetClockOptions = (
-  options?: Options<PostGamehubGetClockData>,
+export const postApiGameRegisteredByGameIdJoinOptions = (
+  options: Options<PostApiGameRegisteredByGameIdJoinData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubGetClock({
+      const { data } = await postApiGameRegisteredByGameIdJoin({
         ...options,
         ...queryKey[0],
         signal,
@@ -508,20 +707,20 @@ export const postGamehubGetClockOptions = (
       });
       return data;
     },
-    queryKey: postGamehubGetClockQueryKey(options),
+    queryKey: postApiGameRegisteredByGameIdJoinQueryKey(options),
   });
 };
 
-export const postGamehubGetClockMutation = (
-  options?: Partial<Options<PostGamehubGetClockData>>,
+export const postApiGameRegisteredByGameIdJoinMutation = (
+  options?: Partial<Options<PostApiGameRegisteredByGameIdJoinData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
-    DefaultError,
-    Options<PostGamehubGetClockData>
+    PostApiGameRegisteredByGameIdJoinResponse,
+    PostApiGameRegisteredByGameIdJoinError,
+    Options<PostApiGameRegisteredByGameIdJoinData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubGetClock({
+      const { data } = await postApiGameRegisteredByGameIdJoin({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -532,16 +731,16 @@ export const postGamehubGetClockMutation = (
   return mutationOptions;
 };
 
-export const postGamehubMakeMoveQueryKey = (
-  options?: Options<PostGamehubMakeMoveData>,
-) => [createQueryKey("postGamehubMakeMove", options)];
+export const postGamehubAnonymousJoinGameGroupQueryKey = (
+  options?: Options<PostGamehubAnonymousJoinGameGroupData>,
+) => [createQueryKey("postGamehubAnonymousJoinGameGroup", options)];
 
-export const postGamehubMakeMoveOptions = (
-  options?: Options<PostGamehubMakeMoveData>,
+export const postGamehubAnonymousJoinGameGroupOptions = (
+  options?: Options<PostGamehubAnonymousJoinGameGroupData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubMakeMove({
+      const { data } = await postGamehubAnonymousJoinGameGroup({
         ...options,
         ...queryKey[0],
         signal,
@@ -549,20 +748,20 @@ export const postGamehubMakeMoveOptions = (
       });
       return data;
     },
-    queryKey: postGamehubMakeMoveQueryKey(options),
+    queryKey: postGamehubAnonymousJoinGameGroupQueryKey(options),
   });
 };
 
-export const postGamehubMakeMoveMutation = (
-  options?: Partial<Options<PostGamehubMakeMoveData>>,
+export const postGamehubAnonymousJoinGameGroupMutation = (
+  options?: Partial<Options<PostGamehubAnonymousJoinGameGroupData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
-    Options<PostGamehubMakeMoveData>
+    Options<PostGamehubAnonymousJoinGameGroupData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubMakeMove({
+      const { data } = await postGamehubAnonymousJoinGameGroup({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -573,16 +772,16 @@ export const postGamehubMakeMoveMutation = (
   return mutationOptions;
 };
 
-export const postGamehubResignQueryKey = (
-  options?: Options<PostGamehubResignData>,
-) => [createQueryKey("postGamehubResign", options)];
+export const postGamehubAnonymousGetClockQueryKey = (
+  options?: Options<PostGamehubAnonymousGetClockData>,
+) => [createQueryKey("postGamehubAnonymousGetClock", options)];
 
-export const postGamehubResignOptions = (
-  options?: Options<PostGamehubResignData>,
+export const postGamehubAnonymousGetClockOptions = (
+  options?: Options<PostGamehubAnonymousGetClockData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubResign({
+      const { data } = await postGamehubAnonymousGetClock({
         ...options,
         ...queryKey[0],
         signal,
@@ -590,20 +789,20 @@ export const postGamehubResignOptions = (
       });
       return data;
     },
-    queryKey: postGamehubResignQueryKey(options),
+    queryKey: postGamehubAnonymousGetClockQueryKey(options),
   });
 };
 
-export const postGamehubResignMutation = (
-  options?: Partial<Options<PostGamehubResignData>>,
+export const postGamehubAnonymousGetClockMutation = (
+  options?: Partial<Options<PostGamehubAnonymousGetClockData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
-    Options<PostGamehubResignData>
+    Options<PostGamehubAnonymousGetClockData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubResign({
+      const { data } = await postGamehubAnonymousGetClock({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -614,16 +813,16 @@ export const postGamehubResignMutation = (
   return mutationOptions;
 };
 
-export const postGamehubRequestRematchQueryKey = (
-  options?: Options<PostGamehubRequestRematchData>,
-) => [createQueryKey("postGamehubRequestRematch", options)];
+export const postGamehubAnonymousMakeMoveQueryKey = (
+  options?: Options<PostGamehubAnonymousMakeMoveData>,
+) => [createQueryKey("postGamehubAnonymousMakeMove", options)];
 
-export const postGamehubRequestRematchOptions = (
-  options?: Options<PostGamehubRequestRematchData>,
+export const postGamehubAnonymousMakeMoveOptions = (
+  options?: Options<PostGamehubAnonymousMakeMoveData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubRequestRematch({
+      const { data } = await postGamehubAnonymousMakeMove({
         ...options,
         ...queryKey[0],
         signal,
@@ -631,20 +830,20 @@ export const postGamehubRequestRematchOptions = (
       });
       return data;
     },
-    queryKey: postGamehubRequestRematchQueryKey(options),
+    queryKey: postGamehubAnonymousMakeMoveQueryKey(options),
   });
 };
 
-export const postGamehubRequestRematchMutation = (
-  options?: Partial<Options<PostGamehubRequestRematchData>>,
+export const postGamehubAnonymousMakeMoveMutation = (
+  options?: Partial<Options<PostGamehubAnonymousMakeMoveData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
-    Options<PostGamehubRequestRematchData>
+    Options<PostGamehubAnonymousMakeMoveData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubRequestRematch({
+      const { data } = await postGamehubAnonymousMakeMove({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -655,16 +854,16 @@ export const postGamehubRequestRematchMutation = (
   return mutationOptions;
 };
 
-export const postGamehubApproveRematchQueryKey = (
-  options?: Options<PostGamehubApproveRematchData>,
-) => [createQueryKey("postGamehubApproveRematch", options)];
+export const postGamehubAnonymousResignQueryKey = (
+  options?: Options<PostGamehubAnonymousResignData>,
+) => [createQueryKey("postGamehubAnonymousResign", options)];
 
-export const postGamehubApproveRematchOptions = (
-  options?: Options<PostGamehubApproveRematchData>,
+export const postGamehubAnonymousResignOptions = (
+  options?: Options<PostGamehubAnonymousResignData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubApproveRematch({
+      const { data } = await postGamehubAnonymousResign({
         ...options,
         ...queryKey[0],
         signal,
@@ -672,20 +871,20 @@ export const postGamehubApproveRematchOptions = (
       });
       return data;
     },
-    queryKey: postGamehubApproveRematchQueryKey(options),
+    queryKey: postGamehubAnonymousResignQueryKey(options),
   });
 };
 
-export const postGamehubApproveRematchMutation = (
-  options?: Partial<Options<PostGamehubApproveRematchData>>,
+export const postGamehubAnonymousResignMutation = (
+  options?: Partial<Options<PostGamehubAnonymousResignData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
-    Options<PostGamehubApproveRematchData>
+    Options<PostGamehubAnonymousResignData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubApproveRematch({
+      const { data } = await postGamehubAnonymousResign({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -696,16 +895,16 @@ export const postGamehubApproveRematchMutation = (
   return mutationOptions;
 };
 
-export const postGamehubSendMessageQueryKey = (
-  options?: Options<PostGamehubSendMessageData>,
-) => [createQueryKey("postGamehubSendMessage", options)];
+export const postGamehubAnonymousRequestRematchQueryKey = (
+  options?: Options<PostGamehubAnonymousRequestRematchData>,
+) => [createQueryKey("postGamehubAnonymousRequestRematch", options)];
 
-export const postGamehubSendMessageOptions = (
-  options?: Options<PostGamehubSendMessageData>,
+export const postGamehubAnonymousRequestRematchOptions = (
+  options?: Options<PostGamehubAnonymousRequestRematchData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postGamehubSendMessage({
+      const { data } = await postGamehubAnonymousRequestRematch({
         ...options,
         ...queryKey[0],
         signal,
@@ -713,20 +912,471 @@ export const postGamehubSendMessageOptions = (
       });
       return data;
     },
-    queryKey: postGamehubSendMessageQueryKey(options),
+    queryKey: postGamehubAnonymousRequestRematchQueryKey(options),
   });
 };
 
-export const postGamehubSendMessageMutation = (
-  options?: Partial<Options<PostGamehubSendMessageData>>,
+export const postGamehubAnonymousRequestRematchMutation = (
+  options?: Partial<Options<PostGamehubAnonymousRequestRematchData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
     void,
     DefaultError,
-    Options<PostGamehubSendMessageData>
+    Options<PostGamehubAnonymousRequestRematchData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postGamehubSendMessage({
+      const { data } = await postGamehubAnonymousRequestRematch({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubAnonymousApproveRematchQueryKey = (
+  options?: Options<PostGamehubAnonymousApproveRematchData>,
+) => [createQueryKey("postGamehubAnonymousApproveRematch", options)];
+
+export const postGamehubAnonymousApproveRematchOptions = (
+  options?: Options<PostGamehubAnonymousApproveRematchData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousApproveRematch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousApproveRematchQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousApproveRematchMutation = (
+  options?: Partial<Options<PostGamehubAnonymousApproveRematchData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousApproveRematchData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousApproveRematch({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubAnonymousSendMessageQueryKey = (
+  options?: Options<PostGamehubAnonymousSendMessageData>,
+) => [createQueryKey("postGamehubAnonymousSendMessage", options)];
+
+export const postGamehubAnonymousSendMessageOptions = (
+  options?: Options<PostGamehubAnonymousSendMessageData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousSendMessage({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousSendMessageQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousSendMessageMutation = (
+  options?: Partial<Options<PostGamehubAnonymousSendMessageData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousSendMessageData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousSendMessage({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubAnonymousSendInvitationToPlayQueryKey = (
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData>,
+) => [createQueryKey("postGamehubAnonymousSendInvitationToPlay", options)];
+
+export const postGamehubAnonymousSendInvitationToPlayOptions = (
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousSendInvitationToPlay({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousSendInvitationToPlayQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousSendInvitationToPlayMutation = (
+  options?: Partial<Options<PostGamehubAnonymousSendInvitationToPlayData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousSendInvitationToPlayData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousSendInvitationToPlay({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredJoinGameGroupQueryKey = (
+  options?: Options<PostGamehubRegisteredJoinGameGroupData>,
+) => [createQueryKey("postGamehubRegisteredJoinGameGroup", options)];
+
+export const postGamehubRegisteredJoinGameGroupOptions = (
+  options?: Options<PostGamehubRegisteredJoinGameGroupData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredJoinGameGroup({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredJoinGameGroupQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredJoinGameGroupMutation = (
+  options?: Partial<Options<PostGamehubRegisteredJoinGameGroupData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredJoinGameGroupData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredJoinGameGroup({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredGetClockQueryKey = (
+  options?: Options<PostGamehubRegisteredGetClockData>,
+) => [createQueryKey("postGamehubRegisteredGetClock", options)];
+
+export const postGamehubRegisteredGetClockOptions = (
+  options?: Options<PostGamehubRegisteredGetClockData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredGetClock({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredGetClockQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredGetClockMutation = (
+  options?: Partial<Options<PostGamehubRegisteredGetClockData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredGetClockData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredGetClock({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredMakeMoveQueryKey = (
+  options?: Options<PostGamehubRegisteredMakeMoveData>,
+) => [createQueryKey("postGamehubRegisteredMakeMove", options)];
+
+export const postGamehubRegisteredMakeMoveOptions = (
+  options?: Options<PostGamehubRegisteredMakeMoveData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredMakeMove({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredMakeMoveQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredMakeMoveMutation = (
+  options?: Partial<Options<PostGamehubRegisteredMakeMoveData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredMakeMoveData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredMakeMove({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredResignQueryKey = (
+  options?: Options<PostGamehubRegisteredResignData>,
+) => [createQueryKey("postGamehubRegisteredResign", options)];
+
+export const postGamehubRegisteredResignOptions = (
+  options?: Options<PostGamehubRegisteredResignData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredResign({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredResignQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredResignMutation = (
+  options?: Partial<Options<PostGamehubRegisteredResignData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredResignData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredResign({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredRequestRematchQueryKey = (
+  options?: Options<PostGamehubRegisteredRequestRematchData>,
+) => [createQueryKey("postGamehubRegisteredRequestRematch", options)];
+
+export const postGamehubRegisteredRequestRematchOptions = (
+  options?: Options<PostGamehubRegisteredRequestRematchData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredRequestRematch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredRequestRematchQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredRequestRematchMutation = (
+  options?: Partial<Options<PostGamehubRegisteredRequestRematchData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredRequestRematchData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredRequestRematch({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredApproveRematchQueryKey = (
+  options?: Options<PostGamehubRegisteredApproveRematchData>,
+) => [createQueryKey("postGamehubRegisteredApproveRematch", options)];
+
+export const postGamehubRegisteredApproveRematchOptions = (
+  options?: Options<PostGamehubRegisteredApproveRematchData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredApproveRematch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredApproveRematchQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredApproveRematchMutation = (
+  options?: Partial<Options<PostGamehubRegisteredApproveRematchData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredApproveRematchData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredApproveRematch({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredSendMessageQueryKey = (
+  options?: Options<PostGamehubRegisteredSendMessageData>,
+) => [createQueryKey("postGamehubRegisteredSendMessage", options)];
+
+export const postGamehubRegisteredSendMessageOptions = (
+  options?: Options<PostGamehubRegisteredSendMessageData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredSendMessage({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredSendMessageQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredSendMessageMutation = (
+  options?: Partial<Options<PostGamehubRegisteredSendMessageData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredSendMessageData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredSendMessage({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredSendInvitationToPlayQueryKey = (
+  options?: Options<PostGamehubRegisteredSendInvitationToPlayData>,
+) => [createQueryKey("postGamehubRegisteredSendInvitationToPlay", options)];
+
+export const postGamehubRegisteredSendInvitationToPlayOptions = (
+  options?: Options<PostGamehubRegisteredSendInvitationToPlayData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredSendInvitationToPlay({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredSendInvitationToPlayQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredSendInvitationToPlayMutation = (
+  options?: Partial<Options<PostGamehubRegisteredSendInvitationToPlayData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredSendInvitationToPlayData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredSendInvitationToPlay({
         ...options,
         ...localOptions,
         throwOnError: true,

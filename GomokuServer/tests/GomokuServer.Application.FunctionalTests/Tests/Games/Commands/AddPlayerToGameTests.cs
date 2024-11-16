@@ -104,7 +104,8 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		// Act
 		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
-			GameId = playersAwaitingGame.GameId.ToString()
+			GameId = playersAwaitingGame.GameId.ToString(),
+			PlayerId = Guid.NewGuid().ToString(),
 		});
 
 		// Assert
@@ -128,6 +129,7 @@ public class AddPlayerToGameTests : FunctionalTestBase
 		var addPlayerResult = await SendAsync(new AddAnonymousPlayerToGameCommand
 		{
 			GameId = Guid.NewGuid().ToString(),
+			PlayerId = Guid.NewGuid().ToString(),
 		});
 
 		// Assert

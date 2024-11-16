@@ -6,117 +6,133 @@ import {
   type Options,
 } from "@hey-api/client-fetch";
 import type {
-  GetApiGameByGameIdHistoryData,
-  GetApiGameByGameIdHistoryError,
-  GetApiGameByGameIdHistoryResponse,
-  GetApiGamesAvailableToJoinData,
-  GetApiGamesAvailableToJoinError,
-  GetApiGamesAvailableToJoinResponse,
-  GetApiGamesActiveData,
-  GetApiGamesActiveError,
-  GetApiGamesActiveResponse,
-  PostApiGameData,
-  PostApiGameError,
-  PostApiGameResponse,
-  PostApiGameByGameIdJoinData,
-  PostApiGameByGameIdJoinError,
-  PostApiGameByGameIdJoinResponse,
+  GetApiGameAnonymousByGameIdHistoryData,
+  GetApiGameAnonymousByGameIdHistoryError,
+  GetApiGameAnonymousByGameIdHistoryResponse,
+  GetApiGameAnonymousAvailableToJoinData,
+  GetApiGameAnonymousAvailableToJoinError,
+  GetApiGameAnonymousAvailableToJoinResponse,
+  GetApiGameAnonymousActiveData,
+  GetApiGameAnonymousActiveError,
+  GetApiGameAnonymousActiveResponse,
+  PostApiGameAnonymousData,
+  PostApiGameAnonymousError,
+  PostApiGameAnonymousResponse,
+  PostApiGameAnonymousByGameIdJoinData,
+  PostApiGameAnonymousByGameIdJoinError,
+  PostApiGameAnonymousByGameIdJoinResponse,
   GetHealthData,
   GetHealthError,
   GetHealthResponse,
   GetApiProfilesByUserNameGamesData,
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
-  PostGamehubJoinGameGroupData,
-  PostGamehubGetClockData,
-  PostGamehubMakeMoveData,
-  PostGamehubResignData,
-  PostGamehubRequestRematchData,
-  PostGamehubApproveRematchData,
-  PostGamehubSendMessageData,
+  GetApiGameRegisteredByGameIdHistoryData,
+  GetApiGameRegisteredByGameIdHistoryError,
+  GetApiGameRegisteredByGameIdHistoryResponse,
+  GetApiGameRegisteredAvailableToJoinData,
+  GetApiGameRegisteredAvailableToJoinError,
+  GetApiGameRegisteredAvailableToJoinResponse,
+  GetApiGameRegisteredActiveData,
+  GetApiGameRegisteredActiveError,
+  GetApiGameRegisteredActiveResponse,
+  PostApiGameRegisteredData,
+  PostApiGameRegisteredError,
+  PostApiGameRegisteredResponse,
+  PostApiGameRegisteredByGameIdJoinData,
+  PostApiGameRegisteredByGameIdJoinError,
+  PostApiGameRegisteredByGameIdJoinResponse,
+  PostGamehubAnonymousJoinGameGroupData,
+  PostGamehubAnonymousGetClockData,
+  PostGamehubAnonymousMakeMoveData,
+  PostGamehubAnonymousResignData,
+  PostGamehubAnonymousRequestRematchData,
+  PostGamehubAnonymousApproveRematchData,
+  PostGamehubAnonymousSendMessageData,
+  PostGamehubAnonymousSendInvitationToPlayData,
+  PostGamehubRegisteredJoinGameGroupData,
+  PostGamehubRegisteredGetClockData,
+  PostGamehubRegisteredMakeMoveData,
+  PostGamehubRegisteredResignData,
+  PostGamehubRegisteredRequestRematchData,
+  PostGamehubRegisteredApproveRematchData,
+  PostGamehubRegisteredSendMessageData,
+  PostGamehubRegisteredSendInvitationToPlayData,
 } from "./types.gen";
 
 export const client = createClient(createConfig());
 
-/**
- * Get game history by game id
- */
-export const getApiGameByGameIdHistory = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiGameByGameIdHistoryData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).get<
-    GetApiGameByGameIdHistoryResponse,
-    GetApiGameByGameIdHistoryError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/game/{gameId}/history",
-  });
-};
-
-/**
- * Get all games available to join
- */
-export const getApiGamesAvailableToJoin = <
+export const getApiGameAnonymousByGameIdHistory = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<GetApiGamesAvailableToJoinData, ThrowOnError>,
+  options: Options<GetApiGameAnonymousByGameIdHistoryData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetApiGamesAvailableToJoinResponse,
-    GetApiGamesAvailableToJoinError,
+    GetApiGameAnonymousByGameIdHistoryResponse,
+    GetApiGameAnonymousByGameIdHistoryError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/games/available-to-join",
+    url: "/api/game/anonymous/{gameId}/history",
   });
 };
 
-/**
- * Get all active games
- */
-export const getApiGamesActive = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiGamesActiveData, ThrowOnError>,
+export const getApiGameAnonymousAvailableToJoin = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiGameAnonymousAvailableToJoinData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).get<
-    GetApiGamesActiveResponse,
-    GetApiGamesActiveError,
+    GetApiGameAnonymousAvailableToJoinResponse,
+    GetApiGameAnonymousAvailableToJoinError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/games/active",
+    url: "/api/game/anonymous/available-to-join",
+  });
+};
+
+export const getApiGameAnonymousActive = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiGameAnonymousActiveData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiGameAnonymousActiveResponse,
+    GetApiGameAnonymousActiveError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/game/anonymous/active",
+  });
+};
+
+export const postApiGameAnonymous = <ThrowOnError extends boolean = false>(
+  options: Options<PostApiGameAnonymousData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    PostApiGameAnonymousResponse,
+    PostApiGameAnonymousError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/game/anonymous",
   });
 };
 
 /**
- * Create new game (supports both anonymous and authenticated users)
+ * Join game
  */
-export const postApiGame = <ThrowOnError extends boolean = false>(
-  options: Options<PostApiGameData, ThrowOnError>,
+export const postApiGameAnonymousByGameIdJoin = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<PostApiGameAnonymousByGameIdJoinData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<
-    PostApiGameResponse,
-    PostApiGameError,
+    PostApiGameAnonymousByGameIdJoinResponse,
+    PostApiGameAnonymousByGameIdJoinError,
     ThrowOnError
   >({
     ...options,
-    url: "/api/game",
-  });
-};
-
-/**
- * Join game (supports both anonymous and authenticated users)
- */
-export const postApiGameByGameIdJoin = <ThrowOnError extends boolean = false>(
-  options: Options<PostApiGameByGameIdJoinData, ThrowOnError>,
-) => {
-  return (options?.client ?? client).post<
-    PostApiGameByGameIdJoinResponse,
-    PostApiGameByGameIdJoinError,
-    ThrowOnError
-  >({
-    ...options,
-    url: "/api/game/{gameId}/join",
+    url: "/api/game/anonymous/{gameId}/join",
   });
 };
 
@@ -154,65 +170,257 @@ export const getApiProfilesByUserNameGames = <
   });
 };
 
-export const postGamehubJoinGameGroup = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubJoinGameGroupData, ThrowOnError>,
+export const getApiGameRegisteredByGameIdHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiGameRegisteredByGameIdHistoryData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+  return (options?.client ?? client).get<
+    GetApiGameRegisteredByGameIdHistoryResponse,
+    GetApiGameRegisteredByGameIdHistoryError,
+    ThrowOnError
+  >({
     ...options,
-    url: "/gamehub/JoinGameGroup",
+    url: "/api/game/registered/{gameId}/history",
   });
 };
 
-export const postGamehubGetClock = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubGetClockData, ThrowOnError>,
+export const getApiGameRegisteredAvailableToJoin = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiGameRegisteredAvailableToJoinData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+  return (options?.client ?? client).get<
+    GetApiGameRegisteredAvailableToJoinResponse,
+    GetApiGameRegisteredAvailableToJoinError,
+    ThrowOnError
+  >({
     ...options,
-    url: "/gamehub/GetClock",
+    url: "/api/game/registered/available-to-join",
   });
 };
 
-export const postGamehubMakeMove = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubMakeMoveData, ThrowOnError>,
+export const getApiGameRegisteredActive = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<GetApiGameRegisteredActiveData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+  return (options?.client ?? client).get<
+    GetApiGameRegisteredActiveResponse,
+    GetApiGameRegisteredActiveError,
+    ThrowOnError
+  >({
     ...options,
-    url: "/gamehub/MakeMove",
+    url: "/api/game/registered/active",
   });
 };
 
-export const postGamehubResign = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubResignData, ThrowOnError>,
+export const postApiGameRegistered = <ThrowOnError extends boolean = false>(
+  options: Options<PostApiGameRegisteredData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+  return (options?.client ?? client).post<
+    PostApiGameRegisteredResponse,
+    PostApiGameRegisteredError,
+    ThrowOnError
+  >({
     ...options,
-    url: "/gamehub/Resign",
+    url: "/api/game/registered",
   });
 };
 
-export const postGamehubRequestRematch = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubRequestRematchData, ThrowOnError>,
+/**
+ * Join game
+ */
+export const postApiGameRegisteredByGameIdJoin = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<PostApiGameRegisteredByGameIdJoinData, ThrowOnError>,
 ) => {
-  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+  return (options?.client ?? client).post<
+    PostApiGameRegisteredByGameIdJoinResponse,
+    PostApiGameRegisteredByGameIdJoinError,
+    ThrowOnError
+  >({
     ...options,
-    url: "/gamehub/RequestRematch",
+    url: "/api/game/registered/{gameId}/join",
   });
 };
 
-export const postGamehubApproveRematch = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubApproveRematchData, ThrowOnError>,
+export const postGamehubAnonymousJoinGameGroup = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousJoinGameGroupData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
-    url: "/gamehub/ApproveRematch",
+    url: "/gamehub/anonymous/JoinGameGroup",
   });
 };
 
-export const postGamehubSendMessage = <ThrowOnError extends boolean = false>(
-  options?: Options<PostGamehubSendMessageData, ThrowOnError>,
+export const postGamehubAnonymousGetClock = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousGetClockData, ThrowOnError>,
 ) => {
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
-    url: "/gamehub/SendMessage",
+    url: "/gamehub/anonymous/GetClock",
+  });
+};
+
+export const postGamehubAnonymousMakeMove = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousMakeMoveData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/MakeMove",
+  });
+};
+
+export const postGamehubAnonymousResign = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousResignData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/Resign",
+  });
+};
+
+export const postGamehubAnonymousRequestRematch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousRequestRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/RequestRematch",
+  });
+};
+
+export const postGamehubAnonymousApproveRematch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousApproveRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/ApproveRematch",
+  });
+};
+
+export const postGamehubAnonymousSendMessage = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousSendMessageData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/SendMessage",
+  });
+};
+
+export const postGamehubAnonymousSendInvitationToPlay = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousSendInvitationToPlayData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/SendInvitationToPlay",
+  });
+};
+
+export const postGamehubRegisteredJoinGameGroup = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredJoinGameGroupData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/JoinGameGroup",
+  });
+};
+
+export const postGamehubRegisteredGetClock = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredGetClockData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/GetClock",
+  });
+};
+
+export const postGamehubRegisteredMakeMove = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredMakeMoveData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/MakeMove",
+  });
+};
+
+export const postGamehubRegisteredResign = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredResignData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/Resign",
+  });
+};
+
+export const postGamehubRegisteredRequestRematch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredRequestRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/RequestRematch",
+  });
+};
+
+export const postGamehubRegisteredApproveRematch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredApproveRematchData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/ApproveRematch",
+  });
+};
+
+export const postGamehubRegisteredSendMessage = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredSendMessageData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/SendMessage",
+  });
+};
+
+export const postGamehubRegisteredSendInvitationToPlay = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    PostGamehubRegisteredSendInvitationToPlayData,
+    ThrowOnError
+  >,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/SendInvitationToPlay",
   });
 };

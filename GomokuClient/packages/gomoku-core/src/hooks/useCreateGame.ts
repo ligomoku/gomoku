@@ -6,6 +6,7 @@ import type { SwaggerTypes } from "@/api";
 import { SwaggerServices } from "@/api";
 import { getDefaultHeaders } from "@/shared/lib/utils";
 import { toaster } from "@/shared/ui/toaster";
+import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
@@ -18,14 +19,23 @@ export const useCreateGameAndNavigate = ({
 
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
-    SwaggerTypes.PostApiGameError,
+    SwaggerTypes.PostApiGameRegisteredError,
     { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
   >({
     mutationFn: async ({ boardSize, timeControl }) => {
-      const response = await SwaggerServices.postApiGame({
-        body: { boardSize, timeControl },
-        headers: getDefaultHeaders(authToken),
-      });
+      const response = await fetchWithAuthFallback(
+        authToken,
+        async () =>
+          SwaggerServices.postApiGameRegistered({
+            body: { boardSize, timeControl },
+            headers: getDefaultHeaders(authToken),
+          }),
+        async () =>
+          SwaggerServices.postApiGameAnonymous({
+            body: { boardSize, timeControl },
+            headers: getDefaultHeaders(),
+          }),
+      );
 
       return response.data;
     },
