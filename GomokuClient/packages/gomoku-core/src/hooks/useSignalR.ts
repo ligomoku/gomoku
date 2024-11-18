@@ -4,7 +4,6 @@ import { JsonHubProtocol } from "@microsoft/signalr";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SignalHubInterfaces } from "@/api";
-
 import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
 import { toaster } from "@/shared/ui/toaster";
@@ -100,6 +99,8 @@ export const useSignalR = (hubURL: string) => {
           handlers.playerJoinedGame?.({ userId: gameId }),
         gameStarted: async (message) => handlers.gameStarted?.(message),
         playerMadeMove: async (message) => handlers.playerMadeMove?.(message),
+        undoRequested: async () => handlers.undoRequested?.(),
+        undoApproved: async (message) => handlers.undoApproved?.(message),
         sendMessage: async (message) => handlers.sendMessage?.(message),
         gameHubError: async (error) => handlers.gameHubError?.(error),
         gameIsOver: async (message) => handlers.gameIsOver?.(message),

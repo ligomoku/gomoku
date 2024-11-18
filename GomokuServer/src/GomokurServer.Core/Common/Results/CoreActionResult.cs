@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Core.Common.Results;
 
-public abstract record CoreResult<T> where T : Enum
+public abstract record CoreActionResult<T> where T : Enum
 {
 	public required bool IsValid { get; init; }
 

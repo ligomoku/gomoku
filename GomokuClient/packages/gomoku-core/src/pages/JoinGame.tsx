@@ -11,7 +11,7 @@ import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { RematchAlert } from "@/shared/ui/rematch-alert";
+import { AlertDialog } from "@/shared/ui/alert-dialog";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -29,6 +29,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     handleMove,
     moves,
     winningSequence,
+    undoRequested,
+    setUndoRequested,
     rematchRequested,
     setRematchRequested,
     clock,
@@ -52,19 +54,35 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
-    onUndo: () => alert("Undo clicked"),
+    onUndo: () => hubProxy?.requestUndo({ gameId: gameID }),
     onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
   };
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       {rematchRequested && (
-        <RematchAlert
+        <AlertDialog
+          title="Rematch Request"
+          secondaryTitle="Your opponent is requesting a rematch"
+          text="Would you like to play another game with the same settings?"
           onAccept={() => {
             hubProxy?.approveRematch({ gameId: gameID });
           }}
           onDecline={() => {
             setRematchRequested(false);
+          }}
+        />
+      )}
+      {undoRequested && (
+        <AlertDialog
+          title="Undo Request"
+          secondaryTitle="Your opponent is requesting a undo"
+          text="Would you like to undo last move?"
+          onAccept={() => {
+            hubProxy?.approveUndo({ gameId: gameID });
+          }}
+          onDecline={() => {
+            setUndoRequested(false);
           }}
         />
       )}

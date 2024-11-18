@@ -11,7 +11,7 @@ public abstract record ResignCommand : ICommand<ResignResponse>
 	public required string PlayerId { get; init; }
 }
 
-public class ResignCommandHandler<TRequest>(IGamesRepository _gamesRepository, IPlayersAwaitingGameRepository _playersAwaitingGameRepository)
+public abstract class ResignCommandHandler<TRequest>(IGamesRepository _gamesRepository, IPlayersAwaitingGameRepository _playersAwaitingGameRepository)
 	: ICommandHandler<TRequest, ResignResponse>
 		where TRequest : ResignCommand
 {

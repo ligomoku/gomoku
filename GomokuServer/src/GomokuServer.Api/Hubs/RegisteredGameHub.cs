@@ -98,6 +98,15 @@ public class RegisteredGameHub : GameHub
 		});
 	}
 
+	protected override async Task<Result<UndoResponse>> UndoAsync(string gameId)
+	{
+		return await _mediator.Send(new RegisteredUndoCommand()
+		{
+			GameId = gameId,
+			PlayerId = GetPlayerId(),
+		});
+	}
+
 	protected override async Task<Result<ResignResponse>> ResignAsync(string gameId)
 	{
 		return await _mediator.Send(new RegisteredResignCommand()

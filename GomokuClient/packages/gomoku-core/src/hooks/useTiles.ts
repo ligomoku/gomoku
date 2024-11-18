@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SwaggerTypes } from "@/api";
 import type { Winner } from "@/utils";
-
 import { findWinner } from "@/utils";
 import { genParser } from "@/utils/getParser";
 
@@ -57,10 +56,33 @@ export const useTiles = (gameHistory: SwaggerTypes.GetGameHistoryResponse) => {
     [],
   );
 
+  const removeTile = useCallback(
+    (
+      tileToRemove: SwaggerTypes.TileDto,
+      previousPlacedTile: SwaggerTypes.TileDto,
+    ) => {
+      const { x, y } = tileToRemove;
+
+      setTiles((prevBoard) =>
+        prevBoard.map((row, xIndex) => {
+          if (xIndex !== x) return row;
+
+          return row.map((col, yIndex) => {
+            if (yIndex !== y) return col;
+            return null;
+          });
+        }),
+      );
+      setLastTile(previousPlacedTile);
+    },
+    [],
+  );
+
   return {
     tiles,
     lastTile,
     winner,
     addTile,
+    removeTile,
   };
 };

@@ -10,12 +10,21 @@ import {
   CardTitle,
 } from "./card";
 
-interface RematchAlertProps {
+interface AlertDialogProps {
+  title: string;
+  secondaryTitle: string;
+  text: string;
   onAccept: () => void;
   onDecline: () => void;
 }
 
-export const RematchAlert = ({ onAccept, onDecline }: RematchAlertProps) => {
+export const AlertDialog = ({
+  title,
+  secondaryTitle,
+  text,
+  onAccept,
+  onDecline,
+}: AlertDialogProps) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleAccept = () => {
@@ -33,17 +42,13 @@ export const RematchAlert = ({ onAccept, onDecline }: RematchAlertProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
       <Card className="w-full max-w-md border-gray-800 bg-[#2A2A2A]">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-gray-100">
-            Rematch Request
-          </CardTitle>
+          <CardTitle className="text-2xl text-gray-100">{title}</CardTitle>
           <CardDescription className="text-gray-400">
-            Your opponent is requesting a rematch
+            {secondaryTitle}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-300">
-            Would you like to play another game with the same settings?
-          </p>
+          <p className="text-sm text-gray-300">{text}</p>
         </CardContent>
         <CardFooter className="flex gap-2">
           <Button
@@ -67,4 +72,4 @@ export const RematchAlert = ({ onAccept, onDecline }: RematchAlertProps) => {
   );
 };
 
-RematchAlert.displayName = "RematchAlert";
+AlertDialog.displayName = "RematchAlert";

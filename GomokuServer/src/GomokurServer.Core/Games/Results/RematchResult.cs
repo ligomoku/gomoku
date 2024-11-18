@@ -1,10 +1,9 @@
-using GomokuServer.Core.Common.Results;
 using GomokuServer.Core.Games.Entities;
 using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public record RematchResult : CoreResult<RematchValidationError>
+public record RematchResult : GameActionResult
 {
 	public Game? NewGame { get; init; }
 
@@ -17,7 +16,7 @@ public record RematchResult : CoreResult<RematchValidationError>
 		};
 	}
 
-	public static RematchResult Failure(RematchValidationError validationError, string errorDetails)
+	public static RematchResult Failure(GameActionValidationError validationError, string errorDetails)
 	{
 		return new RematchResult
 		{

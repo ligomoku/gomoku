@@ -116,7 +116,7 @@ public class GameWithTimeControlTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.TimeOut);
+		result.ValidationError.Should().Be(PlaceTileActionValidationError.TimeOut);
 		_game.Result.Should().Be(GameResult.WhiteWon);
 		_game.Status.Should().Be(GameStatus.Completed);
 		_game.CompletionReason.Should().Be(CompletionReason.TimeOut);

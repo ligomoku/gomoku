@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks/useTiles";
+import { useTiles } from "@/hooks/useTiles";
 
 import { useSignalRConnection } from "@/context";
-import { useTiles } from "@/hooks/useTiles";
 import { toaster } from "@/shared/ui/toaster";
 import { formatErrorMessage } from "@/utils/errorUtils";
 
@@ -19,6 +19,7 @@ export const useJoinGame = (
     SwaggerTypes.GetGameHistoryResponse["winningSequence"]
   >(gameHistory?.winningSequence);
   const [rematchRequested, setRematchRequested] = useState(false);
+  const [undoRequested, setUndoRequested] = useState(false);
   const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(
     gameHistory.clock,
   );
@@ -28,7 +29,8 @@ export const useJoinGame = (
 
   const router = useRouter();
 
-  const { tiles, winner, addTile, lastTile } = useTiles(gameHistory);
+  const { tiles, winner, addTile, lastTile, removeTile } =
+    useTiles(gameHistory);
 
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
@@ -59,6 +61,16 @@ export const useJoinGame = (
           );
           addTile(tile, placedTileColor as TileColor);
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
+        },
+        undoRequested: async () => {
+          console.debug("Undo requested");
+          setUndoRequested(true);
+        },
+        undoApproved: async ({ gameId, removedTile, previouslyPlacedTile }) => {
+          console.debug("Undo approved", gameId, removedTile);
+          setMoves((prevMoves) => prevMoves.slice(0, -1));
+          removeTile(removedTile, previouslyPlacedTile);
+          setUndoRequested(false);
         },
         gameIsOver: async (message) => {
           toaster.show(formatErrorMessage(message.result));
@@ -135,6 +147,8 @@ export const useJoinGame = (
     winner,
     handleMove,
     winningSequence,
+    undoRequested,
+    setUndoRequested,
     rematchRequested,
     setRematchRequested,
     clock,
