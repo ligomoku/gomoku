@@ -11,6 +11,10 @@ public interface IGameHub
 
 	Task Resign(ResignClientMessage message);
 
+	Task RequestUndo(RequestUndoMessage message);
+
+	Task ApproveUndo(ApproveUndoMessage message);
+
 	Task RequestRematch(RematchRequestMessage message);
 
 	Task ApproveRematch(ApproveRematchMessage message);
@@ -32,6 +36,10 @@ public interface IGameHubReceiver
 	Task GameStarted(GameStartedMessage gameStartedMessage);
 
 	Task BothPlayersJoined(BothPlayersJoinedMessage bothPlayersJoinedMessage);
+
+	Task UndoRequested();
+
+	Task UndoApproved(UndoApprovedMessage message);
 
 	Task PlayerMadeMove(PlayerMadeMoveMessage playerMadeMoveMessage);
 

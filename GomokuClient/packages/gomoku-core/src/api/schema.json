@@ -898,6 +898,38 @@
         "security": [{}]
       }
     },
+    "/gamehub/anonymous/RequestUndo": {
+      "post": {
+        "tags": ["AnonymousGameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestUndoMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
+    "/gamehub/anonymous/ApproveUndo": {
+      "post": {
+        "tags": ["AnonymousGameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ApproveUndoMessage"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [{}]
+      }
+    },
     "/gamehub/anonymous/Resign": {
       "post": {
         "tags": ["AnonymousGameHub"],
@@ -1022,6 +1054,36 @@
         "responses": {}
       }
     },
+    "/gamehub/registered/RequestUndo": {
+      "post": {
+        "tags": ["RegisteredGameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RequestUndoMessage"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/gamehub/registered/ApproveUndo": {
+      "post": {
+        "tags": ["RegisteredGameHub"],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ApproveUndoMessage"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/gamehub/registered/Resign": {
       "post": {
         "tags": ["RegisteredGameHub"],
@@ -1133,6 +1195,17 @@
           "gameId": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApproveUndoMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1498,6 +1571,17 @@
         "additionalProperties": false
       },
       "RematchRequestMessage": {
+        "required": ["gameId"],
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RequestUndoMessage": {
         "required": ["gameId"],
         "type": "object",
         "properties": {

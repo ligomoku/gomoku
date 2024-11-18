@@ -45,6 +45,8 @@ import type {
   PostGamehubAnonymousJoinGameGroupData,
   PostGamehubAnonymousGetClockData,
   PostGamehubAnonymousMakeMoveData,
+  PostGamehubAnonymousRequestUndoData,
+  PostGamehubAnonymousApproveUndoData,
   PostGamehubAnonymousResignData,
   PostGamehubAnonymousRequestRematchData,
   PostGamehubAnonymousApproveRematchData,
@@ -53,6 +55,8 @@ import type {
   PostGamehubRegisteredJoinGameGroupData,
   PostGamehubRegisteredGetClockData,
   PostGamehubRegisteredMakeMoveData,
+  PostGamehubRegisteredRequestUndoData,
+  PostGamehubRegisteredApproveUndoData,
   PostGamehubRegisteredResignData,
   PostGamehubRegisteredRequestRematchData,
   PostGamehubRegisteredApproveRematchData,
@@ -279,6 +283,28 @@ export const postGamehubAnonymousMakeMove = <
   });
 };
 
+export const postGamehubAnonymousRequestUndo = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousRequestUndoData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/RequestUndo",
+  });
+};
+
+export const postGamehubAnonymousApproveUndo = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubAnonymousApproveUndoData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/anonymous/ApproveUndo",
+  });
+};
+
 export const postGamehubAnonymousResign = <
   ThrowOnError extends boolean = false,
 >(
@@ -364,6 +390,28 @@ export const postGamehubRegisteredMakeMove = <
   return (options?.client ?? client).post<void, unknown, ThrowOnError>({
     ...options,
     url: "/gamehub/registered/MakeMove",
+  });
+};
+
+export const postGamehubRegisteredRequestUndo = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredRequestUndoData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/RequestUndo",
+  });
+};
+
+export const postGamehubRegisteredApproveUndo = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<PostGamehubRegisteredApproveUndoData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<void, unknown, ThrowOnError>({
+    ...options,
+    url: "/gamehub/registered/ApproveUndo",
   });
 };
 

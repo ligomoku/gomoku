@@ -13,6 +13,10 @@ export type ApproveRematchMessage = {
   gameId: string | null;
 };
 
+export type ApproveUndoMessage = {
+  gameId: string;
+};
+
 export type ChatMessageClientMessage = {
   gameId: string;
   user: string;
@@ -130,6 +134,10 @@ export type ProfileDto = {
 };
 
 export type RematchRequestMessage = {
+  gameId: string;
+};
+
+export type RequestUndoMessage = {
   gameId: string;
 };
 
@@ -355,6 +363,18 @@ export type PostGamehubAnonymousMakeMoveData = {
   };
 };
 
+export type PostGamehubAnonymousRequestUndoData = {
+  query?: {
+    message?: RequestUndoMessage;
+  };
+};
+
+export type PostGamehubAnonymousApproveUndoData = {
+  query?: {
+    message?: ApproveUndoMessage;
+  };
+};
+
 export type PostGamehubAnonymousResignData = {
   query?: {
     message?: ResignClientMessage;
@@ -400,6 +420,18 @@ export type PostGamehubRegisteredGetClockData = {
 export type PostGamehubRegisteredMakeMoveData = {
   query?: {
     message?: MakeMoveClientMessage;
+  };
+};
+
+export type PostGamehubRegisteredRequestUndoData = {
+  query?: {
+    message?: RequestUndoMessage;
+  };
+};
+
+export type PostGamehubRegisteredApproveUndoData = {
+  query?: {
+    message?: ApproveUndoMessage;
   };
 };
 

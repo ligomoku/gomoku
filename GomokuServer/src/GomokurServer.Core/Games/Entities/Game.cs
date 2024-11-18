@@ -51,25 +51,24 @@ public class Game
 
 	public TileColor NextTileColor => _gameBoard.NextTileColor;
 
-	protected virtual GameTilePlacementResult ValidateCanPlaceTile(string playerId)
+	protected virtual PlaceTileActionResult ValidateCanPlaceTile(string playerId)
 	{
 		if (Status == GameStatus.Completed)
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.GameIsOver,
+				ValidationError = PlaceTileActionValidationError.GameIsOver,
 				ErrorDetails = $"Game is over. {Result.GetString()}"
 			};
 		}
-
 
 		if (!IsInvolved(playerId))
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.PlayerIsNotInvolvedInAGame,
+				ValidationError = PlaceTileActionValidationError.PlayerIsNotInvolvedInAGame,
 				ErrorDetails = "You are spectator in this game"
 			};
 		}
@@ -79,7 +78,7 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.OtherPlayerTurnNow,
+				ValidationError = PlaceTileActionValidationError.OtherPlayerTurnNow,
 				ErrorDetails = "Now is yours opponents turn"
 			};
 		}
@@ -90,7 +89,7 @@ public class Game
 		};
 	}
 
-	public virtual GameTilePlacementResult PlaceTile(Tile tile, string playerId)
+	public virtual PlaceTileActionResult PlaceTile(Tile tile, string playerId)
 	{
 		var validationResult = ValidateCanPlaceTile(playerId);
 
@@ -103,11 +102,7 @@ public class Game
 
 		if (!placeNewTileResult.IsValid)
 		{
-			return new()
-			{
-				IsValid = placeNewTileResult.IsValid,
-				ValidationError = placeNewTileResult.ValidationError,
-			};
+			return placeNewTileResult;
 		}
 
 		if (_movesHistory.Count == 0)
@@ -135,7 +130,7 @@ public class Game
 
 		if (Status == GameStatus.InProgress)
 		{
-			CurrentPlayer = CurrentPlayer != Players.Black ? Players.Black : Players.White;
+			CurrentPlayer = Players.GetOpponent(CurrentPlayer.Id);
 		}
 
 		return new()
@@ -144,14 +139,14 @@ public class Game
 		};
 	}
 
-	public virtual ResignResult Resign(string playerId)
+	public UndoResult Undo(string playerId)
 	{
 		if (Status == GameStatus.Completed)
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = ResignValidationError.GameIsOver,
+				ValidationError = GameActionValidationError.GameIsOver,
 				ErrorDetails = $"Game is over. {Result.GetString()}"
 			};
 		}
@@ -161,7 +156,60 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = ResignValidationError.PlayerIsNotInvolvedInAGame,
+				ValidationError = GameActionValidationError.PlayerIsNotInvolvedInAGame,
+				ErrorDetails = "You are spectator in this game"
+			};
+		}
+
+		if (_movesHistory.Count == 0)
+		{
+			return new()
+			{
+				IsValid = true,
+			};
+		}
+
+		var lastTile = _movesHistory[_movesHistory.Count];
+		var removeTileResult = _gameBoard.RemoveTile(lastTile);
+
+		if (!removeTileResult.IsValid)
+		{
+			return new()
+			{
+				IsValid = false,
+				ErrorDetails = removeTileResult.ErrorDetails,
+			};
+		}
+
+		_movesHistory.Remove(_movesHistory.Count);
+		CurrentPlayer = Players.GetOpponent(CurrentPlayer.Id);
+
+		return new()
+		{
+			IsValid = true,
+			RemovedTile = lastTile,
+			PreviouslyPlacedTile = _movesHistory.GetValueOrDefault(_movesHistory.Count)
+		};
+	}
+
+	public virtual GameActionResult Resign(string playerId)
+	{
+		if (Status == GameStatus.Completed)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = GameActionValidationError.GameIsOver,
+				ErrorDetails = $"Game is over. {Result.GetString()}"
+			};
+		}
+
+		if (!IsInvolved(playerId))
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = GameActionValidationError.PlayerIsNotInvolvedInAGame,
 				ErrorDetails = "You are spectator in this game"
 			};
 		}
@@ -185,7 +233,7 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = RematchValidationError.GameIsNotOverYet,
+				ValidationError = GameActionValidationError.GameIsNotOverYet,
 				ErrorDetails = $"Can't request rematch. Game is not over yet",
 			};
 		}
@@ -195,7 +243,7 @@ public class Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = RematchValidationError.PlayerIsNotInvolvedInAGame,
+				ValidationError = GameActionValidationError.PlayerIsNotInvolvedInAGame,
 				ErrorDetails = "Player is not involved in the game"
 			};
 		}

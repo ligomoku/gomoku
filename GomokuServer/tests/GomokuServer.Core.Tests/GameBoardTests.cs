@@ -53,7 +53,7 @@ public class GameBoardTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.TileIndexOutOfTheBoardRange);
+		result.ValidationError.Should().Be(PlaceTileActionValidationError.TileIndexOutOfTheBoardRange);
 	}
 
 	[Test]
@@ -69,7 +69,7 @@ public class GameBoardTests
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
 		secondPlacement.IsValid.Should().BeFalse();
-		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.TileAlreadyOcupied);
+		secondPlacement.ValidationError.Should().Be(PlaceTileActionValidationError.TileAlreadyOcupied);
 	}
 
 	[Test]
@@ -223,6 +223,32 @@ public class GameBoardTests
 		result.IsValid.Should().BeTrue();
 		result.WinningSequence.Should().BeNull();
 		result.IsTieSituationAfterMove.Should().BeTrue();
+	}
+
+	[Test]
+	public void RemoveTile_WhenMovesAreMade_ShouldRemoveTile()
+	{
+		// Arrange
+		_gameBoard.PlaceNewTile(new(1, 1));
+		_gameBoard.NextTileColor.Should().Be(TileColor.White);
+
+		// Act
+		var removeResult = _gameBoard.RemoveTile(new(1, 1));
+
+		// Assert
+		removeResult.IsValid.Should().BeTrue();
+		_gameBoard.NextTileColor.Should().Be(TileColor.Black);
+	}
+
+	[Test]
+	public void RemoveTile_WhenMovesAreNotMade_ShouldBeValid()
+	{
+		// Act
+		var removeResult = _gameBoard.RemoveTile(new(1, 1));
+
+		// Assert
+		removeResult.IsValid.Should().BeTrue();
+		_gameBoard.NextTileColor.Should().Be(TileColor.Black);
 	}
 
 	[Test]

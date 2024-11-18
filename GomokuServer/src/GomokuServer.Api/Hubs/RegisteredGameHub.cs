@@ -38,6 +38,18 @@ public class RegisteredGameHub : GameHub
 	}
 
 	[Authorize]
+	public override Task RequestUndo(RequestUndoMessage message)
+	{
+		return base.RequestUndo(message);
+	}
+
+	[Authorize]
+	public override Task ApproveUndo(ApproveUndoMessage message)
+	{
+		return base.ApproveUndo(message);
+	}
+
+	[Authorize]
 	public override async Task Resign(ResignClientMessage message)
 	{
 		await base.Resign(message);
@@ -95,6 +107,15 @@ public class RegisteredGameHub : GameHub
 			GameId = gameId,
 			PlayerId = GetPlayerId(),
 			Tile = tile
+		});
+	}
+
+	protected override async Task<Result<UndoResponse>> UndoAsync(string gameId)
+	{
+		return await _mediator.Send(new RegisteredUndoCommand()
+		{
+			GameId = gameId,
+			PlayerId = GetPlayerId(),
 		});
 	}
 

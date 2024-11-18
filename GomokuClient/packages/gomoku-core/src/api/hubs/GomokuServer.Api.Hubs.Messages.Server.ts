@@ -50,3 +50,13 @@ export type RematchApprovedMessage = {
   /** Transpiled from string */
   newGameId: string;
 };
+
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Server.UndoApprovedMessage */
+export type UndoApprovedMessage = {
+  /** Transpiled from string */
+  gameId: string;
+  /** Transpiled from GomokuServer.Application.Games.Dto.TileDto */
+  removedTile: TileDto;
+  /** Transpiled from GomokuServer.Application.Games.Dto.TileDto */
+  previouslyPlacedTile: TileDto;
+};

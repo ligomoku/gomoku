@@ -10,6 +10,8 @@ import type {
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
+  RequestUndoMessage,
+  ApproveUndoMessage,
   RematchRequestMessage,
   ApproveRematchMessage,
   ChatMessageClientMessage,
@@ -21,6 +23,7 @@ import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   BothPlayersJoinedMessage,
+  UndoApprovedMessage,
   PlayerMadeMoveMessage,
   RematchApprovedMessage,
   GameIsOverMessage,
@@ -113,6 +116,18 @@ class IGameHub_HubProxy implements IGameHub {
     return await this.connection.invoke("Resign", message);
   };
 
+  public readonly requestUndo = async (
+    message: RequestUndoMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("RequestUndo", message);
+  };
+
+  public readonly approveUndo = async (
+    message: ApproveUndoMessage,
+  ): Promise<void> => {
+    return await this.connection.invoke("ApproveUndo", message);
+  };
+
   public readonly requestRematch = async (
     message: RematchRequestMessage,
   ): Promise<void> => {
@@ -163,6 +178,9 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       receiver.gameStarted(...args);
     const __bothPlayersJoined = (...args: [BothPlayersJoinedMessage]) =>
       receiver.bothPlayersJoined(...args);
+    const __undoRequested = () => receiver.undoRequested();
+    const __undoApproved = (...args: [UndoApprovedMessage]) =>
+      receiver.undoApproved(...args);
     const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
       receiver.playerMadeMove(...args);
     const __rematchApproved = (...args: [RematchApprovedMessage]) =>
@@ -184,6 +202,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
     connection.on("BothPlayersJoined", __bothPlayersJoined);
+    connection.on("UndoRequested", __undoRequested);
+    connection.on("UndoApproved", __undoApproved);
     connection.on("PlayerMadeMove", __playerMadeMove);
     connection.on("RematchApproved", __rematchApproved);
     connection.on("RematchRequested", __rematchRequested);
@@ -198,6 +218,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
       { methodName: "GameStarted", method: __gameStarted },
       { methodName: "BothPlayersJoined", method: __bothPlayersJoined },
+      { methodName: "UndoRequested", method: __undoRequested },
+      { methodName: "UndoApproved", method: __undoApproved },
       { methodName: "PlayerMadeMove", method: __playerMadeMove },
       { methodName: "RematchApproved", method: __rematchApproved },
       { methodName: "RematchRequested", method: __rematchRequested },

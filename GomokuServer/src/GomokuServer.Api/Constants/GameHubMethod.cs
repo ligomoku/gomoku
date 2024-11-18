@@ -7,6 +7,8 @@ public class GameHubMethod
 	public const string GameStarted = nameof(GameStarted);
 	public const string BothPlayersJoined = nameof(BothPlayersJoined);
 	public const string PlayerMadeMove = nameof(PlayerMadeMove);
+	public const string UndoRequested = nameof(UndoRequested);
+	public const string UndoApproved = nameof(UndoApproved);
 	public const string SendMessage = nameof(SendMessage);
 	public const string GameHubError = nameof(GameHubError);
 	public const string GameIsOver = nameof(GameIsOver);

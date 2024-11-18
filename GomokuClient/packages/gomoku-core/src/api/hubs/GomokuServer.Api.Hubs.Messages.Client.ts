@@ -8,6 +8,12 @@ export type ApproveRematchMessage = {
   gameId: string;
 };
 
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.ApproveUndoMessage */
+export type ApproveUndoMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.GetClockMessage */
 export type GetClockMessage = {
   /** Transpiled from string */
@@ -34,6 +40,12 @@ export type ReceiveInvitationToPlayMessage = {
 
 /** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage */
 export type RematchRequestMessage = {
+  /** Transpiled from string */
+  gameId: string;
+};
+
+/** Transpiled from GomokuServer.Api.Hubs.Messages.Client.RequestUndoMessage */
+export type RequestUndoMessage = {
   /** Transpiled from string */
   gameId: string;
 };

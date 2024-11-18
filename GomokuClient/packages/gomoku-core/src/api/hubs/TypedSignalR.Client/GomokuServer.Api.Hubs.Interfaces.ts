@@ -6,6 +6,8 @@ import type { IStreamResult, Subject } from "@microsoft/signalr";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
+  RequestUndoMessage,
+  ApproveUndoMessage,
   RematchRequestMessage,
   ApproveRematchMessage,
   ChatMessageClientMessage,
@@ -17,6 +19,7 @@ import type {
   PlayerJoinedGameMessage,
   GameStartedMessage,
   BothPlayersJoinedMessage,
+  UndoApprovedMessage,
   PlayerMadeMoveMessage,
   RematchApprovedMessage,
   GameIsOverMessage,
@@ -40,6 +43,16 @@ export type IGameHub = {
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   resign(message: ResignClientMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.RequestUndoMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  requestUndo(message: RequestUndoMessage): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.ApproveUndoMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  approveUndo(message: ApproveUndoMessage): Promise<void>;
   /**
    * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -92,6 +105,15 @@ export type IGameHubReceiver = {
   bothPlayersJoined(
     bothPlayersJoinedMessage: BothPlayersJoinedMessage,
   ): Promise<void>;
+  /**
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  undoRequested(): Promise<void>;
+  /**
+   * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Server.UndoApprovedMessage
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  undoApproved(message: UndoApprovedMessage): Promise<void>;
   /**
    * @param playerMadeMoveMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerMadeMoveMessage
    * @returns Transpiled from System.Threading.Tasks.Task

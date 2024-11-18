@@ -54,7 +54,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.TileIndexOutOfTheBoardRange);
+		result.ValidationError.Should().Be(PlaceTileActionValidationError.TileIndexOutOfTheBoardRange);
 	}
 
 	[Test]
@@ -70,7 +70,7 @@ public class GameTests
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
 		secondPlacement.IsValid.Should().BeFalse();
-		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.TileAlreadyOcupied);
+		secondPlacement.ValidationError.Should().Be(PlaceTileActionValidationError.TileAlreadyOcupied);
 	}
 
 	[Test]
@@ -86,7 +86,7 @@ public class GameTests
 		// Assert
 		firstPlacement.IsValid.Should().BeTrue();
 		secondPlacement.IsValid.Should().BeFalse();
-		secondPlacement.ValidationError.Should().Be(TilePlacementValidationError.OtherPlayerTurnNow);
+		secondPlacement.ValidationError.Should().Be(PlaceTileActionValidationError.OtherPlayerTurnNow);
 		secondPlacement.ErrorDetails.Should().NotBeEmpty();
 	}
 
@@ -212,7 +212,7 @@ public class GameTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(TilePlacementValidationError.GameIsOver);
+		result.ValidationError.Should().Be(PlaceTileActionValidationError.GameIsOver);
 		result.ErrorDetails.Should().NotBeEmpty();
 		_game.Winner.Should().Be(_game.Players.Black);
 	}
@@ -234,6 +234,61 @@ public class GameTests
 		game.Result.Should().Be(GameResult.Tie);
 		game.Status.Should().Be(GameStatus.Completed);
 		game.CompletionReason.Should().Be(CompletionReason.TieOnTheBoard);
+	}
+
+	[Test]
+	public void Undo_OnFirstMove_ShouldRemoveLastHistoryItem_And_PreviousPlacedTileShouldBeNull()
+	{
+		// Arangre
+		_game.PlaceTile(new(1, 1), _game.Players.Black.Id);
+
+		// Act
+		var undoResult = _game.Undo(_game.Players.Black.Id);
+
+		// Assert
+		_game.MovesHistory.Count.Should().Be(0);
+		undoResult?.RemovedTile.Should().BeEquivalentTo(new Tile(1, 1));
+		undoResult?.PreviouslyPlacedTile.Should().BeNull();
+	}
+
+	[Test]
+	public void Undo_AfterSecondMove_ShouldRemoveLastHistoryItem_And_PreviousPlacedTileShouldBeCorrect()
+	{
+		// Arangre
+		_game.PlaceTile(new(1, 1), _game.Players.Black.Id);
+		_game.PlaceTile(new(2, 2), _game.Players.White.Id);
+
+		// Act
+		var undoResult = _game.Undo(_game.Players.Black.Id);
+
+		// Assert
+		_game.MovesHistory.Count.Should().Be(1);
+		undoResult?.RemovedTile.Should().BeEquivalentTo(new Tile(2, 2));
+		undoResult?.PreviouslyPlacedTile.Should().BeEquivalentTo(new Tile(1, 1));
+	}
+
+	[Test]
+	public void Undo_ShouldSwitchCurrentPlayer()
+	{
+		// Arangre
+		_game.PlaceTile(new(1, 1), _game.Players.Black.Id);
+		_game.CurrentPlayer.Should().BeEquivalentTo(_game.Players.White);
+
+		// Act
+		var undoResult = _game.Undo(_game.Players.Black.Id);
+
+		// Assert
+		_game.CurrentPlayer.Should().BeEquivalentTo(_game.Players.Black);
+	}
+
+	[Test]
+	public void Undo_WhenNoMovesMade_ShouldNotThrowException()
+	{
+		// Act
+		_game.Undo(_game.Players.Black.Id);
+
+		// Assert
+		_game.MovesHistory.Count.Should().Be(0);
 	}
 
 	[Test]
@@ -324,7 +379,7 @@ public class GameTests
 
 		// Assert
 		resignResult.IsValid.Should().BeFalse();
-		resignResult.ValidationError.Should().Be(ResignValidationError.GameIsOver);
+		resignResult.ValidationError.Should().Be(GameActionValidationError.GameIsOver);
 		resignResult.ErrorDetails.Should().NotBeEmpty();
 	}
 
@@ -362,7 +417,7 @@ public class GameTests
 
 		// Assert
 		rematchResult.IsValid!.Should().BeFalse();
-		rematchResult.ValidationError.Should().Be(RematchValidationError.GameIsNotOverYet);
+		rematchResult.ValidationError.Should().Be(GameActionValidationError.GameIsNotOverYet);
 		rematchResult.ErrorDetails.Should().NotBeEmpty();
 	}
 
@@ -381,12 +436,12 @@ public class GameTests
 
 		// Assert
 		rematchResult.IsValid!.Should().BeFalse();
-		rematchResult.ValidationError.Should().Be(RematchValidationError.PlayerIsNotInvolvedInAGame);
+		rematchResult.ValidationError.Should().Be(GameActionValidationError.PlayerIsNotInvolvedInAGame);
 		rematchResult.ErrorDetails.Should().NotBeEmpty();
 	}
 
 	[Test]
-	public void MakeMoves_MovesHistoryShouldBeCorrect()
+	public void PlaceTile_MovesHistoryShouldBeCorrect()
 	{
 		// Act
 		_game.PlaceTile(new(0, 0), _game.Players.Black.Id);
@@ -404,7 +459,7 @@ public class GameTests
 	}
 
 	[Test]
-	public void EachPlayerMakeMoves_NextMovePlayerIdShouldBeCorrect()
+	public void PlaceTile_CurrentPlayerShouldBeCorrectAfterAction()
 	{
 		// Assert 
 		_game.CurrentPlayer?.Id.Should().Be(_game.Players.Black.Id);

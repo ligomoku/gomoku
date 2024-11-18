@@ -29,7 +29,7 @@ public class GameWithTimeControl : Game
 
 	public bool IsTimeControlInitiated => MovesHistory.Count >= 2;
 
-	public override GameTilePlacementResult PlaceTile(Tile tile, string playerId)
+	public override PlaceTileActionResult PlaceTile(Tile tile, string playerId)
 	{
 		var canPlaceTile = base.ValidateCanPlaceTile(playerId);
 
@@ -48,7 +48,7 @@ public class GameWithTimeControl : Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.TimeOut,
+				ValidationError = PlaceTileActionValidationError.TimeOut,
 				ErrorDetails = $"Time out. {Winner!.UserName} won."
 			};
 		}
@@ -63,7 +63,7 @@ public class GameWithTimeControl : Game
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.TimeOut,
+				ValidationError = PlaceTileActionValidationError.TimeOut,
 				ErrorDetails = $"Time out. {Winner!.UserName} won."
 			};
 		}
@@ -94,7 +94,7 @@ public class GameWithTimeControl : Game
 		return tilePlacementResult;
 	}
 
-	public override ResignResult Resign(string playerId)
+	public override GameActionResult Resign(string playerId)
 	{
 		var resignResult = base.Resign(playerId);
 

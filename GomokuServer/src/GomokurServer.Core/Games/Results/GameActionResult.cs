@@ -3,4 +3,4 @@ using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public record GameTilePlacementResult : CoreResult<TilePlacementValidationError>;
+public record GameActionResult : CoreActionResult<GameActionValidationError>;

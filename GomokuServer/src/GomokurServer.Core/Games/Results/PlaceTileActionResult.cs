@@ -4,7 +4,7 @@ using GomokuServer.Core.Games.Validations;
 
 namespace GomokuServer.Core.Games.Results;
 
-public record BoardTilePlacementResult : CoreResult<TilePlacementValidationError>
+public record PlaceTileActionResult : CoreActionResult<PlaceTileActionValidationError>
 {
 	public List<Tile>? WinningSequence { get; init; }
 
