@@ -38,6 +38,18 @@ public class RegisteredGameHub : GameHub
 	}
 
 	[Authorize]
+	public override Task RequestUndo(RequestUndoMessage message)
+	{
+		return base.RequestUndo(message);
+	}
+
+	[Authorize]
+	public override Task ApproveUndo(ApproveUndoMessage message)
+	{
+		return base.ApproveUndo(message);
+	}
+
+	[Authorize]
 	public override async Task Resign(ResignClientMessage message)
 	{
 		await base.Resign(message);

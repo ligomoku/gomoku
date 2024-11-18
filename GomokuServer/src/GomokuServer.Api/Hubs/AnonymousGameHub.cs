@@ -38,6 +38,18 @@ public class AnonymousGameHub : GameHub
 	}
 
 	[AllowAnonymous]
+	public override Task RequestUndo(RequestUndoMessage message)
+	{
+		return base.RequestUndo(message);
+	}
+
+	[AllowAnonymous]
+	public override Task ApproveUndo(ApproveUndoMessage message)
+	{
+		return base.ApproveUndo(message);
+	}
+
+	[AllowAnonymous]
 	public override async Task Resign(ResignClientMessage message)
 	{
 		await base.Resign(message);

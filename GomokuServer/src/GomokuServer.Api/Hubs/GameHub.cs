@@ -102,7 +102,7 @@ public abstract class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, getGameHistoryResult.GetHubError());
 	}
 
-	public async Task ApproveUndo(ApproveUndoMessage message)
+	public virtual async Task ApproveUndo(ApproveUndoMessage message)
 	{
 		var undoResult = await UndoAsync(message.GameId);
 
