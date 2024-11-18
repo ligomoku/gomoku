@@ -72,4 +72,4 @@ export const AlertDialog = ({
   );
 };
 
-AlertDialog.displayName = "RematchAlert";
+AlertDialog.displayName = "AlertDialog";

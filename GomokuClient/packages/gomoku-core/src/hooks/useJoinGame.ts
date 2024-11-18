@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks/useTiles";
-import { useTiles } from "@/hooks/useTiles";
 
 import { useSignalRConnection } from "@/context";
+import { useTiles } from "@/hooks/useTiles";
 import { toaster } from "@/ui/toaster";
 import { formatErrorMessage } from "@/utils";
 

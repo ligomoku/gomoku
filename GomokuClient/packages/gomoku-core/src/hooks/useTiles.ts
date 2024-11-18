@@ -84,6 +84,6 @@ export const useTiles = (gameHistory: SwaggerTypes.GetGameHistoryResponse) => {
     lastTile,
     winner,
     addTile,
-    removeTile
+    removeTile,
   };
 };
