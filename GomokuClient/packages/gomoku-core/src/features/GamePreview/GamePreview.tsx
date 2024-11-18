@@ -4,7 +4,7 @@ import type { SwaggerTypes } from "@/api";
 import type { BoardProps } from "@/features/Board/Board";
 
 import { Board } from "@/features/Board/Board";
-import { genParser } from "@/utils/getParser";
+import { genParser } from "@/utils/genParser";
 
 export interface GamePreviewProps {
   gen: SwaggerTypes.GetGameHistoryResponse["gen"];

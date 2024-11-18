@@ -3,12 +3,7 @@ import { Component } from "react";
 
 import type { ReactNode, ErrorInfo } from "react";
 
-import { typedStorage } from "@/shared/lib/utils";
-import {
-  didChunkAlreadyReload,
-  didChunkFailed,
-  setChunkReloadAt,
-} from "@/utils/chunkUtils";
+import { ChunkLoader, typedSessionStorage, typedStorage } from "@/utils";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -31,13 +26,17 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return {
       hasError: true,
-      showPopup: didChunkFailed(error) && !didChunkAlreadyReload(),
+      showPopup:
+        ChunkLoader.didChunkFail(error) && !ChunkLoader.didChunkAlreadyReload(),
     } as ErrorBoundaryState;
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    if (didChunkFailed(error) && !didChunkAlreadyReload()) {
-      setChunkReloadAt();
+    if (
+      ChunkLoader.didChunkFail(error) &&
+      !ChunkLoader.didChunkAlreadyReload()
+    ) {
+      ChunkLoader.setChunkReloadAt();
     } else {
       //@ts-expect-error
       Sentry.withScope((scope: { setExtras: (arg0: ErrorInfo) => void }) => {
@@ -49,6 +48,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   onRestore() {
     typedStorage.clear();
+    typedSessionStorage.clear();
   }
 
   render(): ReactNode {

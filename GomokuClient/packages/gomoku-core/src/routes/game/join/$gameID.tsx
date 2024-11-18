@@ -7,29 +7,29 @@ import type { SwaggerTypes } from "@/api";
 import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
-import { getDefaultHeaders, typedSessionStorage } from "@/shared/lib/utils";
-import { LoadingOverlay } from "@/shared/ui/loading-overlay";
-import { toaster } from "@/shared/ui/toaster";
-import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
+import { LoadingOverlay } from "@/ui/loading-overlay";
+import { toaster } from "@/ui/toaster";
+import { fetchAuthFallback } from "@/utils/fetchAuthFallback";
+import { Headers } from "@/utils/headers";
+import { typedSessionStorage } from "@/utils/typedStorage";
 
 export const getGameHistory = async (
   gameId: string,
   jwtToken?: string,
 ): Promise<SwaggerTypes.GetGameHistoryResponse> => {
-  const response =
-    await fetchWithAuthFallback<SwaggerTypes.GetGameHistoryResponse>(
-      jwtToken,
-      async (token) =>
-        SwaggerServices.getApiGameRegisteredByGameIdHistory({
-          headers: getDefaultHeaders(token),
-          path: { gameId },
-        }),
-      async () =>
-        SwaggerServices.getApiGameAnonymousByGameIdHistory({
-          headers: getDefaultHeaders(),
-          path: { gameId },
-        }),
-    );
+  const response = await fetchAuthFallback<SwaggerTypes.GetGameHistoryResponse>(
+    jwtToken,
+    async (token) =>
+      SwaggerServices.getApiGameRegisteredByGameIdHistory({
+        headers: Headers.getDefaultHeaders(token),
+        path: { gameId },
+      }),
+    async () =>
+      SwaggerServices.getApiGameAnonymousByGameIdHistory({
+        headers: Headers.getDefaultHeaders(),
+        path: { gameId },
+      }),
+  );
 
   if (!response.data) {
     throw new Error("Game history not received!");
@@ -42,17 +42,17 @@ const joinGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = await fetchWithAuthFallback(
+  const response = await fetchAuthFallback(
     jwtToken,
     async (token) =>
       SwaggerServices.postApiGameRegisteredByGameIdJoin({
         path: { gameId: gameID },
-        headers: getDefaultHeaders(token),
+        headers: Headers.getDefaultHeaders(token),
       }),
     async () =>
       SwaggerServices.postApiGameAnonymousByGameIdJoin({
         path: { gameId: gameID },
-        headers: getDefaultHeaders(),
+        headers: Headers.getDefaultHeaders(),
         body: {
           playerId: typedSessionStorage.getItem("anonymousSessionID"),
         },

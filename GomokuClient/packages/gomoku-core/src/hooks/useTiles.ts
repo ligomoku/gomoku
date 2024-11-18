@@ -3,8 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { SwaggerTypes } from "@/api";
 import type { Winner } from "@/utils";
 
-import { findWinner } from "@/utils";
-import { genParser } from "@/utils/getParser";
+import { genParser, BoardGame } from "@/utils";
 
 //TODO: this should come from server side generated types
 export type TileColor = "black" | "white" | null;
@@ -25,11 +24,11 @@ export const useTiles = (gameHistory: SwaggerTypes.GetGameHistoryResponse) => {
   useEffect(() => {
     if (lastX.current === undefined || lastY.current === undefined) return;
 
-    const convertedBoard = tiles.map((row) =>
-      row.map((cell) => (cell === null ? "" : cell)),
+    const boardGame = new BoardGame(
+      tiles.map((row) => row.map((cell) => (cell === null ? "" : cell))),
     );
 
-    const result = findWinner(convertedBoard, {
+    const result = boardGame.findWinner({
       x: lastX.current,
       y: lastY.current,
     });

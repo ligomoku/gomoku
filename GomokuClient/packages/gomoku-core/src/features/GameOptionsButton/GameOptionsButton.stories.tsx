@@ -3,7 +3,7 @@ import { GameOptionsButtons } from "./GameOptionsButton";
 import type { GameOptionsButtonsProps } from "./GameOptionsButton";
 import type { Meta } from "@storybook/react";
 
-import { toaster } from "@/shared/ui/toaster";
+import { toaster } from "@/ui/toaster";
 
 export default {
   title: "Components/GameOptionsButton",

@@ -11,7 +11,7 @@ import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { RematchAlert } from "@/shared/ui/rematch-alert";
+import { RematchAlert } from "@/ui/rematch-alert";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;

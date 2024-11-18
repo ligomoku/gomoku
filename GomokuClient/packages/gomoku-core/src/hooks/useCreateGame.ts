@@ -4,9 +4,9 @@ import { useNavigate } from "@tanstack/react-router";
 import type { SwaggerTypes } from "@/api";
 
 import { SwaggerServices } from "@/api";
-import { getDefaultHeaders } from "@/shared/lib/utils";
-import { toaster } from "@/shared/ui/toaster";
-import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
+import { toaster } from "@/ui/toaster";
+import { Headers } from "@/utils";
+import { fetchAuthFallback } from "@/utils/fetchAuthFallback";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
@@ -23,17 +23,17 @@ export const useCreateGameAndNavigate = ({
     { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
   >({
     mutationFn: async ({ boardSize, timeControl }) => {
-      const response = await fetchWithAuthFallback(
+      const response = await fetchAuthFallback(
         authToken,
         async () =>
           SwaggerServices.postApiGameRegistered({
             body: { boardSize, timeControl },
-            headers: getDefaultHeaders(authToken),
+            headers: Headers.getDefaultHeaders(authToken),
           }),
         async () =>
           SwaggerServices.postApiGameAnonymous({
             body: { boardSize, timeControl },
-            headers: getDefaultHeaders(),
+            headers: Headers.getDefaultHeaders(),
           }),
       );
 
