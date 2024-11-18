@@ -9,9 +9,7 @@ import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
 import { LoadingOverlay } from "@/ui/loading-overlay";
 import { toaster } from "@/ui/toaster";
-import { fetchAuthFallback } from "@/utils/fetchAuthFallback";
-import { Headers } from "@/utils/headers";
-import { typedSessionStorage } from "@/utils/typedStorage";
+import { fetchAuthFallback, Headers, typedSessionStorage } from "@/utils";
 
 export const getGameHistory = async (
   gameId: string,

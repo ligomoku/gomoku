@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { SwaggerTypes } from "@/api";
 import type { Winner } from "@/utils";
 
+//TODO: check import combining type on tree-shaking
 import { genParser, BoardGame } from "@/utils";
 
 //TODO: this should come from server side generated types

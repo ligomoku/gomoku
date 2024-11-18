@@ -1,4 +1,4 @@
-import { typedStorage } from "@/utils/typedStorage";
+import { typedStorage } from "@/utils";
 
 export class ChunkLoader {
   private static readonly CHUNK_FAILED_MESSAGE = /Loading chunk \d+ failed/;

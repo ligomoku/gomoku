@@ -10,11 +10,10 @@ import { createRoot } from "react-dom/client";
 import { messages } from "./locales/en/messages";
 import { routeTree } from "./routeTree.gen";
 
+import "./styles/index.css";
 import { SwaggerServices } from "@/api";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
-
-import "./styles/index.css";
 import { ToasterProvider } from "@/ui/toaster";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;

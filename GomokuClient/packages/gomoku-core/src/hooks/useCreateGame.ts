@@ -5,8 +5,7 @@ import type { SwaggerTypes } from "@/api";
 
 import { SwaggerServices } from "@/api";
 import { toaster } from "@/ui/toaster";
-import { Headers } from "@/utils";
-import { fetchAuthFallback } from "@/utils/fetchAuthFallback";
+import { Headers, fetchAuthFallback } from "@/utils";
 
 interface CreateGameAndNavigateProps {
   authToken: string;
