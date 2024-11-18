@@ -1,8 +1,8 @@
-import type { HeaderProps } from "@/shared/ui/Header/Header";
+import type { HeaderProps } from "@/ui/Header/Header";
 import type { Meta, StoryFn } from "@storybook/react";
 
-import { Header } from "@/shared/ui/Header/Header";
-import { toaster } from "@/shared/ui/toaster";
+import { Header } from "@/ui/Header/Header";
+import { toaster } from "@/ui/toaster";
 
 export default {
   title: "Components/Header",

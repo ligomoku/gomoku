@@ -5,9 +5,9 @@ import { useState, useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { Button } from "@/shared/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { toaster } from "@/shared/ui/toaster";
+import { Button } from "@/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { toaster } from "@/ui/toaster";
 
 export interface ChatProps {
   messages: string[];

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { SignalHubInterfaces } from "@/api";
 import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
-import { toaster } from "@/shared/ui/toaster";
+import { toaster } from "@/ui/toaster";
 
 export const useSignalR = (hubURL: string) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();

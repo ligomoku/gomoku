@@ -1,7 +1,7 @@
 import type { SwaggerTypes } from "@/api";
 
 import { GameCreatorButton } from "@/features/GameCreator";
-import { Card, CardContent } from "@/shared/ui/card";
+import { Card, CardContent } from "@/ui/card";
 
 export interface GameType {
   timeLabel: string;

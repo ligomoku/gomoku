@@ -11,8 +11,8 @@ import { lazy } from "react";
 
 import type { LoadedClerk } from "@clerk/types";
 
-import { Header } from "@/shared/ui/Header";
-import { toaster } from "@/shared/ui/toaster";
+import { Header } from "@/ui/Header";
+import { toaster } from "@/ui/toaster";
 
 export interface MyRouterContext {
   isSignedIn: boolean;

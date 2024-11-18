@@ -8,7 +8,7 @@ import type { SwaggerTypes } from "@/api";
 
 import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
-import { getDefaultHeaders } from "@/shared/lib/utils";
+import { Headers } from "@/utils";
 
 export const Profile = () => {
   const ratingData = [
@@ -142,7 +142,7 @@ const useFetchProfileGames = (
     queryFn: async ({ pageParam = 1 }) => {
       const response = await SwaggerServices.getApiProfilesByUserNameGames({
         path: { userName },
-        headers: getDefaultHeaders(authToken),
+        headers: Headers.getDefaultHeaders(authToken),
         query: { page: pageParam, pageSize: 10 },
       });
 

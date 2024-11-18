@@ -1,57 +1,8 @@
-import type { SwaggerTypes } from "@/api";
-
-type Board = string[][];
-
-const countTotal = (
-  board: Board,
-  currentTile: SwaggerTypes.TileDto,
-  direction: SwaggerTypes.TileDto,
-): number => {
-  const now = board[currentTile.y][currentTile.x];
-  let total = 0;
-
-  for (
-    let tempY = currentTile.y + direction.y,
-      tempX = currentTile.x + direction.x;
-    tempY >= 0 && tempY < board.length && tempX >= 0 && tempX < board[0].length;
-    tempY += direction.y, tempX += direction.x
-  ) {
-    if (board[tempY][tempX] === now) {
-      total++;
-    } else {
-      break;
-    }
-  }
-
-  return total;
-};
-
-export type Winner = string | "draw" | undefined;
-
-export const findWinner = (
-  board: Board,
-  tile: SwaggerTypes.TileDto,
-): Winner => {
-  if (
-    countTotal(board, tile, { y: 1, x: 0 }) +
-      countTotal(board, tile, { y: -1, x: 0 }) >=
-      4 ||
-    countTotal(board, tile, { y: 0, x: 1 }) +
-      countTotal(board, tile, { y: 0, x: -1 }) >=
-      4 ||
-    countTotal(board, tile, { y: 1, x: 1 }) +
-      countTotal(board, tile, { y: -1, x: -1 }) >=
-      4 ||
-    countTotal(board, tile, { y: 1, x: -1 }) +
-      countTotal(board, tile, { y: -1, x: 1 }) >=
-      4
-  ) {
-    return board[tile.y][tile.x];
-  }
-
-  if (board.every((row) => row.every((col) => col))) {
-    return "draw";
-  }
-
-  return undefined;
-};
+export * from "./boardGame";
+export * from "./chunkLoader";
+export * from "./classNames";
+export * from "./errors";
+export * from "./fetchAuthFallback";
+export * from "./genParser";
+export * from "./headers";
+export * from "./typedStorage";
