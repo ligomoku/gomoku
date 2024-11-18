@@ -11,7 +11,8 @@ import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
 import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { RematchAlert } from "@/ui/rematch-alert";
+import { AlertDialog } from "@/ui/alert-dialog";
+import { toaster } from "@/ui/toaster";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -29,6 +30,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     handleMove,
     moves,
     winningSequence,
+    undoRequested,
+    setUndoRequested,
     rematchRequested,
     setRematchRequested,
     clock,
@@ -52,19 +55,45 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
-    onUndo: () => alert("Undo clicked"),
-    onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
+    onUndo: () => {
+      hubProxy?.requestUndo({ gameId: gameID });
+      toaster.show("Undo request sent");
+    },
+    onRematch: () => {
+      hubProxy?.requestRematch({ gameId: gameID });
+      toaster.show("Rematch request sent");
+    },
   };
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       {rematchRequested && (
-        <RematchAlert
+        <AlertDialog
+          title="Rematch Request"
+          secondaryTitle="Your opponent is requesting a rematch"
+          text="Would you like to play another game with the same settings?"
+          acceptButtonText="Accept"
           onAccept={() => {
             hubProxy?.approveRematch({ gameId: gameID });
           }}
+          declineButtonText="Decline"
           onDecline={() => {
             setRematchRequested(false);
+          }}
+        />
+      )}
+      {undoRequested && (
+        <AlertDialog
+          title="Undo Request"
+          secondaryTitle="Your opponent is requesting a undo"
+          text="Would you like to undo last move?"
+          acceptButtonText="Accept"
+          onAccept={() => {
+            hubProxy?.approveUndo({ gameId: gameID });
+          }}
+          declineButtonText="Decline"
+          onDecline={() => {
+            setUndoRequested(false);
           }}
         />
       )}

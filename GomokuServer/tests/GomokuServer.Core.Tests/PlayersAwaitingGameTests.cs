@@ -34,7 +34,7 @@ public class PlayersAwaitingGameTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(PlayerAddingValidationError.BothPlacesTakenAlready);
+		result.ValidationError.Should().Be(GameActionValidationError.BothPlacesTakenAlready);
 		result.ErrorDetails.Should().NotBeEmpty();
 	}
 
@@ -50,7 +50,7 @@ public class PlayersAwaitingGameTests
 
 		// Assert
 		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(PlayerAddingValidationError.PlayerAlreadyAddedToGame);
+		result.ValidationError.Should().Be(GameActionValidationError.PlayerAlreadyAddedToGame);
 		result.ErrorDetails.Should().NotBeEmpty();
 	}
 

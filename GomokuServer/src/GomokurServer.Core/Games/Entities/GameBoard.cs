@@ -10,7 +10,7 @@ namespace GomokuServer.Core.Games.Entities;
 public class GameBoard
 {
 	private readonly int _boardSize;
-	private readonly string[,] _board;
+	private readonly string?[,] _board;
 	private int _movesCount = 0;
 
 	public GameBoard(int boardSize)
@@ -46,14 +46,15 @@ public class GameBoard
 		}
 	}
 
-	public BoardTilePlacementResult PlaceNewTile(Tile tile)
+	public PlaceTileActionResult PlaceNewTile(Tile tile)
 	{
 		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.TileIndexOutOfTheBoardRange
+				ValidationError = PlaceTileActionValidationError.TileIndexOutOfTheBoardRange,
+				ErrorDetails = "Tile index out of the range"
 			};
 		}
 
@@ -62,7 +63,8 @@ public class GameBoard
 			return new()
 			{
 				IsValid = false,
-				ValidationError = TilePlacementValidationError.TileAlreadyOcupied
+				ValidationError = PlaceTileActionValidationError.TileAlreadyOcupied,
+				ErrorDetails = "Tile already ocupied"
 			};
 		}
 
@@ -86,6 +88,35 @@ public class GameBoard
 			IsValid = true,
 			IsTieSituationAfterMove = isTieSituation,
 			WinningSequence = winningSequence
+		};
+	}
+
+	public RemoveTileActionResult RemoveTile(Tile tile)
+	{
+		if (tile.X < 0 || tile.X >= _boardSize || tile.Y < 0 || tile.Y >= _boardSize)
+		{
+			return new()
+			{
+				IsValid = false,
+				ValidationError = RemoveTileValidationError.TileIndexOutOfTheBoardRange,
+				ErrorDetails = "Tile index out of the range"
+			};
+		}
+
+		if (_movesCount == 0)
+		{
+			return new()
+			{
+				IsValid = true,
+			};
+		}
+
+		_board[tile.X, tile.Y] = null;
+		NextTileColor = NextTileColor == TileColor.Black ? TileColor.White : TileColor.Black;
+
+		return new()
+		{
+			IsValid = true,
 		};
 	}
 
@@ -155,7 +186,7 @@ public class GameBoard
 		return gen.ToString();
 	}
 
-	private static string GetGENCharFromColor(string color)
+	private static string GetGENCharFromColor(string? color)
 	{
 		return color switch
 		{

@@ -42,6 +42,8 @@ import type {
   PostGamehubAnonymousJoinGameGroupData,
   PostGamehubAnonymousGetClockData,
   PostGamehubAnonymousMakeMoveData,
+  PostGamehubAnonymousRequestUndoData,
+  PostGamehubAnonymousApproveUndoData,
   PostGamehubAnonymousResignData,
   PostGamehubAnonymousRequestRematchData,
   PostGamehubAnonymousApproveRematchData,
@@ -50,6 +52,8 @@ import type {
   PostGamehubRegisteredJoinGameGroupData,
   PostGamehubRegisteredGetClockData,
   PostGamehubRegisteredMakeMoveData,
+  PostGamehubRegisteredRequestUndoData,
+  PostGamehubRegisteredApproveUndoData,
   PostGamehubRegisteredResignData,
   PostGamehubRegisteredRequestRematchData,
   PostGamehubRegisteredApproveRematchData,
@@ -73,6 +77,8 @@ import {
   postGamehubAnonymousJoinGameGroup,
   postGamehubAnonymousGetClock,
   postGamehubAnonymousMakeMove,
+  postGamehubAnonymousRequestUndo,
+  postGamehubAnonymousApproveUndo,
   postGamehubAnonymousResign,
   postGamehubAnonymousRequestRematch,
   postGamehubAnonymousApproveRematch,
@@ -81,6 +87,8 @@ import {
   postGamehubRegisteredJoinGameGroup,
   postGamehubRegisteredGetClock,
   postGamehubRegisteredMakeMove,
+  postGamehubRegisteredRequestUndo,
+  postGamehubRegisteredApproveUndo,
   postGamehubRegisteredResign,
   postGamehubRegisteredRequestRematch,
   postGamehubRegisteredApproveRematch,
@@ -854,6 +862,88 @@ export const postGamehubAnonymousMakeMoveMutation = (
   return mutationOptions;
 };
 
+export const postGamehubAnonymousRequestUndoQueryKey = (
+  options?: Options<PostGamehubAnonymousRequestUndoData>,
+) => [createQueryKey("postGamehubAnonymousRequestUndo", options)];
+
+export const postGamehubAnonymousRequestUndoOptions = (
+  options?: Options<PostGamehubAnonymousRequestUndoData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousRequestUndo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousRequestUndoQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousRequestUndoMutation = (
+  options?: Partial<Options<PostGamehubAnonymousRequestUndoData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousRequestUndoData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousRequestUndo({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubAnonymousApproveUndoQueryKey = (
+  options?: Options<PostGamehubAnonymousApproveUndoData>,
+) => [createQueryKey("postGamehubAnonymousApproveUndo", options)];
+
+export const postGamehubAnonymousApproveUndoOptions = (
+  options?: Options<PostGamehubAnonymousApproveUndoData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubAnonymousApproveUndo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubAnonymousApproveUndoQueryKey(options),
+  });
+};
+
+export const postGamehubAnonymousApproveUndoMutation = (
+  options?: Partial<Options<PostGamehubAnonymousApproveUndoData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubAnonymousApproveUndoData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubAnonymousApproveUndo({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const postGamehubAnonymousResignQueryKey = (
   options?: Options<PostGamehubAnonymousResignData>,
 ) => [createQueryKey("postGamehubAnonymousResign", options)];
@@ -1172,6 +1262,88 @@ export const postGamehubRegisteredMakeMoveMutation = (
   > = {
     mutationFn: async (localOptions) => {
       const { data } = await postGamehubRegisteredMakeMove({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredRequestUndoQueryKey = (
+  options?: Options<PostGamehubRegisteredRequestUndoData>,
+) => [createQueryKey("postGamehubRegisteredRequestUndo", options)];
+
+export const postGamehubRegisteredRequestUndoOptions = (
+  options?: Options<PostGamehubRegisteredRequestUndoData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredRequestUndo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredRequestUndoQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredRequestUndoMutation = (
+  options?: Partial<Options<PostGamehubRegisteredRequestUndoData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredRequestUndoData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredRequestUndo({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postGamehubRegisteredApproveUndoQueryKey = (
+  options?: Options<PostGamehubRegisteredApproveUndoData>,
+) => [createQueryKey("postGamehubRegisteredApproveUndo", options)];
+
+export const postGamehubRegisteredApproveUndoOptions = (
+  options?: Options<PostGamehubRegisteredApproveUndoData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postGamehubRegisteredApproveUndo({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postGamehubRegisteredApproveUndoQueryKey(options),
+  });
+};
+
+export const postGamehubRegisteredApproveUndoMutation = (
+  options?: Partial<Options<PostGamehubRegisteredApproveUndoData>>,
+) => {
+  const mutationOptions: UseMutationOptions<
+    void,
+    DefaultError,
+    Options<PostGamehubRegisteredApproveUndoData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postGamehubRegisteredApproveUndo({
         ...options,
         ...localOptions,
         throwOnError: true,

@@ -7,7 +7,6 @@ import type { SignalHubInterfaces } from "@/api";
 
 import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
-import { toaster } from "@/ui/toaster";
 
 export const useSignalR = (hubURL: string) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
@@ -28,8 +27,6 @@ export const useSignalR = (hubURL: string) => {
         } catch (error) {
           console.error("Error starting SignalR connection:", error);
           setIsConnected(false);
-          toaster.show("Can't establish connection with server", "error");
-          setTimeout(() => startConnection(connection), 5000);
         }
       }
     },
@@ -59,16 +56,12 @@ export const useSignalR = (hubURL: string) => {
     }
 
     return () => {
-      if (
-        connection &&
-        connection.state === signalR.HubConnectionState.Connected
-      ) {
+      if (connection) {
         connection
           .stop()
           .then(() => console.debug("SignalR connection stopped"))
           .catch((error) => {
             console.error("Error stopping SignalR connection:", error);
-            toaster.show("Error stopping SignalR connection", "error");
           });
       }
     };
@@ -100,6 +93,8 @@ export const useSignalR = (hubURL: string) => {
           handlers.playerJoinedGame?.({ userId: gameId }),
         gameStarted: async (message) => handlers.gameStarted?.(message),
         playerMadeMove: async (message) => handlers.playerMadeMove?.(message),
+        undoRequested: async () => handlers.undoRequested?.(),
+        undoApproved: async (message) => handlers.undoApproved?.(message),
         sendMessage: async (message) => handlers.sendMessage?.(message),
         gameHubError: async (error) => handlers.gameHubError?.(error),
         gameIsOver: async (message) => handlers.gameIsOver?.(message),

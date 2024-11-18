@@ -11,4 +11,9 @@ public record PlayersDto
 	{
 		return new();
 	}
+
+	public bool IsInvolved(string playerId)
+	{
+		return Black?.PlayerId == playerId || White?.PlayerId == playerId;
+	}
 }

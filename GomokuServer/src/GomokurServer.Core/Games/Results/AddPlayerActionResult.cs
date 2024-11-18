@@ -2,7 +2,7 @@
 
 namespace GomokuServer.Core.Games.Results;
 
-public record CreateGameResult : GameActionResult
+public record AddPlayerActionResult : GameActionResult
 {
 	public Game? CreatedGame { get; init; }
-};
+}

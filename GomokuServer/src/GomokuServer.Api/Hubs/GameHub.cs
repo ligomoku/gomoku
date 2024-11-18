@@ -73,6 +73,54 @@ public abstract class GameHub : Hub, IGameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, placeTileResult.GetHubError());
 	}
 
+	public virtual async Task RequestUndo(RequestUndoMessage message)
+	{
+		var getGameHistoryResult = await GetGameHistoryAsync(message.GameId);
+
+		if (getGameHistoryResult.IsSuccess)
+		{
+			var gameHistory = getGameHistoryResult.Value;
+			if (gameHistory.IsCompleted)
+			{
+				await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Game is over"));
+				return;
+			}
+
+			var playerId = GetPlayerId();
+
+			if (!gameHistory.Players.IsInvolved(playerId))
+			{
+				await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("You are spectator in this game"));
+				return;
+			}
+
+			var opponent = GetPlayerId() != gameHistory.Players.Black!.PlayerId ? gameHistory.Players.Black : gameHistory.Players.White;
+			await Clients.User(opponent!.PlayerId).SendAsync(GameHubMethod.UndoRequested);
+			return;
+		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, getGameHistoryResult.GetHubError());
+	}
+
+	public virtual async Task ApproveUndo(ApproveUndoMessage message)
+	{
+		var undoResult = await UndoAsync(message.GameId);
+
+		if (undoResult.IsSuccess)
+		{
+			var responseMessage = new UndoApprovedMessage()
+			{
+				GameId = message.GameId,
+				RemovedTile = undoResult.Value.RemovedTile!,
+				PreviouslyPlacedTile = undoResult.Value.PreviouslyPlacedTile!,
+			};
+			await Clients.Group(message.GameId).SendAsync(GameHubMethod.UndoApproved, responseMessage);
+			return;
+		}
+
+		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, undoResult.GetHubError());
+	}
+
 	public virtual async Task Resign(ResignClientMessage message)
 	{
 		var resignResult = await ResignAsync(message.GameId);
@@ -139,6 +187,8 @@ public abstract class GameHub : Hub, IGameHub
 	protected abstract Task<Result<GetGameHistoryResponse>> GetGameHistoryAsync(string gameId);
 
 	protected abstract Task<Result<PlaceTileResponse>> PlaceTileAsync(string gameId, TileDto tileDto);
+
+	protected abstract Task<Result<UndoResponse>> UndoAsync(string gameId);
 
 	protected abstract Task<Result<ResignResponse>> ResignAsync(string gameId);
 

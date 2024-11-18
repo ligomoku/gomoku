@@ -1,6 +1,6 @@
 ﻿namespace GomokuServer.Core.Games.Validations;
 
-public enum TilePlacementValidationError
+public enum PlaceTileActionValidationError
 {
 	OtherPlayerTurnNow = 0,
 	TileAlreadyOcupied = 1,

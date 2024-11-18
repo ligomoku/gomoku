@@ -30,14 +30,14 @@ public class PlayersAwaitingGame
 
 	public IReadOnlyList<Profile> Opponents => _opponents.AsReadOnly();
 
-	public PlayerAddingResult AddPlayer(Profile profile)
+	public AddPlayerActionResult AddPlayer(Profile profile)
 	{
 		if (_opponents.Any(opponent => opponent.Id == profile.Id))
 		{
 			return new()
 			{
 				IsValid = false,
-				ValidationError = PlayerAddingValidationError.PlayerAlreadyAddedToGame,
+				ValidationError = GameActionValidationError.PlayerAlreadyAddedToGame,
 				ErrorDetails = "Player already added to game"
 			};
 		}
@@ -47,7 +47,7 @@ public class PlayersAwaitingGame
 			return new()
 			{
 				IsValid = false,
-				ValidationError = PlayerAddingValidationError.BothPlacesTakenAlready,
+				ValidationError = GameActionValidationError.BothPlacesTakenAlready,
 				ErrorDetails = "Both places taken already"
 			};
 		}
