@@ -72,9 +72,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           title="Rematch Request"
           secondaryTitle="Your opponent is requesting a rematch"
           text="Would you like to play another game with the same settings?"
+          acceptButtonText="Accept"
           onAccept={() => {
             hubProxy?.approveRematch({ gameId: gameID });
           }}
+          declineButtonText="Decline"
           onDecline={() => {
             setRematchRequested(false);
           }}
@@ -85,9 +87,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           title="Undo Request"
           secondaryTitle="Your opponent is requesting a undo"
           text="Would you like to undo last move?"
+          acceptButtonText="Accept"
           onAccept={() => {
             hubProxy?.approveUndo({ gameId: gameID });
           }}
+          declineButtonText="Decline"
           onDecline={() => {
             setUndoRequested(false);
           }}

@@ -14,6 +14,8 @@ interface AlertDialogProps {
   title: string;
   secondaryTitle: string;
   text: string;
+  acceptButtonText: string;
+  declineButtonText: string;
   onAccept: () => void;
   onDecline: () => void;
 }
@@ -22,6 +24,8 @@ export const AlertDialog = ({
   title,
   secondaryTitle,
   text,
+  acceptButtonText,
+  declineButtonText,
   onAccept,
   onDecline,
 }: AlertDialogProps) => {
@@ -56,7 +60,7 @@ export const AlertDialog = ({
             size="lg"
             onClick={handleAccept}
           >
-            Accept
+            {acceptButtonText}
           </Button>
           <Button
             className="flex-1 bg-gray-700 text-gray-100 hover:bg-gray-600"
@@ -64,7 +68,7 @@ export const AlertDialog = ({
             variant="outline"
             onClick={handleDecline}
           >
-            Decline
+            {declineButtonText}
           </Button>
         </CardFooter>
       </Card>
