@@ -12,6 +12,7 @@ import { useChat } from "@/hooks/useChat";
 import { useJoinGame } from "@/hooks/useJoinGame";
 import { useMobileDesign } from "@/hooks/useMobileDesign";
 import { AlertDialog } from "@/ui/alert-dialog";
+import { toaster } from "@/ui/toaster";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -54,8 +55,14 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
-    onUndo: () => hubProxy?.requestUndo({ gameId: gameID }),
-    onRematch: () => hubProxy?.requestRematch({ gameId: gameID }),
+    onUndo: () => {
+      hubProxy?.requestUndo({ gameId: gameID });
+      toaster.show("Undo request sent");
+    },
+    onRematch: () => {
+      hubProxy?.requestRematch({ gameId: gameID });
+      toaster.show("Rematch request sent");
+    },
   };
 
   return (
