@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 
 import { useAuthToken } from "@/context/AuthContext";
 import { useSignalR } from "@/hooks/useSignalR";
-import { typedSessionStorage } from "@/shared/lib/utils";
+import { typedSessionStorage } from "@/utils";
 
 type SignalREventHandlers = SignalHubInterfaces.IGameHubReceiver;
 

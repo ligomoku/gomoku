@@ -14,7 +14,7 @@ type ApiResponse<T> =
     })
   | { data: undefined; error: unknown };
 
-export const fetchWithAuthFallback = async <T, R = void>(
+export const fetchAuthFallback = async <T, R = void>(
   jwtToken: string | undefined,
   authenticatedCall: (token: string) => Promise<ApiResponse<T>>,
   anonymousCall: (payload?: R) => Promise<ApiResponse<T>>,

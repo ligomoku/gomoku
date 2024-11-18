@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Card, CardContent } from "@/shared/ui/card";
+import { Card, CardContent } from "@/ui/card";
 
 interface SectionListItem {
   id: string;

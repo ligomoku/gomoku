@@ -13,8 +13,7 @@ import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { SectionList } from "@/features/SectionList";
 import { TimeControls } from "@/features/TimeControls";
 import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
-import { getDefaultHeaders } from "@/shared/lib/utils";
-import { fetchWithAuthFallback } from "@/utils/fetchWithAuthFallback";
+import { fetchAuthFallback, Headers } from "@/utils";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -103,15 +102,15 @@ const useFetchGames = (authToken: string) =>
   >({
     queryKey: ["games", null],
     queryFn: async () => {
-      const response = await fetchWithAuthFallback(
+      const response = await fetchAuthFallback(
         authToken,
         async (token) =>
           SwaggerServices.getApiGameRegisteredAvailableToJoin({
-            headers: getDefaultHeaders(token),
+            headers: Headers.getDefaultHeaders(token),
           }),
         () =>
           SwaggerServices.getApiGameAnonymousAvailableToJoin({
-            headers: getDefaultHeaders(),
+            headers: Headers.getDefaultHeaders(),
           }),
       );
 
@@ -131,15 +130,15 @@ const useFetchActiveGames = (authToken: string) =>
   >({
     queryKey: ["gamesActive", null],
     queryFn: async () => {
-      const response = await fetchWithAuthFallback(
+      const response = await fetchAuthFallback(
         authToken,
         async (token) =>
           SwaggerServices.getApiGameRegisteredActive({
-            headers: getDefaultHeaders(token),
+            headers: Headers.getDefaultHeaders(token),
           }),
         async () =>
           SwaggerServices.getApiGameAnonymousActive({
-            headers: getDefaultHeaders(),
+            headers: Headers.getDefaultHeaders(),
           }),
       );
 

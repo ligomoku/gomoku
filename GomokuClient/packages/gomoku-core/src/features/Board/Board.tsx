@@ -6,10 +6,9 @@ import type { SignalClientMessages, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks/useTiles";
 import type { CSSProperties } from "react";
 
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { Button } from "@/shared/ui/button";
-
 import "react-resizable/css/styles.css";
+import { useMobileDesign } from "@/hooks/useMobileDesign";
+import { Button } from "@/ui/button";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];

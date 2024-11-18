@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import type { ReactNode } from "react";
 
-import { typedStorage } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { typedStorage } from "@/utils";
 
 export interface HeaderProps {
   isSignedIn: boolean;

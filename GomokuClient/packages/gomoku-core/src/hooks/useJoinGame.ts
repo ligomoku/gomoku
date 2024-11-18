@@ -6,8 +6,8 @@ import type { TileColor } from "@/hooks/useTiles";
 
 import { useSignalRConnection } from "@/context";
 import { useTiles } from "@/hooks/useTiles";
-import { toaster } from "@/shared/ui/toaster";
-import { formatErrorMessage } from "@/utils/errorUtils";
+import { toaster } from "@/ui/toaster";
+import { formatErrorMessage } from "@/utils";
 
 export const useJoinGame = (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
