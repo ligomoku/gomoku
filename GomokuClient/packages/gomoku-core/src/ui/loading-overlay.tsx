@@ -1,4 +1,4 @@
-import { Spinner } from "@/shared/ui/spinner";
+import { Spinner } from "@/ui/spinner";
 import { cn } from "@/utils";
 
 interface LoadingOverlayProps {
