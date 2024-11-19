@@ -1,8 +1,7 @@
-import { GameTimeMobile } from "./GameTimeMobile";
-
 import type { Meta } from "@storybook/react";
 
-import { toaster } from "@/ui/toaster";
+import { GameTimeMobile } from "@/features";
+import { toaster } from "@/ui";
 
 export default {
   title: "Components/GameTime/Mobile",

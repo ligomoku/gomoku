@@ -1,7 +1,6 @@
 import type { SwaggerTypes } from "@/api";
 
-import { Card, CardContent } from "@/ui/card";
-import { Spinner } from "@/ui/spinner";
+import { Spinner, Card, CardContent } from "@/ui";
 
 export interface FeaturedBoxesProps {
   games: SwaggerTypes.GetAvailableGamesResponse[];

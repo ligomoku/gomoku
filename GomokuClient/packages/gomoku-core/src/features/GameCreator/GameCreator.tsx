@@ -5,8 +5,7 @@ import { useState } from "react";
 import type { SwaggerTypes } from "@/api";
 import type { ReactNode } from "react";
 
-import { Button } from "@/ui/button";
-import { Slider } from "@/ui/slider";
+import { Slider, Button } from "@/ui";
 
 export interface GameCreatorProps {
   isOpen: boolean;

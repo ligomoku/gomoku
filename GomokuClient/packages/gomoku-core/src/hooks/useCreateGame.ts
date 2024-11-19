@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { SwaggerTypes } from "@/api";
 
 import { SwaggerServices } from "@/api";
-import { toaster } from "@/ui/toaster";
+import { toaster } from "@/ui";
 import { Headers, fetchAuthFallback } from "@/utils";
 
 interface CreateGameAndNavigateProps {

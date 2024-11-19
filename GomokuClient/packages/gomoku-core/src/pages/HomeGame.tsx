@@ -4,15 +4,17 @@ import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
 import type { SwaggerTypes } from "@/api";
-import type { GameType } from "@/features/TimeControls";
+import type { GameType } from "@/features";
 
 import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
-import { GameOptionsButtons } from "@/features/GameOptionsButton";
-import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
-import { SectionList } from "@/features/SectionList";
-import { TimeControls } from "@/features/TimeControls";
-import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import {
+  GameOptionsButtons,
+  TimeControls,
+  OnlinePlayersInfo,
+  SectionList,
+} from "@/features";
+import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 
 export const HomeGame = () => {
