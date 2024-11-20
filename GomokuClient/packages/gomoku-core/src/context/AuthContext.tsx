@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import type { ReactNode } from "react";
 
-import { toaster } from "@/ui/toaster";
+import { toaster } from "@/ui";
 import { typedSessionStorage } from "@/utils";
 
 interface JwtTokenPayload {

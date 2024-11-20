@@ -3,12 +3,12 @@ import { memo, useMemo, useState } from "react";
 import { ResizableBox } from "react-resizable";
 
 import type { SignalClientMessages, SwaggerTypes } from "@/api";
-import type { TileColor } from "@/hooks/useTiles";
+import type { TileColor } from "@/hooks";
 import type { CSSProperties } from "react";
 
 import "react-resizable/css/styles.css";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { Button } from "@/ui/button";
+import { useMobileDesign } from "@/hooks";
+import { Button } from "@/ui";
 
 export interface TileProps {
   xIndex: SignalClientMessages.MakeMoveClientMessage["x"];

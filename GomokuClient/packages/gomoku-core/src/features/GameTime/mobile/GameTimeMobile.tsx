@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 
 import type { SwaggerTypes } from "@/api";
-import type { GameTimeProps } from "@/features/GameTime";
+import type { GameTimeProps } from "@/features";
 
-import { secondsToString } from "@/features/GameTime";
+import { secondsToString } from "@/features";
 
 interface GameTimeMobileProps
   extends Omit<

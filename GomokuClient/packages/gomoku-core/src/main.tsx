@@ -13,8 +13,8 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
 import { SwaggerServices } from "@/api";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
-import ErrorBoundary from "@/features/ErrorBoundary/ErrorBoundary";
-import { ToasterProvider } from "@/ui/toaster";
+import { ErrorBoundary } from "@/features";
+import { ToasterProvider } from "@/ui";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

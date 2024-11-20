@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 
 import type { SwaggerTypes } from "@/api";
-import type { BoardProps } from "@/features/Board/Board";
+import type { BoardProps } from "@/features";
 
-import { Board } from "@/features/Board/Board";
+import { Board } from "@/features";
 import { genParser } from "@/utils";
 
 export interface GamePreviewProps {

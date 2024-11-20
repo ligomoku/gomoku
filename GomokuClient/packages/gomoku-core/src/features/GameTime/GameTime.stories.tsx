@@ -2,7 +2,7 @@ import { GameTime } from "./GameTime";
 
 import type { Meta } from "@storybook/react";
 
-import { toaster } from "@/ui/toaster";
+import { toaster } from "@/ui";
 
 export default {
   title: "Components/GameTime",

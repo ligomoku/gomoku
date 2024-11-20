@@ -1,7 +1,7 @@
 import type { SwaggerTypes } from "@/api";
 
-import { GameCreatorButton } from "@/features/GameCreator";
-import { Button } from "@/ui/button";
+import { GameCreatorButton } from "@/features";
+import { Button } from "@/ui";
 
 export interface GameOptionsButtonsProps {
   onCreateGame: (

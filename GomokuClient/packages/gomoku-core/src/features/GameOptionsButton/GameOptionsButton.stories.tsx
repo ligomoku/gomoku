@@ -1,9 +1,8 @@
-import { GameOptionsButtons } from "./GameOptionsButton";
-
-import type { GameOptionsButtonsProps } from "./GameOptionsButton";
+import type { GameOptionsButtonsProps } from "@/features";
 import type { Meta } from "@storybook/react";
 
-import { toaster } from "@/ui/toaster";
+import { GameOptionsButtons } from "@/features";
+import { toaster } from "@/ui";
 
 export default {
   title: "Components/GameOptionsButton",

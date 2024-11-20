@@ -7,8 +7,7 @@ import type { SwaggerTypes } from "@/api";
 import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
-import { LoadingOverlay } from "@/ui/loading-overlay";
-import { toaster } from "@/ui/toaster";
+import { LoadingOverlay, toaster } from "@/ui";
 import { fetchAuthFallback, Headers, typedSessionStorage } from "@/utils";
 
 export const getGameHistory = async (

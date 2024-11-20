@@ -4,10 +4,15 @@ import { useState, useEffect, useRef } from "react";
 
 import type { KeyboardEvent } from "react";
 
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { Button } from "@/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
-import { toaster } from "@/ui/toaster";
+import { useMobileDesign } from "@/hooks";
+import {
+  Button,
+  toaster,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/ui";
 
 export interface ChatProps {
   messages: string[];

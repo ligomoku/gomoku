@@ -1,5 +1,5 @@
 import type { SwaggerTypes } from "@/api";
-import type { TileColor } from "@/hooks/useTiles";
+import type { TileColor } from "@/hooks";
 
 /**
  * Parses gen string to array of arrays of tiles
