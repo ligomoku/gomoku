@@ -33,7 +33,7 @@ export const Header = ({
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   if (SignedOutComponent) typedStorage.clear();
-  const { isSmall, isMedium } = useResponsiveDesign();
+  const { isSmall, isLarge } = useResponsiveDesign();
 
   const customMenuItems = isSmall
     ? [
@@ -111,12 +111,15 @@ export const Header = ({
               className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
               placeholder={searchPlaceholder}
               style={{
-                display: isMedium ? "none" : "unset",
+                display: isLarge ? "none" : "unset",
               }}
             />
             <button
               aria-label="Search"
-              className="text-[#bababa] hover:text-[#f0f0f0] sm:hidden"
+              className="text-[#bababa] hover:text-[#f0f0f0]"
+              style={{
+                display: !isLarge ? "none" : "unset",
+              }}
             >
               <Search className="h-5 w-5" />
             </button>
