@@ -108,7 +108,7 @@ export const Chat = ({
             </div>
             <ScrollArea
               ref={scrollAreaRef}
-              className="h-[100%] max-h-[550px] min-h-[550px] w-full overflow-y-auto rounded-md border p-4"
+              className="h-[100%] max-h-[420px] min-h-[420px] w-full overflow-y-auto rounded-md border p-4"
               style={{
                 maxWidth: !isMobile ? 300 : "unset",
               }}

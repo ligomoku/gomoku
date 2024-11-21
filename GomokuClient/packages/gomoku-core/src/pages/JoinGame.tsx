@@ -4,6 +4,7 @@ import type { SwaggerTypes } from "@/api";
 import type { GameTimeProps } from "@/features";
 
 import { useAuthToken } from "@/context";
+import { GamePlayersInfo } from "@/features";
 import { GameTime, GameTimeMobile, Chat, Board } from "@/features";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
 import { AlertDialog, toaster } from "@/ui";
@@ -107,12 +108,33 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 width: isMobile ? "100%" : "unset",
               }}
             >
-              <Chat
-                messages={messages}
-                isConnected={isConnected}
-                sendMessage={sendMessage}
-                username={jwtDecodedInfo?.username || ""}
+              <GamePlayersInfo
+                gameType="game-type"
+                players={[
+                  {
+                    title: "black",
+                    name: players.black?.userName || "Anonymous",
+                    rating: 0,
+                    isCurrentPlayer: false,
+                    color: "black",
+                  },
+                  {
+                    title: "white",
+                    name: players.white?.userName || "Anonymous",
+                    rating: 0,
+                    isCurrentPlayer: true,
+                    color: "white",
+                  },
+                ]}
               />
+              <div className="mt-4 flex flex-col justify-between">
+                <Chat
+                  messages={messages}
+                  isConnected={isConnected}
+                  sendMessage={sendMessage}
+                  username={jwtDecodedInfo?.username || ""}
+                />
+              </div>
             </div>
             <div className={isMobile ? "mb-4 flex w-full justify-center" : ""}>
               {isMobile && (
