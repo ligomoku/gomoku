@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 import type { KeyboardEvent } from "react";
 
-import { useMobileDesign } from "@/hooks";
+import { useResponsiveDesign } from "@/hooks";
 import {
   Button,
   toaster,
@@ -30,7 +30,7 @@ export const Chat = ({
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobileDesign(1488);
+  const isMobile = useResponsiveDesign(1488);
   const MAX_MESSAGE_LENGTH = 50;
 
   const handleSendMessage = async () => {
