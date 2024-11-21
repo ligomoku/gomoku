@@ -105,47 +105,45 @@ export const Header = ({
           ))}
         </div>
 
-        {!isSmall && (
-          <div className="flex items-center space-x-4">
-            <Input
-              className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
-              placeholder={searchPlaceholder}
-              style={{
-                display: isLarge ? "none" : "unset",
-              }}
-            />
-            <button
-              aria-label="Search"
-              className="text-[#bababa] hover:text-[#f0f0f0]"
-              style={{
-                display: !isLarge ? "none" : "unset",
-              }}
+        <div className="flex items-center space-x-4">
+          <Input
+            className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
+            placeholder={searchPlaceholder}
+            style={{
+              display: isLarge ? "none" : "unset",
+            }}
+          />
+          <button
+            aria-label="Search"
+            className="text-[#bababa] hover:text-[#f0f0f0]"
+            style={{
+              display: !isLarge ? "none" : "unset",
+            }}
+          >
+            <Search className="h-5 w-5" />
+          </button>
+          <button
+            aria-label="Notifications"
+            className="text-[#bababa] hover:text-[#f0f0f0]"
+          >
+            <Bell className="h-5 w-5" />
+          </button>
+          {isSmall || isSignedIn ? (
+            <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
+              {UserButtonComponent ? UserButtonComponent : null}
+            </div>
+          ) : SignedOutComponent ? (
+            SignInButtonComponent
+          ) : (
+            <Button
+              onClick={onSignInClick}
+              variant="ghost"
+              className="hidden items-center space-x-2 whitespace-nowrap text-[#bababa] hover:text-[#f0f0f0] sm:flex"
             >
-              <Search className="h-5 w-5" />
-            </button>
-            <button
-              aria-label="Notifications"
-              className="text-[#bababa] hover:text-[#f0f0f0]"
-            >
-              <Bell className="h-5 w-5" />
-            </button>
-            {isSignedIn ? (
-              <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
-                {UserButtonComponent ? UserButtonComponent : null}
-              </div>
-            ) : SignedOutComponent ? (
-              SignInButtonComponent
-            ) : (
-              <Button
-                onClick={onSignInClick}
-                variant="ghost"
-                className="hidden items-center space-x-2 whitespace-nowrap text-[#bababa] hover:text-[#f0f0f0] sm:flex"
-              >
-                Sign In
-              </Button>
-            )}
-          </div>
-        )}
+              Sign In
+            </Button>
+          )}
+        </div>
       </nav>
     </header>
   );
