@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "buildCommand": "yarn install && yarn workspace @gomoku/core build",
+  "outputDirectory": "./GomokuClient/packages/gomoku-core/dist",
+  "installCommand": "yarn install",
+  "framework": "vite",
+  "builds": [
+    {
+      "src": "./GomokuClient/packages/gomoku-core/**",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
+}
