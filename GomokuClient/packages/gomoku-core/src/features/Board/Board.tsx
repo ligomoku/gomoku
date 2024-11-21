@@ -7,7 +7,7 @@ import type { TileColor } from "@/hooks";
 import type { CSSProperties } from "react";
 
 import "react-resizable/css/styles.css";
-import { useResponsiveDesign } from "@/hooks";
+import { useMobileDesign } from "@/hooks";
 import { Button } from "@/ui";
 
 export interface TileProps {
@@ -115,7 +115,7 @@ export const Board = ({
   style,
   winningSequence,
 }: BoardProps) => {
-  const isMobile = useResponsiveDesign(1488);
+  const isMobile = useMobileDesign(1488);
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
   const [showAnnotations, setShowAnnotations] = useState(false);
 

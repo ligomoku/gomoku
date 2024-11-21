@@ -5,7 +5,7 @@ import type { GameTimeProps } from "@/features";
 
 import { useAuthToken } from "@/context";
 import { GameTime, GameTimeMobile, Chat, Board } from "@/features";
-import { useChat, useJoinGame, useResponsiveDesign } from "@/hooks";
+import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
 import { AlertDialog, toaster } from "@/ui";
 
 interface JoinGameProps {
@@ -15,7 +15,7 @@ interface JoinGameProps {
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
   const { gameID } = useParams({ from: "/game/join/$gameID" });
   const { jwtDecodedInfo } = useAuthToken();
-  const isMobile = useResponsiveDesign(1488);
+  const isMobile = useMobileDesign(1488);
 
   const {
     hubProxy,
