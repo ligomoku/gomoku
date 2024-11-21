@@ -51,7 +51,7 @@ const RootComponent = () => {
           <SignInButton>
             <span
               className={
-                "cursor-pointer text-lg uppercase text-[#dc9a3c] hover:underline sm:text-xl"
+                "cursor-pointer whitespace-nowrap text-lg uppercase text-[#dc9a3c] hover:underline sm:text-xl"
               }
             >
               Sign In
