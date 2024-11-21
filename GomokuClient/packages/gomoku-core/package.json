@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "vercel-build": "yarn build",
     "typecheck": "tsc --build --pretty",
     "download": "sh ./scripts/download-openapi-document.sh",
     "download:localhost": "sh ./scripts/download-openapi-document.sh localhost",
