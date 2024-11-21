@@ -3,8 +3,6 @@ import { Component } from "react";
 
 import type { ReactNode, ErrorInfo } from "react";
 
-import { ChunkLoader, typedSessionStorage, typedStorage } from "@/utils";
-
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
@@ -14,10 +12,13 @@ interface ErrorBoundaryState {
   showPopup: boolean;
 }
 
-export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  private static readonly CHUNK_FAILED_MESSAGE = /Loading chunk \d+ failed/;
+  private static readonly CSS_CHUNK_FAILED_MESSAGE =
+    /Loading CSS chunk \d+ failed/;
+  private static readonly RELOAD_EXPIRY_TIME = 10000; // 10 seconds
+  private static readonly STORAGE_KEY = "chunkReloadedAt";
+
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -26,32 +27,80 @@ export class ErrorBoundary extends Component<
     };
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  /**
+   * Detects chunk loading errors.
+   */
+  private static didChunkFail(error: Error): "" | undefined | boolean {
+    return (
+      error?.message &&
+      (this.CHUNK_FAILED_MESSAGE.test(error.message) ||
+        this.CSS_CHUNK_FAILED_MESSAGE.test(error.message))
+    );
+  }
+
+  /**
+   * Checks if the chunk has already been reloaded based on stored timestamp.
+   */
+  private static didChunkAlreadyReload(): boolean {
+    const itemString = localStorage.getItem(this.STORAGE_KEY);
+    if (!itemString) return false;
+
+    const item = JSON.parse(itemString);
+    const isExpired = new Date().getTime() > item.expiry;
+
+    if (isExpired) {
+      localStorage.removeItem(this.STORAGE_KEY);
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Sets the reload timestamp for chunks in storage.
+   */
+  private static setChunkReloadAt(): void {
+    const item = {
+      value: "true",
+      expiry: new Date().getTime() + this.RELOAD_EXPIRY_TIME,
+    };
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(item));
+  }
+
+  static getDerivedStateFromError(error: Error): {
+    showPopup: "" | undefined | boolean;
+    hasError: boolean;
+  } {
+    const showPopup = this.didChunkFail(error) && !this.didChunkAlreadyReload();
+
     return {
       hasError: true,
-      showPopup:
-        ChunkLoader.didChunkFail(error) && !ChunkLoader.didChunkAlreadyReload(),
-    } as ErrorBoundaryState;
+      showPopup,
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (
-      ChunkLoader.didChunkFail(error) &&
-      !ChunkLoader.didChunkAlreadyReload()
+      ErrorBoundary.didChunkFail(error) &&
+      !ErrorBoundary.didChunkAlreadyReload()
     ) {
-      ChunkLoader.setChunkReloadAt();
+      ErrorBoundary.setChunkReloadAt();
     } else {
-      //@ts-expect-error
-      Sentry.withScope((scope: { setExtras: (arg0: ErrorInfo) => void }) => {
+      // Report non-chunk errors to Sentry
+      Sentry.withScope((scope) => {
+        //@ts-expect-error
         scope.setExtras(errorInfo);
         Sentry.captureException(error);
       });
     }
   }
 
-  onRestore() {
-    typedStorage.clear();
-    typedSessionStorage.clear();
+  /**
+   * Clears all storage and restores the state.
+   */
+  private onRestore() {
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   render(): ReactNode {
@@ -67,7 +116,7 @@ export class ErrorBoundary extends Component<
         window.location.replace("/");
       }, 4000);
 
-      return children;
+      return null; // Optionally show an error fallback component
     }
 
     return children;
