@@ -1,7 +1,7 @@
 import { useParams } from "@tanstack/react-router";
 
-import type { SwaggerTypes } from "@/api";
 import type { GameTimeProps } from "@/features";
+import type { SwaggerTypes } from "@gomoku/api";
 
 import { useAuthToken } from "@/context";
 import { GamePlayersInfo } from "@/features";

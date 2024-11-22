@@ -1,10 +1,10 @@
+import { SwaggerServices } from "@gomoku/api";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
-import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
 import { LoadingOverlay, toaster } from "@/ui";

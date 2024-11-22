@@ -2,8 +2,8 @@ import { cva } from "class-variance-authority";
 import { memo, useMemo, useState } from "react";
 import { ResizableBox } from "react-resizable";
 
-import type { SignalClientMessages, SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks";
+import type { SignalClientMessages, SwaggerTypes } from "@gomoku/api";
 import type { CSSProperties } from "react";
 
 import "react-resizable/css/styles.css";

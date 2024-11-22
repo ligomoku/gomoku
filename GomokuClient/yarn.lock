@@ -1567,12 +1567,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gomoku/api@npm:*, @gomoku/api@workspace:packages/gomoku-api":
+  version: 0.0.0-use.local
+  resolution: "@gomoku/api@workspace:packages/gomoku-api"
+  dependencies:
+    "@gomoku/eslint-config-custom": "npm:*"
+    "@hey-api/client-fetch": "npm:^0.4.4"
+    "@tanstack/react-query": "npm:^5.60.5"
+  languageName: unknown
+  linkType: soft
+
 "@gomoku/core@workspace:packages/gomoku-core":
   version: 0.0.0-use.local
   resolution: "@gomoku/core@workspace:packages/gomoku-core"
   dependencies:
     "@clerk/clerk-react": "npm:^5.16.0"
     "@clerk/types": "npm:^4.34.0"
+    "@gomoku/api": "npm:*"
     "@gomoku/eslint-config-custom": "npm:*"
     "@hey-api/client-fetch": "npm:^0.4.4"
     "@hey-api/openapi-ts": "npm:^0.56.1"

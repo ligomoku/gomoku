@@ -1,11 +1,11 @@
 import { useAuth } from "@clerk/clerk-react";
+import { SignalRClientService } from "@gomoku/api";
 import * as signalR from "@microsoft/signalr";
 import { JsonHubProtocol } from "@microsoft/signalr";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { SignalHubInterfaces } from "@/api";
+import type { SignalHubInterfaces } from "@gomoku/api";
 
-import { SignalRClientService } from "@/api";
 import { useAuthToken } from "@/context/AuthContext";
 
 export const useSignalR = (hubURL: string) => {

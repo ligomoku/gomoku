@@ -1,9 +1,9 @@
+import { SwaggerServices } from "@gomoku/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
-import { SwaggerServices } from "@/api";
 import { toaster } from "@/ui";
 import { Headers, fetchAuthFallback } from "@/utils";
 

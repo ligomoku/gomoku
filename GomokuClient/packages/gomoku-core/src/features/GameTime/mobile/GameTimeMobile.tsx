@@ -7,8 +7,8 @@ import {
   X,
 } from "lucide-react";
 
-import type { SwaggerTypes } from "@/api";
 import type { GameTimeProps } from "@/features";
+import type { SwaggerTypes } from "@gomoku/api";
 
 import { secondsToString } from "@/features";
 

@@ -1,12 +1,12 @@
+import { SwaggerServices } from "@gomoku/api";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
-import type { SwaggerTypes } from "@/api";
 import type { GameType } from "@/features";
+import type { SwaggerTypes } from "@gomoku/api";
 
-import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import {
   GameOptionsButtons,

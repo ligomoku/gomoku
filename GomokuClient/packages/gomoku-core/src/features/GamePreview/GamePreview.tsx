@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import type { SwaggerTypes } from "@/api";
 import type { BoardProps } from "@/features";
+import type { SwaggerTypes } from "@gomoku/api";
 
 import { Board } from "@/features";
 import { genParser } from "@/utils";

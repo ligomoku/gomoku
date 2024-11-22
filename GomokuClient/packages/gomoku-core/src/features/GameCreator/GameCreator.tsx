@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 import type { ReactNode } from "react";
 
 import { Slider, Button } from "@/ui";

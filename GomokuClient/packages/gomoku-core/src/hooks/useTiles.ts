@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import type { SwaggerTypes } from "@/api";
 import type { Winner } from "@/utils";
+import type { SwaggerTypes } from "@gomoku/api";
 
 //TODO: check import combining type on tree-shaking
 import { genParser, BoardGame } from "@/utils";

@@ -1,4 +1,4 @@
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
 type Board = string[][];
 

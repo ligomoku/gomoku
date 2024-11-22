@@ -1,5 +1,5 @@
-import type { SwaggerTypes } from "@/api";
 import type { FeaturedBoxesProps } from "@/features";
+import type { SwaggerTypes } from "@gomoku/api";
 import type { Meta, StoryFn } from "@storybook/react";
 
 import { FeaturedBoxes } from "@/features";
