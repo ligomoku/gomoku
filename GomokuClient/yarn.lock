@@ -1573,7 +1573,6 @@ __metadata:
   dependencies:
     "@gomoku/eslint-config-custom": "npm:*"
     "@hey-api/client-fetch": "npm:^0.4.4"
-    "@hey-api/openapi-ts": "npm:^0.56.1"
     "@tanstack/react-query": "npm:^5.60.5"
   languageName: unknown
   linkType: soft
@@ -1586,6 +1585,8 @@ __metadata:
     "@clerk/types": "npm:^4.34.0"
     "@gomoku/api": "npm:*"
     "@gomoku/eslint-config-custom": "npm:*"
+    "@hey-api/client-fetch": "npm:^0.4.4"
+    "@hey-api/openapi-ts": "npm:^0.56.1"
     "@lingui/cli": "npm:^4.14.0"
     "@lingui/macro": "npm:^4.14.0"
     "@lingui/react": "npm:^4.14.0"

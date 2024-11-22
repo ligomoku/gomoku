@@ -1,23 +1,17 @@
 {
   "name": "@gomoku/api",
   "description": "Gomoku TypeScript API package",
-  "apiVersion": "1",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
-    "typecheck": "tsc --noEmit",
-    "download": "sh ./scripts/download-openapi-document.sh",
-    "download:localhost": "sh ./scripts/download-openapi-document.sh localhost",
-    "download:ci": "sh ./scripts/download-openapi-document.sh CI",
-    "codegen": "openapi-ts"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@gomoku/eslint-config-custom": "*",
     "@hey-api/client-fetch": "^0.4.4",
-    "@hey-api/openapi-ts": "^0.56.1",
     "@tanstack/react-query": "^5.60.5"
   }
 }
