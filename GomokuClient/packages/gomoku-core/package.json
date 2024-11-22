@@ -26,6 +26,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.16.0",
     "@gomoku/api": "*",
+    "@gomoku/story": "*",
     "@lingui/macro": "^4.14.0",
     "@lingui/react": "^4.14.0",
     "@microsoft/signalr": "^8.0.7",
@@ -62,7 +63,6 @@
   "devDependencies": {
     "@clerk/types": "^4.34.0",
     "@gomoku/eslint-config-custom": "*",
-    "@gomoku/story": "*",
     "@lingui/cli": "^4.14.0",
     "@storybook/addon-essentials": "^8.4.5",
     "@storybook/addon-links": "^8.4.5",
