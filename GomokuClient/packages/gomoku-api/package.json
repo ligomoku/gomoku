@@ -1,13 +1,17 @@
 {
   "name": "@gomoku/api",
   "description": "Gomoku TypeScript API package",
+  "apiVersion": "1",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "download": "sh ./scripts/download-openapi-document.sh",
+    "download:localhost": "sh ./scripts/download-openapi-document.sh localhost",
+    "download:ci": "sh ./scripts/download-openapi-document.sh CI"
   },
   "dependencies": {
     "@gomoku/eslint-config-custom": "*",
