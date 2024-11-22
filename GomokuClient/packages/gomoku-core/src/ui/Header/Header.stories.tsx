@@ -1,7 +1,9 @@
-import { toaster, Header } from "@gomoku/story";
+import { toaster } from "@gomoku/story";
 
-import type { HeaderProps } from "@gomoku/story";
+import type { HeaderProps } from "@/ui";
 import type { Meta, StoryFn } from "@storybook/react";
+
+import { Header } from "@/ui";
 
 export default {
   title: "Components/Header",
