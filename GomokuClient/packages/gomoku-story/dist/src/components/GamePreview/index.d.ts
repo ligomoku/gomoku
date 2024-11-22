@@ -1,2 +1,2 @@
-export * from './GamePreview';
+export * from "./GamePreview";
 //# sourceMappingURL=index.d.ts.map

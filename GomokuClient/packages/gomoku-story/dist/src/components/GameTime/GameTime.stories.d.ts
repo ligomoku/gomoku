@@ -1,5 +1,5 @@
-import { GameTime } from './GameTime';
-import { Meta } from '@storybook/react';
+import { GameTime } from "./GameTime";
+import { Meta } from "@storybook/react";
 declare const _default: Meta<typeof GameTime>;
 export default _default;
 export declare const Default: () => import("react/jsx-runtime").JSX.Element;

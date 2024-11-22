@@ -1,2 +1,2 @@
-export * from './GameCreator';
+export * from "./GameCreator";
 //# sourceMappingURL=index.d.ts.map

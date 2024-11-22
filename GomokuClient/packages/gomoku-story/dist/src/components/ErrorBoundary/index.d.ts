@@ -1,2 +1,2 @@
-export * from './ErrorBoundary';
+export * from "./ErrorBoundary";
 //# sourceMappingURL=index.d.ts.map
