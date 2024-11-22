@@ -8,7 +8,9 @@
   "paths": {
     "/api/game/anonymous/{gameId}/history": {
       "get": {
-        "tags": ["AnonymousGames"],
+        "tags": [
+          "AnonymousGames"
+        ],
         "parameters": [
           {
             "name": "gameId",
@@ -53,11 +55,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               }
             }
           }
@@ -66,7 +64,9 @@
     },
     "/api/game/anonymous/available-to-join": {
       "get": {
-        "tags": ["AnonymousGames"],
+        "tags": [
+          "AnonymousGames"
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -117,7 +117,9 @@
     },
     "/api/game/anonymous/active": {
       "get": {
-        "tags": ["AnonymousGames"],
+        "tags": [
+          "AnonymousGames"
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -168,7 +170,9 @@
     },
     "/api/game/anonymous": {
       "post": {
-        "tags": ["AnonymousGames"],
+        "tags": [
+          "AnonymousGames"
+        ],
         "parameters": [
           {
             "name": "X-Version",
@@ -214,11 +218,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"Bad Request","status":400}
               }
             }
           }
@@ -227,7 +227,9 @@
     },
     "/api/game/anonymous/{gameId}/join": {
       "post": {
-        "tags": ["AnonymousGames"],
+        "tags": [
+          "AnonymousGames"
+        ],
         "summary": "Join game",
         "parameters": [
           {
@@ -282,11 +284,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               }
             }
           }
@@ -295,7 +293,9 @@
     },
     "/health": {
       "get": {
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "summary": "Health check endpoint",
         "parameters": [
           {
@@ -324,7 +324,9 @@
     },
     "/api/profiles/{userName}/games": {
       "get": {
-        "tags": ["Profiles"],
+        "tags": [
+          "Profiles"
+        ],
         "summary": "Get games for specific user",
         "parameters": [
           {
@@ -384,7 +386,9 @@
     },
     "/api/game/registered/{gameId}/history": {
       "get": {
-        "tags": ["RegisteredGames"],
+        "tags": [
+          "RegisteredGames"
+        ],
         "parameters": [
           {
             "name": "gameId",
@@ -448,45 +452,35 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               },
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               }
             }
           }
         },
         "security": [
           {
-            "Bearer": []
+            "Bearer": [ ]
           }
         ]
       }
     },
     "/api/game/registered/available-to-join": {
       "get": {
-        "tags": ["RegisteredGames"],
+        "tags": [
+          "RegisteredGames"
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -554,14 +548,16 @@
         },
         "security": [
           {
-            "Bearer": []
+            "Bearer": [ ]
           }
         ]
       }
     },
     "/api/game/registered/active": {
       "get": {
-        "tags": ["RegisteredGames"],
+        "tags": [
+          "RegisteredGames"
+        ],
         "parameters": [
           {
             "name": "limit",
@@ -629,14 +625,16 @@
         },
         "security": [
           {
-            "Bearer": []
+            "Bearer": [ ]
           }
         ]
       }
     },
     "/api/game/registered": {
       "post": {
-        "tags": ["RegisteredGames"],
+        "tags": [
+          "RegisteredGames"
+        ],
         "parameters": [
           {
             "name": "X-Version",
@@ -711,45 +709,35 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"Bad Request","status":400}
               },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"Bad Request","status":400}
               },
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                  "title": "Bad Request",
-                  "status": 400
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.1","title":"Bad Request","status":400}
               }
             }
           }
         },
         "security": [
           {
-            "Bearer": []
+            "Bearer": [ ]
           }
         ]
       }
     },
     "/api/game/registered/{gameId}/join": {
       "post": {
-        "tags": ["RegisteredGames"],
+        "tags": [
+          "RegisteredGames"
+        ],
         "summary": "Join game",
         "parameters": [
           {
@@ -814,45 +802,35 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               },
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 },
-                "example": {
-                  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                  "title": "Not Found",
-                  "status": 404
-                }
+                "example": {"type":"https://tools.ietf.org/html/rfc7231#section-6.5.4","title":"Not Found","status":404}
               }
             }
           }
         },
         "security": [
           {
-            "Bearer": []
+            "Bearer": [ ]
           }
         ]
       }
     },
     "/gamehub/anonymous/JoinGameGroup": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "gameId",
@@ -862,13 +840,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/GetClock": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -878,13 +860,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/MakeMove": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -894,13 +880,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/RequestUndo": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -910,13 +900,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/ApproveUndo": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -926,13 +920,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/Resign": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -942,13 +940,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/RequestRematch": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -958,13 +960,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/ApproveRematch": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -974,13 +980,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/SendMessage": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "messageRequest",
@@ -990,13 +1000,17 @@
             }
           }
         ],
-        "responses": {},
-        "security": [{}]
+        "responses": { },
+        "security": [
+          { }
+        ]
       }
     },
     "/gamehub/anonymous/SendInvitationToPlay": {
       "post": {
-        "tags": ["AnonymousGameHub"],
+        "tags": [
+          "AnonymousGameHub"
+        ],
         "parameters": [
           {
             "name": "_",
@@ -1006,12 +1020,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/JoinGameGroup": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "gameId",
@@ -1021,12 +1037,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/GetClock": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1036,12 +1054,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/MakeMove": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1051,12 +1071,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/RequestUndo": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1066,12 +1088,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/ApproveUndo": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1081,12 +1105,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/Resign": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1096,12 +1122,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/RequestRematch": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1111,12 +1139,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/ApproveRematch": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1126,12 +1156,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/SendMessage": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "messageRequest",
@@ -1141,12 +1173,14 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     },
     "/gamehub/registered/SendInvitationToPlay": {
       "post": {
-        "tags": ["RegisteredGameHub"],
+        "tags": [
+          "RegisteredGameHub"
+        ],
         "parameters": [
           {
             "name": "message",
@@ -1156,14 +1190,16 @@
             }
           }
         ],
-        "responses": {}
+        "responses": { }
       }
     }
   },
   "components": {
     "schemas": {
       "AddAnonymousPlayerToGameRequest": {
-        "required": ["playerId"],
+        "required": [
+          "playerId"
+        ],
         "type": "object",
         "properties": {
           "playerId": {
@@ -1174,7 +1210,10 @@
         "additionalProperties": false
       },
       "AddPlayerToGameResponse": {
-        "required": ["gameId", "playerId"],
+        "required": [
+          "gameId",
+          "playerId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1189,7 +1228,9 @@
         "additionalProperties": false
       },
       "ApproveRematchMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1200,7 +1241,9 @@
         "additionalProperties": false
       },
       "ApproveUndoMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1211,7 +1254,11 @@
         "additionalProperties": false
       },
       "ChatMessageClientMessage": {
-        "required": ["gameId", "message", "user"],
+        "required": [
+          "gameId",
+          "message",
+          "user"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1230,7 +1277,10 @@
         "additionalProperties": false
       },
       "ClockDto": {
-        "required": ["black", "white"],
+        "required": [
+          "black",
+          "white"
+        ],
         "type": "object",
         "properties": {
           "black": {
@@ -1245,7 +1295,9 @@
         "additionalProperties": false
       },
       "CreateGameRequest": {
-        "required": ["boardSize"],
+        "required": [
+          "boardSize"
+        ],
         "type": "object",
         "properties": {
           "boardSize": {
@@ -1259,7 +1311,10 @@
         "additionalProperties": false
       },
       "CreateGameResponse": {
-        "required": ["boardSize", "gameId"],
+        "required": [
+          "boardSize",
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1274,7 +1329,9 @@
         "additionalProperties": false
       },
       "GetActiveGamesResponse": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1291,7 +1348,10 @@
         "additionalProperties": false
       },
       "GetActiveGamesResponseIEnumerablePaginatedResponse": {
-        "required": ["data", "metadata"],
+        "required": [
+          "data",
+          "metadata"
+        ],
         "type": "object",
         "properties": {
           "data": {
@@ -1307,7 +1367,9 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponse": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1324,7 +1386,10 @@
         "additionalProperties": false
       },
       "GetAvailableGamesResponseIEnumerablePaginatedResponse": {
-        "required": ["data", "metadata"],
+        "required": [
+          "data",
+          "metadata"
+        ],
         "type": "object",
         "properties": {
           "data": {
@@ -1340,7 +1405,9 @@
         "additionalProperties": false
       },
       "GetClockMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1414,7 +1481,13 @@
         "additionalProperties": false
       },
       "GetGamesByUsernameResponse": {
-        "required": ["date", "gameId", "gen", "isCompleted", "players"],
+        "required": [
+          "date",
+          "gameId",
+          "gen",
+          "isCompleted",
+          "players"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1449,7 +1522,10 @@
         "additionalProperties": false
       },
       "GetGamesByUsernameResponseIEnumerablePaginatedResponse": {
-        "required": ["data", "metadata"],
+        "required": [
+          "data",
+          "metadata"
+        ],
         "type": "object",
         "properties": {
           "data": {
@@ -1465,7 +1541,11 @@
         "additionalProperties": false
       },
       "MakeMoveClientMessage": {
-        "required": ["gameId", "x", "y"],
+        "required": [
+          "gameId",
+          "x",
+          "y"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1484,7 +1564,10 @@
         "additionalProperties": false
       },
       "PaginationMetadata": {
-        "required": ["hasMoreItems", "totalCount"],
+        "required": [
+          "hasMoreItems",
+          "totalCount"
+        ],
         "type": "object",
         "properties": {
           "hasMoreItems": {
@@ -1498,7 +1581,11 @@
         "additionalProperties": false
       },
       "PlayerDto": {
-        "required": ["color", "playerId", "userName"],
+        "required": [
+          "color",
+          "playerId",
+          "userName"
+        ],
         "type": "object",
         "properties": {
           "playerId": {
@@ -1553,10 +1640,13 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "ProfileDto": {
-        "required": ["playerId", "userName"],
+        "required": [
+          "playerId",
+          "userName"
+        ],
         "type": "object",
         "properties": {
           "playerId": {
@@ -1571,7 +1661,9 @@
         "additionalProperties": false
       },
       "RematchRequestMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1582,7 +1674,9 @@
         "additionalProperties": false
       },
       "RequestUndoMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1593,7 +1687,9 @@
         "additionalProperties": false
       },
       "ResignClientMessage": {
-        "required": ["gameId"],
+        "required": [
+          "gameId"
+        ],
         "type": "object",
         "properties": {
           "gameId": {
@@ -1604,7 +1700,9 @@
         "additionalProperties": false
       },
       "SendInvitationToPlayMessage": {
-        "required": ["playerId"],
+        "required": [
+          "playerId"
+        ],
         "type": "object",
         "properties": {
           "playerId": {
@@ -1615,7 +1713,10 @@
         "additionalProperties": false
       },
       "TileDto": {
-        "required": ["x", "y"],
+        "required": [
+          "x",
+          "y"
+        ],
         "type": "object",
         "properties": {
           "x": {
@@ -1630,7 +1731,10 @@
         "additionalProperties": false
       },
       "TimeControlDto": {
-        "required": ["incrementPerMove", "initialTimeInSeconds"],
+        "required": [
+          "incrementPerMove",
+          "initialTimeInSeconds"
+        ],
         "type": "object",
         "properties": {
           "initialTimeInSeconds": {

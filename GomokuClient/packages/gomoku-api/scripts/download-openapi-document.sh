@@ -2,7 +2,7 @@
 
 set -o errexit
 
-API_VERSION="$(node -p 'require("./package.json").apiVersion')"
+API_VERSION="$(node -p 'require("../package.json").apiVersion')"
 
 if [ "$1" = "localhost" ]; then
   API_URL="http://localhost:62411/swagger/v${API_VERSION}/swagger.json"
@@ -12,6 +12,6 @@ else
   API_URL="https://gomoku-gi8o.onrender.com/swagger/v${API_VERSION}/swagger.json"
 fi
 
-curl -o 'src/api/schema.json' "${API_URL}"
+curl -o '../schema.json' "${API_URL}"
 
-prettier --write src/api/schema.json
+#prettier --write schema.json
