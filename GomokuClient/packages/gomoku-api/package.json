@@ -17,7 +17,7 @@
   "dependencies": {
     "@gomoku/eslint-config-custom": "*",
     "@hey-api/client-fetch": "^0.4.4",
-    "@tanstack/react-query": "^5.60.5",
-    "@hey-api/openapi-ts": "^0.56.1"
+    "@hey-api/openapi-ts": "^0.56.1",
+    "@tanstack/react-query": "^5.60.5"
   }
 }
