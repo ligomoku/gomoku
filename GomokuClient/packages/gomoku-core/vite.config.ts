@@ -5,9 +5,13 @@ import viteReact from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
 export default ({ mode }: { mode: string }) => {
-  const envDirPath = path.resolve(process.cwd(), "envs");
+  const envDirPath = path.resolve(process.cwd(), "../../../envs");
   const srcPath = path.resolve(__dirname, "src");
   const env = loadEnv(mode, envDirPath);
+
+  console.debug("Environment Directory Path:", envDirPath);
+  console.debug("Source Path:", srcPath);
+  console.debug("Env:", env);
 
   return defineConfig({
     plugins: [
