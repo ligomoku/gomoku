@@ -3,7 +3,7 @@ const { blackA, green, mauve, slate, violet } = require("@radix-ui/colors");
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class", '[data-mode="dark"]'],
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       borderRadius: {

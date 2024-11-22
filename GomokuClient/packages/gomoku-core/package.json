@@ -12,6 +12,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "vercel-build": "yarn build",
+    "generate-routes": "tsr generate",
+    "watch-routes": "tsr watch",
     "typecheck": "tsc --build --pretty",
     "format": "prettier . --write src",
     "format:check": "prettier . --check src",
