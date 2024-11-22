@@ -1,17 +1,28 @@
 {
   "compilerOptions": {
-    "composite": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
   },
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    //TODO: this should be included but not generated with decalaration files
-    "lingui.config.ts",
-    "openapi-ts.config.ts"
-  ],
-  "include": []
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

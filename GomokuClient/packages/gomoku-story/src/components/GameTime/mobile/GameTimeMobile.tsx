@@ -12,7 +12,7 @@ import type { SwaggerTypes } from "@gomoku/api";
 
 import { secondsToString } from "@/components";
 
-interface GameTimeMobileProps
+export interface GameTimeMobileProps
   extends Omit<
     GameTimeProps,
     "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
