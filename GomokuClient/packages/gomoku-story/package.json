@@ -14,7 +14,8 @@
   "exports": {
     ".": {
       "import": "./dist/gomoku-story.es.js",
-      "require": "./dist/gomoku-story.cjs.js"
+      "require": "./dist/gomoku-story.cjs.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
