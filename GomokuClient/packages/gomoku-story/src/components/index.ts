@@ -1,5 +1,4 @@
 export * from "./Board";
-export * from "./Chat";
 export * from "./GamePreview";
 export * from "./FeaturedBoxes";
 export * from "./GameCreator";

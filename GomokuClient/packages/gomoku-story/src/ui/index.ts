@@ -11,5 +11,3 @@ export * from "./slider";
 export * from "./dialog";
 export * from "./select";
 export * from "./spinner";
-
-export * from "./Header/Header";
