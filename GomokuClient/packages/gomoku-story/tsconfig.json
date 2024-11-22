@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    //TODO: this should be included but not generated with decalaration files
+    "lingui.config.ts",
+    "openapi-ts.config.ts"
+  ],
+  "include": []
+}
