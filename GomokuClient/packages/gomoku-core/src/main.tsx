@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import * as Sentry from "@sentry/react";
+import { ErrorBoundary } from "@sentry/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
@@ -13,7 +14,6 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
 import { SwaggerServices } from "@/api";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
-import { ErrorBoundary } from "@/features";
 import { ToasterProvider } from "@/ui";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
