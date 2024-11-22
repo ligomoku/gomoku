@@ -12,6 +12,6 @@ else
   API_URL="https://gomoku-gi8o.onrender.com/swagger/v${API_VERSION}/swagger.json"
 fi
 
-curl -o '../schema.json' "${API_URL}"
+curl -o '../gomoku-api/schema.json' "${API_URL}"
 
 #prettier --write schema.json
