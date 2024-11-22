@@ -1,19 +1,19 @@
 import { SwaggerServices } from "@gomoku/api";
-import { t } from "@lingui/macro";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { Users } from "lucide-react";
-
-import type { GameType } from "@/features";
-import type { SwaggerTypes } from "@gomoku/api";
-
-import { useAuthToken } from "@/context";
 import {
   GameOptionsButtons,
   TimeControls,
   OnlinePlayersInfo,
   SectionList,
-} from "@/features";
+} from "@gomoku/story";
+import { t } from "@lingui/macro";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { Users } from "lucide-react";
+
+import type { SwaggerTypes } from "@gomoku/api";
+import type { GameType } from "@gomoku/story";
+
+import { useAuthToken } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 

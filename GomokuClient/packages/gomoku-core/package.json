@@ -4,6 +4,8 @@
   "description": "Gomoku core package with game logic, components, and theming",
   "type": "module",
   "apiVersion": "1",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -58,6 +60,7 @@
   "devDependencies": {
     "@clerk/types": "^4.34.0",
     "@gomoku/eslint-config-custom": "*",
+    "@gomoku/story": "*",
     "@lingui/cli": "^4.14.0",
     "@storybook/addon-essentials": "^8.4.5",
     "@storybook/addon-links": "^8.4.5",

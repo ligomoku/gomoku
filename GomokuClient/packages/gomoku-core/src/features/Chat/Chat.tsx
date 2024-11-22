@@ -1,10 +1,3 @@
-import { t } from "@lingui/macro";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useState, useEffect, useRef } from "react";
-
-import type { KeyboardEvent } from "react";
-
-import { useMobileDesign } from "@/hooks";
 import {
   Button,
   toaster,
@@ -12,7 +5,14 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/ui";
+} from "@gomoku/story";
+import { t } from "@lingui/macro";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useState, useEffect, useRef } from "react";
+
+import type { KeyboardEvent } from "react";
+
+import { useMobileDesign } from "@/hooks";
 
 export interface ChatProps {
   messages: string[];

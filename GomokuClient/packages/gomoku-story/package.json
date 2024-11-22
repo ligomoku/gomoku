@@ -5,7 +5,12 @@
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/gomoku-story.cjs.js",
+  "module": "dist/gomoku-story.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",

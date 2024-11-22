@@ -1,10 +1,10 @@
 import { SwaggerServices } from "@gomoku/api";
+import { toaster } from "@gomoku/story";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { toaster } from "@/ui";
 import { Headers, fetchAuthFallback } from "@/utils";
 
 interface CreateGameAndNavigateProps {
