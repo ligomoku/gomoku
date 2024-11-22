@@ -11,7 +11,6 @@
     "preview": "vite preview",
     "vercel-build": "yarn build",
     "typecheck": "tsc --build --pretty",
-    "codegen": "openapi-ts",
     "format": "prettier . --write src",
     "format:check": "prettier . --check src",
     "lint:fix": "eslint . --fix",
@@ -23,8 +22,6 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.16.0",
     "@gomoku/api": "*",
-    "@hey-api/client-fetch": "^0.4.4",
-    "@hey-api/openapi-ts": "^0.56.1",
     "@lingui/macro": "^4.14.0",
     "@lingui/react": "^4.14.0",
     "@microsoft/signalr": "^8.0.7",
