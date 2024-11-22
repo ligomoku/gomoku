@@ -9,6 +9,7 @@ export default defineConfig({
     path: "src/api/client",
   },
   plugins: ["@tanstack/react-query"],
+  // @ts-ignore
   types: {
     enums: "javascript",
     name: "PascalCase",
