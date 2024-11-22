@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Fragment } from "react";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
 export interface GameTimeProps {
   moves: string[];

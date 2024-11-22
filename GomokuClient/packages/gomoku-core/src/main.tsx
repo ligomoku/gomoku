@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/clerk-react";
+import { SwaggerServices } from "@gomoku/api";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import * as Sentry from "@sentry/react";
@@ -12,7 +13,7 @@ import { messages } from "./locales/en/messages";
 import { routeTree } from "./routeTree.gen";
 
 import "./styles/index.css";
-import { SwaggerServices } from "@/api";
+
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 import { ToasterProvider } from "@/ui";
 

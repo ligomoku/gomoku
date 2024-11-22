@@ -1,5 +1,5 @@
-import type { SwaggerTypes } from "@/api";
 import type { TileColor } from "@/hooks";
+import type { SwaggerTypes } from "@gomoku/api";
 
 /**
  * Parses gen string to array of arrays of tiles

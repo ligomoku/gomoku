@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import type { SignalClientMessages, SwaggerTypes } from "@/api";
+import type { SignalClientMessages, SwaggerTypes } from "@gomoku/api";
 
 import { useSignalRConnection } from "@/context";
 import { toaster } from "@/ui";
