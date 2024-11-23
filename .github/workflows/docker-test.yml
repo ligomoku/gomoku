@@ -69,7 +69,7 @@ jobs:
 
       - name: TypeCheck after Generation
         run: |
-          cd ./GomokuClient && yarn typecheck
+          cd ./GomokuClient && yarn build && yarn typecheck
 
       - name: Format with Prettier
         run: |
