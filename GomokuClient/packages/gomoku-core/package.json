@@ -27,6 +27,7 @@
     "@clerk/clerk-react": "^5.16.0",
     "@gomoku/api": "*",
     "@gomoku/story": "*",
+    "@gomoku/tailwind-config": "*",
     "@lingui/macro": "^4.14.0",
     "@lingui/react": "^4.14.0",
     "@microsoft/signalr": "^8.0.7",

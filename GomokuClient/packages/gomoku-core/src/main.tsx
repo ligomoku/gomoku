@@ -14,7 +14,6 @@ import { messages } from "./locales/en/messages";
 import { routeTree } from "./routeTree.gen";
 
 import "./styles/index.css";
-import "@gomoku/story/dist/style.css";
 
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 
