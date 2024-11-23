@@ -29,7 +29,7 @@ export default defineConfig({
           "react-dom": "ReactDOM",
         },
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'gomoku-story.css';
+          if (assetInfo.name === "style.css") return "gomoku-story.css";
           return assetInfo.name;
         },
       },
