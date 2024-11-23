@@ -1,5 +1,5 @@
 {
-  "name": "@gomoku/eslint-config-custom",
+  "name": "@gomoku/eslint-config",
   "version": "0.0.1",
   "main": "index.mjs",
   "license": "MIT",
