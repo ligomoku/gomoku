@@ -28,6 +28,7 @@ export default ({ mode }: { mode: string }) => {
     ],
     build: {
       sourcemap: true,
+      cssCodeSplit: true,
     },
     envDir: envDirPath,
     resolve: {

@@ -8,15 +8,17 @@
   "main": "dist/gomoku-story.cjs.js",
   "module": "dist/gomoku-story.es.js",
   "types": "dist/index.d.ts",
+  "style": "./dist/style.css",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/gomoku-story.es.js",
-      "require": "./dist/gomoku-story.cjs.js",
-      "types": "./dist/index.d.ts"
-    }
+      "require": "./dist/gomoku-story.cjs.js"
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "scripts": {
     "lint": "eslint .",
