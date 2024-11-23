@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "yarn workspace @gomoku/story build && turbo run build",
     "build:storybook": "yarn workspace @gomoku/core build-storybook",
     "lint": "turbo run lint --filter=@gomoku/core",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
@@ -26,6 +26,7 @@
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name .turbo -type d -prune -exec rm -rf '{}' + && find . -name dist -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
+    "@tanstack/router-cli": "^1.81.9",
     "prettier": "^3.3.3",
     "turbo": "^2.3.0"
   },

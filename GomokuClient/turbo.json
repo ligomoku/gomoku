@@ -1,18 +1,29 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["turbo.json", "package.json"],
   "tasks": {
     "build": {
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "dependsOn": ["^build"]
+      "outputs": ["dist/**", "!.next/cache/**"],
+      "dependsOn": ["^build"],
+      "env": ["NODE_ENV"]
+    },
+    "gomoku-core#build": {
+      "dependsOn": ["gomoku-story#build"],
+      "outputs": ["dist/**"]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^check-types"],
+      "outputs": []
     },
     "dev": {
       "persistent": true,
       "cache": false
     },
-    "typecheck": {},
-    "lint": {}
+    "typecheck": {
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    }
   }
 }

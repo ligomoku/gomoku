@@ -1,7 +1,7 @@
-import type { GamePreviewProps } from "@/features";
+import type { GamePreviewProps } from "@/components";
 import type { Meta } from "@storybook/react";
 
-import { GamePreview } from "@/features";
+import { GamePreview } from "@/components";
 
 export default {
   title: "Components/GamePreview",

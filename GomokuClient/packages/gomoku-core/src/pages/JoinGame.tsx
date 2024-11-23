@@ -1,13 +1,14 @@
+import { AlertDialog, toaster } from "@gomoku/story";
+import { GamePlayersInfo } from "@gomoku/story";
+import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
 
-import type { GameTimeProps } from "@/features";
 import type { SwaggerTypes } from "@gomoku/api";
+import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
-import { GamePlayersInfo } from "@/features";
-import { GameTime, GameTimeMobile, Chat, Board } from "@/features";
+import { Chat } from "@/features";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
-import { AlertDialog, toaster } from "@/ui";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;

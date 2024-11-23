@@ -1,9 +1,9 @@
+import { Input, Button } from "@gomoku/story";
 import { Menu, X, Search, Bell } from "lucide-react";
 import { useState } from "react";
 
 import type { ReactNode } from "react";
 
-import { Input, Button } from "@/ui";
 import { typedStorage } from "@/utils";
 
 export interface HeaderProps {

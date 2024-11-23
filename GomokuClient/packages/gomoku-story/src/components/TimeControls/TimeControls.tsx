@@ -1,6 +1,6 @@
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { GameCreatorButton } from "@/features";
+import { GameCreatorButton } from "@/components";
 import { Card, CardContent } from "@/ui";
 
 export interface GameType {

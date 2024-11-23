@@ -1,8 +1,8 @@
-import type { FeaturedBoxesProps } from "@/features";
+import type { FeaturedBoxesProps } from "@/components";
 import type { SwaggerTypes } from "@gomoku/api";
 import type { Meta, StoryFn } from "@storybook/react";
 
-import { FeaturedBoxes } from "@/features";
+import { FeaturedBoxes } from "@/components";
 import { toaster } from "@/ui";
 
 export default {
