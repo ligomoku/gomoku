@@ -1217,6 +1217,7 @@ __metadata:
     "@storybook/react": "npm:^8.5.0-alpha.9"
     "@storybook/react-vite": "npm:^8.4.5"
     "@storybook/test": "npm:^8.5.0-alpha.9"
+    "@types/react-resizable": "npm:^3.0.8"
     "@vitejs/plugin-react": "npm:^4.3.3"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.1"
@@ -3879,6 +3880,15 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10c0/8b416551c60bb6bd8ec10e198c957910cfb271bc3922463040b0d57cf4739cdcd24b13224f8d68f10318926e1ec3cd69af0af79f0291b599a992f8c80d47f1eb
+  languageName: node
+  linkType: hard
+
+"@types/react-resizable@npm:^3.0.8":
+  version: 3.0.8
+  resolution: "@types/react-resizable@npm:3.0.8"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 10c0/77d7896703531a32e8efdf0c7208c0f6af8eadf3d8dc5fd2b5e6032ed834f4d8ea52f14ebee8b39af6fb63642bbaacf785dd9962b1f284f070a63143251315fb
   languageName: node
   linkType: hard
 

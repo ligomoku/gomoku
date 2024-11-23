@@ -57,6 +57,7 @@
     "@storybook/react": "^8.5.0-alpha.9",
     "@storybook/react-vite": "^8.4.5",
     "@storybook/test": "^8.5.0-alpha.9",
+    "@types/react-resizable": "^3.0.8",
     "@vitejs/plugin-react": "^4.3.3",
     "postcss": "^8.4.49",
     "storybook": "^8.5.0-alpha.9",
