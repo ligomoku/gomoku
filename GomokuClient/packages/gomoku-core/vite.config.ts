@@ -1,7 +1,6 @@
 // @ts-ignore
 import path from "path";
 
-import { sentryVitePlugin } from "@sentry/vite-plugin";
 // @ts-ignore
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
@@ -20,11 +19,12 @@ export default ({ mode }: { mode: string }) => {
           plugins: ["macros"],
         },
       }),
-      sentryVitePlugin({
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: "gomoku",
-        project: "javascript-react",
-      }),
+      //TODO: after multi-package support is added stoped correctly wrapping sentry
+      // sentryVitePlugin({
+      //   authToken: process.env.SENTRY_AUTH_TOKEN,
+      //   org: "gomoku",
+      //   project: "javascript-react",
+      // }),
     ],
     build: {
       sourcemap: true,

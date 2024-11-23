@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "yarn workspace @gomoku/story build && turbo run build",
     "build:storybook": "yarn workspace @gomoku/core build-storybook",
     "lint": "turbo run lint --filter=@gomoku/core",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
