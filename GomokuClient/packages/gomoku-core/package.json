@@ -1,6 +1,7 @@
 {
   "name": "@gomoku/core",
   "version": "0.0.1",
+  "license": "AGPL-3.0",
   "description": "Gomoku core package with game logic, components, and theming",
   "type": "module",
   "apiVersion": "1",
@@ -85,8 +86,5 @@
       "plugin:storybook/recommended"
     ]
   },
-  "main": "eslint.config.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "main": "eslint.config.js"
 }

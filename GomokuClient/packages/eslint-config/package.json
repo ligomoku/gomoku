@@ -2,7 +2,7 @@
   "name": "@gomoku/eslint-config",
   "version": "0.0.1",
   "main": "index.mjs",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",

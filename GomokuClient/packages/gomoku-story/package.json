@@ -3,7 +3,7 @@
   "description": "Gomoku UI storybook package",
   "apiVersion": "1",
   "version": "0.0.1",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "type": "module",
   "main": "dist/gomoku-story.cjs.js",
   "module": "dist/gomoku-story.es.js",
