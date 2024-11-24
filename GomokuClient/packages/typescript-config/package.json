@@ -1,7 +1,0 @@
-{
-  "name": "@gomoku/typescript-config",
-  "version": "0.0.1",
-  "description": "Shared TypeScript configuration for all frontend packages",
-  "main": "tsconfig.json",
-  "license": "UNLICENSED"
-}
