@@ -1112,7 +1112,6 @@ __metadata:
     "@lingui/macro": "npm:^4.14.0"
     "@lingui/react": "npm:^4.14.0"
     "@microsoft/signalr": "npm:^8.0.7"
-    "@radix-ui/react-scroll-area": "npm:^1.2.1"
     "@sentry/react": "npm:^8.38.0"
     "@sentry/vite-plugin": "npm:^2.22.6"
     "@tanstack/eslint-plugin-query": "npm:^5.60.1"
