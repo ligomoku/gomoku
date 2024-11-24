@@ -12,13 +12,7 @@ import pluginImport from "eslint-plugin-import";
 
 export default [
   {
-    ignores: [
-      "dist",
-      "**/*.gen.ts",
-      "messages.ts",
-      "src/api/**",
-      "tailwind.config.js",
-    ],
+    ignores: ["dist", "**/*.gen.ts", "messages.ts", "src/api/**", "tailwind.config.js"],
   },
 
   js.configs.recommended,
@@ -62,10 +56,7 @@ export default [
       //TODO: check if we need indexing key not allowed
       "react/no-array-index-key": "off",
       "no-redeclare": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/naming-convention": [
         "error",
@@ -103,7 +94,10 @@ export default [
             "type",
           ],
           "newlines-between": "always",
-          alphabetize: { order: "asc", caseInsensitive: true },
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
         },
       ],
 

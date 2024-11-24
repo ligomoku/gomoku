@@ -13,10 +13,7 @@ export interface GamePlayersInfoProps {
   players: PlayerInfo[];
 }
 
-export const GamePlayersInfo = ({
-  gameType,
-  players,
-}: GamePlayersInfoProps) => {
+export const GamePlayersInfo = ({ gameType, players }: GamePlayersInfoProps) => {
   const isMobile = useMobileDesign(1488);
   return (
     <div
@@ -47,9 +44,7 @@ export const GamePlayersInfo = ({
             <div
               className={`mr-2 h-2 w-2 rounded-full ${player.isCurrentPlayer ? "bg-[#7cb342]" : "border border-[#b0b0b0]"}`}
             />
-            <span className="mr-1 font-medium text-[#ff9800]">
-              {player.title}
-            </span>
+            <span className="mr-1 font-medium text-[#ff9800]">{player.title}</span>
             <span className="mr-1">{player.name}</span>
             {player.isCurrentPlayer && <span className="mr-1 text-red-500" />}
             <span className="text-[#b0b0b0]">({player.rating})</span>

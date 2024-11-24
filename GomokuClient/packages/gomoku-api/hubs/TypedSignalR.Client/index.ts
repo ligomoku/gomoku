@@ -3,10 +3,7 @@
 /* tslint:disable */
 // @ts-nocheck
 import type { HubConnection, IStreamResult, Subject } from "@microsoft/signalr";
-import type {
-  IGameHub,
-  IGameHubReceiver,
-} from "./GomokuServer.Api.Hubs.Interfaces";
+import type { IGameHub, IGameHubReceiver } from "./GomokuServer.Api.Hubs.Interfaces";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
@@ -104,51 +101,35 @@ class IGameHub_HubProxy implements IGameHub {
     return await this.connection.invoke("JoinGameGroup", gameId);
   };
 
-  public readonly makeMove = async (
-    makeMoveMessage: MakeMoveClientMessage,
-  ): Promise<void> => {
+  public readonly makeMove = async (makeMoveMessage: MakeMoveClientMessage): Promise<void> => {
     return await this.connection.invoke("MakeMove", makeMoveMessage);
   };
 
-  public readonly resign = async (
-    message: ResignClientMessage,
-  ): Promise<void> => {
+  public readonly resign = async (message: ResignClientMessage): Promise<void> => {
     return await this.connection.invoke("Resign", message);
   };
 
-  public readonly requestUndo = async (
-    message: RequestUndoMessage,
-  ): Promise<void> => {
+  public readonly requestUndo = async (message: RequestUndoMessage): Promise<void> => {
     return await this.connection.invoke("RequestUndo", message);
   };
 
-  public readonly approveUndo = async (
-    message: ApproveUndoMessage,
-  ): Promise<void> => {
+  public readonly approveUndo = async (message: ApproveUndoMessage): Promise<void> => {
     return await this.connection.invoke("ApproveUndo", message);
   };
 
-  public readonly requestRematch = async (
-    message: RematchRequestMessage,
-  ): Promise<void> => {
+  public readonly requestRematch = async (message: RematchRequestMessage): Promise<void> => {
     return await this.connection.invoke("RequestRematch", message);
   };
 
-  public readonly approveRematch = async (
-    message: ApproveRematchMessage,
-  ): Promise<void> => {
+  public readonly approveRematch = async (message: ApproveRematchMessage): Promise<void> => {
     return await this.connection.invoke("ApproveRematch", message);
   };
 
-  public readonly sendMessage = async (
-    messageRequest: ChatMessageClientMessage,
-  ): Promise<void> => {
+  public readonly sendMessage = async (messageRequest: ChatMessageClientMessage): Promise<void> => {
     return await this.connection.invoke("SendMessage", messageRequest);
   };
 
-  public readonly getClock = async (
-    message: GetClockMessage,
-  ): Promise<void> => {
+  public readonly getClock = async (message: GetClockMessage): Promise<void> => {
     return await this.connection.invoke("GetClock", message);
   };
 
@@ -170,33 +151,25 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection: HubConnection,
     receiver: IGameHubReceiver,
   ): Disposable => {
-    const __gameGroupJoined = (...args: [string]) =>
-      receiver.gameGroupJoined(...args);
+    const __gameGroupJoined = (...args: [string]) => receiver.gameGroupJoined(...args);
     const __playerJoinedGame = (...args: [PlayerJoinedGameMessage]) =>
       receiver.playerJoinedGame(...args);
-    const __gameStarted = (...args: [GameStartedMessage]) =>
-      receiver.gameStarted(...args);
+    const __gameStarted = (...args: [GameStartedMessage]) => receiver.gameStarted(...args);
     const __bothPlayersJoined = (...args: [BothPlayersJoinedMessage]) =>
       receiver.bothPlayersJoined(...args);
     const __undoRequested = () => receiver.undoRequested();
-    const __undoApproved = (...args: [UndoApprovedMessage]) =>
-      receiver.undoApproved(...args);
-    const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) =>
-      receiver.playerMadeMove(...args);
+    const __undoApproved = (...args: [UndoApprovedMessage]) => receiver.undoApproved(...args);
+    const __playerMadeMove = (...args: [PlayerMadeMoveMessage]) => receiver.playerMadeMove(...args);
     const __rematchApproved = (...args: [RematchApprovedMessage]) =>
       receiver.rematchApproved(...args);
     const __rematchRequested = (...args: [RematchRequestMessage]) =>
       receiver.rematchRequested(...args);
-    const __gameIsOver = (...args: [GameIsOverMessage]) =>
-      receiver.gameIsOver(...args);
-    const __sendMessage = (...args: [ChatMessageClientMessage]) =>
-      receiver.sendMessage(...args);
+    const __gameIsOver = (...args: [GameIsOverMessage]) => receiver.gameIsOver(...args);
+    const __sendMessage = (...args: [ChatMessageClientMessage]) => receiver.sendMessage(...args);
     const __clock = (...args: [ClockDto]) => receiver.clock(...args);
-    const __gameHubError = (...args: [ErrorMessage]) =>
-      receiver.gameHubError(...args);
-    const __receiveInvitationToPlay = (
-      ...args: [ReceiveInvitationToPlayMessage]
-    ) => receiver.receiveInvitationToPlay(...args);
+    const __gameHubError = (...args: [ErrorMessage]) => receiver.gameHubError(...args);
+    const __receiveInvitationToPlay = (...args: [ReceiveInvitationToPlayMessage]) =>
+      receiver.receiveInvitationToPlay(...args);
 
     connection.on("GameGroupJoined", __gameGroupJoined);
     connection.on("PlayerJoinedGame", __playerJoinedGame);
@@ -214,19 +187,55 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("ReceiveInvitationToPlay", __receiveInvitationToPlay);
 
     const methodList: ReceiverMethod[] = [
-      { methodName: "GameGroupJoined", method: __gameGroupJoined },
-      { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
-      { methodName: "GameStarted", method: __gameStarted },
-      { methodName: "BothPlayersJoined", method: __bothPlayersJoined },
-      { methodName: "UndoRequested", method: __undoRequested },
-      { methodName: "UndoApproved", method: __undoApproved },
-      { methodName: "PlayerMadeMove", method: __playerMadeMove },
-      { methodName: "RematchApproved", method: __rematchApproved },
-      { methodName: "RematchRequested", method: __rematchRequested },
-      { methodName: "GameIsOver", method: __gameIsOver },
-      { methodName: "SendMessage", method: __sendMessage },
+      {
+        methodName: "GameGroupJoined",
+        method: __gameGroupJoined,
+      },
+      {
+        methodName: "PlayerJoinedGame",
+        method: __playerJoinedGame,
+      },
+      {
+        methodName: "GameStarted",
+        method: __gameStarted,
+      },
+      {
+        methodName: "BothPlayersJoined",
+        method: __bothPlayersJoined,
+      },
+      {
+        methodName: "UndoRequested",
+        method: __undoRequested,
+      },
+      {
+        methodName: "UndoApproved",
+        method: __undoApproved,
+      },
+      {
+        methodName: "PlayerMadeMove",
+        method: __playerMadeMove,
+      },
+      {
+        methodName: "RematchApproved",
+        method: __rematchApproved,
+      },
+      {
+        methodName: "RematchRequested",
+        method: __rematchRequested,
+      },
+      {
+        methodName: "GameIsOver",
+        method: __gameIsOver,
+      },
+      {
+        methodName: "SendMessage",
+        method: __sendMessage,
+      },
       { methodName: "Clock", method: __clock },
-      { methodName: "GameHubError", method: __gameHubError },
+      {
+        methodName: "GameHubError",
+        method: __gameHubError,
+      },
       {
         methodName: "ReceiveInvitationToPlay",
         method: __receiveInvitationToPlay,

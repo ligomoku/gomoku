@@ -30,9 +30,7 @@ const mockedGames: SwaggerTypes.GetAvailableGamesResponse[] = [
   },
 ];
 
-const Template: StoryFn<FeaturedBoxesProps> = (args) => (
-  <FeaturedBoxes {...args} />
-);
+const Template: StoryFn<FeaturedBoxesProps> = (args) => <FeaturedBoxes {...args} />;
 
 export const Default = Template.bind({});
 

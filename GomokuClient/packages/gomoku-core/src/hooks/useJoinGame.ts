@@ -3,11 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { TileColor } from "@/hooks";
-import type {
-  SignalClientMessages,
-  SignalDto,
-  SwaggerTypes,
-} from "@gomoku/api";
+import type { SignalClientMessages, SignalDto, SwaggerTypes } from "@gomoku/api";
 
 import { useSignalRConnection } from "@/context";
 import { useTiles } from "@/hooks";
@@ -24,20 +20,14 @@ export const useJoinGame = (
   >(gameHistory?.winningSequence);
   const [rematchRequested, setRematchRequested] = useState(false);
   const [undoRequested, setUndoRequested] = useState(false);
-  const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(
-    gameHistory.clock,
-  );
-  const [players, setPlayers] = useState<SwaggerTypes.PlayersDto>(
-    gameHistory.players,
-  );
+  const [clock, setClock] = useState<SignalDto.ClockDto | undefined>(gameHistory.clock);
+  const [players, setPlayers] = useState<SwaggerTypes.PlayersDto>(gameHistory.players);
 
   const router = useRouter();
 
-  const { tiles, winner, addTile, lastTile, removeTile } =
-    useTiles(gameHistory);
+  const { tiles, winner, addTile, lastTile, removeTile } = useTiles(gameHistory);
 
-  const { hubProxy, isConnected, registerEventHandlers } =
-    useSignalRConnection();
+  const { hubProxy, isConnected, registerEventHandlers } = useSignalRConnection();
 
   useEffect(() => {
     if (isConnected && gameID && hubProxy) {
@@ -60,9 +50,7 @@ export const useJoinGame = (
           }
         },
         playerMadeMove: async ({ playerId, tile, placedTileColor }) => {
-          console.debug(
-            `Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`,
-          );
+          console.debug(`Player ${playerId.slice(0, 6)} made move: x${tile.x} - y${tile.y}`);
           addTile(tile, placedTileColor as TileColor);
           setMoves((prevMoves) => [...prevMoves, `x${tile.x} - y${tile.y}`]);
         },
@@ -109,13 +97,7 @@ export const useJoinGame = (
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   useInterval(() => {
-    if (
-      isConnected &&
-      gameID &&
-      hubProxy &&
-      moves.length !== 0 &&
-      gameHistory.timeControl
-    ) {
+    if (isConnected && gameID && hubProxy && moves.length !== 0 && gameHistory.timeControl) {
       hubProxy.getClock({ gameId: gameID });
     }
   }, 500); //TODO: play with this delay value for clock sync

@@ -52,10 +52,7 @@ export const GameTime = ({
     <div className="mb-2 rounded bg-[#363330] p-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div
-            className="mr-2 h-2 w-2 rounded-full"
-            style={{ backgroundColor: "black" }}
-          />
+          <div className="mr-2 h-2 w-2 rounded-full" style={{ backgroundColor: "black" }} />
           <span className="text-sm">{players.black?.userName}</span>
         </div>
         <div className="flex items-center">
@@ -67,26 +64,11 @@ export const GameTime = ({
       </div>
 
       <div className="mt-2 flex justify-between">
-        <Rewind
-          className="h-5 w-5 text-[#b0b0b0]"
-          onClick={() => onSkip("back")}
-        />
-        <SkipBack
-          className="h-5 w-5 text-[#b0b0b0]"
-          onClick={() => onSkip("back")}
-        />
-        <SkipForward
-          className="h-5 w-5 text-[#b0b0b0]"
-          onClick={() => onSkip("forward")}
-        />
-        <FastForward
-          className="h-5 w-5 text-[#b0b0b0]"
-          onClick={() => onSkip("forward")}
-        />
-        <Repeat1
-          className="h-5 w-5 text-[#b0b0b0]"
-          onClick={() => onRematch()}
-        />
+        <Rewind className="h-5 w-5 text-[#b0b0b0]" onClick={() => onSkip("back")} />
+        <SkipBack className="h-5 w-5 text-[#b0b0b0]" onClick={() => onSkip("back")} />
+        <SkipForward className="h-5 w-5 text-[#b0b0b0]" onClick={() => onSkip("forward")} />
+        <FastForward className="h-5 w-5 text-[#b0b0b0]" onClick={() => onSkip("forward")} />
+        <Repeat1 className="h-5 w-5 text-[#b0b0b0]" onClick={() => onRematch()} />
         <MoreHorizontal className="h-5 w-5 text-[#b0b0b0]" />
       </div>
     </div>
@@ -112,9 +94,7 @@ export const GameTime = ({
             <Fragment key={index}>
               <div className="text-[#b0b0b0]">{index + 1}.</div>
               <div className={index % 2 === 0 ? "font-bold" : ""}>{move}</div>
-              <div className={index % 2 === 0 ? "text-black" : "text-white"}>
-                ●
-              </div>
+              <div className={index % 2 === 0 ? "text-black" : "text-white"}>●</div>
             </Fragment>
           ))}
         </div>
@@ -136,10 +116,7 @@ export const GameTime = ({
     <div className="mb-2 rounded bg-[#363330] p-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <div
-            className="mr-2 h-2 w-2 rounded-full"
-            style={{ backgroundColor: "white" }}
-          />
+          <div className="mr-2 h-2 w-2 rounded-full" style={{ backgroundColor: "white" }} />
           <span className="text-sm">{players.white?.userName}</span>
         </div>
         <div className="flex items-center">

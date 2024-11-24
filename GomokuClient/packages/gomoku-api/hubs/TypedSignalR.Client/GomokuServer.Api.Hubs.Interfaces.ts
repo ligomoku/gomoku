@@ -90,9 +90,7 @@ export type IGameHubReceiver = {
    * @param playerJoinedGameMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.PlayerJoinedGameMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  playerJoinedGame(
-    playerJoinedGameMessage: PlayerJoinedGameMessage,
-  ): Promise<void>;
+  playerJoinedGame(playerJoinedGameMessage: PlayerJoinedGameMessage): Promise<void>;
   /**
    * @param gameStartedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameStartedMessage
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -102,9 +100,7 @@ export type IGameHubReceiver = {
    * @param bothPlayersJoinedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.BothPlayersJoinedMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  bothPlayersJoined(
-    bothPlayersJoinedMessage: BothPlayersJoinedMessage,
-  ): Promise<void>;
+  bothPlayersJoined(bothPlayersJoinedMessage: BothPlayersJoinedMessage): Promise<void>;
   /**
    * @returns Transpiled from System.Threading.Tasks.Task
    */
@@ -123,16 +119,12 @@ export type IGameHubReceiver = {
    * @param rematchApprovedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.RematchApprovedMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  rematchApproved(
-    rematchApprovedMessage: RematchApprovedMessage,
-  ): Promise<void>;
+  rematchApproved(rematchApprovedMessage: RematchApprovedMessage): Promise<void>;
   /**
    * @param rematchRequestedMessage Transpiled from GomokuServer.Api.Hubs.Messages.Client.RematchRequestMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  rematchRequested(
-    rematchRequestedMessage: RematchRequestMessage,
-  ): Promise<void>;
+  rematchRequested(rematchRequestedMessage: RematchRequestMessage): Promise<void>;
   /**
    * @param gameIsOverMessage Transpiled from GomokuServer.Api.Hubs.Messages.Server.GameIsOverMessage
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -157,7 +149,5 @@ export type IGameHubReceiver = {
    * @param message Transpiled from GomokuServer.Api.Hubs.Messages.Client.ReceiveInvitationToPlayMessage
    * @returns Transpiled from System.Threading.Tasks.Task
    */
-  receiveInvitationToPlay(
-    message: ReceiveInvitationToPlayMessage,
-  ): Promise<void>;
+  receiveInvitationToPlay(message: ReceiveInvitationToPlayMessage): Promise<void>;
 };

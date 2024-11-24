@@ -4,14 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
 import { useMobileDesign } from "@/hooks";
-import {
-  Button,
-  toaster,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/ui";
+import { Button, toaster, Card, CardContent, CardHeader, CardTitle } from "@/ui";
 
 export interface ChatProps {
   messages: string[];
@@ -30,13 +23,7 @@ export interface ChatProps {
   };
 }
 
-export const Chat = ({
-  messages,
-  isConnected,
-  sendMessage,
-  username,
-  texts,
-}: ChatProps) => {
+export const Chat = ({ messages, isConnected, sendMessage, username, texts }: ChatProps) => {
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -132,7 +119,10 @@ export const Chat = ({
                       ? "bg-blue-100 text-blue-900"
                       : "bg-gray-100 text-gray-900"
                   }`}
-                  style={{ wordWrap: "break-word", maxWidth: "100%" }}
+                  style={{
+                    wordWrap: "break-word",
+                    maxWidth: "100%",
+                  }}
                 >
                   {msg}
                 </div>

@@ -27,8 +27,7 @@ export const Default = (args: GameCreatorProps) => <GameCreator {...args} />;
 Default.args = {
   isOpen: true,
   onClose: () => console.debug("Dialog closed"),
-  onCreate: (boardSize: number) =>
-    console.debug(`Game created with board size: ${boardSize}`),
+  onCreate: (boardSize: number) => console.debug(`Game created with board size: ${boardSize}`),
   isLoading: false,
   timeControl: {
     duration: 5,

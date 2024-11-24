@@ -2,10 +2,7 @@
   "compilerOptions": {
     "composite": true
   },
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "exclude": [
     "dist",
     "node_modules",

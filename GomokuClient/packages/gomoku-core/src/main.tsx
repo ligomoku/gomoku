@@ -22,16 +22,11 @@ const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 if (import.meta.env.MODE === "production") {
   Sentry.init({
     dsn: "https://7a6d12a23db1a817976baedbf4616ab2@o4508078485340160.ingest.de.sentry.io/4508078486913104",
-    integrations: [
-      Sentry.browserTracingIntegration(),
-      Sentry.replayIntegration(),
-    ],
+    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
     tracesSampleRate: 1.0,
     tracePropagationTargets: [
       "localhost",
-      new RegExp(
-        `^${import.meta.env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-      ),
+      new RegExp(`^${import.meta.env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
     ],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
@@ -50,7 +45,9 @@ declare module "@tanstack/react-router" {
   }
 }
 
-SwaggerServices.client.setConfig({ baseUrl: import.meta.env.VITE_API_URL });
+SwaggerServices.client.setConfig({
+  baseUrl: import.meta.env.VITE_API_URL,
+});
 
 const queryClient = new QueryClient();
 

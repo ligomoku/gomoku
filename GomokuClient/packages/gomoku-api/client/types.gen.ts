@@ -205,8 +205,7 @@ export type GetApiGameAnonymousActiveData = {
   };
 };
 
-export type GetApiGameAnonymousActiveResponse =
-  GetActiveGamesResponseIEnumerablePaginatedResponse;
+export type GetApiGameAnonymousActiveResponse = GetActiveGamesResponseIEnumerablePaginatedResponse;
 
 export type GetApiGameAnonymousActiveError = unknown;
 
@@ -278,8 +277,7 @@ export type GetApiGameRegisteredByGameIdHistoryData = {
   };
 };
 
-export type GetApiGameRegisteredByGameIdHistoryResponse =
-  GetGameHistoryResponse;
+export type GetApiGameRegisteredByGameIdHistoryResponse = GetGameHistoryResponse;
 
 export type GetApiGameRegisteredByGameIdHistoryError = ProblemDetails;
 
@@ -312,8 +310,7 @@ export type GetApiGameRegisteredActiveData = {
   };
 };
 
-export type GetApiGameRegisteredActiveResponse =
-  GetActiveGamesResponseIEnumerablePaginatedResponse;
+export type GetApiGameRegisteredActiveResponse = GetActiveGamesResponseIEnumerablePaginatedResponse;
 
 export type GetApiGameRegisteredActiveError = unknown;
 

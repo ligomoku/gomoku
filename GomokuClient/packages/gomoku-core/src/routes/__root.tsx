@@ -1,10 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  useAuth,
-  UserButton,
-} from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from "@clerk/clerk-react";
 import { toaster } from "@gomoku/story";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
@@ -44,7 +38,10 @@ const RootComponent = () => {
             label: "COMMUNITY",
             onClick: () => toaster.show("Community clicked!"),
           },
-          { label: "PROFILE", onClick: () => navigate({ to: "/profile" }) },
+          {
+            label: "PROFILE",
+            onClick: () => navigate({ to: "/profile" }),
+          },
         ]}
         SignedInComponent={<SignedIn>Signed In</SignedIn>}
         SignedOutComponent={<SignedOut>Sign Out</SignedOut>}

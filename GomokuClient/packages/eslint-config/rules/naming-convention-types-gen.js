@@ -20,10 +20,7 @@ module.exports = {
   create(context) {
     const fileName = context.getFilename();
 
-    const typesGenPath = path.resolve(
-      __dirname,
-      "../../gomoku-core/src/api/client/types.gen.ts",
-    );
+    const typesGenPath = path.resolve(__dirname, "../../gomoku-core/src/api/client/types.gen.ts");
 
     let allowedWords = new Set();
 
@@ -37,15 +34,9 @@ module.exports = {
       );
 
       function extractWords(node) {
-        if (
-          ts.isTypeAliasDeclaration(node) ||
-          ts.isInterfaceDeclaration(node)
-        ) {
+        if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) {
           allowedWords.add(node.name.text);
-        } else if (
-          ts.isPropertySignature(node) ||
-          ts.isPropertyDeclaration(node)
-        ) {
+        } else if (ts.isPropertySignature(node) || ts.isPropertyDeclaration(node)) {
           allowedWords.add(node.name.getText());
         }
 

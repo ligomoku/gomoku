@@ -69,8 +69,12 @@ module.exports = {
           to: { transform: "translateX(0)" },
         },
         swipeOut: {
-          from: { transform: "translateX(var(--radix-toast-swipe-end-x))" },
-          to: { transform: "translateX(calc(100% + var(--viewport-padding)))" },
+          from: {
+            transform: "translateX(var(--radix-toast-swipe-end-x))",
+          },
+          to: {
+            transform: "translateX(calc(100% + var(--viewport-padding)))",
+          },
         },
         overlayShow: {
           from: { opacity: "0" },
@@ -81,7 +85,10 @@ module.exports = {
             opacity: "0",
             transform: "translate(-50%, -48%) scale(0.96)",
           },
-          to: { opacity: "1", transform: "translate(-50%, -50%) scale(1)" },
+          to: {
+            opacity: "1",
+            transform: "translate(-50%, -50%) scale(1)",
+          },
         },
       },
       animation: {
