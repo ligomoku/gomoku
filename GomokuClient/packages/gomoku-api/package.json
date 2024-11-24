@@ -3,7 +3,7 @@
   "description": "Gomoku TypeScript API package",
   "apiVersion": "1",
   "version": "0.0.1",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",
