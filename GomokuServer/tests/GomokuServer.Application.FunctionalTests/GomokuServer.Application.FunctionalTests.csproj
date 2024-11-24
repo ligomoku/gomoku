@@ -7,6 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <PackageLicenseExpression>AGPL-3.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
