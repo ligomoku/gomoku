@@ -14,7 +14,8 @@ interface ErrorBoundaryState {
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   private static readonly CHUNK_FAILED_MESSAGE = /Loading chunk \d+ failed/;
-  private static readonly CSS_CHUNK_FAILED_MESSAGE = /Loading CSS chunk \d+ failed/;
+  private static readonly CSS_CHUNK_FAILED_MESSAGE =
+    /Loading CSS chunk \d+ failed/;
   private static readonly RELOAD_EXPIRY_TIME = 10000; // 10 seconds
   private static readonly STORAGE_KEY = "chunkReloadedAt";
 
@@ -79,7 +80,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    if (ErrorBoundary.didChunkFail(error) && !ErrorBoundary.didChunkAlreadyReload()) {
+    if (
+      ErrorBoundary.didChunkFail(error) &&
+      !ErrorBoundary.didChunkAlreadyReload()
+    ) {
       ErrorBoundary.setChunkReloadAt();
     } else {
       // Report non-chunk errors to Sentry

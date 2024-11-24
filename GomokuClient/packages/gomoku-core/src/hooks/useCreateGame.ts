@@ -11,7 +11,9 @@ interface CreateGameAndNavigateProps {
   authToken: string;
 }
 
-export const useCreateGameAndNavigate = ({ authToken }: CreateGameAndNavigateProps) => {
+export const useCreateGameAndNavigate = ({
+  authToken,
+}: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
 
   const createGame = useMutation<

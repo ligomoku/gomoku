@@ -36,7 +36,10 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     players,
   } = useJoinGame(gameID, gameHistory);
 
-  const { sendMessage, messages, isConnected } = useChat(gameID, jwtDecodedInfo?.username);
+  const { sendMessage, messages, isConnected } = useChat(
+    gameID,
+    jwtDecodedInfo?.username,
+  );
 
   const commonGameTimeProps: Omit<
     GameTimeProps,
@@ -192,7 +195,11 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 display: isMobile ? "none" : "unset",
               }}
             >
-              <GameTime {...commonGameTimeProps} players={players} clock={clock} />
+              <GameTime
+                {...commonGameTimeProps}
+                players={players}
+                clock={clock}
+              />
             </div>
           </div>
         )}
@@ -201,7 +208,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   );
 };
 
-const transformMoves = (movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"]) => {
+const transformMoves = (
+  movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
+) => {
   const movesArray: string[] = [];
   for (const move in movesHistory) {
     movesArray.push(`x${movesHistory[move].x} - y${movesHistory[move].y}`);

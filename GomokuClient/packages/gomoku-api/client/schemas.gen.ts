@@ -154,7 +154,14 @@ export const GetAvailableGamesResponseIEnumerablePaginatedResponseSchema = {
 } as const;
 
 export const GetGameHistoryResponseSchema = {
-  required: ["boardSize", "gen", "isCompleted", "movesCount", "movesHistory", "players"],
+  required: [
+    "boardSize",
+    "gen",
+    "isCompleted",
+    "movesCount",
+    "movesHistory",
+    "players",
+  ],
   type: "object",
   properties: {
     boardSize: {

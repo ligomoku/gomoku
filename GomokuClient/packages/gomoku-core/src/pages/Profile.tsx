@@ -21,10 +21,8 @@ export const Profile = () => {
   ];
 
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFetchProfileGames(
-    jwtToken,
-    jwtDecodedInfo?.username || "",
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useFetchProfileGames(jwtToken, jwtDecodedInfo?.username || "");
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -69,7 +67,12 @@ export const Profile = () => {
                   <XAxis dataKey="date" stroke="#bababa" />
                   {/*@ts-expect-error*/}
                   <YAxis stroke="#bababa" />
-                  <Line type="monotone" dataKey="rating" stroke="#3B82F6" strokeWidth={2} />
+                  <Line
+                    type="monotone"
+                    dataKey="rating"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -80,7 +83,8 @@ export const Profile = () => {
                 {data?.pages.map((page, pageIndex) =>
                   page.data.map((game, gameIndex) => {
                     const isLastGame =
-                      pageIndex === data.pages.length - 1 && gameIndex === page.data.length - 1;
+                      pageIndex === data.pages.length - 1 &&
+                      gameIndex === page.data.length - 1;
 
                     return (
                       <div
@@ -92,10 +96,13 @@ export const Profile = () => {
                         <Activity className="mr-4 text-blue-500" size={24} />
                         <div>
                           <div className="font-bold">
-                            Played {game.isCompleted ? "Completed" : "Ongoing"} game
+                            Played {game.isCompleted ? "Completed" : "Ongoing"}{" "}
+                            game
                           </div>
                           <div className="text-sm">
-                            {game.winner ? `${game.winner} (+8)` : "In Progress"}
+                            {game.winner
+                              ? `${game.winner} (+8)`
+                              : "In Progress"}
                           </div>
                         </div>
                       </div>
@@ -149,9 +156,14 @@ const useFetchProfileGames = (
       return response.data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      const totalFetchedItems = allPages.reduce((total, page) => total + page.data.length, 0);
+      const totalFetchedItems = allPages.reduce(
+        (total, page) => total + page.data.length,
+        0,
+      );
 
-      return totalFetchedItems < lastPage.metadata.totalCount ? allPages.length + 1 : undefined;
+      return totalFetchedItems < lastPage.metadata.totalCount
+        ? allPages.length + 1
+        : undefined;
     },
     initialPageParam: 1,
     //TODO: currentPage should be added on BE side

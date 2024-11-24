@@ -13,20 +13,25 @@ export const useSignalR = (hubURL: string) => {
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(null);
+  const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(
+    null,
+  );
 
-  const startConnection = useCallback(async (connection: signalR.HubConnection) => {
-    if (connection?.state === signalR.HubConnectionState.Disconnected) {
-      try {
-        await connection.start();
-        console.debug("SignalR connection established");
-        setIsConnected(true);
-      } catch (error) {
-        console.error("Error starting SignalR connection:", error);
-        setIsConnected(false);
+  const startConnection = useCallback(
+    async (connection: signalR.HubConnection) => {
+      if (connection?.state === signalR.HubConnectionState.Disconnected) {
+        try {
+          await connection.start();
+          console.debug("SignalR connection established");
+          setIsConnected(true);
+        } catch (error) {
+          console.error("Error starting SignalR connection:", error);
+          setIsConnected(false);
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   useEffect(() => {
     connectionRef.current = new signalR.HubConnectionBuilder()
@@ -41,7 +46,10 @@ export const useSignalR = (hubURL: string) => {
     if (connection) {
       startConnection(connection);
 
-      const proxy = SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(connection);
+      const proxy =
+        SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(
+          connection,
+        );
       if (proxy) {
         setHubProxy(proxy);
       }
@@ -64,16 +72,23 @@ export const useSignalR = (hubURL: string) => {
     (handlers: Partial<SignalHubInterfaces.IGameHubReceiver>) => {
       const { current: connection } = connectionRef;
 
-      if (!connection || connection.state !== signalR.HubConnectionState.Connected) {
-        console.warn("SignalR connection is not available for attaching event handlers.");
+      if (
+        !connection ||
+        connection.state !== signalR.HubConnectionState.Connected
+      ) {
+        console.warn(
+          "SignalR connection is not available for attaching event handlers.",
+        );
         return () => {};
       }
 
       console.debug("Attaching SignalR event handlers...");
 
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
-        playerJoinedGame: async (message) => handlers.playerJoinedGame?.(message),
-        bothPlayersJoined: async (message) => handlers.bothPlayersJoined?.(message),
+        playerJoinedGame: async (message) =>
+          handlers.playerJoinedGame?.(message),
+        bothPlayersJoined: async (message) =>
+          handlers.bothPlayersJoined?.(message),
         gameGroupJoined: async (gameId) =>
           handlers.playerJoinedGame?.({
             userId: gameId,
@@ -86,15 +101,16 @@ export const useSignalR = (hubURL: string) => {
         gameHubError: async (error) => handlers.gameHubError?.(error),
         gameIsOver: async (message) => handlers.gameIsOver?.(message),
         rematchApproved: async (message) => handlers.rematchApproved?.(message),
-        rematchRequested: async (message) => handlers.rematchRequested?.(message),
+        rematchRequested: async (message) =>
+          handlers.rematchRequested?.(message),
         clock: async (message) => handlers.clock?.(message),
-        receiveInvitationToPlay: async (message) => handlers.receiveInvitationToPlay?.(message),
+        receiveInvitationToPlay: async (message) =>
+          handlers.receiveInvitationToPlay?.(message),
       };
 
-      const disposable = SignalRClientService.getReceiverRegister("IGameHubReceiver")?.register(
-        connection,
-        receiver,
-      );
+      const disposable = SignalRClientService.getReceiverRegister(
+        "IGameHubReceiver",
+      )?.register(connection, receiver);
 
       return () => {
         if (disposable) {

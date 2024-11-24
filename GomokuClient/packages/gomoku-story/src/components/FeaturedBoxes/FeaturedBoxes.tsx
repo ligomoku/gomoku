@@ -29,7 +29,9 @@ export const FeaturedBoxes = ({
               <h3 className="text-xl font-bold text-[#bababa] sm:text-2xl">
                 {game.opponent?.userName ?? game.gameId.slice(0, 6)}
               </h3>
-              <p className="truncate text-base text-[#999999] sm:text-lg">{game.gameId}</p>
+              <p className="truncate text-base text-[#999999] sm:text-lg">
+                {game.gameId}
+              </p>
             </CardContent>
           </Card>
 

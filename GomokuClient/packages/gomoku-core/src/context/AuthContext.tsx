@@ -33,8 +33,11 @@ export const AuthTokenContext = createContext<AuthTokenContextType>({
 
 export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const { isLoaded, getToken } = useAuth();
-  const [jwtToken, setJwtToken] = useState<AuthTokenContextType["jwtToken"]>("");
-  const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(null);
+  const [jwtToken, setJwtToken] =
+    useState<AuthTokenContextType["jwtToken"]>("");
+  const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
+    null,
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -75,7 +78,11 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     [jwtToken, jwtDecodedInfo],
   );
 
-  return <AuthTokenContext.Provider value={memoValue}>{children}</AuthTokenContext.Provider>;
+  return (
+    <AuthTokenContext.Provider value={memoValue}>
+      {children}
+    </AuthTokenContext.Provider>
+  );
 };
 
 export const useAuthToken = () => {

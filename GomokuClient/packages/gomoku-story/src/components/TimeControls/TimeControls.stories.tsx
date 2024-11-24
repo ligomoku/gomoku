@@ -95,7 +95,9 @@ export default {
   },
 } as Meta<typeof TimeControls>;
 
-const Template: StoryFn<TimeControlsProps> = (args) => <TimeControls {...args} />;
+const Template: StoryFn<TimeControlsProps> = (args) => (
+  <TimeControls {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = { gameTypes };

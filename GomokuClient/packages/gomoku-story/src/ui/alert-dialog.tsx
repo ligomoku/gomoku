@@ -1,7 +1,14 @@
 import { useState } from "react";
 
 import { Button } from "./button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./card";
 
 interface AlertDialogProps {
   title: string;
@@ -36,11 +43,16 @@ export const AlertDialog = ({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4
+        backdrop-blur-sm"
+    >
       <Card className="w-full max-w-md border-gray-800 bg-[#2A2A2A]">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-gray-100">{title}</CardTitle>
-          <CardDescription className="text-gray-400">{secondaryTitle}</CardDescription>
+          <CardDescription className="text-gray-400">
+            {secondaryTitle}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-gray-300">{text}</p>

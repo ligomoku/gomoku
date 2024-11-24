@@ -12,7 +12,9 @@ export default {
   },
 } as Meta<GameOptionsButtonsProps>;
 
-export const Default = (args: GameOptionsButtonsProps) => <GameOptionsButtons {...args} />;
+export const Default = (args: GameOptionsButtonsProps) => (
+  <GameOptionsButtons {...args} />
+);
 
 Default.args = {
   createGameText: "CREATE A GAME",
