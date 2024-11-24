@@ -35,10 +35,18 @@ Default.args = {
       onClick: () => toaster.show("Community clicked!"),
     },
   ],
-  SignedInComponent: <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">Signed In</span>,
-  SignedOutComponent: <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">Sign Out</span>,
-  SignInButtonComponent: (
-    <span className="text-lg text-[#dc9a3c] hover:underline sm:text-xl">Sign In</span>
+  SignedInComponent: (
+    <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">Signed In</span>
   ),
-  UserButtonComponent: <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">User</span>,
+  SignedOutComponent: (
+    <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">Sign Out</span>
+  ),
+  SignInButtonComponent: (
+    <span className="text-lg text-[#dc9a3c] hover:underline sm:text-xl">
+      Sign In
+    </span>
+  ),
+  UserButtonComponent: (
+    <span className="text-lg hover:text-[#f0f0f0] sm:text-xl">User</span>
+  ),
 };

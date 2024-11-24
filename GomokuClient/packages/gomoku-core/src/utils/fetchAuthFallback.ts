@@ -20,4 +20,6 @@ export const fetchAuthFallback = async <T, R = void>(
   anonymousCall: (payload?: R) => Promise<ApiResponse<T>>,
   anonymousPayload?: R,
 ): Promise<ApiResponse<T>> =>
-  jwtToken ? await authenticatedCall(jwtToken) : await anonymousCall(anonymousPayload);
+  jwtToken
+    ? await authenticatedCall(jwtToken)
+    : await anonymousCall(anonymousPayload);

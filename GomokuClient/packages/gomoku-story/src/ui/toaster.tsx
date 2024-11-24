@@ -64,10 +64,12 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
             open,
           }))
         }
-        className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2"
+        className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-4 z-50
+          w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2"
       >
         <div
-          className={`rounded-lg border bg-[#202020] p-6 text-[#e0e0e0] shadow-lg ${getBorderColor(toastState.type)} flex items-center justify-between`}
+          className={`rounded-lg border bg-[#202020] p-6 text-[#e0e0e0] shadow-lg
+            ${getBorderColor(toastState.type)} flex items-center justify-between`}
         >
           <Toast.Title className="pr-8 text-lg font-light leading-tight">
             {toastState.message}
@@ -80,7 +82,8 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
                   open: false,
                 }))
               }
-              className="rounded-full p-1 text-[#e0e0e0] transition-colors hover:bg-white/10 hover:text-white"
+              className="rounded-full p-1 text-[#e0e0e0] transition-colors hover:bg-white/10
+                hover:text-white"
               aria-label="Close notification"
             >
               <X className="h-6 w-6" />
@@ -90,7 +93,10 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
       </Toast.Root>
       {/*TODO: Make this dynamic to control the position*/}
       {/*<Toast.Viewport className="fixed bottom-0 right-0 z-50 m-0 flex w-full max-w-sm list-none flex-col gap-2 p-6 outline-none" />*/}
-      <Toast.Viewport className="fixed bottom-0 left-1/2 z-50 mb-20 flex w-full max-w-sm -translate-x-1/2 transform list-none flex-col gap-2 p-6 outline-none" />
+      <Toast.Viewport
+        className="fixed bottom-0 left-1/2 z-50 mb-20 flex w-full max-w-sm -translate-x-1/2
+          transform list-none flex-col gap-2 p-6 outline-none"
+      />
     </Toast.Provider>
   );
 };

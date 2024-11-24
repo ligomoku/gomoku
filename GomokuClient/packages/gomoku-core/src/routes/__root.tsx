@@ -1,4 +1,10 @@
-import { SignedIn, SignedOut, SignInButton, useAuth, UserButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  useAuth,
+  UserButton,
+} from "@clerk/clerk-react";
 import { toaster } from "@gomoku/story";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";

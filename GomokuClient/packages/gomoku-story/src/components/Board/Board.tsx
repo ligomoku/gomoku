@@ -24,14 +24,25 @@ export interface TileProps {
 }
 
 const Tile = memo(
-  ({ xIndex, yIndex, col, lastTile, onTileClick, showAnnotations, winningSequence }: TileProps) => {
+  ({
+    xIndex,
+    yIndex,
+    col,
+    lastTile,
+    onTileClick,
+    showAnnotations,
+    winningSequence,
+  }: TileProps) => {
     const isLastTile = xIndex === lastTile?.x && yIndex === lastTile?.y;
-    const isWinningTile = winningSequence?.some((tile) => tile.x === xIndex && tile.y === yIndex);
+    const isWinningTile = winningSequence?.some(
+      (tile) => tile.x === xIndex && tile.y === yIndex,
+    );
 
     return col !== null ? (
       <div
         key={`${xIndex}-${yIndex}`}
-        className={`relative flex items-center justify-center border border-black ${isLastTile ? "bg-amber-400" : ""} ${isWinningTile ? "bg-amber-200" : ""} `}
+        className={`relative flex items-center justify-center border border-black
+          ${isLastTile ? "bg-amber-400" : ""} ${isWinningTile ? "bg-amber-200" : ""} `}
       >
         <div
           className={tileStyles({
@@ -145,7 +156,7 @@ export const Board = ({
       >
         <div className="flex flex-col items-center">
           <div
-            className={`rounded-lg bg-[#ba8c63] shadow-md`}
+            className={"rounded-lg bg-[#ba8c63] shadow-md"}
             style={{
               width: "100%",
               height: "100%",
@@ -164,9 +175,15 @@ export const Board = ({
           <div className="flex flex-col items-center">
             <Button
               onClick={() => setShowAnnotations(!showAnnotations)}
-              className="focus-visible:ring-ring relative mt-4 inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border-[#3e3e3e] bg-[#3e3e3e] px-4 py-2 text-base font-medium text-[#bababa] shadow transition-colors hover:bg-[#4a4a4a] focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+              className="focus-visible:ring-ring relative mt-4 inline-flex h-9 items-center
+                justify-center whitespace-nowrap rounded-md border-[#3e3e3e] bg-[#3e3e3e] px-4
+                py-2 text-base font-medium text-[#bababa] shadow transition-colors
+                hover:bg-[#4a4a4a] focus-visible:outline-none focus-visible:ring-1
+                disabled:pointer-events-none disabled:opacity-50"
             >
-              {showAnnotations && !isMobile ? "Hide Annotations" : "Show Annotations"}
+              {showAnnotations && !isMobile
+                ? "Hide Annotations"
+                : "Show Annotations"}
             </Button>
           </div>
         </div>

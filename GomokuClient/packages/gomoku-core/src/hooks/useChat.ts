@@ -9,7 +9,8 @@ export const useChat = (
   gameID?: SwaggerTypes.CreateGameResponse["gameId"],
   username?: SignalClientMessages.ChatMessageClientMessage["user"],
 ) => {
-  const { hubProxy, isConnected, registerEventHandlers } = useSignalRConnection();
+  const { hubProxy, isConnected, registerEventHandlers } =
+    useSignalRConnection();
   const [messages, setMessages] = useState<
     SignalClientMessages.ChatMessageClientMessage["message"][]
   >([]);
@@ -32,7 +33,9 @@ export const useChat = (
     return;
   }, [hubProxy, isConnected, registerEventHandlers]);
 
-  const sendMessage = async (message: SignalClientMessages.ChatMessageClientMessage["message"]) => {
+  const sendMessage = async (
+    message: SignalClientMessages.ChatMessageClientMessage["message"],
+  ) => {
     if (hubProxy && isConnected && gameID) {
       try {
         await hubProxy.sendMessage({

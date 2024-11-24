@@ -325,11 +325,13 @@ export const getApiGameAnonymousActiveInfiniteOptions = (
   );
 };
 
-export const postApiGameAnonymousQueryKey = (options: Options<PostApiGameAnonymousData>) => [
-  createQueryKey("postApiGameAnonymous", options),
-];
+export const postApiGameAnonymousQueryKey = (
+  options: Options<PostApiGameAnonymousData>,
+) => [createQueryKey("postApiGameAnonymous", options)];
 
-export const postApiGameAnonymousOptions = (options: Options<PostApiGameAnonymousData>) => {
+export const postApiGameAnonymousOptions = (
+  options: Options<PostApiGameAnonymousData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
       const { data } = await postApiGameAnonymous({
@@ -655,11 +657,13 @@ export const getApiGameRegisteredActiveInfiniteOptions = (
   );
 };
 
-export const postApiGameRegisteredQueryKey = (options: Options<PostApiGameRegisteredData>) => [
-  createQueryKey("postApiGameRegistered", options),
-];
+export const postApiGameRegisteredQueryKey = (
+  options: Options<PostApiGameRegisteredData>,
+) => [createQueryKey("postApiGameRegistered", options)];
 
-export const postApiGameRegisteredOptions = (options: Options<PostApiGameRegisteredData>) => {
+export const postApiGameRegisteredOptions = (
+  options: Options<PostApiGameRegisteredData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
       const { data } = await postApiGameRegistered({

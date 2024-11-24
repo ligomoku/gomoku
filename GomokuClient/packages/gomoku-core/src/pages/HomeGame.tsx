@@ -1,5 +1,10 @@
 import { SwaggerServices } from "@gomoku/api";
-import { GameOptionsButtons, TimeControls, OnlinePlayersInfo, SectionList } from "@gomoku/story";
+import {
+  GameOptionsButtons,
+  TimeControls,
+  OnlinePlayersInfo,
+  SectionList,
+} from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -18,9 +23,10 @@ export const HomeGame = () => {
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
 
-  const { createGame, isLoading: isLoadingCreateGame } = useCreateGameAndNavigate({
-    authToken: jwtToken,
-  });
+  const { createGame, isLoading: isLoadingCreateGame } =
+    useCreateGameAndNavigate({
+      authToken: jwtToken,
+    });
 
   const handleCreateGame = (
     selectedBoardSize: number,
@@ -32,7 +38,9 @@ export const HomeGame = () => {
     });
   };
 
-  const transformGameData = (games: SwaggerTypes.GetAvailableGamesResponse[] | undefined) =>
+  const transformGameData = (
+    games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
+  ) =>
     games?.map((game) => ({
       id: game.gameId,
       title: game.opponent?.userName ?? game.gameId.slice(0, 6),

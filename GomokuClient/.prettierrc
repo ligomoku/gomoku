@@ -1,9 +1,15 @@
 {
-  "printWidth": 100,
+  "printWidth": 80,
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
   "singleQuote": false,
   "trailingComma": "all",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-classnames",
+    "prettier-plugin-merge"
+  ],
+  "tailwindFunctions": ["clsx", "cn", "twMerge"],
+  "tailwindAttributes": ["className", "class", "tw"]
 }

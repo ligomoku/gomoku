@@ -4,7 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 
 import { useMobileDesign } from "@/hooks";
-import { Button, toaster, Card, CardContent, CardHeader, CardTitle } from "@/ui";
+import {
+  Button,
+  toaster,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/ui";
 
 export interface ChatProps {
   messages: string[];
@@ -23,7 +30,13 @@ export interface ChatProps {
   };
 }
 
-export const Chat = ({ messages, isConnected, sendMessage, username, texts }: ChatProps) => {
+export const Chat = ({
+  messages,
+  isConnected,
+  sendMessage,
+  username,
+  texts,
+}: ChatProps) => {
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -95,7 +108,8 @@ export const Chat = ({ messages, isConnected, sendMessage, username, texts }: Ch
                 onClick={handleSendMessage}
                 loading={isSending}
                 disabled={!messageInput.trim() || isSending}
-                className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
+                className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a]
+                  sm:h-14 sm:text-xl"
               >
                 {isSending ? texts.sendingButtonText : texts.sendButtonText}
               </Button>
@@ -105,7 +119,8 @@ export const Chat = ({ messages, isConnected, sendMessage, username, texts }: Ch
             </div>
             <ScrollArea
               ref={scrollAreaRef}
-              className="h-[100%] max-h-[420px] min-h-[420px] w-full overflow-y-auto rounded-md border p-4"
+              className="h-[100%] max-h-[420px] min-h-[420px] w-full overflow-y-auto rounded-md border
+                p-4"
               style={{
                 maxWidth: !isMobile ? 300 : "unset",
               }}
@@ -118,7 +133,7 @@ export const Chat = ({ messages, isConnected, sendMessage, username, texts }: Ch
                     msg.startsWith(`${username}:`)
                       ? "bg-blue-100 text-blue-900"
                       : "bg-gray-100 text-gray-900"
-                  }`}
+                    }`}
                   style={{
                     wordWrap: "break-word",
                     maxWidth: "100%",
