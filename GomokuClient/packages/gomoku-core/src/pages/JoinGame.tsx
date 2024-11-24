@@ -1,13 +1,13 @@
 import { AlertDialog, toaster } from "@gomoku/story";
 import { GamePlayersInfo } from "@gomoku/story";
 import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
+import { Chat } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@gomoku/api";
 import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
-import { Chat } from "@/features";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
 
 interface JoinGameProps {
@@ -134,6 +134,16 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   isConnected={isConnected}
                   sendMessage={sendMessage}
                   username={jwtDecodedInfo?.username || ""}
+                  texts={{
+                    title: "Chat",
+                    inputPlaceholder: "Type a message...",
+                    sendButtonText: "Send",
+                    sendingButtonText: "Sending...",
+                    charactersText: "characters",
+                    connectingText: "Connecting...",
+                    noMessagesText: "No messages yet. Start the conversation!",
+                    errorSendingMessage: "Error sending message",
+                  }}
                 />
               </div>
             </div>
