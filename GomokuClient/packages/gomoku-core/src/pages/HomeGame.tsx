@@ -1,10 +1,5 @@
 import { SwaggerServices } from "@gomoku/api";
-import {
-  GameOptionsButtons,
-  TimeControls,
-  OnlinePlayersInfo,
-  SectionList,
-} from "@gomoku/story";
+import { GameOptionsButtons, TimeControls, OnlinePlayersInfo, SectionList } from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -23,10 +18,9 @@ export const HomeGame = () => {
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
 
-  const { createGame, isLoading: isLoadingCreateGame } =
-    useCreateGameAndNavigate({
-      authToken: jwtToken,
-    });
+  const { createGame, isLoading: isLoadingCreateGame } = useCreateGameAndNavigate({
+    authToken: jwtToken,
+  });
 
   const handleCreateGame = (
     selectedBoardSize: number,
@@ -38,9 +32,7 @@ export const HomeGame = () => {
     });
   };
 
-  const transformGameData = (
-    games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
-  ) =>
+  const transformGameData = (games: SwaggerTypes.GetAvailableGamesResponse[] | undefined) =>
     games?.map((game) => ({
       id: game.gameId,
       title: game.opponent?.userName ?? game.gameId.slice(0, 6),
@@ -158,54 +150,81 @@ export const gameTypes: GameType[] = [
     timeLabel: "1+0",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "1+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "1+2",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 2 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 2,
+    },
   },
   {
     timeLabel: "2+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 120, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 120,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "5+0",
     type: t`Blitz`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 300,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "7+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 420, incrementPerMove: 5 },
+    timeControl: {
+      initialTimeInSeconds: 420,
+      incrementPerMove: 5,
+    },
   },
   {
     timeLabel: "10+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 600,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "15+0",
     type: t`Rapid`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 900,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "30+0",
     type: t`Classic`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 1800,
+      incrementPerMove: 0,
+    },
   },
 ];

@@ -11,15 +11,16 @@ interface CreateGameAndNavigateProps {
   authToken: string;
 }
 
-export const useCreateGameAndNavigate = ({
-  authToken,
-}: CreateGameAndNavigateProps) => {
+export const useCreateGameAndNavigate = ({ authToken }: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
 
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
     SwaggerTypes.PostApiGameRegisteredError,
-    { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
+    {
+      boardSize: number;
+      timeControl?: SwaggerTypes.TimeControlDto;
+    }
   >({
     mutationFn: async ({ boardSize, timeControl }) => {
       const response = await fetchAuthFallback(
@@ -54,7 +55,9 @@ export const useCreateGameAndNavigate = ({
           onSuccess: async (data) => {
             if (data?.gameId) {
               toaster.show("Game created");
-              navigate({ to: `/game/join/${data?.gameId}` });
+              navigate({
+                to: `/game/join/${data?.gameId}`,
+              });
             }
           },
           onError: (error) => {

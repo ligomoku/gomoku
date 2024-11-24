@@ -35,10 +35,7 @@ export const getGameHistory = async (
   return response.data;
 };
 
-const joinGame = async (
-  gameID: SwaggerTypes.CreateGameResponse["gameId"],
-  jwtToken: string,
-) => {
+const joinGame = async (gameID: SwaggerTypes.CreateGameResponse["gameId"], jwtToken: string) => {
   const response = await fetchAuthFallback(
     jwtToken,
     async (token) =>
@@ -63,11 +60,7 @@ const joinGame = async (
   return response.data;
 };
 
-const JoinGameComponent = ({
-  gameID,
-}: {
-  gameID: SwaggerTypes.CreateGameResponse["gameId"];
-}) => {
+const JoinGameComponent = ({ gameID }: { gameID: SwaggerTypes.CreateGameResponse["gameId"] }) => {
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken } = useAuthToken();
 
@@ -99,8 +92,7 @@ const JoinGameComponent = ({
     asyncJoinGame();
   }, [gameHistory, gameID, jwtToken]);
 
-  if (isLoading || isJoining || !gameHistory)
-    return <LoadingOverlay isVisible />;
+  if (isLoading || isJoining || !gameHistory) return <LoadingOverlay isVisible />;
   if (error) return <div>Error loading game history {error.toString()}</div>;
 
   return <JoinGame gameHistory={gameHistory} />;

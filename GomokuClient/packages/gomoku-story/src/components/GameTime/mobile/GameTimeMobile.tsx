@@ -1,11 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  Flag,
-  Repeat1,
-  Undo,
-  X,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Flag, Repeat1, Undo, X } from "lucide-react";
 
 import type { GameTimeProps } from "@/components";
 import type { SwaggerTypes } from "@gomoku/api";
@@ -13,10 +6,7 @@ import type { SwaggerTypes } from "@gomoku/api";
 import { secondsToString } from "@/components";
 
 export interface GameTimeMobileProps
-  extends Omit<
-    GameTimeProps,
-    "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
-  > {
+  extends Omit<GameTimeProps, "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"> {
   opponentView?: boolean; // Clock Time mode for main player who sees the board (player not opponent)
   player?: SwaggerTypes.PlayerDto;
   timeLeft?: number;
@@ -40,7 +30,9 @@ export const GameTimeMobile = ({
           <div className="flex items-center">
             <span
               className="mr-2 h-3 w-3 rounded-full"
-              style={{ backgroundColor: player?.color }}
+              style={{
+                backgroundColor: player?.color,
+              }}
             />
             <span className="font-bold text-[#ffa600]">{player?.userName}</span>
           </div>
@@ -60,7 +52,9 @@ export const GameTimeMobile = ({
         <div className="flex items-center">
           <span
             className="mr-2 h-3 w-3 rounded-full"
-            style={{ backgroundColor: player?.color }}
+            style={{
+              backgroundColor: player?.color,
+            }}
           />
           <span className="font-bold text-[#ffa600]">{player?.userName}</span>
         </div>
@@ -71,10 +65,7 @@ export const GameTimeMobile = ({
         )}
       </div>
       <div className="mb-2 flex items-center rounded bg-[#363330] text-sm">
-        <ChevronLeft
-          className="text-[#b0b0b0]"
-          onClick={() => onSkip("back")}
-        />
+        <ChevronLeft className="text-[#b0b0b0]" onClick={() => onSkip("back")} />
         <div className="flex-1 overflow-x-auto whitespace-nowrap px-2 py-1">
           {moves.length > 0 ? (
             moves.map((move, index) => (
@@ -83,15 +74,10 @@ export const GameTimeMobile = ({
               </span>
             ))
           ) : (
-            <span>
-              {!player && "Game will starts soon. Wait for your opponent"}
-            </span>
+            <span>{!player && "Game will starts soon. Wait for your opponent"}</span>
           )}
         </div>
-        <ChevronRight
-          className="text-[#b0b0b0]"
-          onClick={() => onSkip("forward")}
-        />
+        <ChevronRight className="text-[#b0b0b0]" onClick={() => onSkip("forward")} />
       </div>
 
       <div className="mb-2 flex justify-between">

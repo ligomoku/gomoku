@@ -8,9 +8,7 @@ export default {
   component: OnlinePlayersInfo,
 } as Meta<typeof OnlinePlayersInfo>;
 
-const Template: StoryFn<OnlinePlayersInfoProps> = (args) => (
-  <OnlinePlayersInfo {...args} />
-);
+const Template: StoryFn<OnlinePlayersInfoProps> = (args) => <OnlinePlayersInfo {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

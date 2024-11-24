@@ -13,10 +13,7 @@ export const Spinner = ({ size = "md", className }: SpinnerProps) => {
   };
 
   return (
-    <div
-      className={cn("relative", sizeClasses[size], className)}
-      aria-label="Loading"
-    >
+    <div className={cn("relative", sizeClasses[size], className)} aria-label="Loading">
       {[0, 1, 2].map((index) => (
         <svg
           key={index}

@@ -11,7 +11,10 @@ export interface HeaderProps {
   searchPlaceholder: string;
   logoText: string;
   logoOnClick: () => void;
-  menuItems: Array<{ label: string; onClick: () => void }>;
+  menuItems: Array<{
+    label: string;
+    onClick: () => void;
+  }>;
   SignedInComponent: ReactNode;
   SignedOutComponent: ReactNode;
   SignInButtonComponent: ReactNode;
@@ -43,10 +46,7 @@ export const Header = ({
           >
             ◯ {logoText}
           </span>
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-[#bababa] sm:hidden"
-          >
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-[#bababa] sm:hidden">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -74,16 +74,10 @@ export const Header = ({
             className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
             placeholder={searchPlaceholder}
           />
-          <button
-            aria-label="Search"
-            className="text-[#bababa] hover:text-[#f0f0f0] sm:hidden"
-          >
+          <button aria-label="Search" className="text-[#bababa] hover:text-[#f0f0f0] sm:hidden">
             <Search className="h-5 w-5" />
           </button>
-          <button
-            aria-label="Notifications"
-            className="text-[#bababa] hover:text-[#f0f0f0]"
-          >
+          <button aria-label="Notifications" className="text-[#bababa] hover:text-[#f0f0f0]">
             <Bell className="h-5 w-5" />
           </button>
           {isSignedIn ? (

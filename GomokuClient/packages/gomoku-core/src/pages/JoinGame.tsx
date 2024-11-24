@@ -15,7 +15,9 @@ interface JoinGameProps {
 }
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
-  const { gameID } = useParams({ from: "/game/join/$gameID" });
+  const { gameID } = useParams({
+    from: "/game/join/$gameID",
+  });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
 
@@ -34,10 +36,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     players,
   } = useJoinGame(gameID, gameHistory);
 
-  const { sendMessage, messages, isConnected } = useChat(
-    gameID,
-    jwtDecodedInfo?.username,
-  );
+  const { sendMessage, messages, isConnected } = useChat(gameID, jwtDecodedInfo?.username);
 
   const commonGameTimeProps: Omit<
     GameTimeProps,
@@ -56,7 +55,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       toaster.show("Undo request sent");
     },
     onRematch: () => {
-      hubProxy?.requestRematch({ gameId: gameID });
+      hubProxy?.requestRematch({
+        gameId: gameID,
+      });
       toaster.show("Rematch request sent");
     },
   };
@@ -70,7 +71,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to play another game with the same settings?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveRematch({ gameId: gameID });
+            hubProxy?.approveRematch({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -85,7 +88,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to undo last move?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveUndo({ gameId: gameID });
+            hubProxy?.approveUndo({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -163,7 +168,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               lastTile={lastTile}
               size={gameHistory.boardSize || 19}
               onTileClick={handleMove}
-              style={{ order: isMobile ? 1 : "unset" }}
+              style={{
+                order: isMobile ? 1 : "unset",
+              }}
               winningSequence={gameHistory.winningSequence ?? winningSequence}
             />
             <div className={isMobile ? "mt-4 flex w-full justify-center" : ""}>
@@ -185,11 +192,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 display: isMobile ? "none" : "unset",
               }}
             >
-              <GameTime
-                {...commonGameTimeProps}
-                players={players}
-                clock={clock}
-              />
+              <GameTime {...commonGameTimeProps} players={players} clock={clock} />
             </div>
           </div>
         )}
@@ -198,9 +201,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   );
 };
 
-const transformMoves = (
-  movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
-) => {
+const transformMoves = (movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"]) => {
   const movesArray: string[] = [];
   for (const move in movesHistory) {
     movesArray.push(`x${movesHistory[move].x} - y${movesHistory[move].y}`);

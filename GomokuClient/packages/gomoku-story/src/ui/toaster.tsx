@@ -15,7 +15,11 @@ let setToastState: Dispatch<SetStateAction<ToastState>> | null = null;
 export const toaster = {
   show: (message: string, type: ToastState["type"] = "info") => {
     if (setToastState) {
-      setToastState({ open: true, message, type });
+      setToastState({
+        open: true,
+        message,
+        type,
+      });
     }
   },
 };
@@ -54,8 +58,13 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
       <Toast.Root
         open={toastState.open}
         duration={5000}
-        onOpenChange={(open) => setInternalToastState((s) => ({ ...s, open }))}
-        className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2"
+        onOpenChange={(open) =>
+          setInternalToastState((s) => ({
+            ...s,
+            open,
+          }))
+        }
+        className="fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2 animate-in fade-in slide-in-from-top-4"
       >
         <div
           className={`rounded-lg border bg-[#202020] p-6 text-[#e0e0e0] shadow-lg ${getBorderColor(toastState.type)} flex items-center justify-between`}
@@ -66,7 +75,10 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
           <Toast.Action asChild altText="Close">
             <button
               onClick={() =>
-                setInternalToastState((s) => ({ ...s, open: false }))
+                setInternalToastState((s) => ({
+                  ...s,
+                  open: false,
+                }))
               }
               className="rounded-full p-1 text-[#e0e0e0] transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Close notification"
