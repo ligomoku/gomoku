@@ -93,6 +93,9 @@ export default {
   parameters: {
     layout: "centered",
   },
+  args: {
+    gameTypes,
+  },
 } as Meta<typeof TimeControls>;
 
 const Template: StoryFn<TimeControlsProps> = (args) => (
@@ -100,4 +103,3 @@ const Template: StoryFn<TimeControlsProps> = (args) => (
 );
 
 export const Default = Template.bind({});
-Default.args = { gameTypes };
