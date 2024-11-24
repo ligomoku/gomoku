@@ -11,5 +11,9 @@
     "prettier-plugin-merge"
   ],
   "tailwindFunctions": ["clsx", "cn", "twMerge"],
-  "tailwindAttributes": ["className", "class", "tw"]
+  "tailwindAttributes": ["className", "class", "tw"],
+  "endingPosition": "relative",
+  "htmlWhitespaceSensitivity": "ignore",
+  "bracketSameLine": false,
+  "jsxSingleQuote": false
 }
