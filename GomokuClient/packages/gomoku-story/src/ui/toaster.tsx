@@ -64,7 +64,7 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
             open,
           }))
         }
-        className="fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2 animate-in fade-in slide-in-from-top-4"
+        className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-[600px] -translate-x-1/2"
       >
         <div
           className={`rounded-lg border bg-[#202020] p-6 text-[#e0e0e0] shadow-lg ${getBorderColor(toastState.type)} flex items-center justify-between`}
