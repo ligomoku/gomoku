@@ -1,5 +1,6 @@
 {
   "private": true,
+  "license": "AGPL-3.0",
   "scripts": {
     "run:server": "dotnet run --cofiguration Release --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj",
     "generate-hub-types:server": "dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs  --assemblies && yarn format",
