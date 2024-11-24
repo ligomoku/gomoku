@@ -7,6 +7,5 @@ export * from "./GamePlayersInfo";
 export * from "./TimeControls";
 export * from "./SectionList";
 export * from "./OnlinePlayersInfo";
-export * from "./ErrorBoundary";
 export * from "./GameTime";
 export * from "./Chat";
