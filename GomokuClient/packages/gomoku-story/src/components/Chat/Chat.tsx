@@ -1,3 +1,9 @@
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { useState, useEffect, useRef } from "react";
+
+import type { KeyboardEvent } from "react";
+
+import { useMobileDesign } from "@/hooks";
 import {
   Button,
   toaster,
@@ -5,20 +11,23 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@gomoku/story";
-import { t } from "@lingui/macro";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useState, useEffect, useRef } from "react";
-
-import type { KeyboardEvent } from "react";
-
-import { useMobileDesign } from "@/hooks";
+} from "@/ui";
 
 export interface ChatProps {
   messages: string[];
   isConnected: boolean;
   sendMessage: (message: string) => Promise<void>;
   username: string;
+  texts: {
+    title: string;
+    inputPlaceholder: string;
+    sendButtonText: string;
+    sendingButtonText: string;
+    charactersText: string;
+    connectingText: string;
+    noMessagesText: string;
+    errorSendingMessage: string;
+  };
 }
 
 export const Chat = ({
@@ -26,6 +35,7 @@ export const Chat = ({
   isConnected,
   sendMessage,
   username,
+  texts,
 }: ChatProps) => {
   const [messageInput, setMessageInput] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -41,7 +51,7 @@ export const Chat = ({
         setMessageInput("");
       } catch (error) {
         console.error("Failed to send message", error);
-        toaster.show("Error sending message", "error");
+        toaster.show(texts.errorSendingMessage, "error");
       } finally {
         setIsSending(false);
       }
@@ -75,7 +85,7 @@ export const Chat = ({
       }}
     >
       <CardHeader>
-        <CardTitle>{t`Chat`}</CardTitle>
+        <CardTitle>{texts.title}</CardTitle>
       </CardHeader>
       <CardContent>
         {isConnected ? (
@@ -91,7 +101,7 @@ export const Chat = ({
                 }}
                 onKeyDown={handleKeyDown}
                 className="flex-1 rounded-md border px-3 py-2"
-                placeholder={"Type a message..."}
+                placeholder={texts.inputPlaceholder}
                 maxLength={MAX_MESSAGE_LENGTH}
               />
               <Button
@@ -100,11 +110,11 @@ export const Chat = ({
                 disabled={!messageInput.trim() || isSending}
                 className="border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] hover:bg-[#4a4a4a] sm:h-14 sm:text-xl"
               >
-                {isSending ? t`Sending...` : t`Send`}
+                {isSending ? texts.sendingButtonText : texts.sendButtonText}
               </Button>
             </div>
             <div className="text-sm text-[#bababa]">
-              {messageInput.length}/{MAX_MESSAGE_LENGTH} {t`characters`}
+              {messageInput.length}/{MAX_MESSAGE_LENGTH} {texts.charactersText}
             </div>
             <ScrollArea
               ref={scrollAreaRef}
@@ -115,7 +125,6 @@ export const Chat = ({
             >
               {messages.map((msg, index) => (
                 <div
-                  //TODO: check if key is matching behaviour
                   key={msg}
                   ref={index === messages.length - 1 ? scrollAreaRef : null}
                   className={`mb-2 rounded p-2 ${
@@ -132,10 +141,8 @@ export const Chat = ({
           </div>
         ) : (
           <div>
-            {t`Connecting...`}
-            <div className="text-gray-500">
-              {t`No messages yet. Start the conversation!`}
-            </div>
+            {texts.connectingText}
+            <div className="text-gray-500">{texts.noMessagesText}</div>
           </div>
         )}
       </CardContent>
