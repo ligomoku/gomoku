@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "index.mjs",
   "license": "AGPL-3.0",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",

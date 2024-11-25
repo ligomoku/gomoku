@@ -2,6 +2,7 @@
   "name": "@gomoku/core",
   "version": "0.0.1",
   "license": "AGPL-3.0",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "description": "Gomoku core package with game logic, components, and theming",
   "type": "module",
   "apiVersion": "1",
