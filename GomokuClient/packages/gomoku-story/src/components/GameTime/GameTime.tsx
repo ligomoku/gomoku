@@ -17,7 +17,7 @@ import type { SwaggerTypes } from "@gomoku/api";
 export interface GameTimeProps {
   moves: string[];
   clock: SwaggerTypes.GetGameHistoryResponse["clock"];
-  players: SwaggerTypes.GetGameHistoryResponse["players"];
+  players: SwaggerTypes.GetGameHistoryResponse["players"] | null;
   onUndo: () => void;
   onSkip: (direction: "back" | "forward") => void;
   onFlag: () => void;
@@ -37,15 +37,15 @@ export const GameTime = ({
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
-      {clock?.black && (
-        <div className="font-mono text-5xl">
-          {secondsToString(clock.black > 0 ? clock.black : 0)}
-        </div>
-      )}
-      {clock?.black && (
-        <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
-          <Clock className="h-6 w-6" />
-        </button>
+      {clock && clock?.black > 0 && (
+        <>
+          <div className="font-mono text-5xl">
+            {secondsToString(clock.black)}
+          </div>
+          <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
+            <Clock className="h-6 w-6" />
+          </button>
+        </>
       )}
     </div>
 
@@ -56,7 +56,7 @@ export const GameTime = ({
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "black" }}
           />
-          <span className="text-sm">{players.black?.userName}</span>
+          <span className="text-sm">{players?.black?.userName}</span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
@@ -98,10 +98,10 @@ export const GameTime = ({
         </div>
         <div>
           <div className="text-sm">
-            {!players.black && !players.white && "Game will starts soon"}
+            {!players?.black && !players?.white && "Game will starts soon"}
           </div>
           <div className="text-lg font-bold">
-            {!players.black && !players.white && "Wait for your opponent"}
+            {!players?.black && !players?.white && "Wait for your opponent"}
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@ export const GameTime = ({
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "white" }}
           />
-          <span className="text-sm">{players.white?.userName}</span>
+          <span className="text-sm">{players?.white?.userName}</span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
@@ -164,9 +164,9 @@ export const GameTime = ({
       </button>
     )}
 
-    {clock?.white && (
+    {clock && clock.white > 0 && (
       <div className="mt-2 text-center font-mono text-5xl">
-        {secondsToString(clock.white > 0 ? clock.white : 0)}
+        {secondsToString(clock.white)}
       </div>
     )}
   </div>
