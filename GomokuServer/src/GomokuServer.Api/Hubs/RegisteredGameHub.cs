@@ -14,7 +14,7 @@ public class RegisteredGameHub : GameHub
 {
 	private readonly IMediator _mediator;
 
-	public RegisteredGameHub(IMediator mediator)
+	public RegisteredGameHub(IMediator mediator, CompositeMatchingEngine compositeMatchingEngine) : base(compositeMatchingEngine)
 	{
 		_mediator = mediator;
 	}

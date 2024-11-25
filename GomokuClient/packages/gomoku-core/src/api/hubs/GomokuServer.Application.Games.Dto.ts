@@ -35,3 +35,11 @@ export type TileDto = {
   /** Transpiled from int */
   y: number;
 };
+
+/** Transpiled from GomokuServer.Application.Games.Dto.TimeControlDto */
+export type TimeControlDto = {
+  /** Transpiled from int */
+  initialTimeInSeconds: number;
+  /** Transpiled from int */
+  incrementPerMove: number;
+};

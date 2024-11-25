@@ -1,6 +1,12 @@
+using GomokuServer.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var envVariables = EnvironmentLoader.LoadEnvironment(builder);
+
+builder.Services.AddSingleton<CompositeMatchingEngine>();
+builder.Services.AddSingleton<MatchingEngineFactory>();
+builder.Services.AddHostedService<MatchingEngineHostedService>();
 
 builder.Services.RegisterSwagger();
 

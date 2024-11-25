@@ -3,11 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
+import { useEffect, useState } from "react";
 import type { SwaggerTypes } from "@/api";
 import type { GameType } from "@/features/TimeControls";
 
 import { SwaggerServices } from "@/api";
-import { useAuthToken } from "@/context";
+import { useAuthToken, useSignalRConnection } from "@/context";
 import { GameOptionsButtons } from "@/features/GameOptionsButton";
 import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
 import { SectionList } from "@/features/SectionList";
@@ -20,6 +21,10 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
+  const { hubProxy, isConnected, registerEventHandlers } =
+    useSignalRConnection();
+
+  const [ userCount, setUserCount ] = useState(0);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -35,6 +40,39 @@ export const HomeGame = () => {
       timeControl: selectedTimeControl,
     });
   };
+
+  const enterQueueWithMode = async (
+    selectedBoardSize: number,
+    selectedTimeControl?: SwaggerTypes.TimeControlDto,
+  ) => {
+    // TODO: selectedTimeControl shouldnt be nullable.
+    await hubProxy?.joinQueueWithMode({
+      boardSize: selectedBoardSize,
+      timeControl: selectedTimeControl!,
+      anonymous: true,
+    });
+  };
+
+  useEffect(() => {
+    if (isConnected && hubProxy) {
+      const unregister = registerEventHandlers({
+        onMatchingPlayerFound: async (gameId) => {
+          await navigate({
+            to: `/game/join/${gameId}`,
+          });
+        },
+        onOnlineUserCountChange: async (userCount) => {
+          setUserCount(userCount);
+        }
+      });
+      return () => {
+        if (typeof unregister === "function") {
+          unregister();
+        }
+      };
+    }
+    return;
+  }, [hubProxy, isConnected, registerEventHandlers]);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
@@ -70,7 +108,7 @@ export const HomeGame = () => {
             </h2>
             <TimeControls
               gameTypes={gameTypes}
-              onCreateGame={handleCreateGame}
+              onCreateGame={enterQueueWithMode}
               isLoading={isLoadingCreateGame}
             />
           </div>
@@ -84,7 +122,7 @@ export const HomeGame = () => {
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}
-              playersOnlineText={t`5,247 players online`}
+              playersOnlineText={t`${userCount} players online`}
             />
           </div>
         </div>

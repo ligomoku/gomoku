@@ -3,6 +3,7 @@
 /* tslint:disable */
 // @ts-nocheck
 import type { IStreamResult, Subject } from "@microsoft/signalr";
+import type { GameOptions } from "../GomokuServer.Api";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
@@ -28,6 +29,15 @@ import type {
 import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
 
 export type IGameHub = {
+  /**
+   * @param gameOptions Transpiled from GomokuServer.Api.GameOptions
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  joinQueueWithMode(gameOptions: GameOptions): Promise<void>;
+  /**
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  leaveQueue(): Promise<void>;
   /**
    * @param gameId Transpiled from string
    * @returns Transpiled from System.Threading.Tasks.Task
@@ -81,6 +91,16 @@ export type IGameHub = {
 };
 
 export type IGameHubReceiver = {
+  /**
+   * @param userCount Transpiled from long
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  onOnlineUserCountChange(userCount: number): Promise<void>;
+  /**
+   * @param gameId Transpiled from string
+   * @returns Transpiled from System.Threading.Tasks.Task
+   */
+  onMatchingPlayerFound(gameId: string): Promise<void>;
   /**
    * @param gameId Transpiled from string
    * @returns Transpiled from System.Threading.Tasks.Task

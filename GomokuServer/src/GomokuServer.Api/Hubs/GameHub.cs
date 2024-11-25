@@ -4,8 +4,42 @@ using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Api.Hubs;
 
-public abstract class GameHub : Hub, IGameHub
+public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGameHub
 {
+	// This is a very simple implementation of online users count.
+	// When time comes to scaling, this approach should be reimplemented to use some distributed cache like Redis.
+	private static long s_onlineUsersCount = 0;
+
+	public override async Task OnConnectedAsync()
+	{
+		Console.WriteLine(GetPlayerId());
+		Interlocked.Increment(ref s_onlineUsersCount);
+		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
+		await base.OnConnectedAsync();
+	}
+
+	public override async Task OnDisconnectedAsync(Exception? exception)
+	{
+		Interlocked.Decrement(ref s_onlineUsersCount);
+		matchingEngine.TryRemove(GetPlayerId());
+		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
+		await base.OnConnectedAsync();
+		// return base.OnDisconnectedAsync(exception);
+	}
+
+	public Task JoinQueueWithMode(GameOptions gameOptions)
+	{
+		// TODO: GameOptions should be validated!!!
+		matchingEngine.TryAdd(GetPlayerId(), gameOptions);
+		return Task.CompletedTask;
+	}
+
+	public Task LeaveQueue()
+	{
+		matchingEngine.TryRemove(GetPlayerId());
+		return Task.CompletedTask;
+	}
+
 	public virtual async Task JoinGameGroup(string gameId)
 	{
 		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);

@@ -14,7 +14,7 @@ public class AnonymousGameHub : GameHub
 {
 	private readonly IMediator _mediator;
 
-	public AnonymousGameHub(IMediator mediator)
+	public AnonymousGameHub(IMediator mediator, CompositeMatchingEngine compositeMatchingEngine) : base(compositeMatchingEngine)
 	{
 		_mediator = mediator;
 	}
