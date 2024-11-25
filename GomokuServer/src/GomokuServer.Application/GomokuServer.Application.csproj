@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>AGPL-3.0</PackageLicenseExpression>
+    <Authors>Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com); Vitaly Kuprin (vitas_s@inbox.lv)</Authors>
   </PropertyGroup>
 
   <ItemGroup>

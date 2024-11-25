@@ -4,6 +4,7 @@
   "apiVersion": "1",
   "version": "0.0.1",
   "license": "AGPL-3.0",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "type": "module",
   "main": "dist/gomoku-story.cjs.js",
   "module": "dist/gomoku-story.es.js",
