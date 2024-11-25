@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "license": "AGPL-3.0",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "workspaces": {
     "packages": [
       "packages/*"
