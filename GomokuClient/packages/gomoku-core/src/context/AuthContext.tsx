@@ -40,7 +40,9 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
     null,
   );
-  const [anonymousSessionId, setAnonymousSessionId] = useState(typedSessionStorage.getItem("anonymousSessionID"));
+  const [anonymousSessionId, setAnonymousSessionId] = useState(
+    typedSessionStorage.getItem("anonymousSessionID"),
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -79,7 +81,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       jwtToken,
       jwtDecodedInfo,
-      anonymousSessionId
+      anonymousSessionId,
     }),
     [jwtToken, jwtDecodedInfo, anonymousSessionId],
   );
