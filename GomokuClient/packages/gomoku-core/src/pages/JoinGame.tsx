@@ -118,19 +118,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               }}
             >
               <GamePlayersInfo
-                gameType="game-type"
+                gameType={`${gameHistory.boardSize}x${gameHistory.boardSize}`}
                 players={[
                   {
                     title: "black",
                     name: players.black?.userName || "Anonymous",
-                    rating: 0,
                     isCurrentPlayer: false,
                     color: "black",
                   },
                   {
                     title: "white",
                     name: players.white?.userName || "Anonymous",
-                    rating: 0,
                     isCurrentPlayer: true,
                     color: "white",
                   },
