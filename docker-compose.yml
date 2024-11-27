@@ -29,27 +29,25 @@ services:
       - rapfi
     networks:
       - gomoku-network
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        echo "Waiting for services to start...";
-        for i in {1..20}; do
-          echo "Checking if server is up (attempt $i)...";
-          response=$(curl -s -o /dev/null -w '%{http_code}' http://gomoku-server:8080/health || true);
-          echo "Response code: $response";
-          if [ $response -eq 200 ]; then
-            echo "Server is up";
-            exit 0;
-          fi;
-          sleep 3;
-        done;
-        echo "Server did not start in time";
-        echo "Curl output:";
-        curl -v http://gomoku-server:8080/health || true;
-        echo "Docker logs for gomoku-server:";
-        docker logs gomoku-server || true;
-        exit 1;
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Waiting for services to start...';
+      for i in {1..20}; do
+        echo 'Checking if server is up (attempt $i)...';
+        response=$(curl -s -o /dev/null -w '%{http_code}' http://gomoku-server:8080/health || true);
+        echo 'Response code: $response';
+        if [ \"$response\" -eq 200 ]; then
+          echo 'Server is up';
+          exit 0;
+        fi;
+        sleep 3;
+      done;
+      echo 'Server did not start in time';
+      echo 'Curl output:';
+      curl -v http://gomoku-server:8080/health || true;
+      echo 'Docker logs for gomoku-server:';
+      docker logs gomoku-server || true;
+      exit 1;"
 
 networks:
   gomoku-network:
