@@ -8,7 +8,6 @@ import type { SwaggerTypes } from "@gomoku/api";
 import { Headers } from "@/utils";
 
 export const Test = () => {
-
   const { data, error } = useRapfiEngine();
 
   useEffect(() => {
@@ -25,23 +24,22 @@ export const Test = () => {
   );
 };
 
-
 const useRapfiEngine = () =>
-    useQuery<
-      SwaggerTypes.GetApiV1RapfiTestResponse,
-      SwaggerTypes.GetApiV1RapfiTestError
-    >({
-      queryKey: ["rapfiEngineTest", null],
-      queryFn: async () => {
-        const response = await SwaggerServices.getApiV1RapfiTest({
-          headers: Headers.getDefaultHeaders(),
-        });
+  useQuery<
+    SwaggerTypes.GetApiV1RapfiTestResponse,
+    SwaggerTypes.GetApiV1RapfiTestError
+  >({
+    queryKey: ["rapfiEngineTest", null],
+    queryFn: async () => {
+      const response = await SwaggerServices.getApiV1RapfiTest({
+        headers: Headers.getDefaultHeaders(),
+      });
 
-        if (!response.data) {
-          throw new Error("Invalid game data received");
-        }
+      if (!response.data) {
+        throw new Error("Invalid game data received");
+      }
 
-        return response.data;
-      },
-      refetchInterval: 5000,
-    });
+      return response.data;
+    },
+    refetchInterval: 5000,
+  });
