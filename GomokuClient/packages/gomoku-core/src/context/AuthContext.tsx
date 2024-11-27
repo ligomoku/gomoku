@@ -24,11 +24,13 @@ interface JwtTokenPayload {
 interface AuthTokenContextType {
   jwtToken: string;
   jwtDecodedInfo: JwtTokenPayload | null;
+  anonymousSessionId: string | null;
 }
 
 export const AuthTokenContext = createContext<AuthTokenContextType>({
   jwtToken: "",
   jwtDecodedInfo: null,
+  anonymousSessionId: null,
 });
 
 export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
@@ -38,6 +40,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
   const [jwtDecodedInfo, setJwtDecodedInfo] = useState<JwtTokenPayload | null>(
     null,
   );
+  const [anonymousSessionId, setAnonymousSessionId] = useState(typedSessionStorage.getItem("anonymousSessionID"));
 
   useEffect(() => {
     let isMounted = true;
@@ -54,8 +57,10 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
           setJwtDecodedInfo(decoded);
         }
 
-        if (!token && !typedSessionStorage.getItem("anonymousSessionID")) {
-          typedSessionStorage.setItem("anonymousSessionID", uuidv4());
+        if (!token && !anonymousSessionId) {
+          const anonymousSessionId = uuidv4();
+          setAnonymousSessionId(anonymousSessionId);
+          typedSessionStorage.setItem("anonymousSessionID", anonymousSessionId);
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
@@ -74,8 +79,9 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       jwtToken,
       jwtDecodedInfo,
+      anonymousSessionId
     }),
-    [jwtToken, jwtDecodedInfo],
+    [jwtToken, jwtDecodedInfo, anonymousSessionId],
   );
 
   return (
