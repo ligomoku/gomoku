@@ -25,10 +25,8 @@ RUN git clone --recurse-submodules https://github.com/dhbloo/rapfi.git rapfi && 
         -DUSE_VNNI=OFF \
         -DUSE_NEON=OFF \
         -DUSE_NEON_DOTPROD=OFF && \
-    cmake --build . && \
-    ls -la && \
-    pwd
+    cmake --build .
 
-# Set correct working directory and use absolute path
+# Set working directory
 WORKDIR /app/GomokuAI/rapfi/Rapfi
-CMD ["/app/GomokuAI/rapfi/Rapfi/build/pbrain-rapfi"]
+CMD ["./build/pbrain-rapfi"]
