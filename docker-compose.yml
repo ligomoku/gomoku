@@ -4,9 +4,9 @@ services:
   gomoku-server:
     build:
       context: .
-      dockerfile: ./GomokuServer/Dockerfile # Check if we can reconfigure that
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8080:8080" # Ваш текущий сервер
     networks:
       - gomoku-ai-network
 
@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     networks:
       - gomoku-ai-network
-    command: ["./build/rapfi"] # Entry point Rapfi
+    command: ["./build/rapfi"] # Точка входа в Rapfi
 
 networks:
   gomoku-ai-network:
