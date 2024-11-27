@@ -1,12 +1,12 @@
+import { SwaggerServices } from "@gomoku/api";
 import { t } from "@lingui/macro";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Activity, ChevronUp, Users } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
-import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import { Headers } from "@/utils";
 
@@ -143,7 +143,10 @@ const useFetchProfileGames = (
       const response = await SwaggerServices.getApiProfilesByUserNameGames({
         path: { userName },
         headers: Headers.getDefaultHeaders(authToken),
-        query: { page: pageParam, pageSize: 10 },
+        query: {
+          page: pageParam,
+          pageSize: 10,
+        },
       });
 
       if (!response.data) {

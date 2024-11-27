@@ -1,25 +1,23 @@
+import { AlertDialog, toaster } from "@gomoku/story";
+import { GamePlayersInfo } from "@gomoku/story";
+import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
+import { Chat } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
 
-import type { SwaggerTypes } from "@/api";
-import type { GameTimeProps } from "@/features/GameTime";
+import type { SwaggerTypes } from "@gomoku/api";
+import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
-import { Board } from "@/features/Board/Board";
-import { Chat } from "@/features/Chat";
-import { GameTime } from "@/features/GameTime";
-import { GameTimeMobile } from "@/features/GameTime/mobile/GameTimeMobile";
-import { useChat } from "@/hooks/useChat";
-import { useJoinGame } from "@/hooks/useJoinGame";
-import { useMobileDesign } from "@/hooks/useMobileDesign";
-import { AlertDialog } from "@/ui/alert-dialog";
-import { toaster } from "@/ui/toaster";
+import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
 }
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
-  const { gameID } = useParams({ from: "/game/join/$gameID" });
+  const { gameID } = useParams({
+    from: "/game/join/$gameID",
+  });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
 
@@ -60,7 +58,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       toaster.show("Undo request sent");
     },
     onRematch: () => {
-      hubProxy?.requestRematch({ gameId: gameID });
+      hubProxy?.requestRematch({
+        gameId: gameID,
+      });
       toaster.show("Rematch request sent");
     },
   };
@@ -74,7 +74,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to play another game with the same settings?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveRematch({ gameId: gameID });
+            hubProxy?.approveRematch({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -89,7 +91,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to undo last move?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveUndo({ gameId: gameID });
+            hubProxy?.approveUndo({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -113,12 +117,41 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 width: isMobile ? "100%" : "unset",
               }}
             >
-              <Chat
-                messages={messages}
-                isConnected={isConnected}
-                sendMessage={sendMessage}
-                username={jwtDecodedInfo?.username || ""}
+              <GamePlayersInfo
+                gameType={`${gameHistory.boardSize}x${gameHistory.boardSize}`}
+                players={[
+                  {
+                    title: "black",
+                    name: players.black?.userName || "Anonymous",
+                    isCurrentPlayer: false,
+                    color: "black",
+                  },
+                  {
+                    title: "white",
+                    name: players.white?.userName || "Anonymous",
+                    isCurrentPlayer: true,
+                    color: "white",
+                  },
+                ]}
               />
+              <div className="mt-4 flex flex-col justify-between">
+                <Chat
+                  messages={messages}
+                  isConnected={isConnected}
+                  sendMessage={sendMessage}
+                  username={jwtDecodedInfo?.username || ""}
+                  texts={{
+                    title: "Chat",
+                    inputPlaceholder: "Type a message...",
+                    sendButtonText: "Send",
+                    sendingButtonText: "Sending...",
+                    charactersText: "characters",
+                    connectingText: "Connecting...",
+                    noMessagesText: "No messages yet. Start the conversation!",
+                    errorSendingMessage: "Error sending message",
+                  }}
+                />
+              </div>
             </div>
             <div className={isMobile ? "mb-4 flex w-full justify-center" : ""}>
               {isMobile && (
@@ -136,7 +169,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               lastTile={lastTile}
               size={gameHistory.boardSize || 19}
               onTileClick={handleMove}
-              style={{ order: isMobile ? 1 : "unset" }}
+              style={{
+                order: isMobile ? 1 : "unset",
+              }}
               winningSequence={gameHistory.winningSequence ?? winningSequence}
             />
             <div className={isMobile ? "mt-4 flex w-full justify-center" : ""}>

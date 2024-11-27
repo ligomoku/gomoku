@@ -65,11 +65,11 @@ jobs:
         run: |
           echo "Generating hub types..."
           dotnet tool install --global TypedSignalR.Client.TypeScript.Generator &&
-          dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-core/src/api/hubs  --assemblies
+          dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs  --assemblies
 
       - name: TypeCheck after Generation
         run: |
-          cd ./GomokuClient && yarn typecheck
+          cd ./GomokuClient && yarn build && yarn typecheck
 
       - name: Format with Prettier
         run: |

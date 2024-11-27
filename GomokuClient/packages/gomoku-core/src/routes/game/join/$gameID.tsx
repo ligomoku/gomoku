@@ -1,15 +1,14 @@
+import { SwaggerServices } from "@gomoku/api";
+import { LoadingOverlay, toaster } from "@gomoku/story";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
-import type { SwaggerTypes } from "@/api";
+import type { SwaggerTypes } from "@gomoku/api";
 
-import { SwaggerServices } from "@/api";
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
-import { LoadingOverlay } from "@/ui/loading-overlay";
-import { toaster } from "@/ui/toaster";
-import { fetchAuthFallback, Headers, typedSessionStorage } from "@/utils";
+import { fetchAuthFallback, Headers } from "@/utils";
 
 export const getGameHistory = async (
   gameId: string,
@@ -36,26 +35,33 @@ export const getGameHistory = async (
   return response.data;
 };
 
-const joinGame = async (
+const joinRegisteredGame = async (
   gameID: SwaggerTypes.CreateGameResponse["gameId"],
   jwtToken: string,
 ) => {
-  const response = await fetchAuthFallback(
-    jwtToken,
-    async (token) =>
-      SwaggerServices.postApiGameRegisteredByGameIdJoin({
-        path: { gameId: gameID },
-        headers: Headers.getDefaultHeaders(token),
-      }),
-    async () =>
-      SwaggerServices.postApiGameAnonymousByGameIdJoin({
-        path: { gameId: gameID },
-        headers: Headers.getDefaultHeaders(),
-        body: {
-          playerId: typedSessionStorage.getItem("anonymousSessionID"),
-        },
-      }),
-  );
+  const response = await SwaggerServices.postApiGameRegisteredByGameIdJoin({
+    path: { gameId: gameID },
+    headers: Headers.getDefaultHeaders(jwtToken),
+  });
+
+  if (!response.data) {
+    throw new Error("Failed to join game!");
+  }
+
+  return response.data;
+};
+
+const joinAnonymousGame = async (
+  gameID: SwaggerTypes.CreateGameResponse["gameId"],
+  playerID: string,
+) => {
+  const response = await SwaggerServices.postApiGameAnonymousByGameIdJoin({
+    path: { gameId: gameID },
+    headers: Headers.getDefaultHeaders(),
+    body: {
+      playerId: playerID,
+    },
+  });
 
   if (!response.data) {
     throw new Error("Failed to join game!");
@@ -70,7 +76,7 @@ const JoinGameComponent = ({
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
   const [isJoining, setIsJoining] = useState(false);
-  const { jwtToken } = useAuthToken();
+  const { jwtToken, anonymousSessionId } = useAuthToken();
 
   const {
     data: gameHistory,
@@ -88,7 +94,13 @@ const JoinGameComponent = ({
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
-        await joinGame(gameID, jwtToken);
+        if (jwtToken) {
+          await joinRegisteredGame(gameID, jwtToken);
+        }
+
+        if (anonymousSessionId) {
+          await joinAnonymousGame(gameID, anonymousSessionId);
+        }
       } catch (err) {
         console.error("Error joining game:", err);
         toaster.show("Error joining game", "error");
@@ -98,7 +110,7 @@ const JoinGameComponent = ({
     };
 
     asyncJoinGame();
-  }, [gameHistory, gameID, jwtToken]);
+  }, [gameHistory, gameID, jwtToken, anonymousSessionId]);
 
   if (isLoading || isJoining || !gameHistory)
     return <LoadingOverlay isVisible />;

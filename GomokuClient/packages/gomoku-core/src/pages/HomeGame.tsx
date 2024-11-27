@@ -1,19 +1,20 @@
+import { SwaggerServices } from "@gomoku/api";
+import {
+  GameOptionsButtons,
+  TimeControls,
+  OnlinePlayersInfo,
+  SectionList,
+} from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
-import { useEffect, useState } from "react";
-import type { SwaggerTypes } from "@/api";
-import type { GameType } from "@/features/TimeControls";
+import type { SwaggerTypes } from "@gomoku/api";
+import type { GameType } from "@gomoku/story";
 
-import { SwaggerServices } from "@/api";
-import { useAuthToken, useSignalRConnection } from "@/context";
-import { GameOptionsButtons } from "@/features/GameOptionsButton";
-import { OnlinePlayersInfo } from "@/features/OnlinePlayersInfo";
-import { SectionList } from "@/features/SectionList";
-import { TimeControls } from "@/features/TimeControls";
-import { useCreateGameAndNavigate } from "@/hooks/useCreateGame";
+import { useAuthToken } from "@/context";
+import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 
 export const HomeGame = () => {
@@ -21,10 +22,6 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
-  const { hubProxy, isConnected, registerEventHandlers } =
-    useSignalRConnection();
-
-  const [ userCount, setUserCount ] = useState(0);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -40,39 +37,6 @@ export const HomeGame = () => {
       timeControl: selectedTimeControl,
     });
   };
-
-  const enterQueueWithMode = async (
-    selectedBoardSize: number,
-    selectedTimeControl?: SwaggerTypes.TimeControlDto,
-  ) => {
-    // TODO: selectedTimeControl shouldnt be nullable.
-    await hubProxy?.joinQueueWithMode({
-      boardSize: selectedBoardSize,
-      timeControl: selectedTimeControl!,
-      anonymous: true,
-    });
-  };
-
-  useEffect(() => {
-    if (isConnected && hubProxy) {
-      const unregister = registerEventHandlers({
-        onMatchingPlayerFound: async (gameId) => {
-          await navigate({
-            to: `/game/join/${gameId}`,
-          });
-        },
-        onOnlineUserCountChange: async (userCount) => {
-          setUserCount(userCount);
-        }
-      });
-      return () => {
-        if (typeof unregister === "function") {
-          unregister();
-        }
-      };
-    }
-    return;
-  }, [hubProxy, isConnected, registerEventHandlers]);
 
   const transformGameData = (
     games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
@@ -108,7 +72,7 @@ export const HomeGame = () => {
             </h2>
             <TimeControls
               gameTypes={gameTypes}
-              onCreateGame={enterQueueWithMode}
+              onCreateGame={handleCreateGame}
               isLoading={isLoadingCreateGame}
             />
           </div>
@@ -122,7 +86,7 @@ export const HomeGame = () => {
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}
-              playersOnlineText={t`${userCount} players online`}
+              playersOnlineText={t`5,247 players online`}
             />
           </div>
         </div>
@@ -194,54 +158,81 @@ export const gameTypes: GameType[] = [
     timeLabel: "1+0",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "1+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "1+2",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 2 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 2,
+    },
   },
   {
     timeLabel: "2+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 120, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 120,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "5+0",
     type: t`Blitz`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 300,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "7+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 420, incrementPerMove: 5 },
+    timeControl: {
+      initialTimeInSeconds: 420,
+      incrementPerMove: 5,
+    },
   },
   {
     timeLabel: "10+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 600,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "15+0",
     type: t`Rapid`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 900,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "30+0",
     type: t`Classic`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 1800,
+      incrementPerMove: 0,
+    },
   },
 ];

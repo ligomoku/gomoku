@@ -1,10 +1,9 @@
+import { Input, Button } from "@gomoku/story";
 import { Menu, X, Search, Bell } from "lucide-react";
 import { useState } from "react";
 
 import type { ReactNode } from "react";
 
-import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
 import { typedStorage } from "@/utils";
 
 export interface HeaderProps {
@@ -12,7 +11,10 @@ export interface HeaderProps {
   searchPlaceholder: string;
   logoText: string;
   logoOnClick: () => void;
-  menuItems: Array<{ label: string; onClick: () => void }>;
+  menuItems: Array<{
+    label: string;
+    onClick: () => void;
+  }>;
   SignedInComponent: ReactNode;
   SignedOutComponent: ReactNode;
   SignInButtonComponent: ReactNode;
@@ -53,9 +55,10 @@ export const Header = ({
         </div>
 
         <div
-          className={`${
-            isMenuOpen ? "flex" : "hidden"
-          } absolute left-0 top-16 w-full flex-col items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0 sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0 sm:bg-transparent sm:p-0`}
+          className={`${isMenuOpen ? "flex" : "hidden"} absolute left-0 top-16 w-full flex-col
+            items-start space-y-4 bg-[#2b2b2b] p-4 text-[#bababa] sm:relative sm:top-0
+            sm:flex sm:w-auto sm:flex-row sm:items-center sm:space-x-6 sm:space-y-0
+            sm:bg-transparent sm:p-0`}
           //TODO: not very good solution, should be fixed in the future
           style={{ zIndex: 30 }}
         >
@@ -72,7 +75,8 @@ export const Header = ({
 
         <div className="flex items-center space-x-4">
           <Input
-            className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block sm:h-12 sm:w-64 sm:text-lg"
+            className="hidden h-10 w-32 border-[#3e3e3e] bg-[#3e3e3e] text-base text-[#bababa] sm:block
+              sm:h-12 sm:w-64 sm:text-lg"
             placeholder={searchPlaceholder}
           />
           <button
