@@ -1,7 +1,6 @@
 import type { SwaggerTypes } from "@gomoku/api";
-
-import { GameCreatorButton } from "@/components";
-import { Card, CardContent } from "@/ui";
+import { Card, CardContent, Spinner } from "@/ui";
+import { useEffect, useState } from "react";
 
 export interface GameType {
   timeLabel: string;
@@ -12,45 +11,62 @@ export interface GameType {
 
 export interface TimeControlsProps {
   gameTypes: GameType[];
-  onCreateGame: (
-    boardSize: number,
-    timeControl?: SwaggerTypes.TimeControlDto,
-  ) => void;
+  onGameTypeSelected: (gameType: GameType) => void;
+  onGameTypeUnselected: () => void;
   isLoading: boolean;
 }
 
 export const TimeControls = ({
   gameTypes,
-  onCreateGame,
-  isLoading,
-}: TimeControlsProps) => (
-  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
-    {gameTypes.map((game, index) => (
-      <GameCreatorButton
-        key={index}
-        timeControl={game.timeControl}
-        onCreateGame={onCreateGame}
-        isLoading={isLoading}
-      >
+  onGameTypeSelected,
+  onGameTypeUnselected,
+}: TimeControlsProps) => {
+  const [selectedGameType, setSelectedGameType] = useState<GameType>();
+
+  useEffect(() => {
+    if (selectedGameType) {
+      onGameTypeSelected(selectedGameType);
+    } else {
+      onGameTypeUnselected();
+    }
+  }, [selectedGameType]);
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+      {gameTypes.map((game, index) => (
         <Card
-          className="cursor-pointer border-[#2b2b2b] bg-[#2b2b2b] transition-colors
-            hover:bg-[#3e3e3e]"
+          key={index}
+          className="flex cursor-pointer justify-center border-[#2b2b2b] bg-[#2b2b2b] align-middle
+            transition-colors hover:bg-[#3e3e3e]"
+          onClick={() => {
+            if (selectedGameType?.timeControl == game.timeControl) {
+              setSelectedGameType(undefined);
+            } else {
+              setSelectedGameType(game);
+            }
+          }}
         >
-          <CardContent className="p-4 text-center sm:p-6">
-            <h3 className="text-xl font-bold text-[#bababa] sm:text-3xl">
-              {game.timeLabel}
-            </h3>
-            <p className="truncate text-sm text-[#999999] sm:text-xl">
-              {game.type}
-            </p>
-            <p className="text-xs text-[#999999] sm:text-lg">
-              Board size: {game.boardSize}{" "}
-            </p>
-          </CardContent>
+          {selectedGameType?.timeControl === game.timeControl ? (
+            <div className="flex flex-1 items-center justify-center">
+              <Spinner size={"lg"} />
+            </div>
+          ) : (
+            <CardContent className="p-4 text-center sm:p-6">
+              <h3 className="text-xl font-bold text-[#bababa] sm:text-3xl">
+                {game.timeLabel}
+              </h3>
+              <p className="truncate text-sm text-[#999999] sm:text-xl">
+                {game.type}
+              </p>
+              <p className="text-xs text-[#999999] sm:text-lg">
+                Board size: {game.boardSize}{" "}
+              </p>
+            </CardContent>
+          )}
         </Card>
-      </GameCreatorButton>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 TimeControls.displayName = "TimeControls";

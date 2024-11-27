@@ -1,19 +1,18 @@
+import type { SwaggerTypes } from "@gomoku/api";
 import { SwaggerServices } from "@gomoku/api";
+import type { GameType } from "@gomoku/story";
 import {
   GameOptionsButtons,
-  TimeControls,
   OnlinePlayersInfo,
   SectionList,
+  TimeControls,
 } from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
-import type { SwaggerTypes } from "@gomoku/api";
-import type { GameType } from "@gomoku/story";
-
-import { useAuthToken } from "@/context";
+import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 
@@ -22,6 +21,7 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
+  const { hubProxy } = useSignalRConnection();
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -72,8 +72,14 @@ export const HomeGame = () => {
             </h2>
             <TimeControls
               gameTypes={gameTypes}
-              onCreateGame={handleCreateGame}
               isLoading={isLoadingCreateGame}
+              onGameTypeSelected={(gameType) =>
+                hubProxy?.joinQueueWithMode({
+                  ...gameType,
+                  anonymous: !jwtToken,
+                })
+              }
+              onGameTypeUnselected={() => hubProxy?.leaveQueue()}
             />
           </div>
           <div className="lg:col-span-3">
