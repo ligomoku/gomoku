@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Api;
+﻿namespace GomokuServer.Api.MatchingEngine;
 
 public class MatchingEngineHostedService(
 	CompositeMatchingEngine compositeMatchingEngine,

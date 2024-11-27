@@ -1,4 +1,4 @@
-﻿namespace GomokuServer.Api;
+﻿namespace GomokuServer.Api.MatchingEngine;
 
 public class MatchingEngineFactory(IHubContext<AnonymousGameHub> anonymousHubContext, IHubContext<RegisteredGameHub> registeredHubContext, IMediator mediator)
 {

@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
 
 using GomokuServer.Api.Hubs.Exceptions;
+using GomokuServer.Api.MatchingEngine;
 using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;

@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 
+using GomokuServer.Api.MatchingEngine;
 using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Api.Hubs;

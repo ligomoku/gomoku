@@ -1,4 +1,4 @@
-using GomokuServer.Api;
+using GomokuServer.Api.MatchingEngine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,4 +45,7 @@ app.MapHub<AnonymousGameHub>(HubRoute.AnonymousGameHub);
 app.Run();
 
 // Required for functional tests
-public partial class Program { }
+namespace GomokuServer.Api
+{
+	public partial class Program { }
+}

@@ -1,4 +1,6 @@
-﻿using TypedSignalR.Client;
+﻿using GomokuServer.Api.MatchingEngine;
+
+using TypedSignalR.Client;
 
 namespace GomokuServer.Api.Hubs.Interfaces;
 

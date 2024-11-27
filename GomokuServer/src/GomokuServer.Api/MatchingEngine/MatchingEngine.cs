@@ -2,7 +2,7 @@
 
 using GomokuServer.Application.Games.Commands.Abstract;
 
-namespace GomokuServer.Api;
+namespace GomokuServer.Api.MatchingEngine;
 
 public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubContext, IMediator mediator) : IMatchingEngine
 {
@@ -129,11 +129,4 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 	{
 		_queue.CompleteAdding();
 	}
-}
-
-public class LobbyMember(string id)
-{
-	public string Id { get; } = id;
-	public bool LeftQueue { get; set; }
-	public bool GameFound { get; set; }
 }

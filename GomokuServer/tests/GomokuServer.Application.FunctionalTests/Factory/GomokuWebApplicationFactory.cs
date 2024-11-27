@@ -1,3 +1,4 @@
+using GomokuServer.Api;
 using GomokuServer.Application.FunctionalTests.Infrastructure;
 using GomokuServer.Application.Games.Interfaces;
 using GomokuServer.Application.Profiles.Interfaces;

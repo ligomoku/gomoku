@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace GomokuServer.Api;
+namespace GomokuServer.Api.MatchingEngine;
 
 public class CompositeMatchingEngine
 {
