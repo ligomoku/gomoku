@@ -1,17 +1,27 @@
-FROM ubuntu:20.04
+# Шаг 1: Билдер
+FROM alpine:latest AS builder
 
-RUN apt-get update && apt-get install -y \
-    cmake \
-    build-essential \
-    clang \
-    wget \
-    git
+# Установка инструментов сборки
+RUN apk add --no-cache build-base cmake git
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование исходного кода
+COPY . /app
+
+# Сборка проекта
+RUN cd Rapfi && mkdir build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-static" && \
+    cmake --build .
+
+# Шаг 2: Минимальный образ
+FROM alpine:latest
 
 WORKDIR /app
 
-RUN git clone --recursive https://github.com/dhbloo/rapfi.git
+# Копирование скомпилированного бинарника из этапа сборки
+COPY --from=builder /app/Rapfi/build/pbrain-rapfi /app/
 
-WORKDIR /app/rapfi
-RUN mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
-
-CMD ["./build/rapfi"]
+# Настройка команды запуска
+CMD ["/app/pbrain-rapfi"]

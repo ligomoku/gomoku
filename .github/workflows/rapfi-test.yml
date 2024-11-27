@@ -1,4 +1,4 @@
-name: Docker Build and Test
+name: Rapfi Test
 
 on:
   push:
