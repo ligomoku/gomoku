@@ -26,6 +26,7 @@ import type {
   GetApiProfilesByUserNameGamesData,
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
+  GetApiV1RapfiTestData,
   GetApiGameRegisteredByGameIdHistoryData,
   GetApiGameRegisteredAvailableToJoinData,
   GetApiGameRegisteredAvailableToJoinError,
@@ -69,6 +70,7 @@ import {
   postApiGameAnonymousByGameIdJoin,
   getHealth,
   getApiProfilesByUserNameGames,
+  getApiV1RapfiTest,
   getApiGameRegisteredByGameIdHistory,
   getApiGameRegisteredAvailableToJoin,
   getApiGameRegisteredActive,
@@ -494,6 +496,27 @@ export const getApiProfilesByUserNameGamesInfiniteOptions = (
       queryKey: getApiProfilesByUserNameGamesInfiniteQueryKey(options),
     },
   );
+};
+
+export const getApiV1RapfiTestQueryKey = (
+  options: Options<GetApiV1RapfiTestData>,
+) => [createQueryKey("getApiV1RapfiTest", options)];
+
+export const getApiV1RapfiTestOptions = (
+  options: Options<GetApiV1RapfiTestData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getApiV1RapfiTest({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getApiV1RapfiTestQueryKey(options),
+  });
 };
 
 export const getApiGameRegisteredByGameIdHistoryQueryKey = (

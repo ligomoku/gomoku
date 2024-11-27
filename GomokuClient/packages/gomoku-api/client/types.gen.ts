@@ -267,6 +267,17 @@ export type GetApiProfilesByUserNameGamesResponse =
 
 export type GetApiProfilesByUserNameGamesError = unknown;
 
+export type GetApiV1RapfiTestData = {
+  headers: {
+    "Content-Type": string;
+    "X-Version"?: string;
+  };
+};
+
+export type GetApiV1RapfiTestResponse = unknown;
+
+export type GetApiV1RapfiTestError = unknown;
+
 export type GetApiGameRegisteredByGameIdHistoryData = {
   headers: {
     Authorization: string;
