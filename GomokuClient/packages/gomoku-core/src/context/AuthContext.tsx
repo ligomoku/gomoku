@@ -1,8 +1,9 @@
 import { useAuth } from "@clerk/clerk-react";
 import { toaster } from "@gomoku/story";
 import * as JWT from "jwt-decode";
-import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+import type { ReactNode } from "react";
 
 import { getUUID, typedSessionStorage } from "@/utils";
 
@@ -73,7 +74,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       isMounted = false;
     };
-  }, [isLoaded, getToken]);
+  }, [isLoaded, getToken, anonymousSessionId]);
 
   const memoValue = useMemo(
     () => ({
