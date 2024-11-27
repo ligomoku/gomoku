@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 
-import { GameTimeMobile } from "@/features";
+import { GameTimeMobile } from "@/components";
 import { toaster } from "@/ui";
 
 export default {

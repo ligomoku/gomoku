@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 
-import type { BoardProps } from "@/features";
+import type { BoardProps } from "@/components";
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { Board } from "@/features";
+import { Board } from "@/components";
 import { genParser } from "@/utils";
 
 export interface GamePreviewProps {

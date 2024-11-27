@@ -5,13 +5,14 @@ import {
   useAuth,
   UserButton,
 } from "@clerk/clerk-react";
+import { toaster } from "@gomoku/story";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { lazy } from "react";
 
 import type { LoadedClerk } from "@clerk/types";
 
-import { Header, toaster } from "@/ui";
+import { Header } from "@/ui";
 
 export interface MyRouterContext {
   isSignedIn: boolean;

@@ -1,11 +1,11 @@
 import { useAuth } from "@clerk/clerk-react";
+import { toaster } from "@gomoku/story";
 import * as JWT from "jwt-decode";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import type { ReactNode } from "react";
 
-import { toaster } from "@/ui";
 import { typedSessionStorage } from "@/utils";
 
 interface JwtTokenPayload {

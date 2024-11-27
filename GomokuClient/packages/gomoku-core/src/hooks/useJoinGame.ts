@@ -1,3 +1,4 @@
+import { toaster } from "@gomoku/story";
 import { useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -10,7 +11,6 @@ import type {
 
 import { useSignalRConnection } from "@/context";
 import { useTiles } from "@/hooks";
-import { toaster } from "@/ui";
 import { formatErrorMessage } from "@/utils";
 
 export const useJoinGame = (

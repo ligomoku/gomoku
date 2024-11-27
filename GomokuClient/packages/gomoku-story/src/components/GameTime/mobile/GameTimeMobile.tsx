@@ -7,12 +7,12 @@ import {
   X,
 } from "lucide-react";
 
-import type { GameTimeProps } from "@/features";
+import type { GameTimeProps } from "@/components";
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { secondsToString } from "@/features";
+import { secondsToString } from "@/components";
 
-interface GameTimeMobileProps
+export interface GameTimeMobileProps
   extends Omit<
     GameTimeProps,
     "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
