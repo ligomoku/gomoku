@@ -14,19 +14,10 @@ WORKDIR /app
 
 COPY . .
 
-# Use the correct path for the CMake project
-RUN cd rapfi && \
-    mkdir build && cd build && \
-    cmake .. \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DUSE_SSE=OFF \
-        -DUSE_AVX2=OFF \
-        -DUSE_AVX512=OFF \
-        -DUSE_BMI2=OFF \
-        -DUSE_VNNI=OFF \
-        -DUSE_NEON=OFF \
-        -DUSE_NEON_DOTPROD=OFF && \
-    cmake --build .
-
-# Adjust the path to the binary
-CMD ["./rapfi/build/pbrain-rapfi"]
+# Debug commands to see directory structure
+RUN echo "Root directory:" && \
+    ls -la && \
+    echo "\nContents of rapfi directory:" && \
+    ls -la rapfi && \
+    echo "\nRecursive find for CMakeLists.txt:" && \
+    find . -name "CMakeLists.txt"
