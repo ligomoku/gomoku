@@ -4,14 +4,11 @@ FROM alpine:latest AS builder
 # Установка инструментов сборки
 RUN apk add --no-cache build-base cmake git
 
-# Установка рабочей директории
 WORKDIR /app
-
-# Копирование исходного кода
 COPY . /app
 
-# Сборка проекта
-RUN cd Rapfi && mkdir build && cd build && \
+# Если Rapfi находится в директории rapfi, укажите правильный путь
+RUN cd rapfi/Rapfi && mkdir build && cd build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-static" && \
     cmake --build .
 
