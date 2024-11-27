@@ -15,8 +15,8 @@ WORKDIR /app
 COPY . .
 
 # Disable all CPU-specific instruction sets
-# Changed directory path to match repo structure
-RUN mkdir build && cd build && \
+RUN cd rapfi/Rapfi && \
+    mkdir build && cd build && \
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DUSE_SSE=OFF \
@@ -28,5 +28,4 @@ RUN mkdir build && cd build && \
         -DUSE_NEON_DOTPROD=OFF && \
     cmake --build .
 
-# Adjusted binary path
-CMD ["./build/pbrain-rapfi"]
+CMD ["./rapfi/Rapfi/build/pbrain-rapfi"]
