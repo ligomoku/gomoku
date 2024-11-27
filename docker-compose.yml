@@ -3,21 +3,52 @@ version: '3.8'
 services:
   gomoku-server:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: ./GomokuServer/Dockerfile
     ports:
-      - "8080:8080" # Ваш текущий сервер
+      - "8080:8080"
     networks:
-      - gomoku-ai-network
+      - gomoku-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      RAPFI_ENGINE_URL: http://rapfi:5000 # Example if Rapfi is accessible via an endpoint
 
-  gomoku-ai:
+  rapfi:
     build:
       context: ./GomokuAI
       dockerfile: Dockerfile
     networks:
-      - gomoku-ai-network
-    command: ["./build/rapfi"] # Точка входа в Rapfi
+      - gomoku-network
+    command: ["./build/rapfi"]
+
+  tester:
+    image: ubuntu:20.04
+    depends_on:
+      - gomoku-server
+      - rapfi
+    networks:
+      - gomoku-network
+    entrypoint: >
+      sh -c "
+      echo 'Waiting for services to start...';
+      for i in {1..20}; do
+        echo 'Checking if server is up (attempt $i)...';
+        response=$(curl -s -o /dev/null -w '%{http_code}' http://gomoku-server:8080/health || true);
+        echo 'Response code: $response';
+        if [ $response -eq 200 ]; then
+          echo 'Server is up';
+          exit 0;
+        fi;
+        sleep 3;
+      done;
+      echo 'Server did not start in time';
+      echo 'Curl output:';
+      curl -v http://gomoku-server:8080/health || true;
+      echo 'Docker logs for gomoku-server:';
+      docker logs gomoku-server || true;
+      exit 1;"
 
 networks:
-  gomoku-ai-network:
+  gomoku-network:
     driver: bridge
