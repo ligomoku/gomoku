@@ -1,4 +1,4 @@
-name: Rapfi Test
+name: Rapfi Integration Tests
 
 on:
   push:
