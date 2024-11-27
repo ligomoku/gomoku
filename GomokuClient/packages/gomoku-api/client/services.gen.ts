@@ -27,6 +27,9 @@ import type {
   GetApiProfilesByUserNameGamesData,
   GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
+  GetApiV1RapfiTestData,
+  GetApiV1RapfiTestError,
+  GetApiV1RapfiTestResponse,
   GetApiGameRegisteredByGameIdHistoryData,
   GetApiGameRegisteredByGameIdHistoryError,
   GetApiGameRegisteredByGameIdHistoryResponse,
@@ -171,6 +174,22 @@ export const getApiProfilesByUserNameGames = <
   >({
     ...options,
     url: "/api/profiles/{userName}/games",
+  });
+};
+
+/**
+ * Test connection with Rapfi engine
+ */
+export const getApiV1RapfiTest = <ThrowOnError extends boolean = false>(
+  options: Options<GetApiV1RapfiTestData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetApiV1RapfiTestResponse,
+    GetApiV1RapfiTestError,
+    ThrowOnError
+  >({
+    ...options,
+    url: "/api/v1/rapfi/test",
   });
 };
 

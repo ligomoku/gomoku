@@ -382,6 +382,38 @@
         }
       }
     },
+    "/api/v1/rapfi/test": {
+      "get": {
+        "tags": ["RapfiEngine"],
+        "summary": "Test connection with Rapfi engine",
+        "parameters": [
+          {
+            "name": "X-Version",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connection successful"
+          },
+          "500": {
+            "description": "Connection failed"
+          }
+        }
+      }
+    },
     "/api/game/registered/{gameId}/history": {
       "get": {
         "tags": ["RegisteredGames"],

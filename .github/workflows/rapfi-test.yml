@@ -24,4 +24,3 @@ jobs:
       - name: Build and Test Docker Compose
         run: |
           docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml up --abort-on-container-exit
