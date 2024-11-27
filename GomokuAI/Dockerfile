@@ -12,12 +12,21 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app/GomokuAI
 
-# Clone and check structure
+# Clone and build
 RUN git clone --recurse-submodules https://github.com/dhbloo/rapfi.git rapfi && \
-    echo "Contents of rapfi directory:" && \
-    ls -la rapfi && \
-    echo "\nRecursive find for CMakeLists.txt:" && \
-    find rapfi -name "CMakeLists.txt" && \
-    echo "\nContents of key subdirectories:" && \
-    ls -la rapfi/Rapfi 2>/dev/null || echo "No Rapfi directory" && \
-    ls -la rapfi/src 2>/dev/null || echo "No src directory"
+    cd rapfi/Rapfi && \
+    mkdir build && cd build && \
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DUSE_SSE=OFF \
+        -DUSE_AVX2=OFF \
+        -DUSE_AVX512=OFF \
+        -DUSE_BMI2=OFF \
+        -DUSE_VNNI=OFF \
+        -DUSE_NEON=OFF \
+        -DUSE_NEON_DOTPROD=OFF && \
+    cmake --build .
+
+# Set correct working directory and adjust binary path
+WORKDIR /app/GomokuAI/rapfi/Rapfi
+CMD ["./build/pbrain-rapfi"]
