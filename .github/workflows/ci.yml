@@ -46,15 +46,15 @@ jobs:
           cd GomokuClient
           yarn format:check
 
+      - name: Build project
+        run: |
+          cd GomokuClient
+          yarn build 
+
       - name: Run typecheck
         run: |
           cd GomokuClient
           yarn typecheck
-
-      - name: Build project
-        run: |
-          cd GomokuClient
-          yarn build
 
       - name: Archive production artifacts
         if: success()

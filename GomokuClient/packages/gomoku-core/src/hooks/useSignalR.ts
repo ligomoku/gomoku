@@ -90,7 +90,9 @@ export const useSignalR = (hubURL: string) => {
         bothPlayersJoined: async (message) =>
           handlers.bothPlayersJoined?.(message),
         gameGroupJoined: async (gameId) =>
-          handlers.playerJoinedGame?.({ userId: gameId }),
+          handlers.playerJoinedGame?.({
+            userId: gameId,
+          }),
         gameStarted: async (message) => handlers.gameStarted?.(message),
         playerMadeMove: async (message) => handlers.playerMadeMove?.(message),
         undoRequested: async () => handlers.undoRequested?.(),

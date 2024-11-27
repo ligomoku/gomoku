@@ -2,6 +2,8 @@
   "name": "@gomoku/root",
   "private": true,
   "version": "0.0.1",
+  "license": "AGPL-3.0",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -9,14 +11,14 @@
   },
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
-    "build:storybook": "yarn workspace @gomoku/core build-storybook",
+    "build": "yarn workspace @gomoku/story build && turbo run build",
+    "build:storybook": "yarn workspace @gomoku/story build-storybook",
     "lint": "turbo run lint --filter=@gomoku/core",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
     "typecheck": "turbo run typecheck --filter=@gomoku/core",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "storybook": "yarn workspace @gomoku/core storybook",
+    "storybook": "yarn workspace @gomoku/story storybook",
     "preview": "yarn workspace @gomoku/core preview",
     "download": "yarn workspace @gomoku/api download",
     "download:ci": "yarn workspace @gomoku/api download:ci",
@@ -26,7 +28,11 @@
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name .turbo -type d -prune -exec rm -rf '{}' + && find . -name dist -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
+    "@tanstack/router-cli": "^1.81.9",
     "prettier": "^3.3.3",
+    "prettier-plugin-classnames": "^0.7.4",
+    "prettier-plugin-merge": "^0.7.1",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "turbo": "^2.3.0"
   },
   "packageManager": "yarn@4.5.0"

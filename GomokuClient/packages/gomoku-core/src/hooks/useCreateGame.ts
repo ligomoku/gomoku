@@ -1,10 +1,10 @@
 import { SwaggerServices } from "@gomoku/api";
+import { toaster } from "@gomoku/story";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { toaster } from "@/ui";
 import { Headers, fetchAuthFallback } from "@/utils";
 
 interface CreateGameAndNavigateProps {
@@ -19,7 +19,10 @@ export const useCreateGameAndNavigate = ({
   const createGame = useMutation<
     SwaggerTypes.CreateGameResponse | undefined,
     SwaggerTypes.PostApiGameRegisteredError,
-    { boardSize: number; timeControl?: SwaggerTypes.TimeControlDto }
+    {
+      boardSize: number;
+      timeControl?: SwaggerTypes.TimeControlDto;
+    }
   >({
     mutationFn: async ({ boardSize, timeControl }) => {
       const response = await fetchAuthFallback(
@@ -54,7 +57,9 @@ export const useCreateGameAndNavigate = ({
           onSuccess: async (data) => {
             if (data?.gameId) {
               toaster.show("Game created");
-              navigate({ to: `/game/join/${data?.gameId}` });
+              navigate({
+                to: `/game/join/${data?.gameId}`,
+              });
             }
           },
           onError: (error) => {

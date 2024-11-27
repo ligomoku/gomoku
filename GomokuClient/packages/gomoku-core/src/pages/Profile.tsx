@@ -143,7 +143,10 @@ const useFetchProfileGames = (
       const response = await SwaggerServices.getApiProfilesByUserNameGames({
         path: { userName },
         headers: Headers.getDefaultHeaders(authToken),
-        query: { page: pageParam, pageSize: 10 },
+        query: {
+          page: pageParam,
+          pageSize: 10,
+        },
       });
 
       if (!response.data) {

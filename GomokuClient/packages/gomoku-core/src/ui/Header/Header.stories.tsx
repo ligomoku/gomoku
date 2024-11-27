@@ -1,7 +1,9 @@
+import { toaster } from "@gomoku/story";
+
 import type { HeaderProps } from "@/ui";
 import type { Meta, StoryFn } from "@storybook/react";
 
-import { toaster, Header } from "@/ui";
+import { Header } from "@/ui";
 
 export default {
   title: "Components/Header",
@@ -20,8 +22,14 @@ Default.args = {
   searchPlaceholder: "Search",
   logoText: "gomoku.app",
   menuItems: [
-    { label: "LEARN", onClick: () => toaster.show("Learn clicked!") },
-    { label: "WATCH", onClick: () => toaster.show("Watch clicked!") },
+    {
+      label: "LEARN",
+      onClick: () => toaster.show("Learn clicked!"),
+    },
+    {
+      label: "WATCH",
+      onClick: () => toaster.show("Watch clicked!"),
+    },
     {
       label: "COMMUNITY",
       onClick: () => toaster.show("Community clicked!"),

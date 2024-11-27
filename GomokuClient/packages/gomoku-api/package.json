@@ -3,7 +3,8 @@
   "description": "Gomoku TypeScript API package",
   "apiVersion": "1",
   "version": "0.0.1",
-  "license": "MIT",
+  "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
+  "license": "AGPL-3.0",
   "scripts": {
     "lint": "eslint .",
     "format": "prettier . --check",
@@ -15,7 +16,7 @@
     "codegen": "openapi-ts"
   },
   "dependencies": {
-    "@gomoku/eslint-config-custom": "*",
+    "@gomoku/eslint-config": "*",
     "@hey-api/client-fetch": "^0.4.4",
     "@hey-api/openapi-ts": "^0.56.1",
     "@tanstack/react-query": "^5.60.5"

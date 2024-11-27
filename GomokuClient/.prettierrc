@@ -1,3 +1,19 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-classnames",
+    "prettier-plugin-merge"
+  ],
+  "tailwindFunctions": ["clsx", "cn", "twMerge"],
+  "tailwindAttributes": ["className", "class", "tw"],
+  "endingPosition": "relative",
+  "htmlWhitespaceSensitivity": "ignore",
+  "bracketSameLine": false,
+  "jsxSingleQuote": false
 }

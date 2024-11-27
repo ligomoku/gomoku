@@ -1,19 +1,19 @@
 import { SwaggerServices } from "@gomoku/api";
-import { t } from "@lingui/macro";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { Users } from "lucide-react";
-
-import type { GameType } from "@/features";
-import type { SwaggerTypes } from "@gomoku/api";
-
-import { useAuthToken } from "@/context";
 import {
   GameOptionsButtons,
   TimeControls,
   OnlinePlayersInfo,
   SectionList,
-} from "@/features";
+} from "@gomoku/story";
+import { t } from "@lingui/macro";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { Users } from "lucide-react";
+
+import type { SwaggerTypes } from "@gomoku/api";
+import type { GameType } from "@gomoku/story";
+
+import { useAuthToken } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 
@@ -158,54 +158,81 @@ export const gameTypes: GameType[] = [
     timeLabel: "1+0",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "1+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "1+2",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 60, incrementPerMove: 2 },
+    timeControl: {
+      initialTimeInSeconds: 60,
+      incrementPerMove: 2,
+    },
   },
   {
     timeLabel: "2+1",
     type: t`Bullet`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 120, incrementPerMove: 1 },
+    timeControl: {
+      initialTimeInSeconds: 120,
+      incrementPerMove: 1,
+    },
   },
   {
     timeLabel: "5+0",
     type: t`Blitz`,
     boardSize: 13,
-    timeControl: { initialTimeInSeconds: 300, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 300,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "7+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 420, incrementPerMove: 5 },
+    timeControl: {
+      initialTimeInSeconds: 420,
+      incrementPerMove: 5,
+    },
   },
   {
     timeLabel: "10+0",
     type: t`Rapid`,
     boardSize: 17,
-    timeControl: { initialTimeInSeconds: 600, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 600,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "15+0",
     type: t`Rapid`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 900, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 900,
+      incrementPerMove: 0,
+    },
   },
   {
     timeLabel: "30+0",
     type: t`Classic`,
     boardSize: 19,
-    timeControl: { initialTimeInSeconds: 1800, incrementPerMove: 0 },
+    timeControl: {
+      initialTimeInSeconds: 1800,
+      incrementPerMove: 0,
+    },
   },
 ];

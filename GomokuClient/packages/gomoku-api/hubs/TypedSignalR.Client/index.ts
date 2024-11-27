@@ -214,19 +214,55 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection.on("ReceiveInvitationToPlay", __receiveInvitationToPlay);
 
     const methodList: ReceiverMethod[] = [
-      { methodName: "GameGroupJoined", method: __gameGroupJoined },
-      { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
-      { methodName: "GameStarted", method: __gameStarted },
-      { methodName: "BothPlayersJoined", method: __bothPlayersJoined },
-      { methodName: "UndoRequested", method: __undoRequested },
-      { methodName: "UndoApproved", method: __undoApproved },
-      { methodName: "PlayerMadeMove", method: __playerMadeMove },
-      { methodName: "RematchApproved", method: __rematchApproved },
-      { methodName: "RematchRequested", method: __rematchRequested },
-      { methodName: "GameIsOver", method: __gameIsOver },
-      { methodName: "SendMessage", method: __sendMessage },
+      {
+        methodName: "GameGroupJoined",
+        method: __gameGroupJoined,
+      },
+      {
+        methodName: "PlayerJoinedGame",
+        method: __playerJoinedGame,
+      },
+      {
+        methodName: "GameStarted",
+        method: __gameStarted,
+      },
+      {
+        methodName: "BothPlayersJoined",
+        method: __bothPlayersJoined,
+      },
+      {
+        methodName: "UndoRequested",
+        method: __undoRequested,
+      },
+      {
+        methodName: "UndoApproved",
+        method: __undoApproved,
+      },
+      {
+        methodName: "PlayerMadeMove",
+        method: __playerMadeMove,
+      },
+      {
+        methodName: "RematchApproved",
+        method: __rematchApproved,
+      },
+      {
+        methodName: "RematchRequested",
+        method: __rematchRequested,
+      },
+      {
+        methodName: "GameIsOver",
+        method: __gameIsOver,
+      },
+      {
+        methodName: "SendMessage",
+        method: __sendMessage,
+      },
       { methodName: "Clock", method: __clock },
-      { methodName: "GameHubError", method: __gameHubError },
+      {
+        methodName: "GameHubError",
+        method: __gameHubError,
+      },
       {
         methodName: "ReceiveInvitationToPlay",
         method: __receiveInvitationToPlay,

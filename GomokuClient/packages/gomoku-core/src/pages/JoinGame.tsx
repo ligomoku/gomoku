@@ -1,20 +1,23 @@
+import { AlertDialog, toaster } from "@gomoku/story";
+import { GamePlayersInfo } from "@gomoku/story";
+import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
+import { Chat } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
 
-import type { GameTimeProps } from "@/features";
 import type { SwaggerTypes } from "@gomoku/api";
+import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
-import { GamePlayersInfo } from "@/features";
-import { GameTime, GameTimeMobile, Chat, Board } from "@/features";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
-import { AlertDialog, toaster } from "@/ui";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
 }
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
-  const { gameID } = useParams({ from: "/game/join/$gameID" });
+  const { gameID } = useParams({
+    from: "/game/join/$gameID",
+  });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
 
@@ -55,7 +58,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       toaster.show("Undo request sent");
     },
     onRematch: () => {
-      hubProxy?.requestRematch({ gameId: gameID });
+      hubProxy?.requestRematch({
+        gameId: gameID,
+      });
       toaster.show("Rematch request sent");
     },
   };
@@ -69,7 +74,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to play another game with the same settings?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveRematch({ gameId: gameID });
+            hubProxy?.approveRematch({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -84,7 +91,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
           text="Would you like to undo last move?"
           acceptButtonText="Accept"
           onAccept={() => {
-            hubProxy?.approveUndo({ gameId: gameID });
+            hubProxy?.approveUndo({
+              gameId: gameID,
+            });
           }}
           declineButtonText="Decline"
           onDecline={() => {
@@ -109,19 +118,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               }}
             >
               <GamePlayersInfo
-                gameType="game-type"
+                gameType={`${gameHistory.boardSize}x${gameHistory.boardSize}`}
                 players={[
                   {
                     title: "black",
                     name: players.black?.userName || "Anonymous",
-                    rating: 0,
                     isCurrentPlayer: false,
                     color: "black",
                   },
                   {
                     title: "white",
                     name: players.white?.userName || "Anonymous",
-                    rating: 0,
                     isCurrentPlayer: true,
                     color: "white",
                   },
@@ -133,6 +140,16 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   isConnected={isConnected}
                   sendMessage={sendMessage}
                   username={jwtDecodedInfo?.username || ""}
+                  texts={{
+                    title: "Chat",
+                    inputPlaceholder: "Type a message...",
+                    sendButtonText: "Send",
+                    sendingButtonText: "Sending...",
+                    charactersText: "characters",
+                    connectingText: "Connecting...",
+                    noMessagesText: "No messages yet. Start the conversation!",
+                    errorSendingMessage: "Error sending message",
+                  }}
                 />
               </div>
             </div>
@@ -152,7 +169,9 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               lastTile={lastTile}
               size={gameHistory.boardSize || 19}
               onTileClick={handleMove}
-              style={{ order: isMobile ? 1 : "unset" }}
+              style={{
+                order: isMobile ? 1 : "unset",
+              }}
               winningSequence={gameHistory.winningSequence ?? winningSequence}
             />
             <div className={isMobile ? "mt-4 flex w-full justify-center" : ""}>
