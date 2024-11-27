@@ -12,10 +12,13 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Copy the files and check directory contents
 COPY . .
+RUN ls -la && \
+    pwd && \
+    find . -name "CMakeLists.txt"
 
-# Disable all CPU-specific instruction sets
-# Changed directory path to match repo structure
+# Build only if CMakeLists.txt is found
 RUN mkdir build && cd build && \
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
@@ -28,5 +31,4 @@ RUN mkdir build && cd build && \
         -DUSE_NEON_DOTPROD=OFF && \
     cmake --build .
 
-# Adjusted binary path
 CMD ["./build/pbrain-rapfi"]
