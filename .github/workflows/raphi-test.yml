@@ -1,4 +1,4 @@
-name: Rapfi Pipeline
+name: Docker Build and Test
 
 on:
   push:
@@ -9,33 +9,19 @@ on:
       - master
 
 jobs:
-  build-and-test:
+  test-build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Compose
+      - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Build and Test Services
+      - name: Build and Test Docker Compose
         run: |
-          docker-compose -f docker-compose.yml up --build --abort-on-container-exit
-        shell: bash
-
-      - name: Collect Docker Logs (on failure)
-        if: failure()
-        run: |
-          echo "Logs for Gomoku Server:"
-          docker logs gomoku-server || true
-          echo "Logs for Rapfi:"
-          docker logs rapfi || true
-        shell: bash
-
-      - name: Stop and Remove Docker Containers
-        if: always()
-        run: |
-          docker-compose down
-        shell: bash
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml up --abort-on-container-exit
