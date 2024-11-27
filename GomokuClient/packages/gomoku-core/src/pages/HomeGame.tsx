@@ -15,7 +15,7 @@ import { Users } from "lucide-react";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export const HomeGame = () => {
   const router = useRouter();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
+  const [onlineUsersCount, setOnlineUsersCount] = useState(0);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -57,6 +58,9 @@ export const HomeGame = () => {
           await router.navigate({
             to: `/game/join/${gameId}`,
           });
+        },
+        onOnlineUserCountChange: async (usersCount: number) => {
+          setOnlineUsersCount(usersCount);
         },
       });
       return () => {
@@ -113,7 +117,7 @@ export const HomeGame = () => {
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}
-              playersOnlineText={t`5,247 players online`}
+              playersOnlineText={t`${onlineUsersCount} players online`}
             />
           </div>
         </div>
