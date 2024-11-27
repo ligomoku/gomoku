@@ -85,7 +85,7 @@ export const useSignalR = (hubURL: string) => {
       console.debug("Attaching SignalR event handlers...");
 
       const receiver: SignalHubInterfaces.IGameHubReceiver = {
-        onOnlineUserCountChange: async (userCount) => 
+        onOnlineUserCountChange: async (userCount) =>
           handlers.onOnlineUserCountChange?.(userCount),
         onMatchingPlayerFound: async (gameId) =>
           handlers.onMatchingPlayerFound?.(gameId),

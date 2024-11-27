@@ -7,6 +7,7 @@ import type {
   IGameHub,
   IGameHubReceiver,
 } from "./GomokuServer.Api.Hubs.Interfaces";
+import type { GameOptions } from "../GomokuServer.Api";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
@@ -100,6 +101,16 @@ class IGameHub_HubProxyFactory implements HubProxyFactory<IGameHub> {
 class IGameHub_HubProxy implements IGameHub {
   public constructor(private connection: HubConnection) {}
 
+  public readonly joinQueueWithMode = async (
+    gameOptions: GameOptions,
+  ): Promise<void> => {
+    return await this.connection.invoke("JoinQueueWithMode", gameOptions);
+  };
+
+  public readonly leaveQueue = async (): Promise<void> => {
+    return await this.connection.invoke("LeaveQueue");
+  };
+
   public readonly joinGameGroup = async (gameId: string): Promise<void> => {
     return await this.connection.invoke("JoinGameGroup", gameId);
   };
@@ -170,6 +181,10 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
     connection: HubConnection,
     receiver: IGameHubReceiver,
   ): Disposable => {
+    const __onOnlineUserCountChange = (...args: [number]) =>
+      receiver.onOnlineUserCountChange(...args);
+    const __onMatchingPlayerFound = (...args: [string]) =>
+      receiver.onMatchingPlayerFound(...args);
     const __gameGroupJoined = (...args: [string]) =>
       receiver.gameGroupJoined(...args);
     const __playerJoinedGame = (...args: [PlayerJoinedGameMessage]) =>
@@ -198,6 +213,8 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
       ...args: [ReceiveInvitationToPlayMessage]
     ) => receiver.receiveInvitationToPlay(...args);
 
+    connection.on("OnOnlineUserCountChange", __onOnlineUserCountChange);
+    connection.on("OnMatchingPlayerFound", __onMatchingPlayerFound);
     connection.on("GameGroupJoined", __gameGroupJoined);
     connection.on("PlayerJoinedGame", __playerJoinedGame);
     connection.on("GameStarted", __gameStarted);
@@ -215,54 +232,23 @@ class IGameHubReceiver_Binder implements ReceiverRegister<IGameHubReceiver> {
 
     const methodList: ReceiverMethod[] = [
       {
-        methodName: "GameGroupJoined",
-        method: __gameGroupJoined,
+        methodName: "OnOnlineUserCountChange",
+        method: __onOnlineUserCountChange,
       },
-      {
-        methodName: "PlayerJoinedGame",
-        method: __playerJoinedGame,
-      },
-      {
-        methodName: "GameStarted",
-        method: __gameStarted,
-      },
-      {
-        methodName: "BothPlayersJoined",
-        method: __bothPlayersJoined,
-      },
-      {
-        methodName: "UndoRequested",
-        method: __undoRequested,
-      },
-      {
-        methodName: "UndoApproved",
-        method: __undoApproved,
-      },
-      {
-        methodName: "PlayerMadeMove",
-        method: __playerMadeMove,
-      },
-      {
-        methodName: "RematchApproved",
-        method: __rematchApproved,
-      },
-      {
-        methodName: "RematchRequested",
-        method: __rematchRequested,
-      },
-      {
-        methodName: "GameIsOver",
-        method: __gameIsOver,
-      },
-      {
-        methodName: "SendMessage",
-        method: __sendMessage,
-      },
+      { methodName: "OnMatchingPlayerFound", method: __onMatchingPlayerFound },
+      { methodName: "GameGroupJoined", method: __gameGroupJoined },
+      { methodName: "PlayerJoinedGame", method: __playerJoinedGame },
+      { methodName: "GameStarted", method: __gameStarted },
+      { methodName: "BothPlayersJoined", method: __bothPlayersJoined },
+      { methodName: "UndoRequested", method: __undoRequested },
+      { methodName: "UndoApproved", method: __undoApproved },
+      { methodName: "PlayerMadeMove", method: __playerMadeMove },
+      { methodName: "RematchApproved", method: __rematchApproved },
+      { methodName: "RematchRequested", method: __rematchRequested },
+      { methodName: "GameIsOver", method: __gameIsOver },
+      { methodName: "SendMessage", method: __sendMessage },
       { methodName: "Clock", method: __clock },
-      {
-        methodName: "GameHubError",
-        method: __gameHubError,
-      },
+      { methodName: "GameHubError", method: __gameHubError },
       {
         methodName: "ReceiveInvitationToPlay",
         method: __receiveInvitationToPlay,
