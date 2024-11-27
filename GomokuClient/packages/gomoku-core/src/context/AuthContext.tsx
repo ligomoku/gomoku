@@ -2,11 +2,10 @@ import { useAuth } from "@clerk/clerk-react";
 import { toaster } from "@gomoku/story";
 import * as JWT from "jwt-decode";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import type { ReactNode } from "react";
 
-import { typedSessionStorage } from "@/utils";
+import { getUUID, typedSessionStorage } from "@/utils";
 
 interface JwtTokenPayload {
   exp: number;
@@ -55,7 +54,7 @@ export const AuthTokenProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!token && !typedSessionStorage.getItem("anonymousSessionID")) {
-          typedSessionStorage.setItem("anonymousSessionID", uuidv4());
+          typedSessionStorage.setItem("anonymousSessionID", getUUID());
         }
       } catch (error) {
         console.error("Error getting auth token:", error);
