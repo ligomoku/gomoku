@@ -1,26 +1,31 @@
-# Используем базовый образ
-FROM alpine:latest
+FROM ubuntu:22.04
 
-# Устанавливаем зависимости
-RUN apk add --no-cache \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
     git \
-    build-base \
+    build-essential \
     cmake \
     g++ \
-    gcc \
-    make
+    make \
+    && rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем проект
 COPY . .
 
-# Сборка проекта
+# Disable all CPU-specific instruction sets
 RUN cd rapfi/Rapfi && \
     mkdir build && cd build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-static" && \
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DUSE_SSE=OFF \
+        -DUSE_AVX2=OFF \
+        -DUSE_AVX512=OFF \
+        -DUSE_BMI2=OFF \
+        -DUSE_VNNI=OFF \
+        -DUSE_NEON=OFF \
+        -DUSE_NEON_DOTPROD=OFF && \
     cmake --build .
 
-# Указываем исполняемый файл
 CMD ["./rapfi/Rapfi/build/pbrain-rapfi"]
