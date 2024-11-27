@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     networks:
       - gomoku-network
-    command: ["./build/rapfi"]
+    command: ["./build/pbrain-rapfi"]
 
 networks:
   gomoku-network:
