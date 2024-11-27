@@ -6,14 +6,14 @@ namespace GomokuServer.Api.Controllers.v1;
 [EnableCors(CorsPolicyName.GomokuClient)]
 public class RapfiEngineController : Controller
 {
-	private readonly HttpClient _httpClient;
+	private readonly IRapfiEngineApi _rapfiEngineApi;
 	private readonly ILogger<RapfiEngineController> _logger;
 
 	public RapfiEngineController(
-		IHttpClientFactory httpClientFactory,
+		IRapfiEngineApi rapfiEngineApi,
 		ILogger<RapfiEngineController> logger)
 	{
-		_httpClient = httpClientFactory.CreateClient("RapfiEngine");
+		_rapfiEngineApi = rapfiEngineApi;
 		_logger = logger;
 	}
 
@@ -27,18 +27,17 @@ public class RapfiEngineController : Controller
 	{
 		try
 		{
-			var response = await _httpClient.GetAsync("test");
-			if (response.IsSuccessStatusCode)
-			{
-				return Ok(new { status = "Connected to Rapfi engine" });
-			}
-
-			_logger.LogWarning("Failed to connect to Rapfi engine. Status code: {StatusCode}", response.StatusCode);
-			return StatusCode((int)response.StatusCode, new { status = "Failed to connect to Rapfi engine" });
+			var response = await _rapfiEngineApi.TestConnection();
+			return Ok(new { status = "Connected to Rapfi engine", data = response });
+		}
+		catch (Refit.ApiException apiEx)
+		{
+			_logger.LogWarning(apiEx, "Failed to connect to Rapfi engine");
+			return StatusCode((int)apiEx.StatusCode, new { status = "Failed to connect to Rapfi engine", error = apiEx.Message });
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Error connecting to Rapfi engine");
+			_logger.LogError(ex, "Unexpected error connecting to Rapfi engine");
 			return StatusCode(500, new { status = "Error connecting to Rapfi engine", error = ex.Message });
 		}
 	}

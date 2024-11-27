@@ -21,11 +21,6 @@ builder.Services.RegisterGomokuServices(envVariables);
 
 builder.Logging.RegisterLogger(envVariables);
 
-builder.Services.AddHttpClient("RapfiEngine", client =>
-{
-	client.BaseAddress = new Uri(builder.Configuration["RAPFI_ENGINE_URL"] ?? "http://rapfi:5000");
-});
-
 var app = builder.Build();
 
 app.UseSwaggerPage();
