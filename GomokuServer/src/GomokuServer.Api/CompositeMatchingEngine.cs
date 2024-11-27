@@ -15,6 +15,14 @@ public class CompositeMatchingEngine
 		}
 	}
 
+	public void Stop()
+	{
+		foreach (var engine in _matchingEngines.Values)
+		{
+			engine.Stop();
+		}
+	}
+	
 	public void AddEngine(MatchingEngine matchingEngine)
 	{
 		_matchingEngines.Add(matchingEngine.GameOptions, matchingEngine);
@@ -32,9 +40,13 @@ public class CompositeMatchingEngine
 	public void TryRemove(string id)
 	{
 		var removed = _playerMap.TryRemove(id, out var gameOptions);
-		if (removed)
+		if (!removed)
 		{
-			// TODO: why gameOptions can be null?
+			return;
+		}
+
+		if (gameOptions is not null)
+		{
 			_matchingEngines[gameOptions!].TryRemove(id);
 		}
 	}

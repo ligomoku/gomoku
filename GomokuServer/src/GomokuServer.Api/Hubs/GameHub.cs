@@ -29,8 +29,11 @@ public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGa
 
 	public Task JoinQueueWithMode(GameOptions gameOptions)
 	{
-		// TODO: GameOptions should be validated!!!
-		matchingEngine.TryAdd(GetPlayerId(), gameOptions);
+		// For now, we assume that there cant be a situation that invalid GameOptions are passed, however this would throw an exception.
+		if (QuickPairingGameOptionsVariants.IsValidGameOptions(gameOptions))
+		{
+			matchingEngine.TryAdd(GetPlayerId(), gameOptions);
+		}
 		return Task.CompletedTask;
 	}
 

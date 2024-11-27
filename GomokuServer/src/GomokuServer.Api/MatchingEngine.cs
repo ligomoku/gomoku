@@ -14,7 +14,7 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 	public delegate void MatchingEngineHandler(string firstPlayerId, string secondPlayerId);
 	public event MatchingEngineHandler? OnMatching;
 
-	public async Task Start()
+	public void Start()
 	{
 		LobbyMember? firstPlayer = null;
 		foreach (LobbyMember player in _queue.GetConsumingEnumerable())
@@ -38,7 +38,9 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 									gameCreated = true;
 									firstPlayer.GameFound = true;
 									player.GameFound = true;
-									// OnMatch(firstPlayer, player);
+									// await is not supported in lock block
+									// and actually there is no reason to await it
+									OnMatch(firstPlayer, player);
 								}
 							}
 						}
@@ -46,10 +48,6 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 
 					if (gameCreated)
 					{
-						// since await cannot be used in lock block, onMatch call was moved here.
-						// theoretically, in this time user can leave queue, so ensure that if game created,
-						// it is impossible to leave queue.
-						await OnMatch(firstPlayer, player);
 						firstPlayer = null;
 					}
 					else if (firstPlayerLeft)
@@ -126,11 +124,16 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 			_players.TryRemove(secondPlayer.Id, out _);
 		}
 	}
+
+	public void Stop()
+	{
+		_queue.CompleteAdding();
+	}
 }
 
 public class LobbyMember(string id)
 {
 	public string Id { get; } = id;
-	public bool LeftQueue { get; set; } = false;
-	public bool GameFound { get; set; } = false;
+	public bool LeftQueue { get; set; }
+	public bool GameFound { get; set; }
 }

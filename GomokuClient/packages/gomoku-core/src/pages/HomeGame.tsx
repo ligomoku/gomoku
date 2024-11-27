@@ -236,7 +236,7 @@ export const gameTypes: GameType[] = [
     boardSize: 17,
     timeControl: {
       initialTimeInSeconds: 420,
-      incrementPerMove: 5,
+      incrementPerMove: 0,
     },
   },
   {
