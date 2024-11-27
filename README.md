@@ -15,6 +15,12 @@ Using Makefile (from the root directory)
 git submodule update --init --recursive
 ```
 
+## Rapfi Helper (after docker-compose up -d)
+
+```bash
+docker-compose exec rapfi ./build/pbrain-rapfi --help
+```
+
 ## Open API spec
 
 URL: https://gomoku-gi8o.onrender.com/swagger
