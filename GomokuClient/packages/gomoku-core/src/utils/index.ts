@@ -5,3 +5,4 @@ export * from "./fetchAuthFallback";
 export * from "./genParser";
 export * from "./headers";
 export * from "./typedStorage";
+export * from "./getUUID";
