@@ -46,12 +46,6 @@ export const useJoinGame = (
       });
 
       const unregister = registerEventHandlers({
-        onMatchingPlayerFound: async (gameId) => {
-          console.log("FOUND MATCHING PLAYER");
-          await router.navigate({
-            to: `/game/join/${gameId}`,
-          });
-        },
         playerJoinedGame: async () => {
           toaster.show(`You have joined the game`);
         },

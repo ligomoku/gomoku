@@ -9,19 +9,22 @@ import {
 } from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
+import { useEffect } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
-  const { hubProxy } = useSignalRConnection();
+  const router = useRouter();
+  const { hubProxy, isConnected, registerEventHandlers } =
+    useSignalRConnection();
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -46,6 +49,24 @@ export const HomeGame = () => {
       title: game.opponent?.userName ?? game.gameId.slice(0, 6),
       icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
     }));
+
+  useEffect(() => {
+    if (isConnected && hubProxy) {
+      const unregister = registerEventHandlers({
+        onMatchingPlayerFound: async (gameId) => {
+          await router.navigate({
+            to: `/game/join/${gameId}`,
+          });
+        },
+      });
+      return () => {
+        if (typeof unregister === "function") {
+          unregister();
+        }
+      };
+    }
+    return;
+  }, [isConnected, hubProxy, registerEventHandlers]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
