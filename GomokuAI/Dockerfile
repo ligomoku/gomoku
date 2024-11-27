@@ -12,14 +12,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy the files and check directory contents
 COPY . .
-RUN ls -la && \
-    pwd && \
-    find . -name "CMakeLists.txt"
 
-# Build only if CMakeLists.txt is found
-RUN mkdir build && cd build && \
+# Use the correct path for the CMake project
+RUN cd rapfi && \
+    mkdir build && cd build && \
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DUSE_SSE=OFF \
@@ -31,4 +28,5 @@ RUN mkdir build && cd build && \
         -DUSE_NEON_DOTPROD=OFF && \
     cmake --build .
 
-CMD ["./build/pbrain-rapfi"]
+# Adjust the path to the binary
+CMD ["./rapfi/build/pbrain-rapfi"]
