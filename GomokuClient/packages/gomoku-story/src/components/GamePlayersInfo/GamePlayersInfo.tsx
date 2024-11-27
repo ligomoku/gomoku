@@ -3,7 +3,7 @@ import { useMobileDesign } from "@/hooks";
 export interface PlayerInfo {
   title: string;
   name: string;
-  rating: number;
+  rating?: number;
   isCurrentPlayer: boolean;
   color: string; // Color indicator (e.g., for online/offline status)
 }
@@ -56,7 +56,9 @@ export const GamePlayersInfo = ({
             </span>
             <span className="mr-1">{player.name}</span>
             {player.isCurrentPlayer && <span className="mr-1 text-red-500" />}
-            <span className="text-[#b0b0b0]">({player.rating})</span>
+            {player.rating && (
+              <span className="text-[#b0b0b0]">({player.rating})</span>
+            )}
           </div>
         ))}
       </div>
