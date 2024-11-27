@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  gomoku-server:
+    build:
+      context: .
+      dockerfile: ./GomokuServer/Dockerfile # Check if we can reconfigure that
+    ports:
+      - "8080:8080"
+    networks:
+      - gomoku-ai-network
+
+  gomoku-ai:
+    build:
+      context: ./GomokuAI
+      dockerfile: Dockerfile
+    networks:
+      - gomoku-ai-network
+    command: ["./build/rapfi"] # Entry point Rapfi
+
+networks:
+  gomoku-ai-network:
+    driver: bridge
