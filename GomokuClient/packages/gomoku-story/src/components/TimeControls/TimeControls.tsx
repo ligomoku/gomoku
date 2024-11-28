@@ -24,12 +24,8 @@ export const TimeControls = ({
   const [selectedGameType, setSelectedGameType] = useState<GameType>();
 
   useEffect(() => {
-    if (selectedGameType) {
-      onGameTypeSelected(selectedGameType);
-    } else {
-      onGameTypeUnselected();
-    }
-  }, [selectedGameType]);
+    return () => onGameTypeUnselected();
+  }, []);
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
@@ -41,8 +37,10 @@ export const TimeControls = ({
           onClick={() => {
             if (selectedGameType?.timeControl == game.timeControl) {
               setSelectedGameType(undefined);
+              onGameTypeUnselected();
             } else {
               setSelectedGameType(game);
+              onGameTypeSelected(game);
             }
           }}
         >
