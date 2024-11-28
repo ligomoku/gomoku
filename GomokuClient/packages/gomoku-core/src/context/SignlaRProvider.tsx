@@ -1,11 +1,10 @@
 import { createContext, useContext } from "react";
-
 import type { SignalHubInterfaces } from "@gomoku/api";
 import type * as signalR from "@microsoft/signalr";
 import type { ReactNode } from "react";
 
 import { useAuthToken } from "@/context/AuthContext";
-import { useSignalR } from "@/hooks";
+import { useGameSignalR } from "@/hooks";
 import { typedSessionStorage } from "@/utils";
 
 type SignalREventHandlers = SignalHubInterfaces.IGameHubReceiver;
@@ -29,8 +28,14 @@ interface SignalRProviderProps {
 
 export const SignalRProvider = ({ children }: SignalRProviderProps) => {
   const { jwtToken } = useAuthToken();
-  const signalRState = useSignalR(
-    `${import.meta.env.VITE_API_URL}/gamehub/${jwtToken ? "registered" : `anonymous?player_id=${typedSessionStorage.getItem("anonymousSessionID")}`}`,
+  const signalRState = useGameSignalR(
+    `${import.meta.env.VITE_API_URL}/gamehub/${
+      jwtToken
+        ? "registered"
+        : `anonymous?player_id=${typedSessionStorage.getItem(
+            "anonymousSessionID",
+          )}`
+    }`,
   );
 
   return (
