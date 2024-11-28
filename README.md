@@ -9,6 +9,18 @@ Using Makefile (from the root directory)
 1. Run `make client` in one terminal tab. (node version 20.x)
 2. In a separate terminal tab, run `make server`.
 
+## To get all submodules of GomokuAI
+
+```bash
+git submodule update --init --recursive
+```
+
+## Rapfi Helper (after docker-compose up -d)
+
+```bash
+docker-compose exec rapfi ./build/pbrain-rapfi --help
+```
+
 ## Open API spec
 
 URL: https://gomoku-gi8o.onrender.com/swagger

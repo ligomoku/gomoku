@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  gomoku-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - gomoku-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      RAPFI_ENGINE_URL: http://rapfi:5005
+
+  rapfi:
+    build:
+      context: ./GomokuAI
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5005"
+    networks:
+      - gomoku-network
+
+networks:
+  gomoku-network:
+    driver: bridge

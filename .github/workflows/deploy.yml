@@ -1,4 +1,4 @@
-name: Deploy Gomoku
+name: Deploy to Vercel
 
 on:
   push:

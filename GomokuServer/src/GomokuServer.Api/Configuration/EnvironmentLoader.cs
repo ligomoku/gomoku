@@ -38,6 +38,10 @@ public static class EnvironmentLoader
 			Sentry = new()
 			{
 				Dsn = Environment.GetEnvironmentVariable("ASPNETCORE_SENTRY_DSN")
+			},
+			RapfiEngine = new()
+			{
+				BaseUrl = Environment.GetEnvironmentVariable("RAPFI_ENGINE_URL") ?? "http://rapfi:5005"
 			}
 		};
 
