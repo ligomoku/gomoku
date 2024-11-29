@@ -13,8 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/HomeGame.tsx:82
+#: src/pages/HomeGame.tsx:127
 msgid "{0} games in play"
+msgstr ""
+
+#: src/pages/HomeGame.tsx:128
+msgid "{onlineUsersCount} players online"
 msgstr ""
 
 #: src/pages/HomeGame.tsx:63
@@ -22,10 +26,10 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/HomeGame.tsx:83
-msgid "5,247 players online"
-msgstr ""
+#~ msgid "5,247 players online"
+#~ msgstr ""
 
-#: src/pages/HomeGame.tsx:163
+#: src/pages/HomeGame.tsx:234
 msgid "Blitz"
 msgstr ""
 
@@ -37,22 +41,22 @@ msgstr ""
 #~ msgid "Blog Posts"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:139
-#: src/pages/HomeGame.tsx:145
-#: src/pages/HomeGame.tsx:151
-#: src/pages/HomeGame.tsx:157
+#: src/pages/HomeGame.tsx:198
+#: src/pages/HomeGame.tsx:207
+#: src/pages/HomeGame.tsx:216
+#: src/pages/HomeGame.tsx:225
 msgid "Bullet"
 msgstr ""
 
 #: src/features/Chat/Chat.tsx:99
-msgid "characters"
-msgstr ""
+#~ msgid "characters"
+#~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:70
-msgid "Chat"
-msgstr ""
+#~ msgid "Chat"
+#~ msgstr ""
 
-#: src/pages/HomeGame.tsx:187
+#: src/pages/HomeGame.tsx:270
 msgid "Classic"
 msgstr ""
 
@@ -61,14 +65,14 @@ msgstr ""
 #~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:126
-msgid "Connecting..."
-msgstr ""
+#~ msgid "Connecting..."
+#~ msgstr ""
 
 #: src/pages/HomeGame.tsx:163
 #~ msgid "Correspondence"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:75
+#: src/pages/HomeGame.tsx:120
 msgid "CREATE A GAME"
 msgstr ""
 
@@ -84,7 +88,7 @@ msgstr ""
 #~ msgid "gomoku.app"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:60
+#: src/pages/HomeGame.tsx:99
 msgid "Gomoku.app is a free, open-source Five in a Row game platform."
 msgstr ""
 
@@ -109,10 +113,10 @@ msgstr ""
 #~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:128
-msgid "No messages yet. Start the conversation!"
-msgstr ""
+#~ msgid "No messages yet. Start the conversation!"
+#~ msgstr ""
 
-#: src/pages/HomeGame.tsx:57
+#: src/pages/HomeGame.tsx:96
 msgid "No online games were created"
 msgstr ""
 
@@ -124,11 +128,11 @@ msgstr ""
 #~ msgid "Play again"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:76
+#: src/pages/HomeGame.tsx:121
 msgid "PLAY WITH A FRIEND"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:77
+#: src/pages/HomeGame.tsx:122
 msgid "PLAY WITH AI"
 msgstr ""
 
@@ -136,13 +140,13 @@ msgstr ""
 #~ msgid "Quick"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:65
+#: src/pages/HomeGame.tsx:104
 msgid "Quick pairing"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:169
-#: src/pages/HomeGame.tsx:175
-#: src/pages/HomeGame.tsx:181
+#: src/pages/HomeGame.tsx:243
+#: src/pages/HomeGame.tsx:252
+#: src/pages/HomeGame.tsx:261
 msgid "Rapid"
 msgstr ""
 
@@ -151,12 +155,12 @@ msgstr ""
 #~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:95
-msgid "Send"
-msgstr ""
+#~ msgid "Send"
+#~ msgstr ""
 
 #: src/features/Chat/Chat.tsx:95
-msgid "Sending..."
-msgstr ""
+#~ msgid "Sending..."
+#~ msgstr ""
 
 #: src/shared/ui/Header/Header.tsx:67
 #~ msgid "SIGN IN"
@@ -166,7 +170,7 @@ msgstr ""
 #~ msgid "Standard"
 #~ msgstr ""
 
-#: src/pages/Profile.tsx:47
+#: src/pages/Profile.tsx:50
 msgid "STANDARD"
 msgstr ""
 
