@@ -9,16 +9,15 @@ public class AnonymousMatchingEngine(
 	protected override async Task OnMatch(LobbyMember firstPlayer, LobbyMember secondPlayer)
 	{
 		await base.OnMatch(firstPlayer, secondPlayer);
-		
+
 		var createGameResult = await mediator.Send(new CreateAnonymousGameForPairCommand()
 		{
-			Anonymous = GameOptions.Anonymous,
 			BoardSize = GameOptions.BoardSize,
 			FirstPlayerId = firstPlayer.Id,
 			SecondPlayerId = secondPlayer.Id,
 			TimeControl = GameOptions.TimeControl
 		});
-		
+
 		if (createGameResult.IsSuccess)
 		{
 			await hubContext.Clients.User(firstPlayer.Id)

@@ -8,7 +8,7 @@ public class MatchingEngineHostedService(
 	{
 		QuickPairingGameOptionsVariants.Values
 			.ForEach(gameOptions => compositeMatchingEngine.AddEngine(matchingEngineFactory.CreateNew(gameOptions)));
-		
+
 		compositeMatchingEngine.Start();
 		return Task.CompletedTask;
 	}
