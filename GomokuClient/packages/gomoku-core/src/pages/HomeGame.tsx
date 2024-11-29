@@ -73,6 +73,12 @@ export const HomeGame = () => {
     return;
   }, [isConnected, hubProxy, registerEventHandlers, router]);
 
+  useEffect(() => {
+    return () => {
+      hubProxy?.leaveQueue();
+    };
+  }, [hubProxy]);
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       <main className="container mx-auto p-4 sm:p-6">

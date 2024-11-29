@@ -1,6 +1,6 @@
 import type { SwaggerTypes } from "@gomoku/api";
 import { Card, CardContent, Spinner } from "@/ui";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export interface GameType {
   timeLabel: string;
@@ -22,10 +22,6 @@ export const TimeControls = ({
   onGameTypeUnselected,
 }: TimeControlsProps) => {
   const [selectedGameType, setSelectedGameType] = useState<GameType>();
-
-  useEffect(() => {
-    return () => onGameTypeUnselected();
-  }, []);
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
