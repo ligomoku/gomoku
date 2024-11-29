@@ -5,6 +5,7 @@ public record EnvVariables
 	public required GomokuClient GomokuClient { get; init; }
 	public required Clerk Clerk { get; init; }
 	public required Sentry Sentry { get; set; }
+	public required RapfiEngine RapfiEngine { get; init; }
 }
 
 public record GomokuClient
@@ -22,4 +23,9 @@ public record Clerk
 public record Sentry
 {
 	public string? Dsn { get; init; }
+}
+
+public record RapfiEngine
+{
+	public required string BaseUrl { get; init; }
 }

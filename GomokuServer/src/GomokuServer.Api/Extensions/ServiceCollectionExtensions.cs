@@ -167,6 +167,11 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IProfilesRepository, ClerkProfilesRepository>();
 		services.RegisterCommandsAndQueries();
 
+		services.AddRefitHttpClient<IRapfiEngineApi>((_, httpClient) =>
+		{
+			httpClient.BaseAddress = new Uri(config.RapfiEngine.BaseUrl);
+		});
+
 		services.AddRefitHttpClient<IClerkFrontendApi>((_, httpClient) =>
 		{
 			httpClient.BaseAddress = new Uri(config.Clerk.FrontendApiBaseUrl);

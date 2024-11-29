@@ -31,6 +31,11 @@ public class CompositeMatchingEngine
 
 	public void TryAdd(string id, GameOptions gameOptions)
 	{
+		if (_playerMap.TryGetValue(id, out _))
+		{
+			TryRemove(id);
+		}
+		
 		if (_playerMap.TryAdd(id, gameOptions))
 		{
 			_matchingEngines[gameOptions].TryAdd(id);

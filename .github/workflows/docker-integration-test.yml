@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Docker Integration Tests
 
 on:
   push:
