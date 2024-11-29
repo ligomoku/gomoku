@@ -6,11 +6,9 @@ public class MatchingEngineHostedService(
 {
 	public Task StartAsync(CancellationToken cancellationToken)
 	{
-		foreach (var gameOption in QuickPairingGameOptionsVariants.Values)
-		{
-			compositeMatchingEngine.AddEngine(matchingEngineFactory.CreateNew(gameOption));
-		}
-
+		QuickPairingGameOptionsVariants.Values
+			.ForEach(gameOptions => compositeMatchingEngine.AddEngine(matchingEngineFactory.CreateNew(gameOptions)));
+		
 		compositeMatchingEngine.Start();
 		return Task.CompletedTask;
 	}

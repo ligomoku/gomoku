@@ -22,7 +22,7 @@ public class CompositeMatchingEngine
 			engine.Stop();
 		}
 	}
-	
+
 	public void AddEngine(MatchingEngine matchingEngine)
 	{
 		_matchingEngines.Add(matchingEngine.GameOptions, matchingEngine);
@@ -35,7 +35,7 @@ public class CompositeMatchingEngine
 		{
 			TryRemove(id);
 		}
-		
+
 		if (_playerMap.TryAdd(id, gameOptions))
 		{
 			_matchingEngines[gameOptions].TryAdd(id);

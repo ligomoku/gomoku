@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 
 using GomokuServer.Api.Hubs.Providers;
+using GomokuServer.Api.MatchingEngine;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Common.Interfaces;
@@ -167,6 +168,10 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<IProfilesRepository, ClerkProfilesRepository>();
 		services.RegisterCommandsAndQueries();
 
+		services.AddSingleton<CompositeMatchingEngine>();
+		services.AddSingleton<MatchingEngineFactory>();
+		services.AddHostedService<MatchingEngineHostedService>();
+		
 		services.AddRefitHttpClient<IRapfiEngineApi>((_, httpClient) =>
 		{
 			httpClient.BaseAddress = new Uri(config.RapfiEngine.BaseUrl);

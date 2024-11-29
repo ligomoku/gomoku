@@ -15,8 +15,6 @@ public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGa
 	{
 		Interlocked.Increment(ref s_onlineUsersCount);
 		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
-		// actually does nothing.
-		await base.OnConnectedAsync();
 	}
 
 	public override async Task OnDisconnectedAsync(Exception? exception)
@@ -24,8 +22,6 @@ public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGa
 		Interlocked.Decrement(ref s_onlineUsersCount);
 		matchingEngine.TryRemove(GetPlayerId());
 		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
-		// actually does nothing.
-		await base.OnConnectedAsync();
 	}
 
 	public Task JoinQueueWithMode(GameOptions gameOptions)

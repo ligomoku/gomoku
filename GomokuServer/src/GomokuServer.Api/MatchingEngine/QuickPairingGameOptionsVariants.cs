@@ -10,49 +10,28 @@ public static class QuickPairingGameOptionsVariants
 	static QuickPairingGameOptionsVariants()
 	{
 		Values = [];
+		var gameOptionsData = new (int BoardSize, int InitialTimeInSeconds, int IncrementPerMove)[]
+		{
+			(13, 60, 0),
+			(13, 60, 1),
+			(13, 60, 2),
+			(13, 120, 1),
+			(13, 300, 0),
+			(17, 420, 0),
+			(17, 600, 0),
+			(19, 900, 0),
+			(19, 1800, 0)
+		};
 		
 		foreach (var isAnonymous in new[] { true, false })
 		{
-			Values.AddRange([
-				new GameOptions(
-					13,
-					new TimeControlDto() { InitialTimeInSeconds = 60, IncrementPerMove = 0 },
-					isAnonymous),
-				new GameOptions(
-					13,
-					new TimeControlDto() { InitialTimeInSeconds = 60, IncrementPerMove = 1 },
-					isAnonymous),
-				new GameOptions(
-					13,
-					new TimeControlDto() { InitialTimeInSeconds = 60, IncrementPerMove = 2 },
-					isAnonymous),
-
-				new GameOptions(
-					13,
-					new TimeControlDto() { InitialTimeInSeconds = 120, IncrementPerMove = 1 },
-					isAnonymous),
-				new GameOptions(
-					13,
-					new TimeControlDto() { InitialTimeInSeconds = 300, IncrementPerMove = 0 },
-					isAnonymous),
-				new GameOptions(
-					17,
-					new TimeControlDto() { InitialTimeInSeconds = 420, IncrementPerMove = 0 },
-					isAnonymous),
-				
-				new GameOptions(
-					17,
-					new TimeControlDto() { InitialTimeInSeconds = 600, IncrementPerMove = 0 },
-					isAnonymous),
-				new GameOptions(
-					19,
-					new TimeControlDto() { InitialTimeInSeconds = 900, IncrementPerMove = 0 },
-					isAnonymous),
-				new GameOptions(
-					19,
-					new TimeControlDto() { InitialTimeInSeconds = 1800, IncrementPerMove = 0 },
-					isAnonymous)
-			]);
+			foreach (var data in gameOptionsData)
+			{
+				Values.Add(new GameOptions(
+					data.BoardSize,
+					new TimeControlDto { InitialTimeInSeconds = data.InitialTimeInSeconds, IncrementPerMove = data.IncrementPerMove },
+					isAnonymous));
+			}
 		}
 	}
 }

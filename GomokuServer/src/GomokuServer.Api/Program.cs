@@ -1,12 +1,6 @@
-using GomokuServer.Api.MatchingEngine;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var envVariables = EnvironmentLoader.LoadEnvironment(builder);
-
-builder.Services.AddSingleton<CompositeMatchingEngine>();
-builder.Services.AddSingleton<MatchingEngineFactory>();
-builder.Services.AddHostedService<MatchingEngineHostedService>();
 
 builder.Services.RegisterSwagger();
 
@@ -45,7 +39,4 @@ app.MapHub<AnonymousGameHub>(HubRoute.AnonymousGameHub);
 app.Run();
 
 // Required for functional tests
-namespace GomokuServer.Api
-{
-	public partial class Program { }
-}
+public partial class Program { }

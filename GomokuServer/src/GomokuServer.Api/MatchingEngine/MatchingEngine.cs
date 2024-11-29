@@ -1,10 +1,11 @@
 ﻿using System.Collections.Concurrent;
 
-using GomokuServer.Application.Games.Commands.Abstract;
-
 namespace GomokuServer.Api.MatchingEngine;
 
-public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubContext, IMediator mediator) : IMatchingEngine
+public class MatchingEngine(
+	GameOptions gameOptions,
+	ILogger<MatchingEngine> logger)
+	: IMatchingEngine
 {
 	public GameOptions GameOptions { get; } = gameOptions;
 
@@ -21,51 +22,73 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 		{
 			try
 			{
-				if (firstPlayer != null)
-				{
-					var firstPlayerLeft = true;
-					var gameCreated = false;
+				ProcessPlayer(player);
+			}
+			catch (Exception exception)
+			{
+				logger.LogCritical(
+					exception,
+					"Matching Engine (BoardSize: {BoardSize}, TimeControl: {InitialTimeInSeconds} + {IncrementPerMove}, Anonymous: {Anonymous}) failed while matching players.",
+					GameOptions.BoardSize, GameOptions.TimeControl.InitialTimeInSeconds,
+					GameOptions.TimeControl.IncrementPerMove, GameOptions.Anonymous);
+			}
+		}
 
-					lock (firstPlayer)
+		void ProcessPlayer(LobbyMember player)
+		{
+			if (firstPlayer != null)
+			{
+				HandleSecondPlayer(player);
+			}
+			else
+			{
+				AssignFirstPlayer(player);
+			}
+		}
+
+		void HandleSecondPlayer(LobbyMember player)
+		{
+			var firstPlayerLeft = true;
+			var gameCreated = false;
+
+			lock (firstPlayer)
+			{
+				if (!firstPlayer.LeftQueue)
+				{
+					firstPlayerLeft = false;
+					lock (player)
 					{
-						if (!firstPlayer.LeftQueue)
+						if (!player.LeftQueue)
 						{
-							firstPlayerLeft = false;
-							lock (player)
-							{
-								if (!player.LeftQueue)
-								{
-									gameCreated = true;
-									firstPlayer.GameFound = true;
-									player.GameFound = true;
-									// await is not supported in lock block
-									// and actually there is no reason to await it
-									OnMatch(firstPlayer, player);
-								}
-							}
+							gameCreated = true;
+							firstPlayer.GameFound = true;
+							player.GameFound = true;
+							_ = OnMatch(firstPlayer, player);
 						}
-					}
-
-					if (gameCreated)
-					{
-						firstPlayer = null;
-					}
-					else if (firstPlayerLeft)
-					{
-						firstPlayer = player.LeftQueue ? null : player;
-					}
-				}
-				else
-				{
-					if (!player.LeftQueue)
-					{
-						firstPlayer = player;
 					}
 				}
 			}
-			catch
+
+			UpdateFirstPlayerState(gameCreated, firstPlayerLeft, player);
+		}
+
+		void AssignFirstPlayer(LobbyMember player)
+		{
+			if (!player.LeftQueue)
 			{
-				// TODO: Logging.
+				firstPlayer = player;
+			}
+		}
+
+		void UpdateFirstPlayerState(bool gameCreated, bool firstPlayerLeft, LobbyMember player)
+		{
+			if (gameCreated)
+			{
+				firstPlayer = null;
+			}
+			else if (firstPlayerLeft)
+			{
+				firstPlayer = player.LeftQueue ? null : player;
 			}
 		}
 	}
@@ -103,26 +126,12 @@ public class MatchingEngine(GameOptions gameOptions, IHubContext<GameHub> hubCon
 		}
 	}
 
-	private async Task OnMatch(LobbyMember firstPlayer, LobbyMember secondPlayer)
+	protected virtual Task OnMatch(LobbyMember firstPlayer, LobbyMember secondPlayer)
 	{
-		var createGameResult = await mediator.Send(new CreateGameForPairCommand
-		{
-			Anonymous = GameOptions.Anonymous,
-			BoardSize = GameOptions.BoardSize,
-			FirstPlayerId = firstPlayer.Id,
-			SecondPlayerId = secondPlayer.Id,
-			TimeControl = GameOptions.TimeControl
-		});
-
-		if (createGameResult.IsSuccess)
-		{
-			await hubContext.Clients.User(firstPlayer.Id).SendAsync(GameHubMethod.OnMatchingPlayerFound, createGameResult.Value.GameId);
-			await hubContext.Clients.User(secondPlayer.Id).SendAsync(GameHubMethod.OnMatchingPlayerFound, createGameResult.Value.GameId);
-
-			OnMatching?.Invoke(firstPlayer.Id, secondPlayer.Id);
-			_players.TryRemove(firstPlayer.Id, out _);
-			_players.TryRemove(secondPlayer.Id, out _);
-		}
+		OnMatching?.Invoke(firstPlayer.Id, secondPlayer.Id);
+		_players.TryRemove(firstPlayer.Id, out _);
+		_players.TryRemove(secondPlayer.Id, out _);
+		return Task.CompletedTask;
 	}
 
 	public void Stop()
