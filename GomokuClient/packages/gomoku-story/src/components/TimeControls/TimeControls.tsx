@@ -25,9 +25,9 @@ export const TimeControls = ({
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
-      {gameTypes.map((game, index) => (
+      {gameTypes.map((game) => (
         <Card
-          key={index}
+          key={`${game.type}-${game.boardSize}`}
           className="flex cursor-pointer justify-center border-[#2b2b2b] bg-[#2b2b2b] align-middle
             transition-colors hover:bg-[#3e3e3e]"
           onClick={() => {
