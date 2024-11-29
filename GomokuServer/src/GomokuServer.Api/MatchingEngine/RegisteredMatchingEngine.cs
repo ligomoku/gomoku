@@ -8,7 +8,7 @@ public class RegisteredMatchingEngine(GameOptions gameOptions,
 	protected override async Task OnMatch(LobbyMember firstPlayer, LobbyMember secondPlayer)
 	{
 		await base.OnMatch(firstPlayer, secondPlayer);
-		
+
 		var createGameResult = await mediator.Send(new CreateRegisteredGameForPairCommand()
 		{
 			Anonymous = GameOptions.Anonymous,
@@ -17,7 +17,7 @@ public class RegisteredMatchingEngine(GameOptions gameOptions,
 			SecondPlayerId = secondPlayer.Id,
 			TimeControl = GameOptions.TimeControl
 		});
-		
+
 		if (createGameResult.IsSuccess)
 		{
 			await hubContext.Clients.User(firstPlayer.Id)

@@ -6,7 +6,7 @@ public abstract class CreateGameForPairCommandHandler<TRequest>(
 	IDateTimeProvider dateTimeProvider,
 	IGamesRepository gamesRepository,
 	IRandomProvider randomProvider)
-	: ICommandHandler<TRequest, CreateGameResponse> where TRequest : CreateGameForPairCommand 
+	: ICommandHandler<TRequest, CreateGameResponse> where TRequest : CreateGameForPairCommand
 {
 	private const int BoardMinSize = 13;
 	private const int BoardMaxSize = 19;
@@ -38,14 +38,14 @@ public abstract class CreateGameForPairCommandHandler<TRequest>(
 		var random = randomProvider.GetInt(0, int.MaxValue);
 		Profile[] playerProfiles = [firstUserProfile.Value, secondUserProfile.Value];
 		var shuffledPlayerProfiles = playerProfiles.OrderBy(p => random).ToArray();
-		
+
 		var players = new Players(
 			new Player(shuffledPlayerProfiles[0].Id, shuffledPlayerProfiles[0].UserName, TileColor.Black),
 			new Player(shuffledPlayerProfiles[1].Id, shuffledPlayerProfiles[1].UserName, TileColor.White));
 
 		var game = new GameWithTimeControl(gameSettings, players, dateTimeProvider) { GameId = Guid.NewGuid() };
 		var saveResult = await gamesRepository.SaveAsync(game);
-		
+
 		return saveResult.Map(_ => new CreateGameResponse(game.GameId.ToString(), request.BoardSize));
 	}
 

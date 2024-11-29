@@ -171,7 +171,7 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<CompositeMatchingEngine>();
 		services.AddSingleton<MatchingEngineFactory>();
 		services.AddHostedService<MatchingEngineHostedService>();
-		
+
 		services.AddRefitHttpClient<IRapfiEngineApi>((_, httpClient) =>
 		{
 			httpClient.BaseAddress = new Uri(config.RapfiEngine.BaseUrl);

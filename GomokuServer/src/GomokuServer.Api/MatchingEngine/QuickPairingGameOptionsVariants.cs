@@ -6,7 +6,7 @@ public static class QuickPairingGameOptionsVariants
 
 	public static bool IsValidGameOptions(GameOptions gameOptions) =>
 		Values.Contains(gameOptions);
-	
+
 	static QuickPairingGameOptionsVariants()
 	{
 		Values = [];
@@ -22,7 +22,7 @@ public static class QuickPairingGameOptionsVariants
 			(19, 900, 0),
 			(19, 1800, 0)
 		};
-		
+
 		foreach (var isAnonymous in new[] { true, false })
 		{
 			foreach (var data in gameOptionsData)
