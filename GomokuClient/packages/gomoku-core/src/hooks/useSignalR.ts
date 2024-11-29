@@ -8,14 +8,22 @@ import type { SignalHubInterfaces } from "@gomoku/api";
 
 import { useAuthToken } from "@/context/AuthContext";
 
-export const useSignalR = (hubURL: string) => {
+type KnownHubType = "IGameHub";
+type KnownReceiverType = "IGameHubReceiver";
+
+export const useSignalR = <
+  THub extends SignalHubInterfaces.IGameHub,
+  TReceiver extends SignalHubInterfaces.IGameHubReceiver,
+>(
+  hubURL: string,
+  hubType: KnownHubType,
+  receiverType: KnownReceiverType,
+) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [hubProxy, setHubProxy] = useState<SignalHubInterfaces.IGameHub | null>(
-    null,
-  );
+  const [hubProxy, setHubProxy] = useState<THub | null>(null);
 
   const startConnection = useCallback(
     async (connection: signalR.HubConnection) => {
@@ -46,11 +54,9 @@ export const useSignalR = (hubURL: string) => {
     if (connection) {
       startConnection(connection);
 
-      const proxy =
-        SignalRClientService.getHubProxyFactory("IGameHub")?.createHubProxy(
-          connection,
-        );
-      if (proxy) {
+      const proxyFactory = SignalRClientService.getHubProxyFactory(hubType);
+      if (proxyFactory) {
+        const proxy = proxyFactory.createHubProxy(connection) as THub;
         setHubProxy(proxy);
       }
     }
@@ -65,11 +71,10 @@ export const useSignalR = (hubURL: string) => {
           });
       }
     };
-  }, [jwtToken, jwtDecodedInfo, startConnection, getToken, hubURL]);
+  }, [jwtToken, jwtDecodedInfo, startConnection, getToken, hubURL, hubType]);
 
   const registerEventHandlers = useCallback(
-    //TODO: investigate partial to have inference for handlers
-    (handlers: Partial<SignalHubInterfaces.IGameHubReceiver>) => {
+    (handlers: Partial<TReceiver>) => {
       const { current: connection } = connectionRef;
 
       if (
@@ -84,37 +89,12 @@ export const useSignalR = (hubURL: string) => {
 
       console.debug("Attaching SignalR event handlers...");
 
-      const receiver: SignalHubInterfaces.IGameHubReceiver = {
-        onOnlineUserCountChange: async (userCount) =>
-          handlers.onOnlineUserCountChange?.(userCount),
-        onMatchingPlayerFound: async (gameId) =>
-          handlers.onMatchingPlayerFound?.(gameId),
-        playerJoinedGame: async (message) =>
-          handlers.playerJoinedGame?.(message),
-        bothPlayersJoined: async (message) =>
-          handlers.bothPlayersJoined?.(message),
-        gameGroupJoined: async (gameId) =>
-          handlers.playerJoinedGame?.({
-            userId: gameId,
-          }),
-        gameStarted: async (message) => handlers.gameStarted?.(message),
-        playerMadeMove: async (message) => handlers.playerMadeMove?.(message),
-        undoRequested: async () => handlers.undoRequested?.(),
-        undoApproved: async (message) => handlers.undoApproved?.(message),
-        sendMessage: async (message) => handlers.sendMessage?.(message),
-        gameHubError: async (error) => handlers.gameHubError?.(error),
-        gameIsOver: async (message) => handlers.gameIsOver?.(message),
-        rematchApproved: async (message) => handlers.rematchApproved?.(message),
-        rematchRequested: async (message) =>
-          handlers.rematchRequested?.(message),
-        clock: async (message) => handlers.clock?.(message),
-        receiveInvitationToPlay: async (message) =>
-          handlers.receiveInvitationToPlay?.(message),
-      };
-
-      const disposable = SignalRClientService.getReceiverRegister(
-        "IGameHubReceiver",
-      )?.register(connection, receiver);
+      const receiverRegister =
+        SignalRClientService.getReceiverRegister(receiverType);
+      const disposable = receiverRegister?.register(
+        connection,
+        handlers as SignalHubInterfaces.IGameHubReceiver,
+      );
 
       return () => {
         if (disposable) {
@@ -123,7 +103,7 @@ export const useSignalR = (hubURL: string) => {
         }
       };
     },
-    [],
+    [receiverType],
   );
 
   return {
@@ -133,3 +113,9 @@ export const useSignalR = (hubURL: string) => {
     hubProxy,
   };
 };
+
+export const useGameSignalR = (hubURL: string) =>
+  useSignalR<
+    SignalHubInterfaces.IGameHub,
+    SignalHubInterfaces.IGameHubReceiver
+  >(hubURL, "IGameHub", "IGameHubReceiver");
