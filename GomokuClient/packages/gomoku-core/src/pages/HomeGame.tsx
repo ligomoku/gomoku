@@ -1,6 +1,4 @@
-import type { SwaggerTypes } from "@gomoku/api";
 import { SwaggerServices } from "@gomoku/api";
-import type { GameType } from "@gomoku/story";
 import {
   GameOptionsButtons,
   OnlinePlayersInfo,
@@ -11,11 +9,14 @@ import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import type { SwaggerTypes } from "@gomoku/api";
+import type { GameType } from "@gomoku/story";
 
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
-import { useEffect, useState } from "react";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ export const HomeGame = () => {
       };
     }
     return;
-  }, [isConnected, hubProxy, registerEventHandlers]);
+  }, [isConnected, hubProxy, registerEventHandlers, router]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">

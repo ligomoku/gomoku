@@ -3,7 +3,6 @@ import { useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { TileColor } from "@/hooks";
-import { useTiles } from "@/hooks";
 import type {
   SignalClientMessages,
   SignalDto,
@@ -11,6 +10,7 @@ import type {
 } from "@gomoku/api";
 
 import { useSignalRConnection } from "@/context";
+import { useTiles } from "@/hooks";
 import { formatErrorMessage } from "@/utils";
 
 export const useJoinGame = (
