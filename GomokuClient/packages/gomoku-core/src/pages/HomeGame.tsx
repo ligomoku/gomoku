@@ -74,6 +74,7 @@ export const HomeGame = () => {
   }, [isConnected, hubProxy, registerEventHandlers, router]);
 
   useEffect(() => {
+    //TODO: Figure out if clean up can be done in onLeave router lifecycle function
     return () => {
       hubProxy?.leaveQueue();
     };
