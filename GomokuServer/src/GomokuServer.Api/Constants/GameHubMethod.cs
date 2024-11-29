@@ -2,6 +2,8 @@
 
 public class GameHubMethod
 {
+	public const string OnOnlineUserCountChange = nameof(OnOnlineUserCountChange);
+	public const string OnMatchingPlayerFound = nameof(OnMatchingPlayerFound);
 	public const string GameGroupJoined = nameof(GameGroupJoined);
 	public const string PlayerJoinedGame = nameof(PlayerJoinedGame);
 	public const string GameStarted = nameof(GameStarted);

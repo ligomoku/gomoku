@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
 
 using GomokuServer.Api.Hubs.Exceptions;
+using GomokuServer.Api.MatchingEngine;
 using GomokuServer.Application.Games.Responses;
 
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ public class AnonymousGameHub : GameHub
 {
 	private readonly IMediator _mediator;
 
-	public AnonymousGameHub(IMediator mediator)
+	public AnonymousGameHub(IMediator mediator, CompositeMatchingEngine compositeMatchingEngine) : base(compositeMatchingEngine)
 	{
 		_mediator = mediator;
 	}

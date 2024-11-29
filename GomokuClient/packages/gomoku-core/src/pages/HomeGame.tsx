@@ -1,19 +1,20 @@
 import { SwaggerServices } from "@gomoku/api";
 import {
   GameOptionsButtons,
-  TimeControls,
   OnlinePlayersInfo,
   SectionList,
+  TimeControls,
 } from "@gomoku/story";
 import { t } from "@lingui/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
 import type { GameType } from "@gomoku/story";
 
-import { useAuthToken } from "@/context";
+import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { fetchAuthFallback, Headers } from "@/utils";
 
@@ -22,6 +23,10 @@ export const HomeGame = () => {
   const { jwtToken } = useAuthToken();
   const { data: paginatedGames } = useFetchGames(jwtToken);
   const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
+  const router = useRouter();
+  const { hubProxy, isConnected, registerEventHandlers } =
+    useSignalRConnection();
+  const [onlineUsersCount, setOnlineUsersCount] = useState(0);
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -46,6 +51,34 @@ export const HomeGame = () => {
       title: game.opponent?.userName ?? game.gameId.slice(0, 6),
       icon: <Users className="mr-3 h-5 w-5 text-[#bababa] sm:h-6 sm:w-6" />,
     }));
+
+  useEffect(() => {
+    if (isConnected && hubProxy) {
+      const unregister = registerEventHandlers({
+        onMatchingPlayerFound: async (gameId) => {
+          await router.navigate({
+            to: `/game/join/${gameId}`,
+          });
+        },
+        onOnlineUserCountChange: async (usersCount: number) => {
+          setOnlineUsersCount(usersCount);
+        },
+      });
+      return () => {
+        if (typeof unregister === "function") {
+          unregister();
+        }
+      };
+    }
+    return;
+  }, [isConnected, hubProxy, registerEventHandlers, router]);
+
+  useEffect(() => {
+    //TODO: Figure out if clean up can be done in onLeave router lifecycle function
+    return () => {
+      hubProxy?.leaveQueue();
+    };
+  }, [hubProxy]);
 
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
@@ -72,8 +105,14 @@ export const HomeGame = () => {
             </h2>
             <TimeControls
               gameTypes={gameTypes}
-              onCreateGame={handleCreateGame}
               isLoading={isLoadingCreateGame}
+              onGameTypeSelected={(gameType) =>
+                hubProxy?.joinQueueWithMode({
+                  ...gameType,
+                  anonymous: !jwtToken,
+                })
+              }
+              onGameTypeUnselected={() => hubProxy?.leaveQueue()}
             />
           </div>
           <div className="lg:col-span-3">
@@ -86,7 +125,7 @@ export const HomeGame = () => {
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}
-              playersOnlineText={t`5,247 players online`}
+              playersOnlineText={t`${onlineUsersCount} players online`}
             />
           </div>
         </div>
@@ -205,7 +244,7 @@ export const gameTypes: GameType[] = [
     boardSize: 17,
     timeControl: {
       initialTimeInSeconds: 420,
-      incrementPerMove: 5,
+      incrementPerMove: 0,
     },
   },
   {

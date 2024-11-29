@@ -1,5 +1,6 @@
 ﻿namespace GomokuServer.Application.Games.Dto;
 
+[TranspilationSource]
 public record TimeControlDto
 {
 	[Required]

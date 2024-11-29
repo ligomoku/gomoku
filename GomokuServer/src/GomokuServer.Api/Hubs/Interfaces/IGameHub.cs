@@ -1,10 +1,16 @@
-﻿using TypedSignalR.Client;
+﻿using GomokuServer.Api.MatchingEngine;
+
+using TypedSignalR.Client;
 
 namespace GomokuServer.Api.Hubs.Interfaces;
 
 [Hub]
 public interface IGameHub
 {
+	Task JoinQueueWithMode(GameOptions gameOptions);
+
+	Task LeaveQueue();
+
 	Task JoinGameGroup(string gameId);
 
 	Task MakeMove(MakeMoveClientMessage makeMoveMessage);
@@ -29,6 +35,10 @@ public interface IGameHub
 [Receiver]
 public interface IGameHubReceiver
 {
+	Task OnOnlineUserCountChange(long userCount);
+
+	Task OnMatchingPlayerFound(string gameId);
+
 	Task GameGroupJoined(string gameId);
 
 	Task PlayerJoinedGame(PlayerJoinedGameMessage playerJoinedGameMessage);

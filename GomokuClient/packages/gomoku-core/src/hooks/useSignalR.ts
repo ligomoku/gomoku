@@ -93,7 +93,7 @@ export const useSignalR = <
         SignalRClientService.getReceiverRegister(receiverType);
       const disposable = receiverRegister?.register(
         connection,
-        handlers as SignalHubInterfaces.IGameHubReceiver,
+        handlers as TReceiver,
       );
 
       return () => {
