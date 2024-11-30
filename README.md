@@ -7,7 +7,7 @@
 Using Makefile (from the root directory)
 
 1. Run `make client` in one terminal tab. (node version 20.x)
-2. In a separate terminal tab, run `make server`.
+2. In a separate terminal tab, run `make server`
 
 ## To get all submodules of GomokuAI
 
@@ -34,7 +34,9 @@ This project is initiated and managed by:
 - [Vitalijs Kuprins](https://github.com/vkuprin) (Email: vitas_s@inbox.lv)
 - [Aleksandrs Vaguscneko](https://github.com/alequez97) (Email: aleksandrs.vaguscenko@gmail.com)
 
-All strategic decisions are made by the project founders. Contributions are welcome, provided they follow the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines.
+All strategic decisions are made by the project founders
+<br/>
+Contributions are welcome, provided they follow the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines
 
 ## License
-This project is licensed under the [AGPL-3.0](LICENSE) license.
+This project is licensed under the [AGPL-3.0](LICENSE) license
