@@ -174,13 +174,33 @@ public class GameWithTimeControlTests
 		rematchResult.NewGame.Should().NotBeNull();
 		rematchResult.NewGame.Should().BeOfType<GameWithTimeControl>();
 		rematchResult.NewGame!.GameSettings.Should().Be(_game.GameSettings);
-		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_game.Players.White);
-		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_game.Players.Black);
+		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_game.Players.White with { Color = TileColor.Black });
+		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_game.Players.Black with { Color = TileColor.White });
 		rematchResult.NewGame!.CurrentPlayer?.Id.Should().Be(_game.Players.White.Id);
 		rematchResult.NewGame!.MovesHistory.Should().BeEmpty();
 		rematchResult.NewGame!.Result.Should().Be(GameResult.NotCompletedYet);
 		rematchResult.NewGame!.Status.Should().Be(GameStatus.NotStartedYet);
 		rematchResult.NewGame!.CompletionReason.Should().Be(CompletionReason.NotCompletedYet);
+	}
+
+	[Test]
+	public void Rematch_ShouldTickCorrectClockInNewGame()
+	{
+		// Arrange
+		for (int i = 0; i < 5; i++)
+		{
+			_game.PlaceTile(new(i, 7), _game.Players.Black.Id);
+			_game.PlaceTile(new(i, 8), _game.Players.White.Id);
+		}
+		var rematchResult = _game.Rematch(_game.Players.Black.Id);
+		var newGame = (GameWithTimeControl)rematchResult.NewGame!;
+		newGame.PlaceTile(new(0, 0), _game.Players.White.Id);
+		newGame.PlaceTile(new(1, 1), _game.Players.Black.Id);
+		_dateTimeProvider.UtcNowUnixTimeMilliseconds.Returns(1_100_000);
+
+		// Assert
+		newGame.BlackRemainingTimeInMilliseconds.Should().Be(80_000);
+		newGame.WhiteRemainingTimeInMilliseconds.Should().Be(180_000);
 	}
 
 	[Test]
