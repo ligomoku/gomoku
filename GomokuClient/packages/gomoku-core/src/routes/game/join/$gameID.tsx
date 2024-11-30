@@ -6,7 +6,7 @@ import {
 } from "@gomoku/api/client/hooks";
 import { LoadingOverlay, toaster } from "@gomoku/story";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
 
@@ -21,6 +21,7 @@ const JoinGameComponent = ({
 }) => {
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken, anonymousSessionId } = useAuthToken();
+  const joinedRef = useRef(false);
 
   const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
     gameID,
@@ -55,7 +56,7 @@ const JoinGameComponent = ({
   const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
 
   useEffect(() => {
-    if (!gameHistory) return;
+    if (!gameHistory || joinedRef.current) return;
 
     const joinGame = async () => {
       if (gameHistory.players.black || gameHistory.players.white) return;
@@ -71,6 +72,7 @@ const JoinGameComponent = ({
             playerId: anonymousSessionId,
           });
         }
+        joinedRef.current = true;
       } catch (err) {
         console.error("Error joining game:", err);
         toaster.show("Error joining game", "error");
@@ -80,14 +82,9 @@ const JoinGameComponent = ({
     };
 
     joinGame();
-  }, [
-    gameHistory,
-    gameID,
-    jwtToken,
-    anonymousSessionId,
-    registeredJoinMutation,
-    anonymousJoinMutation,
-  ]);
+    //TODO: fix with new pattern
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameHistory]);
 
   if (!gameHistory || isJoining) return <LoadingOverlay isVisible />;
 

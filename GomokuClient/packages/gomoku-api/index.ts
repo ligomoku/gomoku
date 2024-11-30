@@ -1,4 +1,3 @@
-export * from "./client/models";
 export * from "./client/hooks";
 
 import * as SwaggerTypes from "./client/models";
