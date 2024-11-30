@@ -938,7 +938,7 @@ __metadata:
   resolution: "@gomoku/api@workspace:packages/gomoku-api"
   dependencies:
     "@gomoku/eslint-config": "npm:*"
-    "@hey-api/client-fetch": "npm:^0.4.4"
+    "@hey-api/client-fetch": "npm:^0.5.0"
     "@hey-api/openapi-ts": "npm:^0.57.1"
     "@tanstack/react-query": "npm:^5.62.0"
   languageName: unknown
@@ -1076,10 +1076,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@hey-api/client-fetch@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "@hey-api/client-fetch@npm:0.4.4"
-  checksum: 10c0/eb61a91722d765cb55ab8f3f235e79b3b8b3747fef50b0c327f7a07e345e9a72ae738a010f898f04aa650da0d8803fe014e49a2d80d4dc218425371ab448280a
+"@hey-api/client-fetch@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@hey-api/client-fetch@npm:0.5.0"
+  checksum: 10c0/fadca95e0f605376c6c25f428759c11bf71e2f71368505a9a842e441a032dba1c425b47be0a12c97ac508004e10e599f70867aa303dd62a8f8c3cd6ee04d7f45
   languageName: node
   linkType: hard
 
