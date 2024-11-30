@@ -23,5 +23,12 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "lingui.config.ts",
+    "../gomoku-api",
+    "@gomoku/api"
+  ]
 }

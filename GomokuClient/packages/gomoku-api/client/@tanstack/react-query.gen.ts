@@ -5,16 +5,14 @@ import {
   queryOptions,
   infiniteQueryOptions,
   type InfiniteData,
-  type UseMutationOptions,
   type DefaultError,
+  type UseMutationOptions,
 } from "@tanstack/react-query";
 import type {
   GetApiGameAnonymousByGameIdHistoryData,
   GetApiGameAnonymousAvailableToJoinData,
-  GetApiGameAnonymousAvailableToJoinError,
   GetApiGameAnonymousAvailableToJoinResponse,
   GetApiGameAnonymousActiveData,
-  GetApiGameAnonymousActiveError,
   GetApiGameAnonymousActiveResponse,
   PostApiGameAnonymousData,
   PostApiGameAnonymousError,
@@ -24,15 +22,12 @@ import type {
   PostApiGameAnonymousByGameIdJoinResponse,
   GetHealthData,
   GetApiProfilesByUserNameGamesData,
-  GetApiProfilesByUserNameGamesError,
   GetApiProfilesByUserNameGamesResponse,
   GetApiV1RapfiTestData,
   GetApiGameRegisteredByGameIdHistoryData,
   GetApiGameRegisteredAvailableToJoinData,
-  GetApiGameRegisteredAvailableToJoinError,
   GetApiGameRegisteredAvailableToJoinResponse,
   GetApiGameRegisteredActiveData,
-  GetApiGameRegisteredActiveError,
   GetApiGameRegisteredActiveResponse,
   PostApiGameRegisteredData,
   PostApiGameRegisteredError,
@@ -96,7 +91,7 @@ import {
   postGamehubRegisteredApproveRematch,
   postGamehubRegisteredSendMessage,
   postGamehubRegisteredSendInvitationToPlay,
-} from "../services.gen";
+} from "../sdk.gen";
 
 type QueryKey<TOptions extends Options> = [
   Pick<TOptions, "baseUrl" | "body" | "headers" | "path" | "query"> & {
@@ -219,7 +214,7 @@ export const getApiGameAnonymousAvailableToJoinInfiniteOptions = (
 ) => {
   return infiniteQueryOptions<
     GetApiGameAnonymousAvailableToJoinResponse,
-    GetApiGameAnonymousAvailableToJoinError,
+    DefaultError,
     InfiniteData<GetApiGameAnonymousAvailableToJoinResponse>,
     QueryKey<Options<GetApiGameAnonymousAvailableToJoinData>>,
     | number
@@ -289,7 +284,7 @@ export const getApiGameAnonymousActiveInfiniteOptions = (
 ) => {
   return infiniteQueryOptions<
     GetApiGameAnonymousActiveResponse,
-    GetApiGameAnonymousActiveError,
+    DefaultError,
     InfiniteData<GetApiGameAnonymousActiveResponse>,
     QueryKey<Options<GetApiGameAnonymousActiveData>>,
     | number
@@ -460,7 +455,7 @@ export const getApiProfilesByUserNameGamesInfiniteOptions = (
 ) => {
   return infiniteQueryOptions<
     GetApiProfilesByUserNameGamesResponse,
-    GetApiProfilesByUserNameGamesError,
+    DefaultError,
     InfiniteData<GetApiProfilesByUserNameGamesResponse>,
     QueryKey<Options<GetApiProfilesByUserNameGamesData>>,
     | number
@@ -572,7 +567,7 @@ export const getApiGameRegisteredAvailableToJoinInfiniteOptions = (
 ) => {
   return infiniteQueryOptions<
     GetApiGameRegisteredAvailableToJoinResponse,
-    GetApiGameRegisteredAvailableToJoinError,
+    DefaultError,
     InfiniteData<GetApiGameRegisteredAvailableToJoinResponse>,
     QueryKey<Options<GetApiGameRegisteredAvailableToJoinData>>,
     | number
@@ -642,7 +637,7 @@ export const getApiGameRegisteredActiveInfiniteOptions = (
 ) => {
   return infiniteQueryOptions<
     GetApiGameRegisteredActiveResponse,
-    GetApiGameRegisteredActiveError,
+    DefaultError,
     InfiniteData<GetApiGameRegisteredActiveResponse>,
     QueryKey<Options<GetApiGameRegisteredActiveData>>,
     | number
@@ -787,7 +782,7 @@ export const postGamehubAnonymousJoinGameGroupMutation = (
   options?: Partial<Options<PostGamehubAnonymousJoinGameGroupData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousJoinGameGroupData>
   > = {
@@ -828,7 +823,7 @@ export const postGamehubAnonymousGetClockMutation = (
   options?: Partial<Options<PostGamehubAnonymousGetClockData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousGetClockData>
   > = {
@@ -869,7 +864,7 @@ export const postGamehubAnonymousMakeMoveMutation = (
   options?: Partial<Options<PostGamehubAnonymousMakeMoveData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousMakeMoveData>
   > = {
@@ -910,7 +905,7 @@ export const postGamehubAnonymousRequestUndoMutation = (
   options?: Partial<Options<PostGamehubAnonymousRequestUndoData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousRequestUndoData>
   > = {
@@ -951,7 +946,7 @@ export const postGamehubAnonymousApproveUndoMutation = (
   options?: Partial<Options<PostGamehubAnonymousApproveUndoData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousApproveUndoData>
   > = {
@@ -992,7 +987,7 @@ export const postGamehubAnonymousResignMutation = (
   options?: Partial<Options<PostGamehubAnonymousResignData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousResignData>
   > = {
@@ -1033,7 +1028,7 @@ export const postGamehubAnonymousRequestRematchMutation = (
   options?: Partial<Options<PostGamehubAnonymousRequestRematchData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousRequestRematchData>
   > = {
@@ -1074,7 +1069,7 @@ export const postGamehubAnonymousApproveRematchMutation = (
   options?: Partial<Options<PostGamehubAnonymousApproveRematchData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousApproveRematchData>
   > = {
@@ -1115,7 +1110,7 @@ export const postGamehubAnonymousSendMessageMutation = (
   options?: Partial<Options<PostGamehubAnonymousSendMessageData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousSendMessageData>
   > = {
@@ -1156,7 +1151,7 @@ export const postGamehubAnonymousSendInvitationToPlayMutation = (
   options?: Partial<Options<PostGamehubAnonymousSendInvitationToPlayData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubAnonymousSendInvitationToPlayData>
   > = {
@@ -1197,7 +1192,7 @@ export const postGamehubRegisteredJoinGameGroupMutation = (
   options?: Partial<Options<PostGamehubRegisteredJoinGameGroupData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredJoinGameGroupData>
   > = {
@@ -1238,7 +1233,7 @@ export const postGamehubRegisteredGetClockMutation = (
   options?: Partial<Options<PostGamehubRegisteredGetClockData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredGetClockData>
   > = {
@@ -1279,7 +1274,7 @@ export const postGamehubRegisteredMakeMoveMutation = (
   options?: Partial<Options<PostGamehubRegisteredMakeMoveData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredMakeMoveData>
   > = {
@@ -1320,7 +1315,7 @@ export const postGamehubRegisteredRequestUndoMutation = (
   options?: Partial<Options<PostGamehubRegisteredRequestUndoData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredRequestUndoData>
   > = {
@@ -1361,7 +1356,7 @@ export const postGamehubRegisteredApproveUndoMutation = (
   options?: Partial<Options<PostGamehubRegisteredApproveUndoData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredApproveUndoData>
   > = {
@@ -1402,7 +1397,7 @@ export const postGamehubRegisteredResignMutation = (
   options?: Partial<Options<PostGamehubRegisteredResignData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredResignData>
   > = {
@@ -1443,7 +1438,7 @@ export const postGamehubRegisteredRequestRematchMutation = (
   options?: Partial<Options<PostGamehubRegisteredRequestRematchData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredRequestRematchData>
   > = {
@@ -1484,7 +1479,7 @@ export const postGamehubRegisteredApproveRematchMutation = (
   options?: Partial<Options<PostGamehubRegisteredApproveRematchData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredApproveRematchData>
   > = {
@@ -1525,7 +1520,7 @@ export const postGamehubRegisteredSendMessageMutation = (
   options?: Partial<Options<PostGamehubRegisteredSendMessageData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredSendMessageData>
   > = {
@@ -1566,7 +1561,7 @@ export const postGamehubRegisteredSendInvitationToPlayMutation = (
   options?: Partial<Options<PostGamehubRegisteredSendInvitationToPlayData>>,
 ) => {
   const mutationOptions: UseMutationOptions<
-    void,
+    unknown,
     DefaultError,
     Options<PostGamehubRegisteredSendInvitationToPlayData>
   > = {

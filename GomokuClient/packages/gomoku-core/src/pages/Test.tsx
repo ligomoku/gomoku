@@ -26,8 +26,8 @@ export const Test = () => {
 
 const useRapfiEngine = () =>
   useQuery<
-    SwaggerTypes.GetApiV1RapfiTestResponse,
-    SwaggerTypes.GetApiV1RapfiTestError
+    SwaggerTypes.GetApiV1RapfiTestResponses,
+    SwaggerTypes.GetApiV1RapfiTestErrors
   >({
     queryKey: ["rapfiEngineTest", null],
     queryFn: async () => {
@@ -39,7 +39,10 @@ const useRapfiEngine = () =>
         throw new Error("Invalid game data received");
       }
 
-      return response.data;
+      return {
+        //TODO: check with docs why we have to map it like this
+        200: response.data,
+      };
     },
     refetchInterval: 5000,
   });
