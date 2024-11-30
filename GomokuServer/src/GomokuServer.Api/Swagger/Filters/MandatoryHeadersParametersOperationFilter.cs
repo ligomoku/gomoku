@@ -7,7 +7,7 @@ namespace GomokuServer.Api.Swagger.Filters;
 public class MandatoryHeadersParametersOperationFilter : IOperationFilter
 {
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
-	{}
+	{ }
 	//TODO: check if we need mandatory headers explicitly set
 	// {
 	// 	operation.Parameters.Add(new OpenApiParameter
