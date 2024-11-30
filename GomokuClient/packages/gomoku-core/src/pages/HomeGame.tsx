@@ -192,7 +192,7 @@ const useFetchActiveGames = (authToken: string) =>
     refetchInterval: 5000,
   });
 
-export const gameTypes: GameType[] = [
+const gameTypes: GameType[] = [
   {
     timeLabel: "1+0",
     type: t`Bullet`,
