@@ -1,6 +1,6 @@
 export type SendInvitationToPlayMessage = {
-    /**
-     * @type string
-    */
-    playerId: string;
+  /**
+   * @type string
+   */
+  playerId: string;
 };

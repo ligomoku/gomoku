@@ -1,6 +1,6 @@
 export type ApproveUndoMessage = {
-    /**
-     * @type string
-    */
-    gameId: string;
+  /**
+   * @type string
+   */
+  gameId: string;
 };
