@@ -4,14 +4,14 @@ import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
 import { Chat } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
 
-import type { SwaggerTypes } from "@gomoku/api";
+import type { components } from "@gomoku/api/client/schema";
 import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
 
 interface JoinGameProps {
-  gameHistory: SwaggerTypes.GetGameHistoryResponse;
+  gameHistory: components["schemas"]["GetGameHistoryResponse"];
 }
 
 const JoinGame = ({ gameHistory }: JoinGameProps) => {
@@ -207,7 +207,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
 };
 
 const transformMoves = (
-  movesHistory: SwaggerTypes.GetGameHistoryResponse["movesHistory"],
+  movesHistory: components["schemas"]["GetGameHistoryResponse"]["movesHistory"],
 ) => {
   const movesArray: string[] = [];
   for (const move in movesHistory) {

@@ -1,17 +1,16 @@
-import { SwaggerServices } from "@gomoku/api";
+import { apiClient } from "@gomoku/api/client/api-client";
 import {
   GameOptionsButtons,
   OnlinePlayersInfo,
   SectionList,
   TimeControls,
 } from "@gomoku/story";
-import { t } from "@lingui/macro";
-import { useQuery } from "@tanstack/react-query";
+import { t } from "@lingui/core/macro";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { SwaggerTypes } from "@gomoku/api";
+import type { components } from "@gomoku/api/client/schema";
 import type { GameType } from "@gomoku/story";
 
 import { useAuthToken, useSignalRConnection } from "@/context";
@@ -35,7 +34,7 @@ export const HomeGame = () => {
 
   const handleCreateGame = (
     selectedBoardSize: number,
-    selectedTimeControl?: SwaggerTypes.TimeControlDto,
+    selectedTimeControl?: components["schemas"]["TimeControlDto"],
   ) => {
     createGame({
       boardSize: selectedBoardSize,
@@ -44,7 +43,7 @@ export const HomeGame = () => {
   };
 
   const transformGameData = (
-    games: SwaggerTypes.GetAvailableGamesResponse[] | undefined,
+    games: components["schemas"]["GetAvailableGamesResponse"][] | undefined,
   ) =>
     games?.map((game) => ({
       id: game.gameId,
@@ -134,63 +133,89 @@ export const HomeGame = () => {
   );
 };
 
-const useFetchGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    [string, string | null]
-  >({
-    queryKey: ["games", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredAvailableToJoin({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        () =>
-          SwaggerServices.getApiGameAnonymousAvailableToJoin({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
+export const useFetchGames = (authToken: string | undefined) =>
+  apiClient.useQuery(
+    "get",
+    "/api/game/registered/available-to-join",
+    {
+      params: {
+        header: Headers.getDefaultHeaders(authToken!),
+      },
     },
-    refetchInterval: 5000,
-  });
+    {
+      queryKey: ["games", authToken || null],
+      refetchInterval: 5000,
+      queryFn: async () => {
+        const response = await fetchAuthFallback<
+          components["schemas"]["GetAvailableGamesResponse"][]
+        >(
+          authToken,
+          async (token) =>
+            apiClient.useQuery(
+              "get",
+              "/api/game/registered/available-to-join",
+              {
+                params: {
+                  header: Headers.getDefaultHeaders(token),
+                },
+              },
+            ),
+          async () =>
+            apiClient.useQuery("get", "/api/game/anonymous/available-to-join", {
+              params: {
+                header: Headers.getDefaultHeaders(),
+              },
+            }),
+        );
 
-const useFetchActiveGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredActiveResponse,
-    SwaggerTypes.GetApiGameRegisteredActiveError
-  >({
-    queryKey: ["gamesActive", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredActive({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        async () =>
-          SwaggerServices.getApiGameAnonymousActive({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
+        if (!response.data) {
+          throw new Error("Invalid game data received");
+        }
 
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
+        return response.data;
+      },
     },
-    refetchInterval: 5000,
-  });
+  );
+
+export const useFetchActiveGames = (authToken: string | undefined) =>
+  apiClient.useQuery(
+    "get",
+    "/api/game/registered/active",
+    {
+      params: {
+        header: Headers.getDefaultHeaders(authToken!),
+      },
+    },
+    {
+      queryKey: ["gamesActive", authToken || null],
+      refetchInterval: 5000,
+      queryFn: async () => {
+        const response = await fetchAuthFallback<
+          components["schemas"]["GetActiveGamesResponse"][]
+        >(
+          authToken,
+          async (token) =>
+            apiClient.useQuery("get", "/api/game/registered/active", {
+              params: {
+                header: Headers.getDefaultHeaders(token),
+              },
+            }),
+          async () =>
+            apiClient.useQuery("get", "/api/game/anonymous/active", {
+              params: {
+                header: Headers.getDefaultHeaders(),
+              },
+            }),
+        );
+
+        if (!response.data) {
+          throw new Error("Invalid active game data received");
+        }
+
+        return response.data;
+      },
+    },
+  );
 
 export const gameTypes: GameType[] = [
   {

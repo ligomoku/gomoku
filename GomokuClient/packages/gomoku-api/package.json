@@ -19,7 +19,6 @@
   "dependencies": {
     "@gomoku/eslint-config": "*",
     "@tanstack/react-query": "^5.62.0",
-    "dotenv": "^16.4.5",
     "openapi-fetch": "^0.13.0",
     "openapi-react-query": "^0.2.5",
     "openapi-typescript": "^7.4.3"

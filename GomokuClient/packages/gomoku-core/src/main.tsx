@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/clerk-react";
-import { SwaggerServices } from "@gomoku/api";
 import { ToasterProvider } from "@gomoku/story";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -18,6 +17,7 @@ import "./styles/index.css";
 import { AuthTokenProvider, SignalRProvider } from "@/context";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 if (import.meta.env.MODE === "production") {
   Sentry.init({
@@ -29,9 +29,7 @@ if (import.meta.env.MODE === "production") {
     tracesSampleRate: 1.0,
     tracePropagationTargets: [
       "localhost",
-      new RegExp(
-        `^${import.meta.env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-      ),
+      new RegExp(`^${API_BASE_URL?.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
     ],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
@@ -43,16 +41,6 @@ const router = createRouter({ routeTree });
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
-SwaggerServices.client.setConfig({
-  baseUrl: import.meta.env.VITE_API_URL,
-});
 
 const queryClient = new QueryClient();
 
