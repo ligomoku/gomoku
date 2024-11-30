@@ -1,5 +1,5 @@
 import { ClerkProvider } from "@clerk/clerk-react";
-import { SwaggerServices } from "@gomoku/api";
+import { client } from "@gomoku/api/client.config";
 import { ToasterProvider } from "@gomoku/story";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -30,7 +30,7 @@ if (import.meta.env.MODE === "production") {
     tracePropagationTargets: [
       "localhost",
       new RegExp(
-        `^${import.meta.env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+        `^${import.meta.env.VITE_API_URL.replace(/[.+?^${}()|[\]\\]/g, "\\$&")}`,
       ),
     ],
     replaysSessionSampleRate: 0.1,
@@ -50,11 +50,31 @@ declare module "@tanstack/react-router" {
   }
 }
 
-SwaggerServices.client.setConfig({
-  baseUrl: import.meta.env.VITE_API_URL,
-});
+// Configure API client
+client.request = async ({ url, method, headers, ...config }) => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}${url}`, {
+    method,
+    headers: {
+      ...headers,
+    },
+    ...config,
+  });
 
-const queryClient = new QueryClient();
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5000,
+      retry: 2,
+    },
+  },
+});
 
 i18n.load("en", messages);
 i18n.activate("en");
