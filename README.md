@@ -1,42 +1,74 @@
-<img src="https://avatars.githubusercontent.com/u/123968089?s=400&u=26b1b8e1c6a7852376a21fd0af32d71c6fd13fda&v=4" width="200">
+<div align="left">
+  <img src="https://avatars.githubusercontent.com/u/123968089?s=400&u=26b1b8e1c6a7852376a21fd0af32d71c6fd13fda&v=4" width="200" alt="Gomoku Logo">
+</div>
 
 # Gomoku
 
-## Setup Instructions
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](LICENSE)
+[![Node.js v20](https://img.shields.io/badge/Node.js-v20-green.svg)](https://nodejs.org)
 
-Using Makefile (from the root directory)
+A sophisticated implementation of the classic Gomoku (Five in a Row) game with AI capabilities.
 
-1. Run `make client` in one terminal tab. (node version 20.x)
-2. In a separate terminal tab, run `make server`
+## 🚀 Quick Start
 
-## To get all submodules of GomokuAI
+### Setup Instructions
+
+Using Makefile (from the root directory):
+
+1. Run the client:
+   ```bash
+   make client    # Requires Node.js v20.x
+   ```
+
+2. In a separate terminal tab, run the server:
+   ```bash
+   make server
+   ```
+
+### Initialize GomokuAI Submodules
 
 ```bash
 git submodule update --init --recursive
 ```
 
-## Rapfi Helper (after docker-compose up -d)
+## 🛠️ Development Tools
+
+### Rapfi Helper
+
+After running `docker-compose up -d`, you can access the Rapfi helper:
 
 ```bash
 docker-compose exec rapfi ./build/pbrain-rapfi --help
 ```
 
-## Open API spec
+## 📚 Documentation
 
-URL: https://gomoku-gi8o.onrender.com/swagger
+### API Documentation
+- OpenAPI Specification: [https://gomoku-gi8o.onrender.com/swagger](https://gomoku-gi8o.onrender.com/swagger)
 
-## Storybook
+### Component Library
+- Storybook: [https://storybook-static-self.vercel.app](https://storybook-static-self.vercel.app)
 
-URL: https://storybook-static-self.vercel.app
+## 👥 Project Management
 
-## Project Management
+### Project Founders
+
 This project is initiated and managed by:
-- [Vitalijs Kuprins](https://github.com/vkuprin) (Email: vitas_s@inbox.lv)
-- [Aleksandrs Vaguscneko](https://github.com/alequez97) (Email: aleksandrs.vaguscenko@gmail.com)
 
-All strategic decisions are made by the project founders
-<br/>
-Contributions are welcome, provided they follow the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines
+- **Vitalijs Kuprins**
+  - GitHub: [@vkuprin](https://github.com/vkuprin)
+  - Email: vitas_s@inbox.lv
 
-## License
-This project is licensed under the [AGPL-3.0](LICENSE) license
+- **Aleksandrs Vaguscneko**
+  - GitHub: [@alequez97](https://github.com/alequez97)
+  - Email: aleksandrs.vaguscenko@gmail.com
+
+All strategic decisions are made by the project founders.
+
+### Contributing
+
+We welcome contributions! Please review our [Contributing Guidelines](CONTRIBUTING.md) before submitting any changes.
+
+## 📄 License
+
+This project is licensed under the [GNU Affero General Public License v3.0](LICENSE).
