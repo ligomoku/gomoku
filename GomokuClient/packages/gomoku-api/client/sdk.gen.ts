@@ -129,8 +129,7 @@ export const postApiGameAnonymous = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
+      ...options?.headers, "Content-Type": "application/json",
     },
     url: "/api/game/anonymous",
     responseTransformer: postApiGameAnonymousResponseTransformer,
@@ -152,8 +151,7 @@ export const postApiGameAnonymousByGameIdJoin = <
   >({
     ...options,
     headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
+      ...options?.headers, "Content-Type": "application/json",
     },
     url: "/api/game/anonymous/{gameId}/join",
     responseTransformer: postApiGameAnonymousByGameIdJoinResponseTransformer,
@@ -261,8 +259,7 @@ export const postApiGameRegistered = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
+      ...options?.headers, "Content-Type": "application/json",
     },
     url: "/api/game/registered",
     responseTransformer: postApiGameRegisteredResponseTransformer,

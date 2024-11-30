@@ -19,5 +19,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["vite.config.ts"],
-  "exclude": ["node_modules", "dist", "../gomoku-api"]
+  "exclude": ["dist", "node_modules", "lingui.config.ts", "../gomoku-api", "@gomoku/api"]
 }
