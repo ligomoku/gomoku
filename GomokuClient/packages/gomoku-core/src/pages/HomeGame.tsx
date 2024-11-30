@@ -137,7 +137,7 @@ export const HomeGame = () => {
 const useFetchGames = (authToken: string) =>
   useQuery<
     SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
+    SwaggerTypes.GetApiGameRegisteredAvailableToJoinData,
     SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
     [string, string | null]
   >({
@@ -167,7 +167,7 @@ const useFetchGames = (authToken: string) =>
 const useFetchActiveGames = (authToken: string) =>
   useQuery<
     SwaggerTypes.GetApiGameRegisteredActiveResponse,
-    SwaggerTypes.GetApiGameRegisteredActiveError
+    SwaggerTypes.GetApiGameRegisteredActiveData
   >({
     queryKey: ["gamesActive", null],
     queryFn: async () => {

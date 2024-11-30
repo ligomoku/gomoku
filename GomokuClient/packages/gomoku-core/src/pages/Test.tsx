@@ -26,8 +26,8 @@ export const Test = () => {
 
 const useRapfiEngine = () =>
   useQuery<
-    SwaggerTypes.GetApiV1RapfiTestResponse,
-    SwaggerTypes.GetApiV1RapfiTestError
+    SwaggerTypes.GetApiV1RapfiTestResponses,
+    SwaggerTypes.GetApiV1RapfiTestErrors
   >({
     queryKey: ["rapfiEngineTest", null],
     queryFn: async () => {

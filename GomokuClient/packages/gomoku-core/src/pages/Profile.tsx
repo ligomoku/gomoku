@@ -136,7 +136,7 @@ const useFetchProfileGames = (
 ) =>
   useInfiniteQuery<
     SwaggerTypes.GetApiProfilesByUserNameGamesResponse,
-    SwaggerTypes.GetApiProfilesByUserNameGamesError
+    SwaggerTypes.GetApiProfilesByUserNameGamesData
   >({
     queryKey: ["gamesProfile", userName],
     queryFn: async ({ pageParam = 1 }) => {
