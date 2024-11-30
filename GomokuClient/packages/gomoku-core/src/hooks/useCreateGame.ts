@@ -19,7 +19,7 @@ export const useCreateGameAndNavigate = ({
   const navigate = useNavigate();
 
   const registeredMutation = usePostApiGameRegistered(
-    Headers.getDefaultHeaders(authToken!),
+    Headers.getDefaultHeadersWithAuth(authToken!),
   );
 
   const anonymousMutation = usePostApiGameAnonymous(

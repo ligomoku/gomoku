@@ -22,10 +22,9 @@ const JoinGameComponent = ({
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken, anonymousSessionId } = useAuthToken();
 
-  // Game history queries
   const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
-    Headers.getDefaultHeaders(jwtToken!),
-    { gameId: gameID },
+    gameID,
+    Headers.getDefaultHeadersWithAuth(jwtToken!),
     {
       query: {
         enabled: !!jwtToken,
@@ -34,8 +33,8 @@ const JoinGameComponent = ({
   );
 
   const { data: anonymousGameHistory } = useGetApiGameAnonymousGameidHistory(
+    gameID,
     Headers.getDefaultHeaders(),
-    { gameId: gameID },
     {
       query: {
         enabled: !jwtToken,
@@ -43,15 +42,14 @@ const JoinGameComponent = ({
     },
   );
 
-  // Join game mutations
   const registeredJoinMutation = usePostApiGameRegisteredGameidJoin(
-    Headers.getDefaultHeaders(jwtToken!),
-    { gameId: gameID },
+    gameID,
+    Headers.getDefaultHeadersWithAuth(jwtToken!),
   );
 
   const anonymousJoinMutation = usePostApiGameAnonymousGameidJoin(
+    gameID,
     Headers.getDefaultHeaders(),
-    { gameId: gameID },
   );
 
   const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
@@ -64,6 +62,7 @@ const JoinGameComponent = ({
       setIsJoining(true);
       try {
         if (jwtToken) {
+          //@ts-expect-error
           await registeredJoinMutation.mutateAsync(undefined);
         }
 
