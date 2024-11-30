@@ -49,8 +49,8 @@ export type GetApiProfilesUsernameGamesQueryKey = ReturnType<
 >;
 export function getApiProfilesUsernameGamesQueryOptions(
   userName: GetApiProfilesUsernameGamesPathParams["userName"],
-  headers: GetApiProfilesUsernameGames["headerParams"],
   params?: GetApiProfilesUsernameGames["queryParams"],
+  headers?: GetApiProfilesUsernameGames["headerParams"],
   options: GetApiProfilesUsernameGames["client"]["parameters"] = {},
 ) {
   const queryKey = getApiProfilesUsernameGamesQueryKey(userName, params);
@@ -81,8 +81,8 @@ export function useGetApiProfilesUsernameGames<
   TQueryKey extends QueryKey = GetApiProfilesUsernameGamesQueryKey,
 >(
   userName: GetApiProfilesUsernameGamesPathParams["userName"],
-  headers: GetApiProfilesUsernameGames["headerParams"],
   params?: GetApiProfilesUsernameGames["queryParams"],
+  headers?: GetApiProfilesUsernameGames["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -105,8 +105,8 @@ export function useGetApiProfilesUsernameGames<
   const query = useQuery({
     ...(getApiProfilesUsernameGamesQueryOptions(
       userName,
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as QueryObserverOptions),
     queryKey,
@@ -130,8 +130,8 @@ export type GetApiProfilesUsernameGamesSuspenseQueryKey = ReturnType<
 >;
 export function getApiProfilesUsernameGamesSuspenseQueryOptions(
   userName: GetApiProfilesUsernameGamesPathParams["userName"],
-  headers: GetApiProfilesUsernameGames["headerParams"],
   params?: GetApiProfilesUsernameGames["queryParams"],
+  headers?: GetApiProfilesUsernameGames["headerParams"],
   options: GetApiProfilesUsernameGames["client"]["parameters"] = {},
 ) {
   const queryKey = getApiProfilesUsernameGamesSuspenseQueryKey(
@@ -164,8 +164,8 @@ export function useGetApiProfilesUsernameGamesSuspense<
   TQueryKey extends QueryKey = GetApiProfilesUsernameGamesSuspenseQueryKey,
 >(
   userName: GetApiProfilesUsernameGamesPathParams["userName"],
-  headers: GetApiProfilesUsernameGames["headerParams"],
   params?: GetApiProfilesUsernameGames["queryParams"],
+  headers?: GetApiProfilesUsernameGames["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<
@@ -187,8 +187,8 @@ export function useGetApiProfilesUsernameGamesSuspense<
   const query = useSuspenseQuery({
     ...(getApiProfilesUsernameGamesSuspenseQueryOptions(
       userName,
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as UseSuspenseQueryOptions),
     queryKey,

@@ -30,7 +30,7 @@ type PostApiGameAnonymous = {
  * @link /api/game/anonymous
  */
 export function usePostApiGameAnonymous(
-  headers: PostApiGameAnonymous["headerParams"],
+  headers?: PostApiGameAnonymous["headerParams"],
   options: {
     mutation?: UseMutationOptions<
       PostApiGameAnonymous["response"],

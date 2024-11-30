@@ -48,8 +48,8 @@ export type GetApiGameAnonymousAvailableToJoinQueryKey = ReturnType<
   typeof getApiGameAnonymousAvailableToJoinQueryKey
 >;
 export function getApiGameAnonymousAvailableToJoinQueryOptions(
-  headers: GetApiGameAnonymousAvailableToJoin["headerParams"],
   params?: GetApiGameAnonymousAvailableToJoin["queryParams"],
+  headers?: GetApiGameAnonymousAvailableToJoin["headerParams"],
   options: GetApiGameAnonymousAvailableToJoin["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousAvailableToJoinQueryKey(params);
@@ -78,8 +78,8 @@ export function useGetApiGameAnonymousAvailableToJoin<
   TQueryData = GetApiGameAnonymousAvailableToJoin["response"],
   TQueryKey extends QueryKey = GetApiGameAnonymousAvailableToJoinQueryKey,
 >(
-  headers: GetApiGameAnonymousAvailableToJoin["headerParams"],
   params?: GetApiGameAnonymousAvailableToJoin["queryParams"],
+  headers?: GetApiGameAnonymousAvailableToJoin["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -101,8 +101,8 @@ export function useGetApiGameAnonymousAvailableToJoin<
     getApiGameAnonymousAvailableToJoinQueryKey(params);
   const query = useQuery({
     ...(getApiGameAnonymousAvailableToJoinQueryOptions(
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as QueryObserverOptions),
     queryKey,
@@ -124,8 +124,8 @@ export type GetApiGameAnonymousAvailableToJoinSuspenseQueryKey = ReturnType<
   typeof getApiGameAnonymousAvailableToJoinSuspenseQueryKey
 >;
 export function getApiGameAnonymousAvailableToJoinSuspenseQueryOptions(
-  headers: GetApiGameAnonymousAvailableToJoin["headerParams"],
   params?: GetApiGameAnonymousAvailableToJoin["queryParams"],
+  headers?: GetApiGameAnonymousAvailableToJoin["headerParams"],
   options: GetApiGameAnonymousAvailableToJoin["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousAvailableToJoinSuspenseQueryKey(params);
@@ -154,8 +154,8 @@ export function useGetApiGameAnonymousAvailableToJoinSuspense<
   TQueryKey extends
     QueryKey = GetApiGameAnonymousAvailableToJoinSuspenseQueryKey,
 >(
-  headers: GetApiGameAnonymousAvailableToJoin["headerParams"],
   params?: GetApiGameAnonymousAvailableToJoin["queryParams"],
+  headers?: GetApiGameAnonymousAvailableToJoin["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<
@@ -179,8 +179,8 @@ export function useGetApiGameAnonymousAvailableToJoinSuspense<
     getApiGameAnonymousAvailableToJoinSuspenseQueryKey(params);
   const query = useSuspenseQuery({
     ...(getApiGameAnonymousAvailableToJoinSuspenseQueryOptions(
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as UseSuspenseQueryOptions),
     queryKey,

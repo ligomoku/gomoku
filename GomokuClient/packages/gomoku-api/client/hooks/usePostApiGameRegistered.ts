@@ -52,7 +52,11 @@ export function usePostApiGameRegistered(
         method: "post",
         url: `/api/game/registered`,
         data,
-        headers: { ...headers, ...clientOptions.headers },
+        headers: {
+          "Content-Type": "application/*+json",
+          ...headers,
+          ...clientOptions.headers,
+        },
         ...clientOptions,
       });
       return res.data;

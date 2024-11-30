@@ -21,11 +21,6 @@ export type GetApiProfilesUsernameGamesHeaderParams = {
    * @type string | undefined
    */
   "X-Version"?: string;
-  /**
-   * @default "application/json"
-   * @type string
-   */
-  "Content-Type": string;
 };
 /**
  * @description Information about user games

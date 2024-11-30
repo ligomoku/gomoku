@@ -42,8 +42,8 @@ export const HomeGame = () => {
   );
 
   const { data: anonymousGames } = useGetApiGameAnonymousAvailableToJoin(
-    Headers.getDefaultHeaders(),
     undefined,
+    Headers.getDefaultHeaders(),
     {
       query: {
         enabled: !jwtToken,
@@ -64,8 +64,8 @@ export const HomeGame = () => {
   );
 
   const { data: anonymousActiveGames } = useGetApiGameAnonymousActive(
-    Headers.getDefaultHeaders(),
     undefined,
+    Headers.getDefaultHeaders(),
     {
       query: {
         enabled: !jwtToken,

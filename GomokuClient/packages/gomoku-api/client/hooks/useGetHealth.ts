@@ -33,7 +33,7 @@ type GetHealth = {
 export const getHealthQueryKey = () => [{ url: "/health" }] as const;
 export type GetHealthQueryKey = ReturnType<typeof getHealthQueryKey>;
 export function getHealthQueryOptions(
-  headers: GetHealth["headerParams"],
+  headers?: GetHealth["headerParams"],
   options: GetHealth["client"]["parameters"] = {},
 ) {
   const queryKey = getHealthQueryKey();
@@ -59,7 +59,7 @@ export function useGetHealth<
   TQueryData = GetHealth["response"],
   TQueryKey extends QueryKey = GetHealthQueryKey,
 >(
-  headers: GetHealth["headerParams"],
+  headers?: GetHealth["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -95,7 +95,7 @@ export type GetHealthSuspenseQueryKey = ReturnType<
   typeof getHealthSuspenseQueryKey
 >;
 export function getHealthSuspenseQueryOptions(
-  headers: GetHealth["headerParams"],
+  headers?: GetHealth["headerParams"],
   options: GetHealth["client"]["parameters"] = {},
 ) {
   const queryKey = getHealthSuspenseQueryKey();
@@ -120,7 +120,7 @@ export function useGetHealthSuspense<
   TData = GetHealth["response"],
   TQueryKey extends QueryKey = GetHealthSuspenseQueryKey,
 >(
-  headers: GetHealth["headerParams"],
+  headers?: GetHealth["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<

@@ -13,11 +13,6 @@ export type PostApiGameAnonymousGameidJoinHeaderParams = {
    * @type string | undefined
    */
   "X-Version"?: string;
-  /**
-   * @default "application/json"
-   * @type string
-   */
-  "Content-Type": string;
 };
 /**
  * @description Player with specified id successfully joined the game

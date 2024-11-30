@@ -47,7 +47,7 @@ export type GetApiGameAnonymousGameidHistoryQueryKey = ReturnType<
 >;
 export function getApiGameAnonymousGameidHistoryQueryOptions(
   gameId: GetApiGameAnonymousGameidHistoryPathParams["gameId"],
-  headers: GetApiGameAnonymousGameidHistory["headerParams"],
+  headers?: GetApiGameAnonymousGameidHistory["headerParams"],
   options: GetApiGameAnonymousGameidHistory["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousGameidHistoryQueryKey(gameId);
@@ -76,7 +76,7 @@ export function useGetApiGameAnonymousGameidHistory<
   TQueryKey extends QueryKey = GetApiGameAnonymousGameidHistoryQueryKey,
 >(
   gameId: GetApiGameAnonymousGameidHistoryPathParams["gameId"],
-  headers: GetApiGameAnonymousGameidHistory["headerParams"],
+  headers?: GetApiGameAnonymousGameidHistory["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -120,7 +120,7 @@ export type GetApiGameAnonymousGameidHistorySuspenseQueryKey = ReturnType<
 >;
 export function getApiGameAnonymousGameidHistorySuspenseQueryOptions(
   gameId: GetApiGameAnonymousGameidHistoryPathParams["gameId"],
-  headers: GetApiGameAnonymousGameidHistory["headerParams"],
+  headers?: GetApiGameAnonymousGameidHistory["headerParams"],
   options: GetApiGameAnonymousGameidHistory["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousGameidHistorySuspenseQueryKey(gameId);
@@ -148,7 +148,7 @@ export function useGetApiGameAnonymousGameidHistorySuspense<
   TQueryKey extends QueryKey = GetApiGameAnonymousGameidHistorySuspenseQueryKey,
 >(
   gameId: GetApiGameAnonymousGameidHistoryPathParams["gameId"],
-  headers: GetApiGameAnonymousGameidHistory["headerParams"],
+  headers?: GetApiGameAnonymousGameidHistory["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<

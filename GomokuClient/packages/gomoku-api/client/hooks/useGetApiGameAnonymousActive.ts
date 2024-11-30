@@ -43,8 +43,8 @@ export type GetApiGameAnonymousActiveQueryKey = ReturnType<
   typeof getApiGameAnonymousActiveQueryKey
 >;
 export function getApiGameAnonymousActiveQueryOptions(
-  headers: GetApiGameAnonymousActive["headerParams"],
   params?: GetApiGameAnonymousActive["queryParams"],
+  headers?: GetApiGameAnonymousActive["headerParams"],
   options: GetApiGameAnonymousActive["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousActiveQueryKey(params);
@@ -73,8 +73,8 @@ export function useGetApiGameAnonymousActive<
   TQueryData = GetApiGameAnonymousActive["response"],
   TQueryKey extends QueryKey = GetApiGameAnonymousActiveQueryKey,
 >(
-  headers: GetApiGameAnonymousActive["headerParams"],
   params?: GetApiGameAnonymousActive["queryParams"],
+  headers?: GetApiGameAnonymousActive["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -95,8 +95,8 @@ export function useGetApiGameAnonymousActive<
     queryOptions?.queryKey ?? getApiGameAnonymousActiveQueryKey(params);
   const query = useQuery({
     ...(getApiGameAnonymousActiveQueryOptions(
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as QueryObserverOptions),
     queryKey,
@@ -115,8 +115,8 @@ export type GetApiGameAnonymousActiveSuspenseQueryKey = ReturnType<
   typeof getApiGameAnonymousActiveSuspenseQueryKey
 >;
 export function getApiGameAnonymousActiveSuspenseQueryOptions(
-  headers: GetApiGameAnonymousActive["headerParams"],
   params?: GetApiGameAnonymousActive["queryParams"],
+  headers?: GetApiGameAnonymousActive["headerParams"],
   options: GetApiGameAnonymousActive["client"]["parameters"] = {},
 ) {
   const queryKey = getApiGameAnonymousActiveSuspenseQueryKey(params);
@@ -144,8 +144,8 @@ export function useGetApiGameAnonymousActiveSuspense<
   TData = GetApiGameAnonymousActive["response"],
   TQueryKey extends QueryKey = GetApiGameAnonymousActiveSuspenseQueryKey,
 >(
-  headers: GetApiGameAnonymousActive["headerParams"],
   params?: GetApiGameAnonymousActive["queryParams"],
+  headers?: GetApiGameAnonymousActive["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<
@@ -165,8 +165,8 @@ export function useGetApiGameAnonymousActiveSuspense<
     queryOptions?.queryKey ?? getApiGameAnonymousActiveSuspenseQueryKey(params);
   const query = useSuspenseQuery({
     ...(getApiGameAnonymousActiveSuspenseQueryOptions(
-      headers,
       params,
+      headers,
       clientOptions,
     ) as unknown as UseSuspenseQueryOptions),
     queryKey,

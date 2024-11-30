@@ -20,11 +20,6 @@ export type GetApiGameRegisteredActiveHeaderParams = {
    * @type string
    */
   Authorization: string;
-  /**
-   * @default "application/json"
-   * @type string
-   */
-  "Content-Type": string;
 };
 /**
  * @description OK

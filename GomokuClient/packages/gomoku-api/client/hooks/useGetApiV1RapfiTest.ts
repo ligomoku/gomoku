@@ -41,7 +41,7 @@ export type GetApiV1RapfiTestQueryKey = ReturnType<
   typeof getApiV1RapfiTestQueryKey
 >;
 export function getApiV1RapfiTestQueryOptions(
-  headers: GetApiV1RapfiTest["headerParams"],
+  headers?: GetApiV1RapfiTest["headerParams"],
   options: GetApiV1RapfiTest["client"]["parameters"] = {},
 ) {
   const queryKey = getApiV1RapfiTestQueryKey();
@@ -70,7 +70,7 @@ export function useGetApiV1RapfiTest<
   TQueryData = GetApiV1RapfiTest["response"],
   TQueryKey extends QueryKey = GetApiV1RapfiTestQueryKey,
 >(
-  headers: GetApiV1RapfiTest["headerParams"],
+  headers?: GetApiV1RapfiTest["headerParams"],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -107,7 +107,7 @@ export type GetApiV1RapfiTestSuspenseQueryKey = ReturnType<
   typeof getApiV1RapfiTestSuspenseQueryKey
 >;
 export function getApiV1RapfiTestSuspenseQueryOptions(
-  headers: GetApiV1RapfiTest["headerParams"],
+  headers?: GetApiV1RapfiTest["headerParams"],
   options: GetApiV1RapfiTest["client"]["parameters"] = {},
 ) {
   const queryKey = getApiV1RapfiTestSuspenseQueryKey();
@@ -135,7 +135,7 @@ export function useGetApiV1RapfiTestSuspense<
   TData = GetApiV1RapfiTest["response"],
   TQueryKey extends QueryKey = GetApiV1RapfiTestSuspenseQueryKey,
 >(
-  headers: GetApiV1RapfiTest["headerParams"],
+  headers?: GetApiV1RapfiTest["headerParams"],
   options: {
     query?: Partial<
       UseSuspenseQueryOptions<

@@ -33,7 +33,7 @@ type PostApiGameAnonymousGameidJoin = {
  */
 export function usePostApiGameAnonymousGameidJoin(
   gameId: PostApiGameAnonymousGameidJoinPathParams["gameId"],
-  headers: PostApiGameAnonymousGameidJoin["headerParams"],
+  headers?: PostApiGameAnonymousGameidJoin["headerParams"],
   options: {
     mutation?: UseMutationOptions<
       PostApiGameAnonymousGameidJoin["response"],
