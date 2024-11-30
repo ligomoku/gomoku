@@ -137,7 +137,7 @@ export const HomeGame = () => {
 const useFetchGames = (authToken: string) =>
   useQuery<
     SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinData,
+    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
     SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
     [string, string | null]
   >({
@@ -167,7 +167,7 @@ const useFetchGames = (authToken: string) =>
 const useFetchActiveGames = (authToken: string) =>
   useQuery<
     SwaggerTypes.GetApiGameRegisteredActiveResponse,
-    SwaggerTypes.GetApiGameRegisteredActiveData
+    SwaggerTypes.GetApiGameRegisteredActiveError
   >({
     queryKey: ["gamesActive", null],
     queryFn: async () => {
@@ -192,7 +192,7 @@ const useFetchActiveGames = (authToken: string) =>
     refetchInterval: 5000,
   });
 
-const gameTypes: GameType[] = [
+export const gameTypes: GameType[] = [
   {
     timeLabel: "1+0",
     type: t`Bullet`,

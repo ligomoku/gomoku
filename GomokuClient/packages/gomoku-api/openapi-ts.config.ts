@@ -2,26 +2,17 @@ import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
   client: "@hey-api/client-fetch",
-  input: {
-    path: "schema.json",
-    include: ".*",
-  },
+  input: "schema.json",
   output: {
-    path: "client",
     format: "prettier",
     lint: "eslint",
+    path: "client",
   },
-  plugins: [
-    "@tanstack/react-query",
-    {
-      name: "@hey-api/typescript",
-      enums: "javascript",
-      style: "PascalCase",
-    },
-    {
-      name: "@hey-api/transformers",
-      dates: true,
-    },
-  ],
-  experimentalParser: true,
+  plugins: ["@tanstack/react-query"],
+  // @ts-ignore
+  types: {
+    enums: "javascript",
+    name: "PascalCase",
+    dates: "types+transform",
+  },
 });

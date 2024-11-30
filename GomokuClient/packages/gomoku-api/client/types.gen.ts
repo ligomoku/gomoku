@@ -87,7 +87,7 @@ export type GetGamesByUsernameResponse = {
   isCompleted: boolean;
   winner?: string | null;
   gen: string;
-  date: Date;
+  date: string;
   timeControl?: TimeControlDto;
   clock?: ClockDto;
 };
@@ -125,14 +125,7 @@ export type ProblemDetails = {
   status?: number | null;
   detail?: string | null;
   instance?: string | null;
-  [key: string]:
-    | unknown
-    | (string | null)
-    | (string | null)
-    | (number | null)
-    | (string | null)
-    | (string | null)
-    | undefined;
+  [key: string]: (unknown | string | number) | undefined;
 };
 
 export type ProfileDto = {
@@ -172,173 +165,93 @@ export type UsernamesDto = {
 };
 
 export type GetApiGameAnonymousByGameIdHistoryData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
   };
-  query?: never;
-  url: "/api/game/anonymous/{gameId}/history";
 };
 
-export type GetApiGameAnonymousByGameIdHistoryErrors = {
-  /**
-   * Not Found
-   */
-  404: ProblemDetails;
-};
+export type GetApiGameAnonymousByGameIdHistoryResponse = GetGameHistoryResponse;
 
-export type GetApiGameAnonymousByGameIdHistoryError =
-  GetApiGameAnonymousByGameIdHistoryErrors[keyof GetApiGameAnonymousByGameIdHistoryErrors];
-
-export type GetApiGameAnonymousByGameIdHistoryResponses = {
-  /**
-   * OK
-   */
-  200: GetGameHistoryResponse;
-};
-
-export type GetApiGameAnonymousByGameIdHistoryResponse =
-  GetApiGameAnonymousByGameIdHistoryResponses[keyof GetApiGameAnonymousByGameIdHistoryResponses];
+export type GetApiGameAnonymousByGameIdHistoryError = ProblemDetails;
 
 export type GetApiGameAnonymousAvailableToJoinData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
   query?: {
     limit?: number;
     offset?: number;
   };
-  url: "/api/game/anonymous/available-to-join";
-};
-
-export type GetApiGameAnonymousAvailableToJoinResponses = {
-  /**
-   * OK
-   */
-  200: GetAvailableGamesResponseIEnumerablePaginatedResponse;
 };
 
 export type GetApiGameAnonymousAvailableToJoinResponse =
-  GetApiGameAnonymousAvailableToJoinResponses[keyof GetApiGameAnonymousAvailableToJoinResponses];
+  GetAvailableGamesResponseIEnumerablePaginatedResponse;
+
+export type GetApiGameAnonymousAvailableToJoinError = unknown;
 
 export type GetApiGameAnonymousActiveData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
   query?: {
     limit?: number;
     offset?: number;
   };
-  url: "/api/game/anonymous/active";
-};
-
-export type GetApiGameAnonymousActiveResponses = {
-  /**
-   * OK
-   */
-  200: GetActiveGamesResponseIEnumerablePaginatedResponse;
 };
 
 export type GetApiGameAnonymousActiveResponse =
-  GetApiGameAnonymousActiveResponses[keyof GetApiGameAnonymousActiveResponses];
+  GetActiveGamesResponseIEnumerablePaginatedResponse;
+
+export type GetApiGameAnonymousActiveError = unknown;
 
 export type PostApiGameAnonymousData = {
   body?: CreateGameRequest;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
-  query?: never;
-  url: "/api/game/anonymous";
 };
 
-export type PostApiGameAnonymousErrors = {
-  /**
-   * Bad Request
-   */
-  400: ProblemDetails;
-};
+export type PostApiGameAnonymousResponse = CreateGameResponse;
 
-export type PostApiGameAnonymousError =
-  PostApiGameAnonymousErrors[keyof PostApiGameAnonymousErrors];
-
-export type PostApiGameAnonymousResponses = {
-  /**
-   * OK
-   */
-  200: CreateGameResponse;
-};
-
-export type PostApiGameAnonymousResponse =
-  PostApiGameAnonymousResponses[keyof PostApiGameAnonymousResponses];
+export type PostApiGameAnonymousError = ProblemDetails;
 
 export type PostApiGameAnonymousByGameIdJoinData = {
   body?: AddAnonymousPlayerToGameRequest;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
   };
-  query?: never;
-  url: "/api/game/anonymous/{gameId}/join";
 };
 
-export type PostApiGameAnonymousByGameIdJoinErrors = {
-  /**
-   * Game or player with specified id not found
-   */
-  404: ProblemDetails;
-};
+export type PostApiGameAnonymousByGameIdJoinResponse = AddPlayerToGameResponse;
 
-export type PostApiGameAnonymousByGameIdJoinError =
-  PostApiGameAnonymousByGameIdJoinErrors[keyof PostApiGameAnonymousByGameIdJoinErrors];
-
-export type PostApiGameAnonymousByGameIdJoinResponses = {
-  /**
-   * Player with specified id successfully joined the game
-   */
-  200: AddPlayerToGameResponse;
-};
-
-export type PostApiGameAnonymousByGameIdJoinResponse =
-  PostApiGameAnonymousByGameIdJoinResponses[keyof PostApiGameAnonymousByGameIdJoinResponses];
+export type PostApiGameAnonymousByGameIdJoinError = ProblemDetails;
 
 export type GetHealthData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
-  query?: never;
-  url: "/health";
 };
 
-export type GetHealthResponses = {
-  /**
-   * Server is running
-   */
-  200: unknown;
-};
+export type GetHealthResponse = unknown;
+
+export type GetHealthError = unknown;
 
 export type GetApiProfilesByUserNameGamesData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
   path: {
     userName: string;
@@ -347,370 +260,218 @@ export type GetApiProfilesByUserNameGamesData = {
     limit?: number;
     offset?: number;
   };
-  url: "/api/profiles/{userName}/games";
-};
-
-export type GetApiProfilesByUserNameGamesResponses = {
-  /**
-   * Information about user games
-   */
-  200: GetGamesByUsernameResponseIEnumerablePaginatedResponse;
 };
 
 export type GetApiProfilesByUserNameGamesResponse =
-  GetApiProfilesByUserNameGamesResponses[keyof GetApiProfilesByUserNameGamesResponses];
+  GetGamesByUsernameResponseIEnumerablePaginatedResponse;
+
+export type GetApiProfilesByUserNameGamesError = unknown;
 
 export type GetApiV1RapfiTestData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
-  query?: never;
-  url: "/api/v1/rapfi/test";
 };
 
-export type GetApiV1RapfiTestErrors = {
-  /**
-   * Connection failed
-   */
-  500: unknown;
-};
+export type GetApiV1RapfiTestResponse = unknown;
 
-export type GetApiV1RapfiTestResponses = {
-  /**
-   * Connection successful
-   */
-  200: unknown;
-};
+export type GetApiV1RapfiTestError = unknown;
 
 export type GetApiGameRegisteredByGameIdHistoryData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     Authorization: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
   };
-  query?: never;
-  url: "/api/game/registered/{gameId}/history";
-};
-
-export type GetApiGameRegisteredByGameIdHistoryErrors = {
-  /**
-   * Not Found
-   */
-  404: ProblemDetails;
-};
-
-export type GetApiGameRegisteredByGameIdHistoryError =
-  GetApiGameRegisteredByGameIdHistoryErrors[keyof GetApiGameRegisteredByGameIdHistoryErrors];
-
-export type GetApiGameRegisteredByGameIdHistoryResponses = {
-  /**
-   * OK
-   */
-  200: GetGameHistoryResponse;
 };
 
 export type GetApiGameRegisteredByGameIdHistoryResponse =
-  GetApiGameRegisteredByGameIdHistoryResponses[keyof GetApiGameRegisteredByGameIdHistoryResponses];
+  GetGameHistoryResponse;
+
+export type GetApiGameRegisteredByGameIdHistoryError = ProblemDetails;
 
 export type GetApiGameRegisteredAvailableToJoinData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     Authorization: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
   query?: {
     limit?: number;
     offset?: number;
   };
-  url: "/api/game/registered/available-to-join";
-};
-
-export type GetApiGameRegisteredAvailableToJoinResponses = {
-  /**
-   * OK
-   */
-  200: GetAvailableGamesResponseIEnumerablePaginatedResponse;
 };
 
 export type GetApiGameRegisteredAvailableToJoinResponse =
-  GetApiGameRegisteredAvailableToJoinResponses[keyof GetApiGameRegisteredAvailableToJoinResponses];
+  GetAvailableGamesResponseIEnumerablePaginatedResponse;
+
+export type GetApiGameRegisteredAvailableToJoinError = unknown;
 
 export type GetApiGameRegisteredActiveData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     Authorization: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
   query?: {
     limit?: number;
     offset?: number;
   };
-  url: "/api/game/registered/active";
-};
-
-export type GetApiGameRegisteredActiveResponses = {
-  /**
-   * OK
-   */
-  200: GetActiveGamesResponseIEnumerablePaginatedResponse;
 };
 
 export type GetApiGameRegisteredActiveResponse =
-  GetApiGameRegisteredActiveResponses[keyof GetApiGameRegisteredActiveResponses];
+  GetActiveGamesResponseIEnumerablePaginatedResponse;
+
+export type GetApiGameRegisteredActiveError = unknown;
 
 export type PostApiGameRegisteredData = {
   body?: CreateGameRequest;
   headers: {
-    "X-Version"?: string;
     Authorization: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
-  path?: never;
-  query?: never;
-  url: "/api/game/registered";
 };
 
-export type PostApiGameRegisteredErrors = {
-  /**
-   * Bad Request
-   */
-  400: ProblemDetails;
-};
+export type PostApiGameRegisteredResponse = CreateGameResponse;
 
-export type PostApiGameRegisteredError =
-  PostApiGameRegisteredErrors[keyof PostApiGameRegisteredErrors];
-
-export type PostApiGameRegisteredResponses = {
-  /**
-   * OK
-   */
-  200: CreateGameResponse;
-};
-
-export type PostApiGameRegisteredResponse =
-  PostApiGameRegisteredResponses[keyof PostApiGameRegisteredResponses];
+export type PostApiGameRegisteredError = ProblemDetails;
 
 export type PostApiGameRegisteredByGameIdJoinData = {
-  body?: never;
   headers: {
-    "X-Version"?: string;
     Authorization: string;
     "Content-Type": string;
+    "X-Version"?: string;
   };
   path: {
     gameId: string;
   };
-  query?: never;
-  url: "/api/game/registered/{gameId}/join";
 };
 
-export type PostApiGameRegisteredByGameIdJoinErrors = {
-  /**
-   * Game or player with specified id not found
-   */
-  404: ProblemDetails;
-};
+export type PostApiGameRegisteredByGameIdJoinResponse = AddPlayerToGameResponse;
 
-export type PostApiGameRegisteredByGameIdJoinError =
-  PostApiGameRegisteredByGameIdJoinErrors[keyof PostApiGameRegisteredByGameIdJoinErrors];
-
-export type PostApiGameRegisteredByGameIdJoinResponses = {
-  /**
-   * Player with specified id successfully joined the game
-   */
-  200: AddPlayerToGameResponse;
-};
-
-export type PostApiGameRegisteredByGameIdJoinResponse =
-  PostApiGameRegisteredByGameIdJoinResponses[keyof PostApiGameRegisteredByGameIdJoinResponses];
+export type PostApiGameRegisteredByGameIdJoinError = ProblemDetails;
 
 export type PostGamehubAnonymousJoinGameGroupData = {
-  body?: never;
-  path?: never;
   query?: {
     gameId?: string;
   };
-  url: "/gamehub/anonymous/JoinGameGroup";
 };
 
 export type PostGamehubAnonymousGetClockData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: GetClockMessage;
   };
-  url: "/gamehub/anonymous/GetClock";
 };
 
 export type PostGamehubAnonymousMakeMoveData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: MakeMoveClientMessage;
   };
-  url: "/gamehub/anonymous/MakeMove";
 };
 
 export type PostGamehubAnonymousRequestUndoData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: RequestUndoMessage;
   };
-  url: "/gamehub/anonymous/RequestUndo";
 };
 
 export type PostGamehubAnonymousApproveUndoData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ApproveUndoMessage;
   };
-  url: "/gamehub/anonymous/ApproveUndo";
 };
 
 export type PostGamehubAnonymousResignData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ResignClientMessage;
   };
-  url: "/gamehub/anonymous/Resign";
 };
 
 export type PostGamehubAnonymousRequestRematchData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: RematchRequestMessage;
   };
-  url: "/gamehub/anonymous/RequestRematch";
 };
 
 export type PostGamehubAnonymousApproveRematchData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ApproveRematchMessage;
   };
-  url: "/gamehub/anonymous/ApproveRematch";
 };
 
 export type PostGamehubAnonymousSendMessageData = {
-  body?: never;
-  path?: never;
   query?: {
     messageRequest?: ChatMessageClientMessage;
   };
-  url: "/gamehub/anonymous/SendMessage";
 };
 
 export type PostGamehubAnonymousSendInvitationToPlayData = {
-  body?: never;
-  path?: never;
   query?: {
     _?: SendInvitationToPlayMessage;
   };
-  url: "/gamehub/anonymous/SendInvitationToPlay";
 };
 
 export type PostGamehubRegisteredJoinGameGroupData = {
-  body?: never;
-  path?: never;
   query?: {
     gameId?: string;
   };
-  url: "/gamehub/registered/JoinGameGroup";
 };
 
 export type PostGamehubRegisteredGetClockData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: GetClockMessage;
   };
-  url: "/gamehub/registered/GetClock";
 };
 
 export type PostGamehubRegisteredMakeMoveData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: MakeMoveClientMessage;
   };
-  url: "/gamehub/registered/MakeMove";
 };
 
 export type PostGamehubRegisteredRequestUndoData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: RequestUndoMessage;
   };
-  url: "/gamehub/registered/RequestUndo";
 };
 
 export type PostGamehubRegisteredApproveUndoData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ApproveUndoMessage;
   };
-  url: "/gamehub/registered/ApproveUndo";
 };
 
 export type PostGamehubRegisteredResignData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ResignClientMessage;
   };
-  url: "/gamehub/registered/Resign";
 };
 
 export type PostGamehubRegisteredRequestRematchData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: RematchRequestMessage;
   };
-  url: "/gamehub/registered/RequestRematch";
 };
 
 export type PostGamehubRegisteredApproveRematchData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: ApproveRematchMessage;
   };
-  url: "/gamehub/registered/ApproveRematch";
 };
 
 export type PostGamehubRegisteredSendMessageData = {
-  body?: never;
-  path?: never;
   query?: {
     messageRequest?: ChatMessageClientMessage;
   };
-  url: "/gamehub/registered/SendMessage";
 };
 
 export type PostGamehubRegisteredSendInvitationToPlayData = {
-  body?: never;
-  path?: never;
   query?: {
     message?: SendInvitationToPlayMessage;
   };
-  url: "/gamehub/registered/SendInvitationToPlay";
 };
