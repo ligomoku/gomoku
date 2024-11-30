@@ -1,6 +1,10 @@
-import { SwaggerServices } from "@gomoku/api";
+import {
+  useGetApiGameRegisteredGameidHistory,
+  useGetApiGameAnonymousGameidHistory,
+  usePostApiGameRegisteredGameidJoin,
+  usePostApiGameAnonymousGameidJoin,
+} from "@gomoku/api/client/hooks";
 import { LoadingOverlay, toaster } from "@gomoku/story";
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
@@ -8,67 +12,7 @@ import type { SwaggerTypes } from "@gomoku/api";
 
 import { useAuthToken } from "@/context";
 import JoinGame from "@/pages/JoinGame";
-import { fetchAuthFallback, Headers } from "@/utils";
-
-export const getGameHistory = async (
-  gameId: string,
-  jwtToken?: string,
-): Promise<SwaggerTypes.GetGameHistoryResponse> => {
-  const response = await fetchAuthFallback<SwaggerTypes.GetGameHistoryResponse>(
-    jwtToken,
-    async (token) =>
-      SwaggerServices.getApiGameRegisteredByGameIdHistory({
-        headers: Headers.getDefaultHeaders(token),
-        path: { gameId },
-      }),
-    async () =>
-      SwaggerServices.getApiGameAnonymousByGameIdHistory({
-        headers: Headers.getDefaultHeaders(),
-        path: { gameId },
-      }),
-  );
-
-  if (!response.data) {
-    throw new Error("Game history not received!");
-  }
-
-  return response.data;
-};
-
-const joinRegisteredGame = async (
-  gameID: SwaggerTypes.CreateGameResponse["gameId"],
-  jwtToken: string,
-) => {
-  const response = await SwaggerServices.postApiGameRegisteredByGameIdJoin({
-    path: { gameId: gameID },
-    headers: Headers.getDefaultHeaders(jwtToken),
-  });
-
-  if (!response.data) {
-    throw new Error("Failed to join game!");
-  }
-
-  return response.data;
-};
-
-const joinAnonymousGame = async (
-  gameID: SwaggerTypes.CreateGameResponse["gameId"],
-  playerID: string,
-) => {
-  const response = await SwaggerServices.postApiGameAnonymousByGameIdJoin({
-    path: { gameId: gameID },
-    headers: Headers.getDefaultHeaders(),
-    body: {
-      playerId: playerID,
-    },
-  });
-
-  if (!response.data) {
-    throw new Error("Failed to join game!");
-  }
-
-  return response.data;
-};
+import { Headers } from "@/utils";
 
 const JoinGameComponent = ({
   gameID,
@@ -78,28 +22,55 @@ const JoinGameComponent = ({
   const [isJoining, setIsJoining] = useState(false);
   const { jwtToken, anonymousSessionId } = useAuthToken();
 
-  const {
-    data: gameHistory,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["gameHistory", gameID],
-    queryFn: () => getGameHistory(gameID, jwtToken),
-  });
+  // Game history queries
+  const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
+    Headers.getDefaultHeaders(jwtToken!),
+    { gameId: gameID },
+    {
+      query: {
+        enabled: !!jwtToken,
+      },
+    },
+  );
+
+  const { data: anonymousGameHistory } = useGetApiGameAnonymousGameidHistory(
+    Headers.getDefaultHeaders(),
+    { gameId: gameID },
+    {
+      query: {
+        enabled: !jwtToken,
+      },
+    },
+  );
+
+  // Join game mutations
+  const registeredJoinMutation = usePostApiGameRegisteredGameidJoin(
+    Headers.getDefaultHeaders(jwtToken!),
+    { gameId: gameID },
+  );
+
+  const anonymousJoinMutation = usePostApiGameAnonymousGameidJoin(
+    Headers.getDefaultHeaders(),
+    { gameId: gameID },
+  );
+
+  const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
 
   useEffect(() => {
     if (!gameHistory) return;
 
-    const asyncJoinGame = async () => {
+    const joinGame = async () => {
       if (gameHistory.players.black || gameHistory.players.white) return;
       setIsJoining(true);
       try {
         if (jwtToken) {
-          await joinRegisteredGame(gameID, jwtToken);
+          await registeredJoinMutation.mutateAsync(undefined);
         }
 
         if (anonymousSessionId) {
-          await joinAnonymousGame(gameID, anonymousSessionId);
+          await anonymousJoinMutation.mutateAsync({
+            playerId: anonymousSessionId,
+          });
         }
       } catch (err) {
         console.error("Error joining game:", err);
@@ -109,12 +80,17 @@ const JoinGameComponent = ({
       }
     };
 
-    asyncJoinGame();
-  }, [gameHistory, gameID, jwtToken, anonymousSessionId]);
+    joinGame();
+  }, [
+    gameHistory,
+    gameID,
+    jwtToken,
+    anonymousSessionId,
+    registeredJoinMutation,
+    anonymousJoinMutation,
+  ]);
 
-  if (isLoading || isJoining || !gameHistory)
-    return <LoadingOverlay isVisible />;
-  if (error) return <div>Error loading game history {error.toString()}</div>;
+  if (!gameHistory || isJoining) return <LoadingOverlay isVisible />;
 
   return <JoinGame gameHistory={gameHistory} />;
 };

@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import type { PostGamehubRegisteredResignMutationResponse, PostGamehubRegisteredResignQueryParams } from "../models/PostGamehubRegisteredResign";
 import type { UseMutationOptions } from "@tanstack/react-query";

@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import type { PostGamehubAnonymousGetclockMutationResponse, PostGamehubAnonymousGetclockQueryParams } from "../models/PostGamehubAnonymousGetclock";
 import type { UseMutationOptions } from "@tanstack/react-query";

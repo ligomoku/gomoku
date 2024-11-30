@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import type { PostGamehubAnonymousApproverematchMutationResponse, PostGamehubAnonymousApproverematchQueryParams } from "../models/PostGamehubAnonymousApproverematch";
 import type { UseMutationOptions } from "@tanstack/react-query";

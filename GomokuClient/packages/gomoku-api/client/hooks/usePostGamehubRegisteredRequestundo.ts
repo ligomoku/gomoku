@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import type { PostGamehubRegisteredRequestundoMutationResponse, PostGamehubRegisteredRequestundoQueryParams } from "../models/PostGamehubRegisteredRequestundo";
 import type { UseMutationOptions } from "@tanstack/react-query";

@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useMutation } from "@tanstack/react-query";
 import type { PostApiGameRegisteredGameidJoinMutationResponse, PostApiGameRegisteredGameidJoinPathParams, PostApiGameRegisteredGameidJoinHeaderParams, PostApiGameRegisteredGameidJoin404 } from "../models/PostApiGameRegisteredGameidJoin";
 import type { UseMutationOptions } from "@tanstack/react-query";

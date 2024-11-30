@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useQuery, queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import type { GetApiGameRegisteredAvailableToJoinQueryResponse, GetApiGameRegisteredAvailableToJoinQueryParams, GetApiGameRegisteredAvailableToJoinHeaderParams } from "../models/GetApiGameRegisteredAvailableToJoin";
 import type { QueryObserverOptions, UseQueryResult, QueryKey, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";

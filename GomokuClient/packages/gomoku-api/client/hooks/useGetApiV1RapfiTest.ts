@@ -1,4 +1,4 @@
-import client from "../client";
+import client from "../../http";
 import { useQuery, queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import type { GetApiV1RapfiTestQueryResponse, GetApiV1RapfiTestHeaderParams, GetApiV1RapfiTest500 } from "../models/GetApiV1RapfiTest";
 import type { QueryObserverOptions, UseQueryResult, QueryKey, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
