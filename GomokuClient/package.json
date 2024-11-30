@@ -13,7 +13,7 @@
     "dev": "turbo run dev",
     "build": "yarn workspace @gomoku/story build && turbo run build",
     "build:storybook": "yarn workspace @gomoku/story build-storybook",
-    "lint": "turbo run lint --filter=@gomoku/core",
+    "lint": "turbo run lint --filter=@gomoku/core --filter=@gomoku/api --filter=@gomoku/story",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
     "typecheck": "turbo run typecheck --filter=@gomoku/core",
     "format": "prettier . --write",

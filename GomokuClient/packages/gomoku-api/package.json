@@ -15,10 +15,15 @@
     "download:ci": "sh ./scripts/download-openapi-document.sh CI",
     "codegen": "openapi-ts"
   },
+  "type": "module",
   "dependencies": {
     "@gomoku/eslint-config": "*",
     "@hey-api/client-fetch": "^0.5.0",
     "@hey-api/openapi-ts": "^0.57.1",
     "@tanstack/react-query": "^5.62.0"
+  },
+  "devDependencies": {
+    "@gomoku/eslint-config": "*",
+    "typescript-eslint": "^8.15.0"
   }
 }

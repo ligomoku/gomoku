@@ -941,6 +941,7 @@ __metadata:
     "@hey-api/client-fetch": "npm:^0.5.0"
     "@hey-api/openapi-ts": "npm:^0.57.1"
     "@tanstack/react-query": "npm:^5.62.0"
+    typescript-eslint: "npm:^8.15.0"
   languageName: unknown
   linkType: soft
 
@@ -10354,7 +10355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.16.0":
+"typescript-eslint@npm:^8.15.0, typescript-eslint@npm:^8.16.0":
   version: 8.16.0
   resolution: "typescript-eslint@npm:8.16.0"
   dependencies:

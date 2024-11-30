@@ -39,7 +39,10 @@ const useRapfiEngine = () =>
         throw new Error("Invalid game data received");
       }
 
-      return response.data;
+      return {
+        //TODO: check with docs why we have to map it like this
+        200: response.data,
+      };
     },
     refetchInterval: 5000,
   });

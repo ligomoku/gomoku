@@ -1,5 +1,6 @@
 // @ts-ignore
 import path from "path";
+
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";

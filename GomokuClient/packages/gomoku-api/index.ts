@@ -1,5 +1,5 @@
-import * as SwaggerSchemas from "./client/schemas.gen";
-import * as SwaggerServices from "./client/services.gen";
+import * as SwaggerServices from "./client/sdk.gen";
+import * as SwaggerTransformers from "./client/transformers.gen";
 import * as SwaggerTypes from "./client/types.gen";
 import * as SignalClientMessages from "./hubs/GomokuServer.Api.Hubs.Messages.Client";
 import * as SignalServerMessages from "./hubs/GomokuServer.Api.Hubs.Messages.Server";
@@ -9,8 +9,8 @@ import * as SignalRClientService from "./hubs/TypedSignalR.Client/index";
 
 export {
   SwaggerTypes,
+  SwaggerTransformers,
   SwaggerServices,
-  SwaggerSchemas,
   SignalDto,
   SignalClientMessages,
   SignalServerMessages,

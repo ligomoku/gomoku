@@ -1,6 +1,8 @@
-import type { SwaggerTypes } from "@gomoku/api";
-import { Card, CardContent, Spinner } from "@/ui";
 import { useState } from "react";
+
+import type { SwaggerTypes } from "@gomoku/api";
+
+import { Card, CardContent, Spinner } from "@/ui";
 
 export interface GameType {
   timeLabel: string;
