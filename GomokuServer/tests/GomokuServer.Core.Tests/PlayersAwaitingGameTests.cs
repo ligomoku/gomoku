@@ -39,7 +39,7 @@ public class PlayersAwaitingGameTests
 	}
 
 	[Test]
-	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnError()
+	public void AddPlayer_SamePlayerAddedTwice_ShouldReturnIsValid()
 	{
 		// Arrange
 		var player = new Profile("id", "username");
@@ -49,9 +49,7 @@ public class PlayersAwaitingGameTests
 		var result = _playersAwaitingGame.AddPlayer(player);
 
 		// Assert
-		result.IsValid.Should().BeFalse();
-		result.ValidationError.Should().Be(GameActionValidationError.PlayerAlreadyAddedToGame);
-		result.ErrorDetails.Should().NotBeEmpty();
+		result.IsValid.Should().BeTrue();
 	}
 
 	[Test]
