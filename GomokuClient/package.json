@@ -15,7 +15,7 @@
     "build:storybook": "yarn workspace @gomoku/story build-storybook",
     "lint": "turbo run lint --filter=@gomoku/core --filter=@gomoku/api --filter=@gomoku/story",
     "check-convention": "eslint . -c packages/eslint-config-custom/eslint.config.convention.mjs",
-    "typecheck": "turbo run typecheck --filter=@gomoku/core",
+    "typecheck": "turbo run typecheck --filter=@gomoku/core --filter=@gomoku/story",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "storybook": "yarn workspace @gomoku/story storybook",
