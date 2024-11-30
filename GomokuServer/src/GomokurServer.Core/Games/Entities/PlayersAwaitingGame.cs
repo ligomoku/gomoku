@@ -36,9 +36,7 @@ public class PlayersAwaitingGame
 		{
 			return new()
 			{
-				IsValid = false,
-				ValidationError = GameActionValidationError.PlayerAlreadyAddedToGame,
-				ErrorDetails = "Player already added to game"
+				IsValid = true,
 			};
 		}
 
