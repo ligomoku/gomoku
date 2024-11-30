@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/clerk-react";
-import { client } from "@gomoku/api/client.config";
 import { ToasterProvider } from "@gomoku/story";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -49,23 +48,6 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
-// Configure API client
-client.request = async ({ url, method, headers, ...config }) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}${url}`, {
-    method,
-    headers: {
-      ...headers,
-    },
-    ...config,
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {

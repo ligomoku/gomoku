@@ -1,4 +1,3 @@
-// packages/gomoku-api/client/http.ts
 /// <reference types="vite/client" />
 
 export type ClientConfig<TQueryParams = unknown> = {
