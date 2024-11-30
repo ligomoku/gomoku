@@ -941,6 +941,7 @@ __metadata:
     "@hey-api/client-fetch": "npm:^0.5.0"
     "@hey-api/openapi-ts": "npm:^0.57.1"
     "@tanstack/react-query": "npm:^5.62.0"
+    eslint: "npm:^9.16.0"
     typescript-eslint: "npm:^8.15.0"
   languageName: unknown
   linkType: soft
@@ -1055,6 +1056,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.3.4"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    eslint: "npm:^9.16.0"
     lucide-react: "npm:^0.462.0"
     postcss: "npm:^8.4.49"
     react: "npm:^18.3.1"
