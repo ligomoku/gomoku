@@ -122,7 +122,6 @@ export const getApiGameAnonymousActive = <ThrowOnError extends boolean = false>(
 export const postApiGameAnonymous = <ThrowOnError extends boolean = false>(
   options: Options<PostApiGameAnonymousData, ThrowOnError>,
 ) => {
-  // @ts-ignore
   return (options?.client ?? client).post<
     PostApiGameAnonymousResponse,
     PostApiGameAnonymousError,
@@ -130,7 +129,6 @@ export const postApiGameAnonymous = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     headers: {
-      // @ts-ignore
       "Content-Type": "application/json",
       ...options?.headers,
     },
@@ -154,7 +152,6 @@ export const postApiGameAnonymousByGameIdJoin = <
   >({
     ...options,
     headers: {
-      // @ts-ignore
       "Content-Type": "application/json",
       ...options?.headers,
     },
@@ -264,7 +261,6 @@ export const postApiGameRegistered = <ThrowOnError extends boolean = false>(
   >({
     ...options,
     headers: {
-      // @ts-ignore
       "Content-Type": "application/json",
       ...options?.headers,
     },

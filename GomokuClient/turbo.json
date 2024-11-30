@@ -20,12 +20,10 @@
       "cache": false
     },
     "typecheck": {
-      "outputs": [],
-      "cache": false
+      "outputs": []
     },
     "lint": {
-      "outputs": [],
-      "cache": false
+      "outputs": []
     }
   }
 }
