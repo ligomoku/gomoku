@@ -1,12 +1,16 @@
-import { SwaggerServices } from "@gomoku/api";
+import {
+  useGetApiGameRegisteredAvailableToJoin,
+  useGetApiGameAnonymousAvailableToJoin,
+  useGetApiGameRegisteredActive,
+  useGetApiGameAnonymousActive,
+} from "@gomoku/api/client/hooks";
 import {
   GameOptionsButtons,
   OnlinePlayersInfo,
   SectionList,
   TimeControls,
 } from "@gomoku/story";
-import { t } from "@lingui/macro";
-import { useQuery } from "@tanstack/react-query";
+import { t } from "@lingui/core/macro";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,17 +20,64 @@ import type { GameType } from "@gomoku/story";
 
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
-import { fetchAuthFallback, Headers } from "@/utils";
+import { Headers } from "@/utils";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
-  const { data: paginatedGames } = useFetchGames(jwtToken);
-  const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
   const router = useRouter();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
+
+  const { data: registeredGames } = useGetApiGameRegisteredAvailableToJoin(
+    Headers.getDefaultHeaders(jwtToken!),
+    undefined,
+    {
+      query: {
+        enabled: !!jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: anonymousGames } = useGetApiGameAnonymousAvailableToJoin(
+    Headers.getDefaultHeaders(),
+    undefined,
+    {
+      query: {
+        enabled: !jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: registeredActiveGames } = useGetApiGameRegisteredActive(
+    Headers.getDefaultHeaders(jwtToken!),
+    undefined,
+    {
+      query: {
+        enabled: !!jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: anonymousActiveGames } = useGetApiGameAnonymousActive(
+    Headers.getDefaultHeaders(),
+    undefined,
+    {
+      query: {
+        enabled: !jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const paginatedGames = jwtToken ? registeredGames : anonymousGames;
+  const paginatedActiveGames = jwtToken
+    ? registeredActiveGames
+    : anonymousActiveGames;
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -74,7 +125,6 @@ export const HomeGame = () => {
   }, [isConnected, hubProxy, registerEventHandlers, router]);
 
   useEffect(() => {
-    //TODO: Figure out if clean up can be done in onLeave router lifecycle function
     return () => {
       hubProxy?.leaveQueue();
     };
@@ -134,65 +184,7 @@ export const HomeGame = () => {
   );
 };
 
-const useFetchGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    [string, string | null]
-  >({
-    queryKey: ["games", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredAvailableToJoin({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        () =>
-          SwaggerServices.getApiGameAnonymousAvailableToJoin({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
-
-const useFetchActiveGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredActiveResponse,
-    SwaggerTypes.GetApiGameRegisteredActiveError
-  >({
-    queryKey: ["gamesActive", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredActive({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        async () =>
-          SwaggerServices.getApiGameAnonymousActive({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
-
-export const gameTypes: GameType[] = [
+const gameTypes: GameType[] = [
   {
     timeLabel: "1+0",
     type: t`Bullet`,
