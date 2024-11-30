@@ -1,14 +1,16 @@
-import { SwaggerServices } from "@gomoku/api";
+import {
+  usePostApiGameRegistered,
+  usePostApiGameAnonymous,
+} from "@gomoku/api/client/hooks";
 import { toaster } from "@gomoku/story";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 import type { SwaggerTypes } from "@gomoku/api";
 
-import { Headers, fetchAuthFallback } from "@/utils";
+import { Headers } from "@/utils";
 
 interface CreateGameAndNavigateProps {
-  authToken: string;
+  authToken: string | undefined;
 }
 
 export const useCreateGameAndNavigate = ({
@@ -16,32 +18,13 @@ export const useCreateGameAndNavigate = ({
 }: CreateGameAndNavigateProps) => {
   const navigate = useNavigate();
 
-  const createGame = useMutation<
-    SwaggerTypes.CreateGameResponse | undefined,
-    SwaggerTypes.PostApiGameRegisteredError,
-    {
-      boardSize: number;
-      timeControl?: SwaggerTypes.TimeControlDto;
-    }
-  >({
-    mutationFn: async ({ boardSize, timeControl }) => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async () =>
-          SwaggerServices.postApiGameRegistered({
-            body: { boardSize, timeControl },
-            headers: Headers.getDefaultHeaders(authToken),
-          }),
-        async () =>
-          SwaggerServices.postApiGameAnonymous({
-            body: { boardSize, timeControl },
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
+  const registeredMutation = usePostApiGameRegistered(
+    Headers.getDefaultHeaders(authToken!),
+  );
 
-      return response.data;
-    },
-  });
+  const anonymousMutation = usePostApiGameAnonymous(
+    Headers.getDefaultHeaders(),
+  );
 
   return {
     createGame: ({
@@ -51,14 +34,19 @@ export const useCreateGameAndNavigate = ({
       boardSize: number;
       timeControl?: SwaggerTypes.TimeControlDto;
     }) => {
-      createGame.mutate(
-        { boardSize, timeControl },
+      const mutation = authToken ? registeredMutation : anonymousMutation;
+
+      mutation.mutate(
+        {
+          boardSize,
+          timeControl,
+        },
         {
           onSuccess: async (data) => {
             if (data?.gameId) {
               toaster.show("Game created");
               navigate({
-                to: `/game/join/${data?.gameId}`,
+                to: `/game/join/${data.gameId}`,
               });
             }
           },
@@ -69,7 +57,9 @@ export const useCreateGameAndNavigate = ({
         },
       );
     },
-    isLoading: createGame.isPending,
-    isError: createGame.isError,
+    isLoading: authToken
+      ? registeredMutation.isPending
+      : anonymousMutation.isPending,
+    isError: authToken ? registeredMutation.isError : anonymousMutation.isError,
   };
 };
