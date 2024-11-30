@@ -29,5 +29,12 @@ URL: https://gomoku-gi8o.onrender.com/swagger
 
 URL: https://storybook-static-self.vercel.app
 
+## Project Management
+This project is initiated and managed by:
+- [Vitalijs Kuprins](https://github.com/vkuprin) (Email: vitas_s@inbox.lv)
+- [Aleksandrs Vaguscneko](https://github.com/alequez97) (Email: aleksandrs.vaguscenko@gmail.com)
+
+All strategic decisions are made by the project founders. Contributions are welcome, provided they follow the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines.
+
 ## License
-This project is licensed under the AGPL-3.0 License - see the [LICENSE](./LICENSE) file for details.
+This project is licensed under the [AGPL-3.0](LICENSE) license.
