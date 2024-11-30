@@ -6,6 +6,12 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "exclude": ["dist", "node_modules", "lingui.config.ts", "../gomoku-api", "@gomoku/api"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "lingui.config.ts",
+    "../gomoku-api",
+    "@gomoku/api"
+  ],
   "include": []
 }
