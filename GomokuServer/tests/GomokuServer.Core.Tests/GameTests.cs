@@ -400,8 +400,8 @@ public class GameTests
 		rematchResult.IsValid.Should().BeTrue();
 		rematchResult.NewGame.Should().NotBeNull();
 		rematchResult.NewGame!.GameSettings.Should().Be(_game.GameSettings);
-		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_game.Players.White);
-		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_game.Players.Black);
+		rematchResult.NewGame!.Players.Black.Should().BeEquivalentTo(_game.Players.White with { Color = TileColor.Black });
+		rematchResult.NewGame!.Players.White.Should().BeEquivalentTo(_game.Players.Black with { Color = TileColor.White });
 		rematchResult.NewGame!.CurrentPlayer?.Id.Should().Be(_game.Players.White.Id);
 		rematchResult.NewGame!.MovesHistory.Should().BeEmpty();
 		rematchResult.NewGame!.Result.Should().Be(GameResult.NotCompletedYet);
