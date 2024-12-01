@@ -31,7 +31,7 @@ export const HomeGame = () => {
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
 
   const { data: registeredGames } = useGetApiGameRegisteredAvailableToJoin(
-    Headers.getDefaultHeadersWithAuth(jwtToken!),
+    Headers.getDefaultHeadersWithAuth(jwtToken),
     undefined,
     {
       query: {
@@ -53,7 +53,7 @@ export const HomeGame = () => {
   );
 
   const { data: registeredActiveGames } = useGetApiGameRegisteredActive(
-    Headers.getDefaultHeadersWithAuth(jwtToken!),
+    Headers.getDefaultHeadersWithAuth(jwtToken),
     undefined,
     {
       query: {

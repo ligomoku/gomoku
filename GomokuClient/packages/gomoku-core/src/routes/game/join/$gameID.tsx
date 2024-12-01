@@ -25,7 +25,7 @@ const JoinGameComponent = ({
 
   const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
     gameID,
-    Headers.getDefaultHeadersWithAuth(jwtToken!),
+    Headers.getDefaultHeadersWithAuth(jwtToken),
     {
       query: {
         enabled: !!jwtToken,
@@ -45,7 +45,7 @@ const JoinGameComponent = ({
 
   const registeredJoinMutation = usePostApiGameRegisteredGameidJoin(
     gameID,
-    Headers.getDefaultHeadersWithAuth(jwtToken!),
+    Headers.getDefaultHeadersWithAuth(jwtToken),
   );
 
   const anonymousJoinMutation = usePostApiGameAnonymousGameidJoin(
