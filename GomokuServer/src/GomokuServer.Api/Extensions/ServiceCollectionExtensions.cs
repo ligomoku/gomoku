@@ -53,8 +53,6 @@ public static class ServiceCollectionExtensions
 			options.OperationFilter<LowerCaseParametersOperationFilter>();
 			options.OperationFilter<AuthorizationOperationFilter>();
 			options.OperationFilter<MandatoryHeadersParametersOperationFilter>();
-
-			options.AddSignalRSwaggerGen();
 		});
 
 		return services;
