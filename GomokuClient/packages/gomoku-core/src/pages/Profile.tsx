@@ -1,11 +1,12 @@
-import { SwaggerServices } from "@gomoku/api";
-import { t } from "@lingui/macro";
+import {
+  getApiProfilesUsernameGamesQueryKey,
+  useGetApiProfilesUsernameGames,
+} from "@gomoku/api";
+import { t } from "@lingui/core/macro";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Activity, ChevronUp, Users } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-
-import type { SwaggerTypes } from "@gomoku/api";
 
 import { useAuthToken } from "@/context";
 import { Headers } from "@/utils";
@@ -130,46 +131,32 @@ export const Profile = () => {
   );
 };
 
-const useFetchProfileGames = (
-  authToken: string,
-  userName: SwaggerTypes.GetApiProfilesByUserNameGamesData["path"]["userName"],
-) =>
-  useInfiniteQuery<
-    SwaggerTypes.GetApiProfilesByUserNameGamesResponse,
-    SwaggerTypes.GetApiProfilesByUserNameGamesError
-  >({
-    queryKey: ["gamesProfile", userName],
-    queryFn: async ({ pageParam = 1 }) => {
-      const response = await SwaggerServices.getApiProfilesByUserNameGames({
-        path: { userName },
-        headers: Headers.getDefaultHeaders(authToken),
-        query: {
-          page: pageParam,
-          pageSize: 10,
-        },
-      });
+export const useFetchProfileGames = (authToken: string, userName: string) =>
+  useInfiniteQuery({
+    queryKey: getApiProfilesUsernameGamesQueryKey(userName, { limit: 10 }),
+    queryFn: async ({ pageParam = 0 }) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { data } = useGetApiProfilesUsernameGames(
+        userName,
+        { offset: pageParam, limit: 10 },
+        Headers.getDefaultHeadersWithAuth(authToken),
+      );
 
-      if (!response.data) {
-        throw new Error("Invalid game data received");
+      if (!data) {
+        throw new Error("No data received for games");
       }
 
-      return response.data;
+      return data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      const totalFetchedItems = allPages.reduce(
-        (total, page) => total + page.data.length,
+      const totalFetched = allPages.reduce(
+        (acc, page) => acc + page.data.length,
         0,
       );
 
-      return totalFetchedItems < lastPage.metadata.totalCount
-        ? allPages.length + 1
+      return totalFetched < lastPage.metadata.totalCount
+        ? totalFetched
         : undefined;
     },
-    initialPageParam: 1,
-    //TODO: currentPage should be added on BE side
-    // getNextPageParam: (lastPage) => {
-    //   return lastPage.metadata.hasMoreItems
-    //     ? lastPage.metadata.currentPage + 1
-    //     : undefined;
-    // },
+    initialPageParam: 0,
   });

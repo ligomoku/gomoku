@@ -1,6 +1,8 @@
-import type { SwaggerTypes } from "@gomoku/api";
-import { Card, CardContent, Spinner } from "@/ui";
 import { useState } from "react";
+
+import type { SwaggerTypes } from "@gomoku/api";
+
+import { Card, CardContent, Spinner } from "@/ui";
 
 export interface GameType {
   timeLabel: string;
@@ -27,7 +29,12 @@ export const TimeControls = ({
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
       {gameTypes.map((game) => (
         <Card
-          key={`${game.type}-${game.boardSize}`}
+          key={
+            game.type +
+            game.boardSize +
+            game.timeControl?.initialTimeInSeconds +
+            game.timeControl?.incrementPerMove
+          }
           className="flex cursor-pointer justify-center border-[#2b2b2b] bg-[#2b2b2b] align-middle
             transition-colors hover:bg-[#3e3e3e]"
           onClick={() => {

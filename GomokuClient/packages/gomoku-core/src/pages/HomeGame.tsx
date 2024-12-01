@@ -1,32 +1,83 @@
-import { SwaggerServices } from "@gomoku/api";
+import {
+  useGetApiGameRegisteredAvailableToJoin,
+  useGetApiGameAnonymousAvailableToJoin,
+  useGetApiGameRegisteredActive,
+  useGetApiGameAnonymousActive,
+} from "@gomoku/api/client/hooks";
 import {
   GameOptionsButtons,
   OnlinePlayersInfo,
   SectionList,
   TimeControls,
 } from "@gomoku/story";
-import { t } from "@lingui/macro";
-import { useQuery } from "@tanstack/react-query";
+import { t } from "@lingui/core/macro";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
-import type { GameType } from "@gomoku/story";
 
+import { gameTypes } from "@/constants";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
-import { fetchAuthFallback, Headers } from "@/utils";
+import { Headers } from "@/utils";
 
 export const HomeGame = () => {
   const navigate = useNavigate();
   const { jwtToken } = useAuthToken();
-  const { data: paginatedGames } = useFetchGames(jwtToken);
-  const { data: paginatedActiveGames } = useFetchActiveGames(jwtToken);
   const router = useRouter();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
+
+  const { data: registeredGames } = useGetApiGameRegisteredAvailableToJoin(
+    Headers.getDefaultHeadersWithAuth(jwtToken),
+    undefined,
+    {
+      query: {
+        enabled: !!jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: anonymousGames } = useGetApiGameAnonymousAvailableToJoin(
+    undefined,
+    Headers.getDefaultHeaders(),
+    {
+      query: {
+        enabled: !jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: registeredActiveGames } = useGetApiGameRegisteredActive(
+    Headers.getDefaultHeadersWithAuth(jwtToken),
+    undefined,
+    {
+      query: {
+        enabled: !!jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const { data: anonymousActiveGames } = useGetApiGameAnonymousActive(
+    undefined,
+    Headers.getDefaultHeaders(),
+    {
+      query: {
+        enabled: !jwtToken,
+        refetchInterval: 5000,
+      },
+    },
+  );
+
+  const paginatedGames = jwtToken ? registeredGames : anonymousGames;
+  const paginatedActiveGames = jwtToken
+    ? registeredActiveGames
+    : anonymousActiveGames;
 
   const { createGame, isLoading: isLoadingCreateGame } =
     useCreateGameAndNavigate({
@@ -74,7 +125,6 @@ export const HomeGame = () => {
   }, [isConnected, hubProxy, registerEventHandlers, router]);
 
   useEffect(() => {
-    //TODO: Figure out if clean up can be done in onLeave router lifecycle function
     return () => {
       hubProxy?.leaveQueue();
     };
@@ -133,145 +183,3 @@ export const HomeGame = () => {
     </div>
   );
 };
-
-const useFetchGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinError,
-    SwaggerTypes.GetApiGameRegisteredAvailableToJoinResponse,
-    [string, string | null]
-  >({
-    queryKey: ["games", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredAvailableToJoin({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        () =>
-          SwaggerServices.getApiGameAnonymousAvailableToJoin({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
-
-const useFetchActiveGames = (authToken: string) =>
-  useQuery<
-    SwaggerTypes.GetApiGameRegisteredActiveResponse,
-    SwaggerTypes.GetApiGameRegisteredActiveError
-  >({
-    queryKey: ["gamesActive", null],
-    queryFn: async () => {
-      const response = await fetchAuthFallback(
-        authToken,
-        async (token) =>
-          SwaggerServices.getApiGameRegisteredActive({
-            headers: Headers.getDefaultHeaders(token),
-          }),
-        async () =>
-          SwaggerServices.getApiGameAnonymousActive({
-            headers: Headers.getDefaultHeaders(),
-          }),
-      );
-
-      if (!response.data) {
-        throw new Error("Invalid game data received");
-      }
-
-      return response.data;
-    },
-    refetchInterval: 5000,
-  });
-
-export const gameTypes: GameType[] = [
-  {
-    timeLabel: "1+0",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "1+1",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 1,
-    },
-  },
-  {
-    timeLabel: "1+2",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 2,
-    },
-  },
-  {
-    timeLabel: "2+1",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 120,
-      incrementPerMove: 1,
-    },
-  },
-  {
-    timeLabel: "5+0",
-    type: t`Blitz`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 300,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "7+0",
-    type: t`Rapid`,
-    boardSize: 17,
-    timeControl: {
-      initialTimeInSeconds: 420,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "10+0",
-    type: t`Rapid`,
-    boardSize: 17,
-    timeControl: {
-      initialTimeInSeconds: 600,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "15+0",
-    type: t`Rapid`,
-    boardSize: 19,
-    timeControl: {
-      initialTimeInSeconds: 900,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "30+0",
-    type: t`Classic`,
-    boardSize: 19,
-    timeControl: {
-      initialTimeInSeconds: 1800,
-      incrementPerMove: 0,
-    },
-  },
-];

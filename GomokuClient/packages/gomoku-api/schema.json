@@ -24,15 +24,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -90,15 +81,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -141,15 +123,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -175,15 +148,6 @@
             "in": "header",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
             }
           }
         ],
@@ -244,15 +208,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "requestBody": {
@@ -304,15 +259,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -357,15 +303,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -392,15 +329,6 @@
             "in": "header",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
             }
           }
         ],
@@ -440,15 +368,6 @@
             "schema": {
               "type": "string",
               "default": "Bearer "
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
             }
           }
         ],
@@ -551,15 +470,6 @@
               "type": "string",
               "default": "Bearer "
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -626,15 +536,6 @@
               "type": "string",
               "default": "Bearer "
             }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
-            }
           }
         ],
         "responses": {
@@ -684,15 +585,6 @@
             "schema": {
               "type": "string",
               "default": "Bearer "
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
             }
           }
         ],
@@ -806,15 +698,6 @@
             "schema": {
               "type": "string",
               "default": "Bearer "
-            }
-          },
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "default": "application/json"
             }
           }
         ],
