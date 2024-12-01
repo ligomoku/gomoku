@@ -449,3 +449,8 @@ dotnet_diagnostic.TAPP001.severity = error
 #
 # TSRTS001 Apply the TranspilationSourceAttribute
 dotnet_diagnostic.TSRTS001.severity = error
+
+#
+# Gomoku server diagnostic ruless
+#
+dotnet_diagnostic.GOMOKU001.severity = error
