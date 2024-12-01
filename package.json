@@ -5,7 +5,7 @@
   "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "scripts": {
     "run:server": "dotnet run --cofiguration Release --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj",
-    "generate-hub-types:server": "dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs",
+    "generate-hub-types:server": "dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs  --assemblies && yarn format",
     "prettier:client": "cd GomokuClient && yarn format",
     "prettier:client:check": "cd GomokuClient && yarn format:check",
     "prettier:server": "dotnet format ./GomokuServer/GomokuServer.sln",
