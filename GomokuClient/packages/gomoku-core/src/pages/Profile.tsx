@@ -1,15 +1,12 @@
 import {
   getApiProfilesUsernameGamesQueryKey,
-  SwaggerServices,
   useGetApiProfilesUsernameGames,
 } from "@gomoku/api";
-import { t } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Activity, ChevronUp, Users } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-
-import type { SwaggerTypes } from "@gomoku/api";
 
 import { useAuthToken } from "@/context";
 import { Headers } from "@/utils";
