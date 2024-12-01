@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "Generating hub types..."
           yarn codegen-install:server &&
-          yarn codegen-run:sever
+          yarn codegen-run:server
 
       - name: TypeCheck after Generation
         run: |
