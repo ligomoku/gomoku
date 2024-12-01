@@ -25,12 +25,6 @@ Using Makefile (from the root directory):
    make server
    ```
 
-### Initialize GomokuAI Submodules
-
-```bash
-git submodule update --init --recursive
-```
-
 ## 🛠️ Development Tools
 
 ### Rapfi Helper
