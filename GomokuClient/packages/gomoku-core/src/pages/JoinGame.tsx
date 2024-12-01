@@ -3,6 +3,7 @@ import { GamePlayersInfo } from "@gomoku/story";
 import { GameTime, GameTimeMobile, Board } from "@gomoku/story";
 import { Chat } from "@gomoku/story";
 import { useParams } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
 import type { GameTimeProps } from "@gomoku/story";
@@ -20,6 +21,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   });
   const { jwtDecodedInfo } = useAuthToken();
   const isMobile = useMobileDesign(1488);
+
+  const [bothPlayersJoined, setBothPlayersJoined] = useState(false);
 
   const {
     hubProxy,
@@ -40,6 +43,12 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     gameID,
     jwtDecodedInfo?.username,
   );
+
+  useEffect(() => {
+    if (players.black && players.white) {
+      setBothPlayersJoined(true);
+    }
+  }, [players]);
 
   const commonGameTimeProps: Omit<
     GameTimeProps,
@@ -168,7 +177,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               tiles={tiles}
               lastTile={lastTile}
               size={gameHistory.boardSize || 19}
-              onTileClick={handleMove}
+              onTileClick={bothPlayersJoined ? handleMove : undefined}
               style={{
                 order: isMobile ? 1 : "unset",
               }}
