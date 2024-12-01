@@ -3,7 +3,7 @@
 /* tslint:disable */
 // @ts-nocheck
 import type { IStreamResult, Subject } from "@microsoft/signalr";
-import type { GameOptions } from "../GomokuServer.Api";
+import type { GameOptions } from "../GomokuServer.Api.MatchingEngine";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,
@@ -30,7 +30,7 @@ import type { ClockDto } from "../GomokuServer.Application.Games.Dto";
 
 export type IGameHub = {
   /**
-   * @param gameOptions Transpiled from GomokuServer.Api.GameOptions
+   * @param gameOptions Transpiled from GomokuServer.Api.MatchingEngine.GameOptions
    * @returns Transpiled from System.Threading.Tasks.Task
    */
   joinQueueWithMode(gameOptions: GameOptions): Promise<void>;
