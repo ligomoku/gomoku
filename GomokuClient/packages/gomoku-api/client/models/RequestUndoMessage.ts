@@ -1,6 +1,6 @@
 export type RequestUndoMessage = {
-    /**
-     * @type string
-    */
-    gameId: string;
+  /**
+   * @type string
+   */
+  gameId: string;
 };
