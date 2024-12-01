@@ -38,4 +38,4 @@ codegen-swagger:
 
 codegen-hubs:
 	@echo "Generating hub types..."
-	yarn generate-hub-types:server
+	yarn codegen-run:server
