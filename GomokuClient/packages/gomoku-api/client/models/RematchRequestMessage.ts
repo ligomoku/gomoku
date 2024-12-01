@@ -1,6 +1,6 @@
 export type RematchRequestMessage = {
-  /**
-   * @type string
-   */
-  gameId: string;
+    /**
+     * @type string
+    */
+    gameId: string;
 };

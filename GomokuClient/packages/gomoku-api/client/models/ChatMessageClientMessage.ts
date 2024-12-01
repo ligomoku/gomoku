@@ -1,14 +1,14 @@
 export type ChatMessageClientMessage = {
-  /**
-   * @type string
-   */
-  gameId: string;
-  /**
-   * @type string
-   */
-  user: string;
-  /**
-   * @type string
-   */
-  message: string;
+    /**
+     * @type string
+    */
+    gameId: string;
+    /**
+     * @type string
+    */
+    user: string;
+    /**
+     * @type string
+    */
+    message: string;
 };

@@ -1,6 +1,6 @@
 export type ResignClientMessage = {
-  /**
-   * @type string
-   */
-  gameId: string;
+    /**
+     * @type string
+    */
+    gameId: string;
 };

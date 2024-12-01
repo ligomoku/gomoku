@@ -1,6 +1,6 @@
 export type GetClockMessage = {
-  /**
-   * @type string
-   */
-  gameId: string;
+    /**
+     * @type string
+    */
+    gameId: string;
 };

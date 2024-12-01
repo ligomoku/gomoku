@@ -1,6 +1,6 @@
 export type ApproveRematchMessage = {
-  /**
-   * @type string
-   */
-  gameId: string | null;
+    /**
+     * @type string
+    */
+    gameId: string | null;
 };
