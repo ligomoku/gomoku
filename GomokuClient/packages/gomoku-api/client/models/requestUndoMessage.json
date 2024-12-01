@@ -1,0 +1,1 @@
+{"required":["gameId"],"type":"object","properties":{"gameId":{"minLength":1,"type":"string"}},"additionalProperties":false,"x-readme-ref-name":"RequestUndoMessage"}

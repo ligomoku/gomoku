@@ -1,0 +1,1 @@
+{"type":"object","properties":{"black":{"type":"string","nullable":true},"white":{"type":"string","nullable":true}},"additionalProperties":false,"x-readme-ref-name":"UsernamesDto"}
