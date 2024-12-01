@@ -7,7 +7,7 @@
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](LICENSE)
 [![Node.js v20](https://img.shields.io/badge/Node.js-v20-green.svg)](https://nodejs.org)
 
-A sophisticated implementation of the classic Gomoku (Five in a Row) game with AI capabilities.
+A sophisticated implementation of the classic Gomoku (Five in a Row)
 
 ## 🚀 Quick Start
 
@@ -63,11 +63,11 @@ This project is initiated and managed by:
   - GitHub: [@alequez97](https://github.com/alequez97)
   - Email: aleksandrs.vaguscenko@gmail.com
 
-All strategic decisions are made by the project founders.
+All strategic decisions are made by the project founders
 
 ### Contributing
 
-We welcome contributions! Please review our [Contributing Guidelines](CONTRIBUTING.md) before submitting any changes.
+We welcome contributions! Please review our [Contributing Guidelines](CONTRIBUTING.md) before submitting any changes
 
 ## 📄 License
 
