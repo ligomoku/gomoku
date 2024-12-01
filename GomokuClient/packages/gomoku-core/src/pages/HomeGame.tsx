@@ -16,8 +16,8 @@ import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
-import type { GameType } from "@gomoku/story";
 
+import { gameTypes } from "@/constants";
 import { useAuthToken, useSignalRConnection } from "@/context";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { Headers } from "@/utils";
@@ -183,87 +183,3 @@ export const HomeGame = () => {
     </div>
   );
 };
-
-const gameTypes: GameType[] = [
-  {
-    timeLabel: "1+0",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "1+1",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 1,
-    },
-  },
-  {
-    timeLabel: "1+2",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 60,
-      incrementPerMove: 2,
-    },
-  },
-  {
-    timeLabel: "2+1",
-    type: t`Bullet`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 120,
-      incrementPerMove: 1,
-    },
-  },
-  {
-    timeLabel: "5+0",
-    type: t`Blitz`,
-    boardSize: 13,
-    timeControl: {
-      initialTimeInSeconds: 300,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "7+0",
-    type: t`Rapid`,
-    boardSize: 17,
-    timeControl: {
-      initialTimeInSeconds: 420,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "10+0",
-    type: t`Rapid`,
-    boardSize: 17,
-    timeControl: {
-      initialTimeInSeconds: 600,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "15+0",
-    type: t`Rapid`,
-    boardSize: 19,
-    timeControl: {
-      initialTimeInSeconds: 900,
-      incrementPerMove: 0,
-    },
-  },
-  {
-    timeLabel: "30+0",
-    type: t`Classic`,
-    boardSize: 19,
-    timeControl: {
-      initialTimeInSeconds: 1800,
-      incrementPerMove: 0,
-    },
-  },
-];
