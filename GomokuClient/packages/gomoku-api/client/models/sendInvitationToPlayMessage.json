@@ -1,1 +1,0 @@
-{"required":["playerId"],"type":"object","properties":{"playerId":{"minLength":1,"type":"string"}},"additionalProperties":false,"x-readme-ref-name":"SendInvitationToPlayMessage"}

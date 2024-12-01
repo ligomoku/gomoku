@@ -1,1 +1,0 @@
-{"required":["gameId","x","y"],"type":"object","properties":{"gameId":{"minLength":1,"type":"string"},"x":{"type":"integer","format":"int32"},"y":{"type":"integer","format":"int32"}},"additionalProperties":false,"x-readme-ref-name":"MakeMoveClientMessage"}

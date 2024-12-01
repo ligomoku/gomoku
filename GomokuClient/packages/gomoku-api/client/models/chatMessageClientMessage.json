@@ -1,1 +1,0 @@
-{"required":["gameId","message","user"],"type":"object","properties":{"gameId":{"minLength":1,"type":"string"},"user":{"minLength":1,"type":"string"},"message":{"minLength":1,"type":"string"}},"additionalProperties":false,"x-readme-ref-name":"ChatMessageClientMessage"}

@@ -1,1 +1,0 @@
-{"required":["gameId"],"type":"object","properties":{"gameId":{"type":"string","nullable":true}},"additionalProperties":false,"x-readme-ref-name":"ApproveRematchMessage"}

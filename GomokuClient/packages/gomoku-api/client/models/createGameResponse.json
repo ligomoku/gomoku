@@ -1,1 +1,0 @@
-{"required":["boardSize","gameId"],"type":"object","properties":{"gameId":{"minLength":1,"type":"string"},"boardSize":{"type":"integer","format":"int32"}},"additionalProperties":false,"x-readme-ref-name":"CreateGameResponse"}
