@@ -5,8 +5,8 @@
   "author": "Vitaly Kuprin (vitas_s@inbox.lv); Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com)",
   "scripts": {
     "run:server": "dotnet run --cofiguration Release --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj",
-    "codegen-install:server": "dotnet tool install --global TypedSignalR.Client.TypeScript.Generator --version 1.14.0",
-    "codegen-run:server": "dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs --assemblies && yarn format",
+    "codegen-install:server": "dotnet tool install --global TypedSignalR.Client.TypeScript.Generator --version 1.15.0",
+    "codegen-run:server": "dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs --asm && yarn format",
     "prettier:client": "cd GomokuClient && yarn format",
     "prettier:client:check": "cd GomokuClient && yarn format:check",
     "prettier:server": "dotnet format ./GomokuServer/GomokuServer.sln",
