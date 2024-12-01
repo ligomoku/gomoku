@@ -64,7 +64,7 @@ jobs:
       - name: Generate API Hub Types
         run: |
           echo "Generating hub types..."
-          dotnet tool install --global TypedSignalR.Client.TypeScript.Generator --version 1.15.0 &&
+          dotnet tool install --global TypedSignalR.Client.TypeScript.Generator --version 1.14.0 &&
           dotnet tsrts --project ./GomokuServer/src/GomokuServer.Api/GomokuServer.Api.csproj --output ./GomokuClient/packages/gomoku-api/hubs --assemblies
 
       - name: TypeCheck after Generation
