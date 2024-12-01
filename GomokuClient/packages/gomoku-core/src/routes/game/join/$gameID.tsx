@@ -63,8 +63,8 @@ const JoinGameComponent = ({
       setIsJoining(true);
       try {
         if (jwtToken) {
-          //@ts-expect-error
-          await registeredJoinMutation.mutateAsync(undefined);
+          //TODO: this is something wrong that we deal with Kubb
+          await registeredJoinMutation.mutateAsync(undefined as never);
         }
 
         if (anonymousSessionId) {
