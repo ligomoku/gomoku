@@ -13,11 +13,12 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/HomeGame.tsx:127
+#. placeholder {0}: paginatedActiveGames?.metadata?.totalCount
+#: src/pages/HomeGame.tsx:177
 msgid "{0} games in play"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:128
+#: src/pages/HomeGame.tsx:178
 msgid "{onlineUsersCount} players online"
 msgstr ""
 
@@ -29,7 +30,7 @@ msgstr ""
 #~ msgid "5,247 players online"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:234
+#: src/constants/gameTypes.ts:44
 msgid "Blitz"
 msgstr ""
 
@@ -41,10 +42,10 @@ msgstr ""
 #~ msgid "Blog Posts"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:198
-#: src/pages/HomeGame.tsx:207
-#: src/pages/HomeGame.tsx:216
-#: src/pages/HomeGame.tsx:225
+#: src/constants/gameTypes.ts:8
+#: src/constants/gameTypes.ts:17
+#: src/constants/gameTypes.ts:26
+#: src/constants/gameTypes.ts:35
 msgid "Bullet"
 msgstr ""
 
@@ -56,7 +57,7 @@ msgstr ""
 #~ msgid "Chat"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:270
+#: src/constants/gameTypes.ts:80
 msgid "Classic"
 msgstr ""
 
@@ -72,7 +73,7 @@ msgstr ""
 #~ msgid "Correspondence"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:120
+#: src/pages/HomeGame.tsx:170
 msgid "CREATE A GAME"
 msgstr ""
 
@@ -88,7 +89,7 @@ msgstr ""
 #~ msgid "gomoku.app"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:99
+#: src/pages/HomeGame.tsx:149
 msgid "Gomoku.app is a free, open-source Five in a Row game platform."
 msgstr ""
 
@@ -116,7 +117,7 @@ msgstr ""
 #~ msgid "No messages yet. Start the conversation!"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:96
+#: src/pages/HomeGame.tsx:146
 msgid "No online games were created"
 msgstr ""
 
@@ -128,11 +129,11 @@ msgstr ""
 #~ msgid "Play again"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:121
+#: src/pages/HomeGame.tsx:171
 msgid "PLAY WITH A FRIEND"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:122
+#: src/pages/HomeGame.tsx:172
 msgid "PLAY WITH AI"
 msgstr ""
 
@@ -140,13 +141,13 @@ msgstr ""
 #~ msgid "Quick"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:104
+#: src/pages/HomeGame.tsx:154
 msgid "Quick pairing"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:243
-#: src/pages/HomeGame.tsx:252
-#: src/pages/HomeGame.tsx:261
+#: src/constants/gameTypes.ts:53
+#: src/constants/gameTypes.ts:62
+#: src/constants/gameTypes.ts:71
 msgid "Rapid"
 msgstr ""
 
@@ -170,7 +171,7 @@ msgstr ""
 #~ msgid "Standard"
 #~ msgstr ""
 
-#: src/pages/Profile.tsx:50
+#: src/pages/Profile.tsx:51
 msgid "STANDARD"
 msgstr ""
 
