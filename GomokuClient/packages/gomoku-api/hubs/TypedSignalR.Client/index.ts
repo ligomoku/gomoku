@@ -7,7 +7,7 @@ import type {
   IGameHub,
   IGameHubReceiver,
 } from "./GomokuServer.Api.Hubs.Interfaces";
-import type { GameOptions } from "../GomokuServer.Api";
+import type { GameOptions } from "../GomokuServer.Api.MatchingEngine";
 import type {
   MakeMoveClientMessage,
   ResignClientMessage,

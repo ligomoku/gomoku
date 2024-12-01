@@ -3,7 +3,7 @@
 /* tslint:disable */
 import type { TimeControlDto } from "./GomokuServer.Application.Games.Dto";
 
-/** Transpiled from GomokuServer.Api.GameOptions */
+/** Transpiled from GomokuServer.Api.MatchingEngine.GameOptions */
 export type GameOptions = {
   /** Transpiled from int */
   boardSize: number;
