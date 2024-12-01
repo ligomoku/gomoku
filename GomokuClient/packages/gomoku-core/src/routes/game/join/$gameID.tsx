@@ -6,7 +6,7 @@ import {
 } from "@gomoku/api/client/hooks";
 import { LoadingOverlay, toaster } from "@gomoku/story";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
 
@@ -55,36 +55,36 @@ const JoinGameComponent = ({
 
   const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
 
+  const joinGame = useCallback(async () => {
+    if (gameHistory?.players.black || gameHistory?.players.white) return;
+    setIsJoining(true);
+    try {
+      if (jwtToken) {
+        //TODO: this is something wrong that we deal with Kubb
+        await registeredJoinMutation.mutateAsync(undefined as never);
+      }
+
+      if (anonymousSessionId) {
+        await anonymousJoinMutation.mutateAsync({
+          playerId: anonymousSessionId,
+        });
+      }
+      joinedRef.current = true;
+    } catch (err) {
+      console.error("Error joining game:", err);
+      toaster.show("Error joining game", "error");
+    } finally {
+      setIsJoining(false);
+    }
+    //TODO: check why more deps causing multiple join calls
+    //eslint-disable-next-line
+  }, [gameHistory]);
+
   useEffect(() => {
     if (!gameHistory || joinedRef.current) return;
 
-    const joinGame = async () => {
-      if (gameHistory.players.black || gameHistory.players.white) return;
-      setIsJoining(true);
-      try {
-        if (jwtToken) {
-          //TODO: this is something wrong that we deal with Kubb
-          await registeredJoinMutation.mutateAsync(undefined as never);
-        }
-
-        if (anonymousSessionId) {
-          await anonymousJoinMutation.mutateAsync({
-            playerId: anonymousSessionId,
-          });
-        }
-        joinedRef.current = true;
-      } catch (err) {
-        console.error("Error joining game:", err);
-        toaster.show("Error joining game", "error");
-      } finally {
-        setIsJoining(false);
-      }
-    };
-
     joinGame();
-    //TODO: fix with new pattern
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameHistory]);
+  }, [gameHistory, joinGame]);
 
   if (!gameHistory || isJoining) return <LoadingOverlay isVisible />;
 
