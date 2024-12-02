@@ -74,6 +74,23 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
     },
   };
 
+  const isCurrentPlayer = (color: string) => {
+    if (color === "black" && players.black?.userName === jwtDecodedInfo?.username) {
+      return true;
+    }
+    if (color === "white" && players.white?.userName === jwtDecodedInfo?.username) {
+      return true;
+    }
+    return false;
+  };
+
+  const getClockStyle = (time: number | undefined) => {
+    if (time !== undefined && time < 10) {
+      return "text-red-500";
+    }
+    return "";
+  };
+
   return (
     <div className="min-h-screen bg-[#161512] text-base text-[#bababa] sm:text-lg">
       {rematchRequested && (
@@ -132,13 +149,13 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   {
                     title: "black",
                     name: players.black?.userName || "Anonymous",
-                    isCurrentPlayer: false,
+                    isCurrentPlayer: isCurrentPlayer("black"),
                     color: "black",
                   },
                   {
                     title: "white",
                     name: players.white?.userName || "Anonymous",
-                    isCurrentPlayer: true,
+                    isCurrentPlayer: isCurrentPlayer("white"),
                     color: "white",
                   },
                 ]}
@@ -170,6 +187,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   player={players.black}
                   //TODO: we should not pass both one of them should be required both not both at same time
                   timeLeft={clock?.black}
+                  clockStyle={getClockStyle(clock?.black)}
                 />
               )}
             </div>
@@ -190,6 +208,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   player={players.white}
                   //TODO: we should not pass both one of them should be required both not both at same time
                   timeLeft={clock?.white}
+                  clockStyle={getClockStyle(clock?.white)}
                 />
               )}
             </div>
@@ -206,6 +225,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 {...commonGameTimeProps}
                 players={players}
                 clock={clock}
+                clockStyle={getClockStyle(clock?.black)}
               />
             </div>
           </div>

@@ -23,6 +23,7 @@ export interface GameTimeProps {
   onFlag: () => void;
   onReset: () => void;
   onRematch: () => void;
+  currentPlayerColor: "black" | "white";
 }
 
 export const GameTime = ({
@@ -34,12 +35,17 @@ export const GameTime = ({
   onFlag,
   onReset,
   onRematch,
+  currentPlayerColor,
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
       {clock && clock?.black > 0 && (
         <>
-          <div className="font-mono text-5xl">
+          <div
+            className={`font-mono text-5xl ${
+              currentPlayerColor === "black" ? "glow" : ""
+            } ${clock.black < 10 ? "text-red-500" : ""}`}
+          >
             {secondsToString(clock.black)}
           </div>
           <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
@@ -165,7 +171,11 @@ export const GameTime = ({
     )}
 
     {clock && clock.white > 0 && (
-      <div className="mt-2 text-center font-mono text-5xl">
+      <div
+        className={`mt-2 text-center font-mono text-5xl ${
+          currentPlayerColor === "white" ? "glow" : ""
+        } ${clock.white < 10 ? "text-red-500" : ""}`}
+      >
         {secondsToString(clock.white)}
       </div>
     )}
