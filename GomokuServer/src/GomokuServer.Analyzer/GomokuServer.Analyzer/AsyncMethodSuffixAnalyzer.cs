@@ -13,7 +13,7 @@ public class AsyncMethodSuffixAnalyzer : DiagnosticAnalyzer
 	private static readonly DiagnosticDescriptor AsyncSuffixRule = new DiagnosticDescriptor(
 		id: "GOMOKU002",
 		title: "Async methods should end with 'Async'",
-		messageFormat: "Method '{0}' is async but does not end with 'Async'.",
+		messageFormat: "Method '{0}' is async but does not end with 'Async'",
 		category: "Naming",
 		defaultSeverity: DiagnosticSeverity.Error,
 		isEnabledByDefault: true,

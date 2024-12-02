@@ -13,7 +13,7 @@ public class PropertyAttributeOnNextLineAnalyzer : DiagnosticAnalyzer
 	private static readonly DiagnosticDescriptor AttributePropertyLineRule = new DiagnosticDescriptor(
 		id: "GOMOKU001",
 		title: "Ensure property after attribute is on a new line",
-		messageFormat: "Property '{0}' should be placed on a new line after its attribute.",
+		messageFormat: "Property '{0}' should be placed on a new line after its attribute",
 		category: "Formatting",
 		defaultSeverity: DiagnosticSeverity.Error,
 		isEnabledByDefault: true,
