@@ -111,12 +111,7 @@ export const useJoinGame = (
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   useInterval(() => {
-    if (
-      isConnected &&
-      gameID &&
-      hubProxy &&
-      gameHistory.timeControl
-    ) {
+    if (isConnected && gameID && hubProxy && gameHistory.timeControl) {
       hubProxy.getClock({ gameId: gameID });
     }
   }, 500); //TODO: play with this delay value for clock sync
