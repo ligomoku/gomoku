@@ -39,7 +39,7 @@ docker-compose exec rapfi ./build/pbrain-rapfi --help
 ## 📚 Documentation
 
 ### API Documentation
-- OpenAPI Specification: [https://gomoku-gi8o.onrender.com/swagger](https://gomoku-gi8o.onrender.com/swagger)
+- OpenAPI Specification: [https://api.gomoku.app/swagger](https://api.gomoku.app/swagger)
 
 ### Component Library
 - Storybook: [https://story.gomoku.app](https://story.gomoku.app)
