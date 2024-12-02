@@ -16,7 +16,7 @@ public class PropertyAttributeOnNextLineAnalyzerTests : AnalyzerTestBase<Propert
 		}";
 
 		var expectedDiagnostic = new DiagnosticResult("GOMOKU001", DiagnosticSeverity.Error)
-			.WithMessage("Property 'Name' should be placed on a new line after its attribute.")
+			.WithMessage("Property 'Name' should be placed on a new line after its attribute")
 			.WithSpan(3, 4, 3, 85)
 			.WithArguments("Name");
 

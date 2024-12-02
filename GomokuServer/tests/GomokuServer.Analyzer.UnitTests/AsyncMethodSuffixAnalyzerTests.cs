@@ -18,7 +18,7 @@ public class AsyncMethodSuffixAnalyzerTests : AnalyzerTestBase<AsyncMethodSuffix
 		}";
 
 		var expectedDiagnostic = new DiagnosticResult("GOMOKU002", DiagnosticSeverity.Error)
-			.WithMessage("Method 'DoWork' is async but does not end with 'Async'.")
+			.WithMessage("Method 'DoWork' is async but does not end with 'Async'")
 			.WithSpan(5, 22, 5, 28)
 			.WithArguments("DoWork");
 
@@ -41,7 +41,7 @@ public class AsyncMethodSuffixAnalyzerTests : AnalyzerTestBase<AsyncMethodSuffix
 		}";
 
 		var expectedDiagnostic = new DiagnosticResult("GOMOKU002", DiagnosticSeverity.Error)
-			.WithMessage("Method 'DoWork' is async but does not end with 'Async'.")
+			.WithMessage("Method 'DoWork' is async but does not end with 'Async'")
 			.WithSpan(5, 16, 5, 22) // Highlights 'DoWork'
 			.WithArguments("DoWork");
 
