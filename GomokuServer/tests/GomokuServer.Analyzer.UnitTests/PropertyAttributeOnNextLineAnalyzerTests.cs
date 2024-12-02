@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace GomokuServer.Analyzer.UnitTests;
 
-public class Tests : AnalyzerTestBase<PropertyAttributeOnNextLineAnalyzer>
+public class PropertyAttributeOnNextLineAnalyzerTests : AnalyzerTestBase<PropertyAttributeOnNextLineAnalyzer>
 {
 	[Test]
 	public async Task PropertyOnSameLineAsAttribute_ShouldReportDiagnostic()
