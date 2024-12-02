@@ -115,7 +115,6 @@ export const useJoinGame = (
       isConnected &&
       gameID &&
       hubProxy &&
-      moves.length !== 0 &&
       gameHistory.timeControl
     ) {
       hubProxy.getClock({ gameId: gameID });
