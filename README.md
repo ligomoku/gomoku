@@ -42,7 +42,7 @@ docker-compose exec rapfi ./build/pbrain-rapfi --help
 - OpenAPI Specification: [https://gomoku-gi8o.onrender.com/swagger](https://gomoku-gi8o.onrender.com/swagger)
 
 ### Component Library
-- Storybook: [https://storybook-static-self.vercel.app](https://storybook-static-self.vercel.app)
+- Storybook: [https://story.gomoku.app](https://story.gomoku.app)
 
 ## 👥 Project Management
 
