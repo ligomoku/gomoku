@@ -9,7 +9,7 @@ if [ "$1" = "localhost" ]; then
 elif [ "$1" = "CI" ]; then
   API_URL="http://localhost:8080/swagger/v${API_VERSION}/swagger.json"
 else
-  API_URL="https://gomoku-gi8o.onrender.com/swagger/v${API_VERSION}/swagger.json"
+  API_URL="https://api.gomoku.app/swagger/v${API_VERSION}/swagger.json"
 fi
 
 curl -o '../gomoku-api/schema.json' "${API_URL}"

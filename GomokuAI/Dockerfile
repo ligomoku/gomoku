@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app/GomokuAI
 
-# Clone and build
 RUN git clone --recurse-submodules https://github.com/dhbloo/rapfi.git rapfi && \
     cd rapfi/Rapfi && \
     mkdir build && cd build && \
@@ -29,13 +28,10 @@ RUN git clone --recurse-submodules https://github.com/dhbloo/rapfi.git rapfi && 
         -DUSE_NEON_DOTPROD=OFF && \
     cmake --build .
 
-# Install Python dependencies
 RUN pip3 install flask
 
 WORKDIR /app/GomokuAI/rapfi/Rapfi
 
-# Create wrapper script
 COPY wrapper.py .
 
-# Run the wrapper
 CMD ["python3", "wrapper.py"]
