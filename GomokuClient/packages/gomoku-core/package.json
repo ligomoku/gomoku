@@ -64,7 +64,7 @@
     "autoprefixer": "^10.4.20",
     "babel-plugin-macros": "^3.1.0",
     "eslint": "^9.16.0",
-    "globals": "^15.12.0",
+    "globals": "^15.13.0",
     "postcss": "^8.4.49",
     "prettier": "3.4.1",
     "prettier-plugin-tailwindcss": "^0.6.9",
