@@ -6,6 +6,8 @@
 		<LangVersion>12</LangVersion>
     <IsPackable>false</IsPackable>
 
+		<NoWarn>RS2008,RS1036</NoWarn>
+
     <!-- Avoid ID conflicts with the package project. -->
     <PackageId>*$(MSBuildProjectFile)*</PackageId>
   </PropertyGroup>
