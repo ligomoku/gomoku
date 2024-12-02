@@ -15,7 +15,7 @@ public class Tests : AnalyzerTestBase<PropertyAttributeOnNextLineAnalyzer>
 			[System.ComponentModel.DataAnnotations.Required] public string Name { get; set; }
 		}";
 
-		var expectedDiagnostic = new DiagnosticResult("GOMOKU004", DiagnosticSeverity.Error)
+		var expectedDiagnostic = new DiagnosticResult("GOMOKU001", DiagnosticSeverity.Error)
 			.WithMessage("Property 'Name' should be placed on a new line after its attribute.")
 			.WithSpan(3, 4, 3, 85)
 			.WithArguments("Name");
