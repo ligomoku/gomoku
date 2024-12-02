@@ -1,7 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-# Licensed under the AGPL-3.0 License
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22455F42-1C72-4CBB-BADE-8C1D1FEBF74F}"
@@ -25,6 +24,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GomokuServer.Application.FunctionalTests", "tests\GomokuServer.Application.FunctionalTests\GomokuServer.Application.FunctionalTests.csproj", "{7E9644DB-B7CB-475B-9468-80F4F7A25825}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GomokuServer.Tests.Common", "tests\GomokuServer.Tests.Common\GomokuServer.Tests.Common.csproj", "{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GomokuServer.Analyzer", "src\GomokuServer.Analyzer\GomokuServer.Analyzer\GomokuServer.Analyzer.csproj", "{7FCB83A6-C281-44E7-8D86-A568771FA320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GomokuServer.Analyzer.UnitTests", "tests\GomokuServer.Analyzer.UnitTests\GomokuServer.Analyzer.UnitTests.csproj", "{C18C8F09-4AB4-46ED-BA36-9F1C0B602713}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +71,14 @@ Global
 		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCB83A6-C281-44E7-8D86-A568771FA320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCB83A6-C281-44E7-8D86-A568771FA320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCB83A6-C281-44E7-8D86-A568771FA320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCB83A6-C281-44E7-8D86-A568771FA320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C18C8F09-4AB4-46ED-BA36-9F1C0B602713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C18C8F09-4AB4-46ED-BA36-9F1C0B602713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C18C8F09-4AB4-46ED-BA36-9F1C0B602713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C18C8F09-4AB4-46ED-BA36-9F1C0B602713}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +93,8 @@ Global
 		{1E32A0BF-F650-402B-9CE0-6CAF3E3331C6} = {22455F42-1C72-4CBB-BADE-8C1D1FEBF74F}
 		{7E9644DB-B7CB-475B-9468-80F4F7A25825} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
 		{8A8D6C87-BB01-43E6-8B5C-E6B4DDB11655} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
+		{7FCB83A6-C281-44E7-8D86-A568771FA320} = {22455F42-1C72-4CBB-BADE-8C1D1FEBF74F}
+		{C18C8F09-4AB4-46ED-BA36-9F1C0B602713} = {ED5D594F-82A7-4869-BF1B-508A29EB4B31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67FA876C-F398-4904-B1EB-B8F4D46F5594}

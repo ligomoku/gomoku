@@ -10,6 +10,7 @@ export default ({ mode }: { mode: string }) => {
   const envDirPath = path.resolve(__dirname, "../../../envs");
   const srcPath = path.resolve(__dirname, "./src");
   const env = loadEnv(mode, path.resolve(__dirname, envDirPath));
+  const isProd = mode === "production";
 
   return defineConfig({
     plugins: [
@@ -26,9 +27,15 @@ export default ({ mode }: { mode: string }) => {
       //   project: "javascript-react",
       // }),
     ],
+    define: {
+      BETA_FEATURES: !isProd,
+    },
     build: {
       sourcemap: true,
       cssCodeSplit: true,
+      rollupOptions: {
+        external: isProd ? [/\.beta\.(jsx?|tsx?)$/] : [],
+      },
     },
     envDir: envDirPath,
     resolve: {

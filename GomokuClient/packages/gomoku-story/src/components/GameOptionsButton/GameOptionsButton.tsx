@@ -56,16 +56,20 @@ export const GameOptionsButtons = ({
       <GameButton text={createGameText} loading={isLoadingCreateGame} />
     </GameCreatorButton>
 
-    <GameButton
-      onClick={onPlayWithFriendClick}
-      text={playWithFriendText}
-      loading={isLoadingPlayWithFriend}
-    />
+    {BETA_FEATURES && (
+      <>
+        <GameButton
+          onClick={onPlayWithFriendClick}
+          text={playWithFriendText}
+          loading={isLoadingPlayWithFriend}
+        />
 
-    <GameButton
-      onClick={onPlayWithAIClick}
-      text={playWithAIText}
-      loading={isLoadingPlayWithAI}
-    />
+        <GameButton
+          onClick={onPlayWithAIClick}
+          text={playWithAIText}
+          loading={isLoadingPlayWithAI}
+        />
+      </>
+    )}
   </div>
 );

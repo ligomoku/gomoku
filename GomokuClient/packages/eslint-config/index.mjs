@@ -31,6 +31,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        BETA_FEATURES: "readonly",
       },
     },
     plugins: {
