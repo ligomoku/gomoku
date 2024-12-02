@@ -4,10 +4,17 @@ namespace GomokuServer.Application.Games.Commands.Abstract;
 
 public abstract record CreateGameForPairCommand : ICommand<CreateGameResponse>
 {
-	[Required] public required int BoardSize { get; init; }
-	[Required] public required TimeControlDto TimeControl { get; init; }
-	[Required] public required string FirstPlayerId { get; init; }
-	[Required] public required string SecondPlayerId { get; init; }
+	[Required]
+	public required int BoardSize { get; init; }
+
+	[Required]
+	public required TimeControlDto TimeControl { get; init; }
+
+	[Required]
+	public required string FirstPlayerId { get; init; }
+
+	[Required]
+	public required string SecondPlayerId { get; init; }
 }
 
 public abstract class CreateGameForPairCommandHandler<TRequest>(
