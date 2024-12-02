@@ -49,7 +49,9 @@ export const GameTimeMobile = ({
             <span className="font-bold text-[#ffa600]">{player?.userName}</span>
           </div>
           {timeLeft && (
-            <div className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${clockStyle}`}>
+            <div
+              className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${clockStyle}`}
+            >
               {secondsToString(timeLeft > 0 ? timeLeft : 0)}
             </div>
           )}
@@ -71,7 +73,9 @@ export const GameTimeMobile = ({
           <span className="font-bold text-[#ffa600]">{player?.userName}</span>
         </div>
         {timeLeft && (
-          <div className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${clockStyle}`}>
+          <div
+            className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${clockStyle}`}
+          >
             {secondsToString(timeLeft > 0 ? timeLeft : 0)}
           </div>
         )}

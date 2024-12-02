@@ -75,10 +75,16 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
   };
 
   const isCurrentPlayer = (color: string) => {
-    if (color === "black" && players.black?.userName === jwtDecodedInfo?.username) {
+    if (
+      color === "black" &&
+      players.black?.userName === jwtDecodedInfo?.username
+    ) {
       return true;
     }
-    if (color === "white" && players.white?.userName === jwtDecodedInfo?.username) {
+    if (
+      color === "white" &&
+      players.white?.userName === jwtDecodedInfo?.username
+    ) {
       return true;
     }
     return false;

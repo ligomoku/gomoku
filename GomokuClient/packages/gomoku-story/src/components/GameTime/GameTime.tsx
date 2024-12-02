@@ -42,9 +42,8 @@ export const GameTime = ({
       {clock && clock?.black > 0 && (
         <>
           <div
-            className={`font-mono text-5xl ${
-              currentPlayerColor === "black" ? "glow" : ""
-            } ${clock.black < 10 ? "text-red-500" : ""}`}
+            className={`font-mono text-5xl ${currentPlayerColor === "black" ? "glow" : ""}
+            ${clock.black < 10 ? "text-red-500" : ""}`}
           >
             {secondsToString(clock.black)}
           </div>
@@ -173,8 +172,8 @@ export const GameTime = ({
     {clock && clock.white > 0 && (
       <div
         className={`mt-2 text-center font-mono text-5xl ${
-          currentPlayerColor === "white" ? "glow" : ""
-        } ${clock.white < 10 ? "text-red-500" : ""}`}
+        currentPlayerColor === "white" ? "glow" : "" }
+        ${clock.white < 10 ? "text-red-500" : ""}`}
       >
         {secondsToString(clock.white)}
       </div>

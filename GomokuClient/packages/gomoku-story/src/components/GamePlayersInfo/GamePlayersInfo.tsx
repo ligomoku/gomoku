@@ -54,7 +54,9 @@ export const GamePlayersInfo = ({
             <span className="mr-1 font-medium text-[#ff9800]">
               {player.title}
             </span>
-            <span className={`mr-1 ${player.isCurrentPlayer ? "font-bold underline" : ""}`}>
+            <span
+              className={`mr-1 ${player.isCurrentPlayer ? "font-bold underline" : ""}`}
+            >
               {player.name}
             </span>
             {player.isCurrentPlayer && <span className="mr-1 text-red-500" />}
