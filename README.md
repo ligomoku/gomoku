@@ -2,7 +2,7 @@
   <img src="https://avatars.githubusercontent.com/u/123968089?s=400&u=26b1b8e1c6a7852376a21fd0af32d71c6fd13fda&v=4" width="200" alt="Gomoku Logo">
 </div>
 
-# Gomoku
+# [gomoku.app](https://gomoku.app)
 
 [![Node.js v20](https://img.shields.io/badge/Node.js-v20-green.svg)](https://nodejs.org)
 [![.NET v8](https://img.shields.io/badge/.NET-v8.0-blue)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
