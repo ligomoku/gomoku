@@ -44,10 +44,12 @@ export const GameTimeMobile = ({
                 backgroundColor: player?.color,
               }}
             />
-            <span className="font-bold text-[#ffa600]">{player?.userName}</span>
+            <span className={`font-bold text-[#ffa600] ${timeLeft && timeLeft < 10 ? "text-red-500" : ""}`}>
+              {player?.userName}
+            </span>
           </div>
           {timeLeft && (
-            <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+            <div className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${timeLeft < 10 ? "text-red-500" : ""}`}>
               {secondsToString(timeLeft > 0 ? timeLeft : 0)}
             </div>
           )}
@@ -66,10 +68,12 @@ export const GameTimeMobile = ({
               backgroundColor: player?.color,
             }}
           />
-          <span className="font-bold text-[#ffa600]">{player?.userName}</span>
+          <span className={`font-bold text-[#ffa600] ${timeLeft && timeLeft < 10 ? "text-red-500" : ""}`}>
+            {player?.userName}
+          </span>
         </div>
         {timeLeft && (
-          <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+          <div className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${timeLeft < 10 ? "text-red-500" : ""}`}>
             {secondsToString(timeLeft > 0 ? timeLeft : 0)}
           </div>
         )}

@@ -39,7 +39,11 @@ export const GameTime = ({
     <div className="mb-2 flex items-center justify-between">
       {clock && clock?.black > 0 && (
         <>
-          <div className="font-mono text-5xl">
+          <div
+            className={`font-mono text-5xl ${
+              clock.currentPlayer === "black" ? "highlight-clock" : ""
+            } ${clock.black < 10 ? "critical-time" : ""}`}
+          >
             {secondsToString(clock.black)}
           </div>
           <button className="rounded bg-[#3d3733] p-1 text-[#b0b0b0]">
@@ -56,7 +60,13 @@ export const GameTime = ({
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "black" }}
           />
-          <span className="text-sm">{players?.black?.userName}</span>
+          <span
+            className={`text-sm ${
+              clock?.currentPlayer === "black" ? "highlight-player" : ""
+            }`}
+          >
+            {players?.black?.userName}
+          </span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
@@ -140,7 +150,13 @@ export const GameTime = ({
             className="mr-2 h-2 w-2 rounded-full"
             style={{ backgroundColor: "white" }}
           />
-          <span className="text-sm">{players?.white?.userName}</span>
+          <span
+            className={`text-sm ${
+              clock?.currentPlayer === "white" ? "highlight-player" : ""
+            }`}
+          >
+            {players?.white?.userName}
+          </span>
         </div>
         <div className="flex items-center">
           <div className="mr-0.5 h-3 w-1 rounded-sm bg-[#7cb342]" />
@@ -165,7 +181,11 @@ export const GameTime = ({
     )}
 
     {clock && clock.white > 0 && (
-      <div className="mt-2 text-center font-mono text-5xl">
+      <div
+        className={`mt-2 text-center font-mono text-5xl ${
+          clock.currentPlayer === "white" ? "highlight-clock" : ""
+        } ${clock.white < 10 ? "critical-time" : ""}`}
+      >
         {secondsToString(clock.white)}
       </div>
     )}
