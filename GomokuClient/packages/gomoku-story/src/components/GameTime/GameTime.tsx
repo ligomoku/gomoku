@@ -23,6 +23,7 @@ export interface GameTimeProps {
   onFlag: () => void;
   onReset: () => void;
   onRematch: () => void;
+  currentPlayer: "black" | "white";
 }
 
 export const GameTime = ({
@@ -34,13 +35,14 @@ export const GameTime = ({
   onFlag,
   onReset,
   onRematch,
+  currentPlayer,
 }: GameTimeProps) => (
   <div className="w-[300px] rounded-lg bg-[#2e2a24] p-2 font-sans text-white">
     <div className="mb-2 flex items-center justify-between">
       {clock && clock?.black > 0 && (
         <>
           <div
-            className={`font-mono text-5xl ${clock.currentPlayer === "black" ? "highlight-clock" : ""}
+            className={`font-mono text-5xl ${currentPlayer === "black" ? "highlight-clock" : ""}
             ${clock.black < 10 ? "critical-time" : ""}`}
           >
             {secondsToString(clock.black)}
@@ -60,7 +62,7 @@ export const GameTime = ({
             style={{ backgroundColor: "black" }}
           />
           <span
-            className={`text-sm ${clock?.currentPlayer === "black" ? "highlight-player" : ""}`}
+            className={`text-sm ${currentPlayer === "black" ? "highlight-player" : ""}`}
           >
             {players?.black?.userName}
           </span>
@@ -148,7 +150,7 @@ export const GameTime = ({
             style={{ backgroundColor: "white" }}
           />
           <span
-            className={`text-sm ${clock?.currentPlayer === "white" ? "highlight-player" : ""}`}
+            className={`text-sm ${currentPlayer === "white" ? "highlight-player" : ""}`}
           >
             {players?.white?.userName}
           </span>
@@ -178,7 +180,7 @@ export const GameTime = ({
     {clock && clock.white > 0 && (
       <div
         className={`mt-2 text-center font-mono text-5xl ${
-        clock.currentPlayer === "white" ? "highlight-clock" : "" }
+        currentPlayer === "white" ? "highlight-clock" : "" }
         ${clock.white < 10 ? "critical-time" : ""}`}
       >
         {secondsToString(clock.white)}

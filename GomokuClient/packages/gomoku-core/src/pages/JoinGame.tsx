@@ -132,13 +132,15 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                   {
                     title: "black",
                     name: players.black?.userName || "Anonymous",
-                    isCurrentPlayer: clock?.currentPlayer === "black",
+                    isCurrentPlayer:
+                      players.black?.playerId === jwtDecodedInfo?.username,
                     color: "black",
                   },
                   {
                     title: "white",
                     name: players.white?.userName || "Anonymous",
-                    isCurrentPlayer: clock?.currentPlayer === "white",
+                    isCurrentPlayer:
+                      players.white?.playerId === jwtDecodedInfo?.username,
                     color: "white",
                   },
                 ]}

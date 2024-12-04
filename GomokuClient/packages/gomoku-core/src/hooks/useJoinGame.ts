@@ -92,17 +92,6 @@ export const useJoinGame = (
         },
         clock: async (message) => {
           setClock(message);
-          if (message.currentPlayer === "black" && message.black < 10) {
-            toaster.show(
-              "Black player has less than 10 seconds left!",
-              "warning",
-            );
-          } else if (message.currentPlayer === "white" && message.white < 10) {
-            toaster.show(
-              "White player has less than 10 seconds left!",
-              "warning",
-            );
-          }
         },
         rematchApproved: async ({ newGameId }) => {
           await router.navigate({
