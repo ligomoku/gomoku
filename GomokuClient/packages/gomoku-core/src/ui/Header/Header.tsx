@@ -95,7 +95,7 @@ export const Header = ({
             </>
           )}
           {isSignedIn ? (
-            <div className="hidden items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
+            <div className="items-center space-x-2 text-[#bababa] hover:text-[#f0f0f0] sm:flex">
               {UserButtonComponent ? UserButtonComponent : null}
             </div>
           ) : SignedOutComponent ? (
