@@ -10,6 +10,7 @@ import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
+import { typedSessionStorage } from "@/utils";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -72,11 +73,17 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       toaster.show("Rematch request sent");
     },
     currentPlayer:
-      players.black?.playerId === jwtDecodedInfo?.userId ? "black" : "white",
+      players.black?.playerId ===
+      (jwtDecodedInfo?.userId ||
+        typedSessionStorage.getItem("anonymousSessionID"))
+        ? "black"
+        : "white",
   };
 
   const isCurrentPlayerBlack =
-    players.black?.playerId === jwtDecodedInfo?.userId;
+    players.black?.playerId ===
+    (jwtDecodedInfo?.userId ||
+      typedSessionStorage.getItem("anonymousSessionID"));
 
   const currentPlayer = isCurrentPlayerBlack ? players.black : players.white;
   const opponentPlayer = isCurrentPlayerBlack ? players.white : players.black;
