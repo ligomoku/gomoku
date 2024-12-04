@@ -10,6 +10,7 @@ import type { GameTimeProps } from "@gomoku/story";
 
 import { useAuthToken } from "@/context";
 import { useChat, useJoinGame, useMobileDesign } from "@/hooks";
+import { typedSessionStorage } from "@/utils";
 
 interface JoinGameProps {
   gameHistory: SwaggerTypes.GetGameHistoryResponse;
@@ -59,7 +60,6 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
         ? [...transformMoves(gameHistory.movesHistory), ...moves]
         : transformMoves(gameHistory.movesHistory),
     onSkip: () => alert("Skip clicked"),
-    //TODO: align IDs to match gameId and ID the ID letters to same cases
     onFlag: () => hubProxy?.resign({ gameId: gameID }),
     onReset: () => alert("Reset clicked"),
     onUndo: () => {
@@ -72,6 +72,42 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
       });
       toaster.show("Rematch request sent");
     },
+    currentPlayer:
+      players.black?.playerId ===
+      (jwtDecodedInfo?.userId ||
+        typedSessionStorage.getItem("anonymousSessionID"))
+        ? "black"
+        : "white",
+  };
+
+  const isCurrentPlayerBlack =
+    players.black?.playerId ===
+    (jwtDecodedInfo?.userId ||
+      typedSessionStorage.getItem("anonymousSessionID"));
+
+  const currentPlayer = isCurrentPlayerBlack ? players.black : players.white;
+  const opponentPlayer = isCurrentPlayerBlack ? players.white : players.black;
+  const currentPlayerClock = isCurrentPlayerBlack ? clock?.black : clock?.white;
+  const opponentClock = isCurrentPlayerBlack ? clock?.white : clock?.black;
+
+  const orderedPlayers = [
+    {
+      title: isCurrentPlayerBlack ? "white" : "black",
+      name: opponentPlayer?.userName || "Anonymous",
+      isCurrentPlayer: false,
+      color: isCurrentPlayerBlack ? "white" : "black",
+    },
+    {
+      title: isCurrentPlayerBlack ? "black" : "white",
+      name: currentPlayer?.userName || "Anonymous",
+      isCurrentPlayer: true,
+      color: isCurrentPlayerBlack ? "black" : "white",
+    },
+  ];
+
+  const orderedPlayersObject = {
+    black: isCurrentPlayerBlack ? currentPlayer : opponentPlayer,
+    white: isCurrentPlayerBlack ? opponentPlayer : currentPlayer,
   };
 
   return (
@@ -128,20 +164,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
             >
               <GamePlayersInfo
                 gameType={`${gameHistory.boardSize}x${gameHistory.boardSize}`}
-                players={[
-                  {
-                    title: "black",
-                    name: players.black?.userName || "Anonymous",
-                    isCurrentPlayer: false,
-                    color: "black",
-                  },
-                  {
-                    title: "white",
-                    name: players.white?.userName || "Anonymous",
-                    isCurrentPlayer: true,
-                    color: "white",
-                  },
-                ]}
+                players={orderedPlayers}
               />
               <div className="mt-4 flex flex-col justify-between">
                 <Chat
@@ -167,9 +190,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
                 <GameTimeMobile
                   opponentView
                   {...commonGameTimeProps}
-                  player={players.black}
-                  //TODO: we should not pass both one of them should be required both not both at same time
-                  timeLeft={clock?.black}
+                  player={opponentPlayer}
+                  timeLeft={opponentClock}
                 />
               )}
             </div>
@@ -187,9 +209,8 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
               {isMobile && (
                 <GameTimeMobile
                   {...commonGameTimeProps}
-                  player={players.white}
-                  //TODO: we should not pass both one of them should be required both not both at same time
-                  timeLeft={clock?.white}
+                  player={currentPlayer}
+                  timeLeft={currentPlayerClock}
                 />
               )}
             </div>
@@ -204,7 +225,7 @@ const JoinGame = ({ gameHistory }: JoinGameProps) => {
             >
               <GameTime
                 {...commonGameTimeProps}
-                players={players}
+                players={orderedPlayersObject}
                 clock={clock}
               />
             </div>
