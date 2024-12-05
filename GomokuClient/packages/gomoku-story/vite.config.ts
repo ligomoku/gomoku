@@ -18,9 +18,6 @@ export default ({ mode }: { mode: string }) => {
         pathsToAliases: true,
       }),
     ],
-    define: {
-      BETA_FEATURES: !isProd,
-    },
     build: {
       lib: {
         entry: path.resolve(__dirname, "src/index.ts"),
