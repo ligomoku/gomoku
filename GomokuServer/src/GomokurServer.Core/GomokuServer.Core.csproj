@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GomokuServer.Utils\GomokuServer.Utils.csproj" />
+   <ProjectReference Include="..\GomokuServer.Analyzer\GomokuServer.Analyzer\GomokuServer.Analyzer.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Analyzer</OutputItemType>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

@@ -13,3 +13,5 @@ interface ImportMetaEnv {
 interface ImportMeta {
   env: ImportMetaEnv;
 }
+
+declare const BETA_FEATURES: boolean;

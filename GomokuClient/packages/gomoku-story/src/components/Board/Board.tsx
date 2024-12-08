@@ -15,7 +15,7 @@ export interface TileProps {
   yIndex: SignalClientMessages.MakeMoveClientMessage["y"];
   col: TileColor;
   lastTile?: SwaggerTypes.TileDto;
-  onTileClick: (
+  onTileClick?: (
     x: SignalClientMessages.MakeMoveClientMessage["x"],
     y: SignalClientMessages.MakeMoveClientMessage["y"],
   ) => void;
@@ -61,7 +61,7 @@ const Tile = memo(
         className="relative flex items-center justify-center border border-black"
         onClick={() => {
           console.debug("Tile clicked: x=", xIndex, "y=", yIndex);
-          onTileClick(xIndex, yIndex);
+          onTileClick?.(xIndex, yIndex);
         }}
       >
         {showAnnotations && (
@@ -101,7 +101,7 @@ const tileStyles = cva("rounded-full h-[90%] w-[90%]", {
 
 export interface BoardProps {
   size: number;
-  onTileClick: Pick<TileProps, "onTileClick">["onTileClick"];
+  onTileClick?: Pick<TileProps, "onTileClick">["onTileClick"];
   tiles: TileColor[][];
   lastTile?: SwaggerTypes.TileDto;
   style?: CSSProperties;

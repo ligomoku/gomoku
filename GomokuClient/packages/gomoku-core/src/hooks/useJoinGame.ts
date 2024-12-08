@@ -30,6 +30,7 @@ export const useJoinGame = (
   const [players, setPlayers] = useState<SwaggerTypes.PlayersDto>(
     gameHistory.players,
   );
+  const [gameOver, setGameOver] = useState(false);
 
   const router = useRouter();
 
@@ -79,6 +80,7 @@ export const useJoinGame = (
         gameIsOver: async (message) => {
           toaster.show(formatErrorMessage(message.result));
           setWinningSequence(message.winningSequence);
+          setGameOver(true);
         },
         gameHubError: async (error) => {
           toaster.show(formatErrorMessage(error.message), "error");
@@ -109,13 +111,7 @@ export const useJoinGame = (
   }, [gameID, isConnected, hubProxy, registerEventHandlers]);
 
   useInterval(() => {
-    if (
-      isConnected &&
-      gameID &&
-      hubProxy &&
-      moves.length !== 0 &&
-      gameHistory.timeControl
-    ) {
+    if (isConnected && gameID && hubProxy && gameHistory.timeControl) {
       hubProxy.getClock({ gameId: gameID });
     }
   }, 500); //TODO: play with this delay value for clock sync
@@ -125,7 +121,7 @@ export const useJoinGame = (
       x: SignalClientMessages.MakeMoveClientMessage["x"],
       y: SignalClientMessages.MakeMoveClientMessage["y"],
     ) => {
-      if (!hubProxy || winner) return;
+      if (!hubProxy || winner || gameOver) return;
 
       const makeMoveMessage = {
         gameId: gameID,
@@ -140,7 +136,7 @@ export const useJoinGame = (
         toaster.show("Error making move", "error");
       }
     },
-    [hubProxy, winner, gameID],
+    [hubProxy, winner, gameOver, gameID],
   );
 
   return {

@@ -15,7 +15,6 @@
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="8.0.10" />
     <PackageReference Include="Sentry.Extensions.Logging" Version="4.13.0" />
     <PackageReference Include="SignalRSwaggerGen" Version="4.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
@@ -35,6 +34,10 @@
   <ItemGroup>
     <ProjectReference Include="..\GomokuServer.Application\GomokuServer.Application.csproj" />
     <ProjectReference Include="..\GomokuServer.Infrastructure\GomokuServer.Infrastructure.csproj" />
+    <ProjectReference Include="..\GomokuServer.Analyzer\GomokuServer.Analyzer\GomokuServer.Analyzer.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Analyzer</OutputItemType>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

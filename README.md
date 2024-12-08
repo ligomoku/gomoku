@@ -2,10 +2,11 @@
   <img src="https://avatars.githubusercontent.com/u/123968089?s=400&u=26b1b8e1c6a7852376a21fd0af32d71c6fd13fda&v=4" width="200" alt="Gomoku Logo">
 </div>
 
-# Gomoku
+# [gomoku.app](https://gomoku.app)
 
-[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-blue.svg)](LICENSE)
 [![Node.js v20](https://img.shields.io/badge/Node.js-v20-green.svg)](https://nodejs.org)
+[![.NET v8](https://img.shields.io/badge/.NET-v8.0-blue)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://hub.docker.com/r/vkuprins97/gomoku-server/)
 
 A sophisticated implementation of the classic Gomoku (Five in a Row)
 
@@ -38,10 +39,10 @@ docker-compose exec rapfi ./build/pbrain-rapfi --help
 ## 📚 Documentation
 
 ### API Documentation
-- OpenAPI Specification: [https://gomoku-gi8o.onrender.com/swagger](https://gomoku-gi8o.onrender.com/swagger)
+- OpenAPI Specification: [https://api.gomoku.app/swagger](https://api.gomoku.app/swagger)
 
 ### Component Library
-- Storybook: [https://storybook-static-self.vercel.app](https://storybook-static-self.vercel.app)
+- Storybook: [https://story.gomoku.app](https://story.gomoku.app)
 
 ## 👥 Project Management
 

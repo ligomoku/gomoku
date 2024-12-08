@@ -15,7 +15,7 @@ import { secondsToString } from "@/components";
 export interface GameTimeMobileProps
   extends Omit<
     GameTimeProps,
-    "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock"
+    "players" | "blackTimeLeft" | "whiteTimeLeft" | "clock" | "currentPlayer"
   > {
   opponentView?: boolean; // Clock Time mode for main player who sees the board (player not opponent)
   player?: SwaggerTypes.PlayerDto;
@@ -33,6 +33,7 @@ export const GameTimeMobile = ({
   timeLeft,
   opponentView,
 }: GameTimeMobileProps) => {
+  //ToDo: this prop opponentView should be renamed to TopView simplified mode ot avoid confusion
   if (opponentView) {
     return (
       <div className="w-full max-w-md rounded-lg bg-[#2e2a24] p-2 font-mono text-white">
@@ -44,10 +45,16 @@ export const GameTimeMobile = ({
                 backgroundColor: player?.color,
               }}
             />
-            <span className="font-bold text-[#ffa600]">{player?.userName}</span>
+            <span
+              className={`font-bold text-[#ffa600] ${timeLeft && timeLeft < 10 ? "text-red-500" : ""}`}
+            >
+              {player?.userName}
+            </span>
           </div>
           {timeLeft && (
-            <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+            <div
+              className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${timeLeft < 10 ? "text-red-500" : ""}`}
+            >
               {secondsToString(timeLeft > 0 ? timeLeft : 0)}
             </div>
           )}
@@ -66,10 +73,16 @@ export const GameTimeMobile = ({
               backgroundColor: player?.color,
             }}
           />
-          <span className="font-bold text-[#ffa600]">{player?.userName}</span>
+          <span
+            className={`font-bold text-[#ffa600] ${timeLeft && timeLeft < 10 ? "text-red-500" : ""}`}
+          >
+            {player?.userName}
+          </span>
         </div>
         {timeLeft && (
-          <div className="bg-[#3d3733] px-2 py-1 text-4xl font-bold">
+          <div
+            className={`bg-[#3d3733] px-2 py-1 text-4xl font-bold ${timeLeft < 10 ? "text-red-500" : ""}`}
+          >
             {secondsToString(timeLeft > 0 ? timeLeft : 0)}
           </div>
         )}

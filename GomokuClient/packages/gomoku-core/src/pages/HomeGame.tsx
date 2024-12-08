@@ -168,8 +168,6 @@ export const HomeGame = () => {
           <div className="lg:col-span-3">
             <GameOptionsButtons
               createGameText={t`CREATE A GAME`}
-              playWithFriendText={t`PLAY WITH A FRIEND`}
-              playWithAIText={t`PLAY WITH AI`}
               onCreateGame={handleCreateGame}
               isLoadingCreateGame={isLoadingCreateGame}
             />

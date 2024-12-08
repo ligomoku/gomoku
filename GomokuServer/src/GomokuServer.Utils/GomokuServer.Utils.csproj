@@ -8,4 +8,11 @@
     <Authors>Aleksandrs Vaguscenko (aleksandrs.vaguscneko@gmail.com); Vitaly Kuprin (vitas_s@inbox.lv)</Authors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GomokuServer.Analyzer\GomokuServer.Analyzer\GomokuServer.Analyzer.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Analyzer</OutputItemType>
+    </ProjectReference>
+  </ItemGroup>
+
 </Project>

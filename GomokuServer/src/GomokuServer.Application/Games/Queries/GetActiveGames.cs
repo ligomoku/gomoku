@@ -5,7 +5,6 @@ public record GetActiveRegisteredGamesQuery : GetActiveGamesQuery;
 public class GetActiveRegisteredGamesQueryHandler(IRegisteredGamesRepository _registeredGamesRepository)
 	: GetActiveGamesQueryHandler<GetActiveRegisteredGamesQuery>(_registeredGamesRepository);
 
-
 public record GetActiveAnonymousGamesQuery : GetActiveGamesQuery;
 
 public class GetActiveAnonymousGamesQueryHandler(IAnonymousGamesRepository _anonymousGamesRepository)
