@@ -40,16 +40,6 @@ public static class ServiceCollectionExtensions
 
 			options.ExampleFilters();
 
-			options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-			{
-				Name = "Authorization",
-				Type = SecuritySchemeType.Http,
-				Scheme = "Bearer",
-				BearerFormat = "JWT",
-				In = ParameterLocation.Header,
-				Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
-			});
-
 			options.OperationFilter<LowerCaseParametersOperationFilter>();
 			options.OperationFilter<AuthorizationOperationFilter>();
 			options.OperationFilter<MandatoryHeadersParametersOperationFilter>();
