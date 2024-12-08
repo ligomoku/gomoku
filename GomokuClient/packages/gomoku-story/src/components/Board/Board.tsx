@@ -1,12 +1,10 @@
 import { cva } from "class-variance-authority";
-import { memo, useMemo, useState } from "react";
-import { ResizableBox } from "react-resizable";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import type { TileColor } from "@/hooks";
 import type { SignalClientMessages, SwaggerTypes } from "@gomoku/api";
-import type { CSSProperties } from "react";
+import type { CSSProperties, MouseEvent } from "react";
 
-import "react-resizable/css/styles.css";
 import { useMobileDesign } from "@/hooks";
 import { Button } from "@/ui";
 
@@ -81,7 +79,6 @@ const Tile = memo(
       prevProps.yIndex === nextProps.yIndex &&
       prevProps.showAnnotations === nextProps.showAnnotations &&
       prevProps.onTileClick === nextProps.onTileClick &&
-      //TODO: check if we need to do JSON.stringify here
       prevProps.winningSequence?.length === nextProps.winningSequence?.length
     );
   },
@@ -119,6 +116,45 @@ export const Board = ({
   const isMobile = useMobileDesign(1488);
   const [boardSize, setBoardSize] = useState(window.innerWidth / 2.2);
   const [showAnnotations, setShowAnnotations] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeRef = useRef<HTMLDivElement>(null);
+  const minSize = isMobile ? 300 : 400;
+
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsResizing(true);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: globalThis.MouseEvent) => {
+      if (!isResizing) return;
+
+      const container = resizeRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const newSize = Math.max(
+        minSize,
+        Math.min(e.clientX - rect.left, e.clientY - rect.top),
+      );
+
+      setBoardSize(newSize);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing, minSize]);
 
   const tilesElements = useMemo(
     () =>
@@ -141,27 +177,19 @@ export const Board = ({
 
   const calculatedSize = boardSize / size;
   const calculatedMobileSize = isMobile ? 100 : 80;
-  const minConstraints = isMobile ? [300, 300] : [400, 400];
 
   if (!isMobile) {
     return (
-      <ResizableBox
-        width={boardSize}
-        height={boardSize}
-        onResize={(_event, { size }) => {
-          setBoardSize(size.width);
+      <div
+        ref={resizeRef}
+        className="relative"
+        style={{
+          width: `${boardSize}px`,
+          height: `${boardSize}px`,
         }}
-        resizeHandles={["se"]}
-        minConstraints={[minConstraints[0], minConstraints[1]]}
       >
-        <div className="flex flex-col items-center">
-          <div
-            className={"rounded-lg bg-[#ba8c63] shadow-md"}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          >
+        <div className="flex h-full flex-col items-center">
+          <div className="h-full w-full rounded-lg bg-[#ba8c63] shadow-md">
             <div
               className="grid rounded-lg"
               style={{
@@ -181,13 +209,18 @@ export const Board = ({
                 hover:bg-[#4a4a4a] focus-visible:outline-none focus-visible:ring-1
                 disabled:pointer-events-none disabled:opacity-50"
             >
-              {showAnnotations && !isMobile
-                ? "Hide Annotations"
-                : "Show Annotations"}
+              {showAnnotations ? "Hide Annotations" : "Show Annotations"}
             </Button>
           </div>
         </div>
-      </ResizableBox>
+        <div
+          className="absolute bottom-0 right-0 h-4 w-4 cursor-se-resize"
+          onMouseDown={handleMouseDown}
+          style={{
+            background: "linear-gradient(135deg, transparent 50%, #666 50%)",
+          }}
+        />
+      </div>
     );
   }
 
@@ -207,3 +240,5 @@ export const Board = ({
     </div>
   );
 };
+
+export default Board;

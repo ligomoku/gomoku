@@ -1,4 +1,3 @@
-// gomoku-story/tailwind.config.js and gomoku-core/tailwind.config.js
 const sharedConfig = require("@gomoku/tailwind-config");
 
 /** @type {import('tailwindcss').Config} */
