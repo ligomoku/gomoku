@@ -43,6 +43,15 @@ public static class ServiceCollectionExtensions
 			options.OperationFilter<LowerCaseParametersOperationFilter>();
 			options.OperationFilter<AuthorizationOperationFilter>();
 			options.OperationFilter<MandatoryHeadersParametersOperationFilter>();
+
+			options.SwaggerGeneratorOptions = new SwaggerGeneratorOptions
+			{
+				OpenApiMediaTypes = new Dictionary<string, string>
+				{
+					{ "application/json", "json" },
+					{ "application/x-yaml", "yaml" }
+				}
+			};
 		});
 
 		return services;
