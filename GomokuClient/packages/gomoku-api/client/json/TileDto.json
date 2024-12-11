@@ -1,0 +1,1 @@
+{"required":["x","y"],"type":"object","properties":{"x":{"type":"integer","format":"int32"},"y":{"type":"integer","format":"int32"}},"additionalProperties":false,"x-readme-ref-name":"TileDto"}

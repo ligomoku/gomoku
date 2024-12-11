@@ -1,7 +1,7 @@
 import { defineConfig } from "@kubb/core";
-import createSwagger from "@kubb/swagger";
-import createSwaggerTS from "@kubb/swagger-ts";
-import createSwaggerTanstackQuery from "@kubb/swagger-tanstack-query";
+import { pluginOas } from "@kubb/plugin-oas";
+import { pluginTs } from "@kubb/plugin-ts";
+import { pluginReactQuery } from "@kubb/plugin-react-query";
 
 export default defineConfig({
   input: {
@@ -10,51 +10,41 @@ export default defineConfig({
   output: {
     path: "./client",
     clean: true,
+    extension: {
+      ".ts": ".ts",
+      ".js": ".js",
+      ".json": ".json",
+    },
   },
   plugins: [
-    createSwagger({
-      output: false,
+    pluginOas({
       validate: true,
-    }),
-    createSwaggerTS({
       output: {
-        path: "./models",
+        path: "./json",
       },
-      enumType: "enum",
-      dateType: "date",
+      serverIndex: 0,
+      contentType: "application/json",
     }),
-    createSwaggerTanstackQuery({
-      output: {
-        path: "./hooks",
-      },
-      client: {
-        importPath: "../../http",
-      },
-      queryOptions: {
-        mutations: true,
-        queries: true,
-      },
-    }),
+    // pluginOas({
+    //   output: {
+    //     path: "./api",
+    //   },
+    //   validate: true,
+    // }),
+    // pluginTs({
+    //   output: {
+    //     path: "./models",
+    //   },
+    //   enumType: "enum",
+    //   dateType: "date",
+    // }),
+    // pluginReactQuery({
+    //   output: {
+    //     path: "./hooks",
+    //   },
+    //   client: {
+    //     importPath: "../../http",
+    //   },
+    // }),
   ],
 });
-
-//TODO: on migrating v3 kubb
-// pluginReactQuery({
-//   output: {
-//     path: './hooks',
-//   },
-//   client: {
-//     importPath: '../../http',
-//     dataReturnType: 'data',
-//   },
-//   paramsType: 'object',
-//   pathParamsType: 'object',
-//   query: {
-//     methods: ['get'],
-//     importPath: '@tanstack/react-query',
-//   },
-//   mutation: {
-//     methods: ['post', 'put', 'delete'],
-//     importPath: '@tanstack/react-query',
-//   },
-// }),

@@ -32,6 +32,7 @@ const client = async <
 >(
   config: ClientConfig<TQueryParams> & { data?: TRequest },
 ): Promise<{ data: TData; error?: TError }> => {
+  //@ts-ignore
   const fullUrl = new URL(`${import.meta.env.VITE_API_URL}${config.url}`);
 
   if (config.params) {

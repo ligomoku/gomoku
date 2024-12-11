@@ -1,0 +1,1 @@
+{"required":["hasMoreItems","totalCount"],"type":"object","properties":{"hasMoreItems":{"type":"boolean"},"totalCount":{"type":"integer","format":"int32"}},"additionalProperties":false,"x-readme-ref-name":"PaginationMetadata"}
