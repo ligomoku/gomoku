@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@gomoku/eslint-config": "*",
-    "@kubb/cli": "^3.1.0",
-    "@kubb/core": "^3.1.0",
-    "@kubb/plugin-react-query": "^3.1.0",
-    "@kubb/plugin-ts": "^3.1.0",
+    "@kubb/cli": "^3.2.0",
+    "@kubb/core": "^3.2.0",
+    "@kubb/plugin-react-query": "^3.2.0",
+    "@kubb/plugin-ts": "^3.2.0",
     "@kubb/swagger": "^2.28.4",
     "@kubb/swagger-client": "^2.28.4",
     "@kubb/swagger-tanstack-query": "^2.28.4",
-    "@tanstack/react-query": "^5.62.3"
+    "@tanstack/react-query": "^5.62.7"
   }
 }

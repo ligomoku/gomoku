@@ -1,1 +1,0 @@
-{"required":["black","white"],"type":"object","properties":{"black":{"type":"integer","format":"int64"},"white":{"type":"integer","format":"int64"}},"additionalProperties":false,"x-readme-ref-name":"ClockDto"}

@@ -1,1 +1,0 @@
-{"required":["playerId"],"type":"object","properties":{"playerId":{"type":"string","nullable":true}},"additionalProperties":false,"x-readme-ref-name":"AddAnonymousPlayerToGameRequest"}

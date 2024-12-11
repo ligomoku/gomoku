@@ -1,1 +1,0 @@
-{"required":["incrementPerMove","initialTimeInSeconds"],"type":"object","properties":{"initialTimeInSeconds":{"type":"integer","format":"int32"},"incrementPerMove":{"type":"integer","format":"int32"}},"additionalProperties":false,"x-readme-ref-name":"TimeControlDto"}

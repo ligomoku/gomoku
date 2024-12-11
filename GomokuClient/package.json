@@ -28,10 +28,10 @@
     "clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name .turbo -type d -prune -exec rm -rf '{}' + && find . -name dist -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "^1.87.3",
+    "@tanstack/router-cli": "^1.87.7",
     "prettier": "^3.4.2",
     "prettier-plugin-classnames": "^0.7.5",
-    "prettier-plugin-merge": "^0.7.1",
+    "prettier-plugin-merge": "^0.7.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "turbo": "^2.3.3"
   },
