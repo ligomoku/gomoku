@@ -4,8 +4,8 @@ import {
   usePostApiGameRegisteredGameidJoin,
   usePostApiGameAnonymousGameidJoin,
 } from "@gomoku/api/client/hooks";
-import { LoadingOverlay, toaster } from "@gomoku/story";
-import { createFileRoute } from "@tanstack/react-router";
+import { LoadingOverlay, toaster, AlertDialog } from "@gomoku/story";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, useRef, useCallback } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
@@ -20,28 +20,28 @@ const JoinGameComponent = ({
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
   const [isJoining, setIsJoining] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
   const { jwtToken, anonymousSessionId } = useAuthToken();
   const joinedRef = useRef(false);
 
-  const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
-    gameID,
-    Headers.getDefaultHeadersWithAuth(jwtToken),
-    {
-      query: {
-        enabled: !!jwtToken,
+  const { data: registeredGameHistory, isError: isRegisteredError } =
+    useGetApiGameRegisteredGameidHistory(
+      gameID,
+      Headers.getDefaultHeadersWithAuth(jwtToken),
+      {
+        query: {
+          enabled: !!jwtToken,
+        },
       },
-    },
-  );
+    );
 
-  const { data: anonymousGameHistory } = useGetApiGameAnonymousGameidHistory(
-    gameID,
-    Headers.getDefaultHeaders(),
-    {
+  const { data: anonymousGameHistory, isError: isAnonymousError } =
+    useGetApiGameAnonymousGameidHistory(gameID, Headers.getDefaultHeaders(), {
       query: {
         enabled: !jwtToken,
       },
-    },
-  );
+    });
 
   const registeredJoinMutation = usePostApiGameRegisteredGameidJoin(
     gameID,
@@ -54,13 +54,13 @@ const JoinGameComponent = ({
   );
 
   const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
+  const isError = jwtToken ? isRegisteredError : isAnonymousError;
 
   const joinGame = useCallback(async () => {
     if (gameHistory?.players.black || gameHistory?.players.white) return;
     setIsJoining(true);
     try {
       if (jwtToken) {
-        //TODO: this is something wrong that we deal with Kubb
         await registeredJoinMutation.mutateAsync(undefined as never);
       }
 
@@ -76,19 +76,37 @@ const JoinGameComponent = ({
     } finally {
       setIsJoining(false);
     }
-    //TODO: check why more deps causing multiple join calls
     //eslint-disable-next-line
   }, [gameHistory]);
 
   useEffect(() => {
     if (!gameHistory || joinedRef.current) return;
-
     joinGame();
   }, [gameHistory, joinGame]);
 
-  if (!gameHistory || isJoining) return <LoadingOverlay isVisible />;
+  useEffect(() => {
+    if (isError) setShowError(true);
+  }, [isError]);
 
-  return <JoinGame gameHistory={gameHistory} />;
+  return showError ? (
+    <AlertDialog
+      title="Game Not Found"
+      secondaryTitle="This game doesn't exist or might have been deleted"
+      text="Would you like to go back to the home page?"
+      acceptButtonText="Go to Home"
+      declineButtonText="Stay Here"
+      onAccept={() => {
+        navigate({ to: "/" });
+      }}
+      onDecline={() => {
+        setShowError(false);
+      }}
+    />
+  ) : !gameHistory || isJoining ? (
+    <LoadingOverlay isVisible />
+  ) : (
+    <JoinGame gameHistory={gameHistory} />
+  );
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
