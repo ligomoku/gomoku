@@ -86,11 +86,11 @@ const JoinGameComponent = ({
       setIsJoining(false);
     }
   }, [
-    gameHistory, 
-    jwtToken, 
-    anonymousSessionId, 
-    registeredJoinMutation, 
-    anonymousJoinMutation
+    gameHistory,
+    jwtToken,
+    anonymousSessionId,
+    registeredJoinMutation,
+    anonymousJoinMutation,
   ]);
 
   useEffect(() => {
@@ -129,6 +129,7 @@ const JoinGameComponent = ({
 
 export const Route = createFileRoute("/game/join/$gameID")({
   component: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { gameID } = Route.useParams();
     return <JoinGameComponent gameID={gameID!} />;
   },
