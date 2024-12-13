@@ -1,26 +1,48 @@
-﻿using Ardalis.Result;
+﻿using System.Collections.Concurrent;
+
+using Ardalis.Result;
 
 using GomokuServer.Api.MatchingEngine;
 using GomokuServer.Application.Games.Responses;
 
 namespace GomokuServer.Api.Hubs;
 
-public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGameHub
+public abstract class GameHub : Hub, IGameHub
 {
+	private readonly CompositeMatchingEngine _matchingEngine;
+	internal static readonly ConcurrentDictionary<string, DateTime> LastHeartbeat = new();
+
 	// This is a very simple implementation of online users count.
 	// When time comes to scaling, this approach should be reimplemented to use some distributed cache like Redis.
 	private static long s_onlineUsersCount = 0;
 
+	protected GameHub(CompositeMatchingEngine matchingEngine)
+	{
+		_matchingEngine = matchingEngine;
+	}
+
+	public Task KeepAlive(KeepAliveMessage message)
+	{
+		LastHeartbeat.AddOrUpdate(
+			Context.ConnectionId,
+			DateTime.UtcNow,
+			(_, _) => DateTime.UtcNow
+		);
+		return Clients.Caller.SendAsync(GameHubMethod.Heartbeat, new HeartbeatReceivedMessage());
+	}
+
 	public override async Task OnConnectedAsync()
 	{
+		LastHeartbeat.TryAdd(Context.ConnectionId, DateTime.UtcNow);
 		Interlocked.Increment(ref s_onlineUsersCount);
 		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
 	}
 
 	public override async Task OnDisconnectedAsync(Exception? exception)
 	{
+		LastHeartbeat.TryRemove(Context.ConnectionId, out _);
 		Interlocked.Decrement(ref s_onlineUsersCount);
-		matchingEngine.TryRemove(GetPlayerId());
+		_matchingEngine.TryRemove(GetPlayerId());
 		await Clients.All.SendAsync(GameHubMethod.OnOnlineUserCountChange, s_onlineUsersCount);
 	}
 
@@ -29,14 +51,14 @@ public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGa
 		// For now, we assume that there cant be a situation that invalid GameOptions are passed, however this would throw an exception.
 		if (QuickPairingGameOptionsVariants.IsValidGameOptions(gameOptions))
 		{
-			matchingEngine.TryAdd(GetPlayerId(), gameOptions);
+			_matchingEngine.TryAdd(GetPlayerId(), gameOptions);
 		}
 		return Task.CompletedTask;
 	}
 
 	public Task LeaveQueue()
 	{
-		matchingEngine.TryRemove(GetPlayerId());
+		_matchingEngine.TryRemove(GetPlayerId());
 		return Task.CompletedTask;
 	}
 

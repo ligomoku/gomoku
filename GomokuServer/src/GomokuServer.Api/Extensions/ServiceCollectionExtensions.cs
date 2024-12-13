@@ -2,6 +2,7 @@
 
 using GomokuServer.Api.Hubs.Providers;
 using GomokuServer.Api.MatchingEngine;
+using GomokuServer.Api.Services;
 using GomokuServer.Api.Swagger.Examples;
 using GomokuServer.Api.Swagger.Filters;
 using GomokuServer.Application.Common.Interfaces;
@@ -85,6 +86,8 @@ public static class ServiceCollectionExtensions
 			.AddSignalR()
 			.AddJsonProtocol();
 		services.AddSingleton<IUserIdProvider, UserIdFromJwtProvider>();
+
+		services.AddHostedService<SignalRConnectionMonitor>();
 
 		return services;
 	}

@@ -3,13 +3,19 @@
 [TranspilationSource]
 public record PlayersDto
 {
-	public PlayerDto? Black { get; init; }
+	[Required]
+	public required PlayerDto? Black { get; init; }
 
-	public PlayerDto? White { get; init; }
+	[Required]
+	public required PlayerDto? White { get; init; }
 
 	public static PlayersDto Empty()
 	{
-		return new();
+		return new PlayersDto
+		{
+			Black = null,
+			White = null
+		};
 	}
 
 	public bool IsInvolved(string playerId)

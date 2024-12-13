@@ -30,6 +30,8 @@ public interface IGameHub
 	Task GetClock(GetClockMessage message);
 
 	Task SendInvitationToPlay(SendInvitationToPlayMessage message);
+
+	Task KeepAlive(KeepAliveMessage message);
 }
 
 [Receiver]
@@ -66,4 +68,6 @@ public interface IGameHubReceiver
 	Task GameHubError(ErrorMessage errorMessage);
 
 	Task ReceiveInvitationToPlay(ReceiveInvitationToPlayMessage message);
+
+	Task HeartbeatReceived(HeartbeatReceivedMessage message);
 }
