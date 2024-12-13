@@ -61,6 +61,7 @@ const JoinGameComponent = ({
     setIsJoining(true);
     try {
       if (jwtToken) {
+        //TODO: this is something wrong that we deal with Kubb, should be fixed with v3 Kubb migration
         await registeredJoinMutation.mutateAsync(undefined as never);
       }
 
@@ -76,6 +77,7 @@ const JoinGameComponent = ({
     } finally {
       setIsJoining(false);
     }
+    //TODO: check why more deps causing multiple join calls
     //eslint-disable-next-line
   }, [gameHistory]);
 
