@@ -23,7 +23,7 @@ const JoinGameComponent = ({
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
   const { jwtToken, anonymousSessionId } = useAuthToken();
-  const joinedRef = useRef(false);
+  const joinAttemptedRef = useRef(false);
 
   const { data: registeredGameHistory, isError: isRegisteredError } =
     useGetApiGameRegisteredGameidHistory(
@@ -57,32 +57,44 @@ const JoinGameComponent = ({
   const isError = jwtToken ? isRegisteredError : isAnonymousError;
 
   const joinGame = useCallback(async () => {
-    if (gameHistory?.players.black || gameHistory?.players.white) return;
+    // Prevent multiple join attempts
+    if (
+      joinAttemptedRef.current ||
+      !gameHistory ||
+      (gameHistory.players.black && gameHistory.players.white)
+    ) {
+      return;
+    }
+
     setIsJoining(true);
+    joinAttemptedRef.current = true;
+
     try {
       if (jwtToken) {
-        //TODO: this is something wrong that we deal with Kubb, should be fixed with v3 Kubb migration
+        // TODO: Handle Kubb migration issue in v3
         await registeredJoinMutation.mutateAsync(undefined as never);
-      }
-
-      if (anonymousSessionId) {
+      } else if (anonymousSessionId) {
         await anonymousJoinMutation.mutateAsync({
           playerId: anonymousSessionId,
         });
       }
-      joinedRef.current = true;
     } catch (err) {
       console.error("Error joining game:", err);
       toaster.show("Error joining game", "error");
+      joinAttemptedRef.current = false; // Allow retry on error
     } finally {
       setIsJoining(false);
     }
-    //TODO: check why more deps causing multiple join calls
-    //eslint-disable-next-line
-  }, [gameHistory]);
+  }, [
+    gameHistory,
+    jwtToken,
+    anonymousSessionId,
+    registeredJoinMutation,
+    anonymousJoinMutation,
+  ]);
 
   useEffect(() => {
-    if (!gameHistory || joinedRef.current) return;
+    if (!gameHistory || joinAttemptedRef.current) return;
     joinGame();
   }, [gameHistory, joinGame]);
 
@@ -90,25 +102,29 @@ const JoinGameComponent = ({
     if (isError) setShowError(true);
   }, [isError]);
 
-  return showError ? (
-    <AlertDialog
-      title="Game Not Found"
-      secondaryTitle="This game doesn't exist or might have been deleted"
-      text="Would you like to go back to the home page?"
-      acceptButtonText="Go to Home"
-      declineButtonText="Stay Here"
-      onAccept={() => {
-        navigate({ to: "/" });
-      }}
-      onDecline={() => {
-        setShowError(false);
-      }}
-    />
-  ) : !gameHistory || isJoining ? (
-    <LoadingOverlay isVisible />
-  ) : (
-    <JoinGame gameHistory={gameHistory} />
-  );
+  if (showError) {
+    return (
+      <AlertDialog
+        title="Game Not Found"
+        secondaryTitle="This game doesn't exist or might have been deleted"
+        text="Would you like to go back to the home page?"
+        acceptButtonText="Go to Home"
+        declineButtonText="Stay Here"
+        onAccept={() => {
+          navigate({ to: "/" });
+        }}
+        onDecline={() => {
+          setShowError(false);
+        }}
+      />
+    );
+  }
+
+  if (!gameHistory || isJoining) {
+    return <LoadingOverlay isVisible />;
+  }
+
+  return <JoinGame gameHistory={gameHistory} />;
 };
 
 export const Route = createFileRoute("/game/join/$gameID")({
