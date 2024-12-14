@@ -85,13 +85,17 @@ public class RegisteredGameHub : GameHub
 		await Clients.User(message.PlayerId).SendAsync(GameHubMethod.ReceiveInvitationToPlay, receiveInvitationMessage);
 	}
 
+	[Authorize]
+	public override Task CancelRequest()
+	{
+		return base.CancelRequest();
+	}
+
 	protected override string GetPlayerId()
 	{
 		var playerId = Context?.User?.Claims.Get(JwtClaims.UserId);
 		if (string.IsNullOrWhiteSpace(playerId))
-		{
 			throw new PlayerIdEmptyInGameHubException();
-		}
 
 		return playerId!;
 	}

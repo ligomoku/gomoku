@@ -79,13 +79,17 @@ public class AnonymousGameHub : GameHub
 		await Clients.Caller.SendAsync(GameHubMethod.GameHubError, new ErrorMessage("Invitations not supported for anonymous players"));
 	}
 
+	[AllowAnonymous]
+	public override Task CancelRequest()
+	{
+		return base.CancelRequest();
+	}
+
 	protected override string GetPlayerId()
 	{
 		var playerId = Context?.GetHttpContext()?.Request.Query["player_id"];
 		if (string.IsNullOrWhiteSpace(playerId))
-		{
 			throw new PlayerIdEmptyInGameHubException();
-		}
 
 		return playerId!;
 	}

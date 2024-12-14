@@ -30,6 +30,8 @@ public interface IGameHub
 	Task GetClock(GetClockMessage message);
 
 	Task SendInvitationToPlay(SendInvitationToPlayMessage message);
+
+	Task CancelRequest();
 }
 
 [Receiver]

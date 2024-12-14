@@ -212,6 +212,12 @@ public abstract class GameHub(CompositeMatchingEngine matchingEngine) : Hub, IGa
 		await Clients.Group(messageRequest.GameId).SendAsync(GameHubMethod.SendMessage, messageRequest);
 	}
 
+	public virtual Task CancelRequest()
+	{
+		matchingEngine.TryRemove(GetPlayerId());
+		return Task.CompletedTask;
+	}
+
 	public abstract Task SendInvitationToPlay(SendInvitationToPlayMessage message);
 
 	//public abstract Task AcceptInvitationToPlay();
