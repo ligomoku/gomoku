@@ -1,12 +1,13 @@
 const express = require('express');
 const { spawn } = require('child_process');
-const { Readable, Writable } = require('stream');
+const { Writable } = require('stream');
 
 const app = express();
 app.use(express.json());
 
-const process = spawn('./build/pbrain-rapfi', ['--mode', 'gomocup'], {
-    stdio: ['pipe', 'pipe', 'pipe']
+const subprocess = spawn('./build/pbrain-rapfi', ['--mode', 'gomocup'], {
+    stdio: ['pipe', 'pipe', 'pipe'],
+    shell: true
 });
 
 const commandQueue = [];
@@ -14,24 +15,26 @@ const responseQueue = [];
 
 const inputStream = new Writable({
     write(chunk, encoding, callback) {
-        process.stdin.write(chunk, encoding, callback);
+        subprocess.stdin.write(chunk, encoding, callback);
     }
 });
 
-const outputStream = new Readable({
-    read() {}
-});
-
-process.stdout.on('data', (data) => {
+subprocess.stdout.on('data', (data) => {
     const response = data.toString().trim();
+    console.log(`[Subprocess Response]: ${response}`); // Debugging
+
     if (responseQueue.length > 0) {
         const resolve = responseQueue.shift();
         resolve(response);
     }
 });
 
-process.on('error', (err) => {
-    console.error('Failed to start subprocess:', err);
+subprocess.on('error', (err) => {
+    console.error(`[Subprocess Error]: Failed to start subprocess - ${err.message}`);
+});
+
+subprocess.on('exit', (code, signal) => {
+    console.error(`[Subprocess Exit]: Exited with code ${code}, signal ${signal}`);
 });
 
 app.get('/test', (req, res) => {
@@ -44,11 +47,11 @@ app.post('/command', async (req, res) => {
         return res.status(400).json({ error: "No command provided" });
     }
 
-    commandQueue.push(cmd);
-
-    inputStream.write(cmd + '\n');
+    console.log(`[Command Sent]: ${cmd}`); // Debugging
 
     try {
+        inputStream.write(cmd + '\n');
+
         const response = await new Promise((resolve, reject) => {
             const timeout = setTimeout(() => reject(new Error("Timeout waiting for response")), 5000);
             responseQueue.push((data) => {
@@ -56,10 +59,20 @@ app.post('/command', async (req, res) => {
                 resolve(data);
             });
         });
+
+        console.log(`[Response Received]: ${response}`); // Debugging
         res.json({ response });
+
     } catch (err) {
+        console.error(`[Command Error]: ${err.message}`);
         res.status(408).json({ error: err.message });
     }
+});
+
+process.on('SIGINT', () => {
+    console.log("Shutting down server and subprocess...");
+    subprocess.kill();
+    process.exit();
 });
 
 const PORT = 5005;
