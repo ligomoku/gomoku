@@ -4,8 +4,8 @@ import {
   usePostApiGameRegisteredGameidJoin,
   usePostApiGameAnonymousGameidJoin,
 } from "@gomoku/api/client/hooks";
-import { LoadingOverlay, toaster } from "@gomoku/story";
-import { createFileRoute } from "@tanstack/react-router";
+import { LoadingOverlay, toaster, AlertDialog } from "@gomoku/story";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, useRef, useCallback } from "react";
 
 import type { SwaggerTypes } from "@gomoku/api";
@@ -20,28 +20,28 @@ const JoinGameComponent = ({
   gameID: SwaggerTypes.CreateGameResponse["gameId"];
 }) => {
   const [isJoining, setIsJoining] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
   const { jwtToken, anonymousSessionId } = useAuthToken();
-  const joinedRef = useRef(false);
+  const joinAttemptedRef = useRef(false);
 
-  const { data: registeredGameHistory } = useGetApiGameRegisteredGameidHistory(
-    gameID,
-    Headers.getDefaultHeadersWithAuth(jwtToken),
-    {
-      query: {
-        enabled: !!jwtToken,
+  const { data: registeredGameHistory, isError: isRegisteredError } =
+    useGetApiGameRegisteredGameidHistory(
+      gameID,
+      Headers.getDefaultHeadersWithAuth(jwtToken),
+      {
+        query: {
+          enabled: !!jwtToken,
+        },
       },
-    },
-  );
+    );
 
-  const { data: anonymousGameHistory } = useGetApiGameAnonymousGameidHistory(
-    gameID,
-    Headers.getDefaultHeaders(),
-    {
+  const { data: anonymousGameHistory, isError: isAnonymousError } =
+    useGetApiGameAnonymousGameidHistory(gameID, Headers.getDefaultHeaders(), {
       query: {
         enabled: !jwtToken,
       },
-    },
-  );
+    });
 
   const registeredJoinMutation = usePostApiGameRegisteredGameidJoin(
     gameID,
@@ -54,39 +54,75 @@ const JoinGameComponent = ({
   );
 
   const gameHistory = jwtToken ? registeredGameHistory : anonymousGameHistory;
+  const isError = jwtToken ? isRegisteredError : isAnonymousError;
 
   const joinGame = useCallback(async () => {
-    if (gameHistory?.players.black || gameHistory?.players.white) return;
+    // Prevent multiple join attempts
+    if (
+      joinAttemptedRef.current ||
+      !gameHistory ||
+      (gameHistory.players.black && gameHistory.players.white)
+    ) {
+      return;
+    }
+
     setIsJoining(true);
+    joinAttemptedRef.current = true;
+
     try {
       if (jwtToken) {
-        //TODO: this is something wrong that we deal with Kubb
+        // TODO: Handle Kubb migration issue in v3
         await registeredJoinMutation.mutateAsync(undefined as never);
-      }
-
-      if (anonymousSessionId) {
+      } else if (anonymousSessionId) {
         await anonymousJoinMutation.mutateAsync({
           playerId: anonymousSessionId,
         });
       }
-      joinedRef.current = true;
     } catch (err) {
       console.error("Error joining game:", err);
       toaster.show("Error joining game", "error");
+      joinAttemptedRef.current = false; // Allow retry on error
     } finally {
       setIsJoining(false);
     }
-    //TODO: check why more deps causing multiple join calls
-    //eslint-disable-next-line
-  }, [gameHistory]);
+  }, [
+    gameHistory,
+    jwtToken,
+    anonymousSessionId,
+    registeredJoinMutation,
+    anonymousJoinMutation,
+  ]);
 
   useEffect(() => {
-    if (!gameHistory || joinedRef.current) return;
-
+    if (!gameHistory || joinAttemptedRef.current) return;
     joinGame();
   }, [gameHistory, joinGame]);
 
-  if (!gameHistory || isJoining) return <LoadingOverlay isVisible />;
+  useEffect(() => {
+    if (isError) setShowError(true);
+  }, [isError]);
+
+  if (showError) {
+    return (
+      <AlertDialog
+        title="Game Not Found"
+        secondaryTitle="This game doesn't exist or might have been deleted"
+        text="Would you like to go back to the home page?"
+        acceptButtonText="Go to Home"
+        declineButtonText="Stay Here"
+        onAccept={() => {
+          navigate({ to: "/" });
+        }}
+        onDecline={() => {
+          setShowError(false);
+        }}
+      />
+    );
+  }
+
+  if (!gameHistory || isJoining) {
+    return <LoadingOverlay isVisible />;
+  }
 
   return <JoinGame gameHistory={gameHistory} />;
 };
