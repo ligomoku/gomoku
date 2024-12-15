@@ -67,7 +67,7 @@ app.post("/command", async (req, res) => {
             });
         });
 
-        console.log(`[Response Received]: ${response}`); // Debugging
+        console.log(`[Response Received]: ${response}`);
         res.json({ response });
     } catch (err) {
         console.error(`[Command Error]: ${err.message}`);
