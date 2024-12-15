@@ -2,7 +2,7 @@ namespace GomokuServer.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/v1/rapfi")]
+[Route("api/rapfi")]
 [EnableCors(CorsPolicyName.GomokuClient)]
 public class RapfiEngineController : Controller
 {
