@@ -29,7 +29,6 @@ export const useSignalR = <
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
 
-  // Refs and State
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [hubProxy, setHubProxy] = useState<THub | null>(null);
@@ -124,7 +123,6 @@ export const useSignalR = <
     [clearTimers, startHeartbeatMonitoring],
   );
 
-  // Register event handlers
   const registerEventHandlers = useCallback(
     (handlers: Partial<TReceiver>): (() => void) => {
       const { current: connection } = connectionRef;
@@ -158,7 +156,6 @@ export const useSignalR = <
     [receiverType],
   );
 
-  // Effect to establish and manage SignalR connection
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubURL, {
