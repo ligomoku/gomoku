@@ -12,7 +12,7 @@ export * from "./GetApiGameRegisteredActive";
 export * from "./GetApiGameRegisteredAvailableToJoin";
 export * from "./GetApiGameRegisteredGameidHistory";
 export * from "./GetApiProfilesUsernameGames";
-export * from "./GetApiV1RapfiTest";
+export * from "./GetApiRapfiTest";
 export * from "./GetAvailableGamesResponse";
 export * from "./GetAvailableGamesResponseIEnumerablePaginatedResponse";
 export * from "./GetGameHistoryResponse";
