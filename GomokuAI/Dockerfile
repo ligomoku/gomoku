@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app/GomokuAI
 
-RUN git clone --recurse-submodules https://github.com/dhbloo/rapfi.git rapfi && \
+RUN git clone --recurse-submodules https://github.com/vkuprin/rapfi.git rapfi && \
     cd rapfi/Rapfi && \
     mkdir build && cd build && \
     cmake .. \
