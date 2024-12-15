@@ -28,16 +28,20 @@ export const useSignalR = <
 ) => {
   const { jwtToken, jwtDecodedInfo } = useAuthToken();
   const { getToken } = useAuth();
-  const connectionRef = useRef<signalR.HubConnection | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const [hubProxy, setHubProxy] = useState<THub | null>(null);
-  const retryAttemptsRef = useRef(0);
-  const lastHeartbeatRef = useRef<number>(Date.now());
-  const heartbeatIntervalRef = useRef<IntervalHandle>(null);
-  const heartbeatTimeoutRef = useRef<IntervalHandle>(null);
-  const reconnectTimeoutRef = useRef<TimeoutHandle>(null);
 
-  const clearTimers = useCallback(() => {
+  // Refs and State
+  const connectionRef = useRef<signalR.HubConnection | null>(null);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [hubProxy, setHubProxy] = useState<THub | null>(null);
+
+  const retryAttemptsRef = useRef<number>(0);
+  const lastHeartbeatRef = useRef<number>(Date.now());
+  const heartbeatIntervalRef = useRef<IntervalHandle | null>(null);
+  const heartbeatTimeoutRef = useRef<IntervalHandle | null>(null);
+  const reconnectTimeoutRef = useRef<TimeoutHandle | null>(null);
+
+  // Clear timers
+  const clearTimers = useCallback((): void => {
     if (heartbeatIntervalRef.current) {
       clearInterval(heartbeatIntervalRef.current);
       heartbeatIntervalRef.current = null;
@@ -52,11 +56,11 @@ export const useSignalR = <
     }
   }, []);
 
-  const handleHeartbeat = useCallback(() => {
+  const handleHeartbeat = useCallback((): void => {
     lastHeartbeatRef.current = Date.now();
   }, []);
 
-  const checkHeartbeat = useCallback(() => {
+  const checkHeartbeat = useCallback((): void => {
     const timeSinceLastHeartbeat = Date.now() - lastHeartbeatRef.current;
     if (timeSinceLastHeartbeat > HEARTBEAT_TIMEOUT_MS) {
       console.warn("Heartbeat timeout - reconnecting...");
@@ -70,9 +74,10 @@ export const useSignalR = <
         });
       }
     }
-  }, []);
+    //eslint-disable-next-line
+  }, [clearTimers]);
 
-  const startHeartbeatMonitoring = useCallback(() => {
+  const startHeartbeatMonitoring = useCallback((): void => {
     clearTimers();
 
     heartbeatIntervalRef.current = setInterval(() => {
@@ -81,14 +86,13 @@ export const useSignalR = <
       });
     }, HEARTBEAT_INTERVAL_MS);
 
-    heartbeatTimeoutRef.current = setInterval(
-      checkHeartbeat,
-      HEARTBEAT_INTERVAL_MS,
-    );
-  }, [checkHeartbeat, clearTimers]);
+    heartbeatTimeoutRef.current = setInterval(() => {
+      checkHeartbeat();
+    }, HEARTBEAT_INTERVAL_MS);
+  }, [clearTimers, checkHeartbeat]);
 
   const startConnection = useCallback(
-    async (connection: signalR.HubConnection) => {
+    async (connection: signalR.HubConnection): Promise<void> => {
       if (connection?.state === signalR.HubConnectionState.Disconnected) {
         try {
           await connection.start();
@@ -117,11 +121,12 @@ export const useSignalR = <
         }
       }
     },
-    [startHeartbeatMonitoring, clearTimers],
+    [clearTimers, startHeartbeatMonitoring],
   );
 
+  // Register event handlers
   const registerEventHandlers = useCallback(
-    (handlers: Partial<TReceiver>) => {
+    (handlers: Partial<TReceiver>): (() => void) => {
       const { current: connection } = connectionRef;
 
       if (
@@ -153,6 +158,7 @@ export const useSignalR = <
     [receiverType],
   );
 
+  // Effect to establish and manage SignalR connection
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubURL, {
