@@ -5,7 +5,7 @@ export * from "./useGetApiGameRegisteredActive";
 export * from "./useGetApiGameRegisteredAvailableToJoin";
 export * from "./useGetApiGameRegisteredGameidHistory";
 export * from "./useGetApiProfilesUsernameGames";
-export * from "./useGetApiV1RapfiTest";
+export * from "./useGetApiRapfiTest";
 export * from "./useGetHealth";
 export * from "./usePostApiGameAnonymous";
 export * from "./usePostApiGameAnonymousGameidJoin";

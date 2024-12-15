@@ -319,7 +319,7 @@
         }
       }
     },
-    "/api/v1/rapfi/test": {
+    "/api/rapfi/test": {
       "get": {
         "tags": ["RapfiEngine"],
         "summary": "Test connection with Rapfi engine",
