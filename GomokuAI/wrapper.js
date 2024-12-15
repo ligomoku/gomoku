@@ -51,7 +51,7 @@ app.post("/command", async (req, res) => {
         return res.status(400).json({ error: "No command provided" });
     }
 
-    console.log(`[Command Sent]: ${cmd}`); // Debugging
+    console.log(`[Command Sent]: ${cmd}`);
 
     try {
         inputStream.write(cmd + "\n");
