@@ -18,6 +18,8 @@ export default [
       "messages.ts",
       "src/api/**",
       "tailwind.config.js",
+      "src/ai/**",
+      "public/build/**",
     ],
   },
 

@@ -16,6 +16,7 @@ import { routeTree } from "./routeTree.gen";
 import "./styles/index.css";
 
 import { AuthTokenProvider, SignalRProvider } from "@/context";
+import { WasmEngineProvider } from "@/context/WasmEngineProvider";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -70,9 +71,11 @@ createRoot(document.getElementById("root")!).render(
           <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
             <AuthTokenProvider>
               <SignalRProvider>
-                <ToasterProvider>
-                  <RouterProvider router={router} />
-                </ToasterProvider>
+                <WasmEngineProvider>
+                  <ToasterProvider>
+                    <RouterProvider router={router} />
+                  </ToasterProvider>
+                </WasmEngineProvider>
               </SignalRProvider>
             </AuthTokenProvider>
           </ClerkProvider>
