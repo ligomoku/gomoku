@@ -36,6 +36,17 @@ After running `docker-compose up -d`, you can access the Rapfi helper:
 docker-compose exec rapfi ./build/pbrain-rapfi --help
 ```
 
+### Compile WASM
+
+To compile the WASM files, run the following command:
+
+```bash
+docker compose up --build
+```
+Output directory: `GomokuAI/wasm-output`
+
+This will compile the WASM files and copy them to the `wasm-output` directory.
+
 ## 📚 Documentation
 
 ### API Documentation
