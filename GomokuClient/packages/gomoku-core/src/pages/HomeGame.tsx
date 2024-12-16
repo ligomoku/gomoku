@@ -19,6 +19,7 @@ import type { SwaggerTypes } from "@gomoku/api";
 
 import { gameTypes } from "@/constants";
 import { useAuthToken, useSignalRConnection } from "@/context";
+import { useWasmEngine } from "@/context/WasmEngineProvider";
 import { useCreateGameAndNavigate } from "@/hooks";
 import { Headers } from "@/utils";
 
@@ -28,6 +29,16 @@ export const HomeGame = () => {
   const router = useRouter();
   const { hubProxy, isConnected, registerEventHandlers } =
     useSignalRConnection();
+  const { isEngineReady } = useWasmEngine();
+
+  useEffect(() => {
+    if (isEngineReady) {
+      console.log("Engine is ready");
+    } else {
+      console.log("Engine is not ready");
+    }
+  }, [isEngineReady]);
+
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
 
   const { data: registeredGames } = useGetApiGameRegisteredAvailableToJoin(
@@ -91,6 +102,21 @@ export const HomeGame = () => {
     createGame({
       boardSize: selectedBoardSize,
       timeControl: selectedTimeControl,
+    });
+  };
+
+  const handleCreateAIGame = (
+    selectedBoardSize: number,
+    selectedTimeControl?: SwaggerTypes.TimeControlDto,
+  ) => {
+    navigate({
+      to: "/game/join/ai",
+      state: {
+        game: {
+          boardSize: selectedBoardSize,
+          timeControl: selectedTimeControl,
+        },
+      },
     });
   };
 
@@ -167,9 +193,18 @@ export const HomeGame = () => {
           </div>
           <div className="lg:col-span-3">
             <GameOptionsButtons
-              createGameText={t`CREATE A GAME`}
-              onCreateGame={handleCreateGame}
-              isLoadingCreateGame={isLoadingCreateGame}
+              onCreate={{
+                game: handleCreateGame,
+                ai: handleCreateAIGame,
+              }}
+              loading={{
+                game: isLoadingCreateGame,
+                ai: false, //TODO: should be based on WASM loader when finished
+              }}
+              text={{
+                game: t`CREATE A GAME`,
+                ai: t`PLAY WITH AI (BETA)`,
+              }}
             />
             <OnlinePlayersInfo
               gamesInPlayText={t`${paginatedActiveGames?.metadata?.totalCount} games in play`}

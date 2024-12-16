@@ -14,11 +14,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. placeholder {0}: paginatedActiveGames?.metadata?.totalCount
-#: src/pages/HomeGame.tsx:177
+#: src/pages/HomeGame.tsx:210
 msgid "{0} games in play"
 msgstr ""
 
-#: src/pages/HomeGame.tsx:178
+#: src/pages/HomeGame.tsx:211
 msgid "{onlineUsersCount} players online"
 msgstr ""
 
@@ -73,7 +73,7 @@ msgstr ""
 #~ msgid "Correspondence"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:170
+#: src/pages/HomeGame.tsx:205
 msgid "CREATE A GAME"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 #~ msgid "gomoku.app"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:149
+#: src/pages/HomeGame.tsx:175
 msgid "Gomoku.app is a free, open-source Five in a Row game platform."
 msgstr ""
 
@@ -117,7 +117,7 @@ msgstr ""
 #~ msgid "No messages yet. Start the conversation!"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:146
+#: src/pages/HomeGame.tsx:172
 msgid "No online games were created"
 msgstr ""
 
@@ -130,18 +130,22 @@ msgstr ""
 #~ msgstr ""
 
 #: src/pages/HomeGame.tsx:171
-msgid "PLAY WITH A FRIEND"
-msgstr ""
+#~ msgid "PLAY WITH A FRIEND"
+#~ msgstr ""
 
 #: src/pages/HomeGame.tsx:172
-msgid "PLAY WITH AI"
+#~ msgid "PLAY WITH AI"
+#~ msgstr ""
+
+#: src/pages/HomeGame.tsx:206
+msgid "PLAY WITH AI (BETA)"
 msgstr ""
 
 #: src/features/TimeControls/TimeControls.tsx:6
 #~ msgid "Quick"
 #~ msgstr ""
 
-#: src/pages/HomeGame.tsx:154
+#: src/pages/HomeGame.tsx:180
 msgid "Quick pairing"
 msgstr ""
 

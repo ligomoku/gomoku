@@ -9,6 +9,7 @@ import { defineConfig, loadEnv } from "vite";
 export default ({ mode }: { mode: string }) => {
   const envDirPath = path.resolve(__dirname, "../../../envs");
   const srcPath = path.resolve(__dirname, "./src");
+  const rootDir = path.resolve(__dirname);
   const env = loadEnv(mode, path.resolve(__dirname, envDirPath));
   const isProd = mode === "production";
 
@@ -20,12 +21,6 @@ export default ({ mode }: { mode: string }) => {
           plugins: ["macros"],
         },
       }),
-      //TODO: after multi-package support is added stoped correctly wrapping sentry
-      // sentryVitePlugin({
-      //   authToken: process.env.SENTRY_AUTH_TOKEN,
-      //   org: "gomoku",
-      //   project: "javascript-react",
-      // }),
     ],
     define: {
       BETA_FEATURES: !isProd,
@@ -44,7 +39,14 @@ export default ({ mode }: { mode: string }) => {
       },
     },
     server: {
-      port: parseInt(env.VITE_LOCALHOST_PORT),
+      port: parseInt(env.VITE_LOCALHOST_PORT) || 4200,
+      fs: {
+        allow: [
+          rootDir,
+          path.resolve(__dirname, "public"),
+          // path.resolve(__dirname, "../../../"),
+        ],
+      },
     },
   });
 };
