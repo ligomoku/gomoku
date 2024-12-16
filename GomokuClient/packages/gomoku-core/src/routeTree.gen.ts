@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as GameJoinAiImport } from "./routes/game/join/ai";
 import { Route as GameJoinGameIDImport } from "./routes/game/join/$gameID";
 
 // Create Virtual Routes
@@ -33,6 +34,12 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+
+const GameJoinAiRoute = GameJoinAiImport.update({
+  id: "/game/join/ai",
+  path: "/game/join/ai",
+  getParentRoute: () => rootRoute,
+} as any);
 
 const GameJoinGameIDRoute = GameJoinGameIDImport.update({
   id: "/game/join/$gameID",
@@ -65,6 +72,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof GameJoinGameIDImport;
       parentRoute: typeof rootRoute;
     };
+    "/game/join/ai": {
+      id: "/game/join/ai";
+      path: "/game/join/ai";
+      fullPath: "/game/join/ai";
+      preLoaderRoute: typeof GameJoinAiImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
@@ -74,12 +88,14 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileLazyRoute;
   "/game/join/$gameID": typeof GameJoinGameIDRoute;
+  "/game/join/ai": typeof GameJoinAiRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileLazyRoute;
   "/game/join/$gameID": typeof GameJoinGameIDRoute;
+  "/game/join/ai": typeof GameJoinAiRoute;
 }
 
 export interface FileRoutesById {
@@ -87,14 +103,15 @@ export interface FileRoutesById {
   "/": typeof IndexLazyRoute;
   "/profile": typeof ProfileLazyRoute;
   "/game/join/$gameID": typeof GameJoinGameIDRoute;
+  "/game/join/ai": typeof GameJoinAiRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/profile" | "/game/join/$gameID";
+  fullPaths: "/" | "/profile" | "/game/join/$gameID" | "/game/join/ai";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/profile" | "/game/join/$gameID";
-  id: "__root__" | "/" | "/profile" | "/game/join/$gameID";
+  to: "/" | "/profile" | "/game/join/$gameID" | "/game/join/ai";
+  id: "__root__" | "/" | "/profile" | "/game/join/$gameID" | "/game/join/ai";
   fileRoutesById: FileRoutesById;
 }
 
@@ -102,12 +119,14 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute;
   ProfileLazyRoute: typeof ProfileLazyRoute;
   GameJoinGameIDRoute: typeof GameJoinGameIDRoute;
+  GameJoinAiRoute: typeof GameJoinAiRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ProfileLazyRoute: ProfileLazyRoute,
   GameJoinGameIDRoute: GameJoinGameIDRoute,
+  GameJoinAiRoute: GameJoinAiRoute,
 };
 
 export const routeTree = rootRoute
@@ -122,7 +141,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/profile",
-        "/game/join/$gameID"
+        "/game/join/$gameID",
+        "/game/join/ai"
       ]
     },
     "/": {
@@ -133,6 +153,9 @@ export const routeTree = rootRoute
     },
     "/game/join/$gameID": {
       "filePath": "game/join/$gameID.tsx"
+    },
+    "/game/join/ai": {
+      "filePath": "game/join/ai.tsx"
     }
   }
 }

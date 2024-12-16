@@ -22,14 +22,6 @@ services:
       - "5005:5005"
     networks:
       - gomoku-network
-    volumes:
-      - ./GomokuAI/wasm-output:/app/wasm-output
-    command: >
-      sh -c "
-        mkdir -p /app/wasm-output &&
-        cp build/*.wasm build/*.js build/*.data /app/wasm-output/ || true &&
-        tail -f /dev/null
-      "
 
 networks:
   gomoku-network:
