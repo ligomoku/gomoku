@@ -38,6 +38,14 @@ export default ({ mode }: { mode: string }) => {
         "@": srcPath,
       },
     },
+    worker: {
+      format: "es",
+      rollupOptions: {
+        output: {
+          entryFileNames: "[name].js",
+        },
+      },
+    },
     server: {
       port: parseInt(env.VITE_LOCALHOST_PORT) || 4200,
       fs: {

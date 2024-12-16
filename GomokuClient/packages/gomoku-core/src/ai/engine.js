@@ -10,7 +10,7 @@ function init(f) {
 
   if (supportSAB) {
     console.log("Attempting to initialize multi-threaded engine...");
-    import(/*@vite-ignore */ MTEngineURL)
+    import(/* @vite-ignore */ MTEngineURL)
       .then(() => {
         console.log("Multi-threaded engine imported.");
         if (Bridge.ready) {
@@ -23,7 +23,10 @@ function init(f) {
           };
         }
 
-        Bridge.readStdout = (d) => processOutput(d);
+        Bridge.readStdout = (d) => {
+          console.log("Processing output from multi-threaded engine:", d);
+          processOutput(d);
+        };
       })
       .catch((err) => {
         console.error("Error importing multi-threaded engine:", err);
@@ -40,6 +43,10 @@ function init(f) {
         console.log("Worker is ready.");
         callback({ ok: true });
       } else {
+        console.log(
+          "Processing output from single-threaded worker:",
+          e.data.output,
+        );
         processOutput(e.data.output);
       }
     };
@@ -68,25 +75,36 @@ function stopThinking() {
 }
 
 function sendCommand(cmd) {
+  console.log("Sending command to engine:", cmd);
   if (typeof cmd !== "string" || cmd.length == 0) return;
 
   if (supportSAB) {
+    console.log("Sending command to engine:", cmd);
     // eslint-disable-next-line
     Bridge.writeStdin(cmd);
   } else {
+    console.log("Sending command to worker:", cmd);
     worker.postMessage(cmd);
   }
 }
 
 function processOutput(output) {
-  if (typeof callback !== "function") return;
+  console.log("Engine output received:", output);
+
+  if (typeof callback !== "function") {
+    console.warn("No valid callback function set.");
+    return;
+  }
 
   let i = output.indexOf(" ");
 
-  if (i == -1) {
-    if (output == "OK") return;
-    else if (output == "SWAP") callback({ swap: true });
-    else {
+  if (i === -1) {
+    if (output === "OK") {
+      console.log("Engine acknowledged command.");
+      return;
+    } else if (output === "SWAP") {
+      callback({ swap: true });
+    } else {
       let coord = output.split(",");
       callback({ pos: [+coord[0], +coord[1]] });
     }
@@ -96,43 +114,36 @@ function processOutput(output) {
   let head = output.substring(0, i);
   let tail = output.substring(i + 1);
 
-  if (head == "MESSAGE") {
+  if (head === "MESSAGE") {
+    console.log("Processing MESSAGE from engine:", tail);
     if (tail.startsWith("REALTIME")) {
       let r = tail.split(" ");
       if (r.length < 3) {
-        callback({
-          realtime: {
-            type: r[1],
-          },
-        });
+        callback({ realtime: { type: r[1] } });
       } else {
         let coord = r[2].split(",");
-        callback({
-          realtime: {
-            type: r[1],
-            pos: [+coord[0], +coord[1]],
-          },
-        });
+        callback({ realtime: { type: r[1], pos: [+coord[0], +coord[1]] } });
       }
     } else {
       callback({ msg: tail });
     }
-  } else if (head == "INFO") {
+  } else if (head === "INFO") {
+    console.log("Processing INFO from engine:", tail);
     i = tail.indexOf(" ");
     head = tail.substring(0, i);
     tail = tail.substring(i + 1);
 
-    if (head == "PV") callback({ multipv: tail });
-    else if (head == "NUMPV") callback({ numpv: +tail });
-    else if (head == "DEPTH") callback({ depth: +tail });
-    else if (head == "SELDEPTH") callback({ seldepth: +tail });
-    else if (head == "NODES") callback({ nodes: +tail });
-    else if (head == "TOTALNODES") callback({ totalnodes: +tail });
-    else if (head == "TOTALTIME") callback({ totaltime: +tail });
-    else if (head == "SPEED") callback({ speed: +tail });
-    else if (head == "EVAL") callback({ eval: tail });
-    else if (head == "WINRATE") callback({ winrate: parseFloat(tail) });
-    else if (head == "BESTLINE")
+    if (head === "PV") callback({ multipv: tail });
+    else if (head === "NUMPV") callback({ numpv: +tail });
+    else if (head === "DEPTH") callback({ depth: +tail });
+    else if (head === "SELDEPTH") callback({ seldepth: +tail });
+    else if (head === "NODES") callback({ nodes: +tail });
+    else if (head === "TOTALNODES") callback({ totalnodes: +tail });
+    else if (head === "TOTALTIME") callback({ totaltime: +tail });
+    else if (head === "SPEED") callback({ speed: +tail });
+    else if (head === "EVAL") callback({ eval: tail });
+    else if (head === "WINRATE") callback({ winrate: parseFloat(tail) });
+    else if (head === "BESTLINE") {
       callback({
         bestline: tail.match(/([A-Z]\d+)/g).map((s) => {
           let coord = s.match(/([A-Z])(\d+)/);
@@ -141,17 +152,14 @@ function processOutput(output) {
           return [x, y];
         }),
       });
-  } else if (head == "ERROR") callback({ error: tail });
-  else if (head == "FORBID")
-    callback({
-      forbid: (tail.match(/.{4}/g) || []).map((s) => {
-        let coord = s.match(/([0-9][0-9])([0-9][0-9])/);
-        let x = +coord[1];
-        let y = +coord[2];
-        return [x, y];
-      }),
-    });
-  else callback({ unknown: tail });
+    }
+  } else if (head === "ERROR") {
+    console.error("Engine ERROR:", tail);
+    callback({ error: tail });
+  } else {
+    console.log("Unknown output type:", head, tail);
+    callback({ unknown: tail });
+  }
 }
 
 export { init, sendCommand, stopThinking };
