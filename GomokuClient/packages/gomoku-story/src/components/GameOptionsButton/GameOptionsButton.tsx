@@ -49,8 +49,9 @@ export const GameOptionsButtons = ({
     <GameCreatorButton onCreateGame={onCreate.game} isLoading={loading?.game}>
       <GameButton text={text?.game} loading={loading?.game} />
     </GameCreatorButton>
+    {/*TODO should map entire object of text props intead*/}
     <GameCreatorButton onCreateGame={onCreate.ai} isLoading={loading?.ai}>
-      <GameButton text="PLAY WITH AI" loading={loading?.ai} />
+      <GameButton text="PLAY LOCAL" loading={loading?.ai} />
     </GameCreatorButton>
   </div>
 );
