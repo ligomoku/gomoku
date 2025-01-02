@@ -203,7 +203,7 @@ export const HomeGame = () => {
               }}
               text={{
                 game: t`CREATE A GAME`,
-                ai: t`PLAY WITH AI (BETA)`,
+                ai: "PLAY LOCAL",
               }}
             />
             <OnlinePlayersInfo
