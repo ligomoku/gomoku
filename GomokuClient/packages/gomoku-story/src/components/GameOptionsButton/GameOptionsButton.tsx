@@ -50,7 +50,7 @@ export const GameOptionsButtons = ({
       <GameButton text={text?.game} loading={loading?.game} />
     </GameCreatorButton>
     <GameCreatorButton onCreateGame={onCreate.ai} isLoading={loading?.ai}>
-      <GameButton text="PLAY WITH AI" loading={loading?.ai} />
+      <GameButton text="PLAY LOCAL" loading={loading?.ai} />
     </GameCreatorButton>
   </div>
 );
