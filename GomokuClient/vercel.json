@@ -1,22 +1,29 @@
 {
   "version": 2,
-  "buildCommand": "yarn install && yarn workspace @gomoku/core build",
-  "outputDirectory": "./GomokuClient/packages/gomoku-core/dist",
-  "installCommand": "yarn install",
   "framework": "vite",
-  "builds": [
+  "buildCommand": "yarn build",
+  "outputDirectory": "packages/gomoku-core/dist",
+  "redirects": [
     {
-      "src": "./GomokuClient/packages/gomoku-core/**",
-      "use": "@vercel/static-build"
-    }
-  ],
-  "routes": [
-    {
-      "handle": "filesystem"
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "story.gomoku.app"
+        }
+      ],
+      "destination": "/$1"
     },
     {
-      "src": "/.*",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "https://github.com/ligomoku/gomoku",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

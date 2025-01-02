@@ -6,3 +6,6 @@ node_modules
 yarn.lock
 *.gz
 GomokuClient/.yarn/install-state.gz
+.env.local
+.env*.local
+.vercel/
