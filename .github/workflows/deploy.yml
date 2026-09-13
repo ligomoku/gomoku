@@ -68,15 +68,7 @@ jobs:
 
       - name: Setup GomokuClient
         working-directory: ./GomokuClient
-        run: |
-          yarn install
-          echo "--- DEBUG ---"
-          which yarn; yarn --version
-          which tsc || true
-          cat node_modules/typescript/package.json | grep '"version"'
-          node -e "console.log(require('typescript').version)"
-          echo "--- END DEBUG ---"
-          yarn build
+        run: yarn install && yarn build
 
       - name: Upload client artifact
         uses: actions/upload-artifact@v4
