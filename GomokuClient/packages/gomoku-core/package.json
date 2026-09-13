@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --mode prod",
     "lint": "eslint .",
     "preview": "vite preview",
     "vercel-build": "yarn build",
