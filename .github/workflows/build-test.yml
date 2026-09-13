@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: '20.11.0'
 
+      - name: Enable corepack
+        run: corepack enable
+
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
