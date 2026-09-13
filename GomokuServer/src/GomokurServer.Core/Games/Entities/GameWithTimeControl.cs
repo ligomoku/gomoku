@@ -127,12 +127,14 @@ public class GameWithTimeControl : Game
 		if (playerId == Players?.Black?.Id)
 		{
 			return _blackClock.RemainingTimeInMilliseconds;
-		};
+		}
+		;
 
 		if (playerId == Players?.White?.Id)
 		{
 			return _whiteClock.RemainingTimeInMilliseconds;
-		};
+		}
+		;
 
 		return null;
 	}

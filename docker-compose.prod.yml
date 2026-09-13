@@ -1,0 +1,32 @@
+version: '3.8'
+
+# Production compose file for the VPS. Images are built and pushed to Docker
+# Hub by CI (.github/workflows/deploy.yml); this file only pulls and runs them.
+#
+# Port convention on this VPS: prod services end in 1, dev services end in 3.
+# gomoku is the first project in the 7xxx block -> 7001.
+
+services:
+  gomoku-server:
+    image: ${DOCKERHUB_USERNAME}/gomoku-server:latest
+    restart: always
+    ports:
+      - "127.0.0.1:7001:8080"
+    networks:
+      - gomoku-network
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      RAPFI_ENGINE_URL: http://rapfi:5005
+
+  rapfi:
+    image: ${DOCKERHUB_USERNAME}/gomoku-rapfi:latest
+    restart: always
+    networks:
+      - gomoku-network
+    # Not published to the host - only gomoku-server talks to it, over the
+    # internal docker network.
+
+networks:
+  gomoku-network:
+    driver: bridge

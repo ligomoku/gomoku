@@ -3,13 +3,14 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
+    curl \
     git \
     build-essential \
     cmake \
     g++ \
     make \
-    nodejs \
-    npm \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app/GomokuAI
@@ -19,7 +20,7 @@ RUN git clone --recurse-submodules https://github.com/vkuprin/rapfi.git rapfi &&
     mkdir build && cd build && \
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
-        -DUSE_SSE=OFF \
+        -DUSE_SSE=ON \
         -DUSE_AVX2=OFF \
         -DUSE_AVX512=OFF \
         -DUSE_BMI2=OFF \
