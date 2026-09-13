@@ -1,34 +1,62 @@
-name: Deploy to Vercel
+name: Deploy to VPS
 
 on:
   push:
     branches: [ master ]
+  workflow_dispatch:
+
+env:
+  VPS_HOST: 89.167.121.81
+  VPS_USER: aleksandrs
+  CLIENT_DEPLOY_PATH: /home/aleksandrs/gomoku/client
+  COMPOSE_DEPLOY_PATH: /home/aleksandrs/gomoku/compose
 
 jobs:
-  build-and-deploy-server:
+  build-and-push-server:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+      - name: Build and push gomoku-server image
+        uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/gomoku-server:latest
 
-  deploy-client:
+  build-and-push-rapfi:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push rapfi image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./GomokuAI
+          file: ./GomokuAI/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/gomoku-rapfi:latest
+
+  build-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -39,10 +67,68 @@ jobs:
         working-directory: ./GomokuClient
         run: yarn install && yarn build
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
+      - name: Upload client artifact
+        uses: actions/upload-artifact@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          name: client
+          path: GomokuClient/packages/gomoku-core/dist
+
+  deploy:
+    needs: [ build-and-push-server, build-and-push-rapfi, build-client ]
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: gomoku-deploy
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download client artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: client
+          path: client-dist
+
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.VPS_SSH_KEY }}" > deploy_key
+          chmod 600 deploy_key
+
+      - name: Transfer client static files
+        run: |
+          rsync -avz --delete -e "ssh -i deploy_key -o StrictHostKeyChecking=no" client-dist/ ${{ env.VPS_USER }}@${{ env.VPS_HOST }}:${{ env.CLIENT_DEPLOY_PATH }}/
+
+      - name: Transfer docker-compose.prod.yml
+        run: |
+          rsync -avz -e "ssh -i deploy_key -o StrictHostKeyChecking=no" docker-compose.prod.yml ${{ env.VPS_USER }}@${{ env.VPS_HOST }}:${{ env.COMPOSE_DEPLOY_PATH }}/docker-compose.yml
+
+      - name: Pull and restart containers on VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ env.VPS_HOST }}
+          username: ${{ env.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: DOCKERHUB_USERNAME
+          script: |
+            set -e
+            cd ${{ env.COMPOSE_DEPLOY_PATH }}
+            echo "DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME" > .env
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      - name: Verify deployment
+        run: |
+          for attempt in $(seq 1 12); do
+            if curl -fsS https://api.gomoku.app/health > /dev/null 2>&1; then
+              echo "API is healthy"
+              exit 0
+            fi
+            echo "API not healthy yet (attempt $attempt/12)"
+            sleep 5
+          done
+          echo "API failed health check"
+          exit 1

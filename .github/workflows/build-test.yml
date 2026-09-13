@@ -58,7 +58,7 @@ jobs:
 
       - name: Archive production artifacts
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: gomoku-client-artifacts
           path: GomokuClient/packages/gomoku-core/dist/
@@ -90,7 +90,7 @@ jobs:
 
       - name: Publish artifacts
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: csharp-build-artifacts
           path: ${{ env.SERVER_DIR }}/src/GomokuServer.Api/bin/Release/net8.0/
