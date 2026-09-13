@@ -34,6 +34,23 @@ server {
 }
 NGINXEOF
 
+echo "--- Creating nginx upstream + websocket map (http context) ---"
+# Lives in conf.d because map/upstream must sit in the http context, which is
+# included before sites-enabled. keepalive lets nginx reuse connections to
+# Kestrel instead of opening a new TCP connection per request; the map makes
+# sure only real WebSocket requests (SignalR game hubs) get "Connection: upgrade".
+sudo tee /etc/nginx/conf.d/gomoku-upstream.conf > /dev/null << 'NGINXEOF'
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      "";
+}
+
+upstream gomoku_api {
+    server 127.0.0.1:7001;
+    keepalive 32;
+}
+NGINXEOF
+
 echo "--- Creating nginx config for api ($DOMAIN_API -> 127.0.0.1:7001) ---"
 sudo tee /etc/nginx/sites-available/$DOMAIN_API > /dev/null << NGINXEOF
 server {
@@ -41,15 +58,20 @@ server {
     server_name $DOMAIN_API;
 
     location / {
-        proxy_pass http://127.0.0.1:7001;
+        proxy_pass http://gomoku_api;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection \$connection_upgrade;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_cache_bypass \$http_upgrade;
+
+        # SignalR game hubs hold long-lived connections; the 60s default would
+        # drop them whenever pings stall.
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
     }
 }
 NGINXEOF

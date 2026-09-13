@@ -27,6 +27,9 @@ Use this skill for anything that touches the live gomoku environment.
 - Images: `<DOCKER_USERNAME>/gomoku-server:latest`, `<DOCKER_USERNAME>/gomoku-rapfi:latest`.
 - Health: `curl https://api.gomoku.app/health` → `{"status":"Healthy"}`. The route is
   header-versioned (`X-Version`), so a plain request works without extra headers.
+- `/etc/nginx/conf.d/gomoku-upstream.conf` holds the `gomoku_api` upstream
+  (`keepalive 32`) and the `$connection_upgrade` map. `map`/`upstream` must live in the
+  http context, and `conf.d` is included before `sites-enabled`.
 - One-time host setup lives in `deploy/vps-setup.sh` (Docker, nginx vhosts, certbot).
 - CI secrets: `VPS_SSH_KEY`, `DOCKER_USERNAME`, `DOCKER_PASSWORD`. The old
   `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` secrets are obsolete.
@@ -59,6 +62,14 @@ Use this skill for anything that touches the live gomoku environment.
 - **RAM is the binding constraint**, not disk or CPU. The host has 3.7 GiB total and
   neighbours consume most of it; check `free -h` before adding services.
 - `rapfi` must not be published to the host; only `gomoku-server` talks to it.
+- **SignalR game hubs run through `api.gomoku.app`.** nginx's default
+  `proxy_read_timeout` of 60s would drop idle game sockets, so the API vhost raises the
+  read/send timeouts. Never hardcode `proxy_set_header Connection "upgrade"` — use the
+  `$connection_upgrade` map, otherwise plain HTTP requests also claim an upgrade and
+  upstream keepalive cannot work.
+- HTTP/2 is not enabled. On nginx 1.24 it is a `listen 443 ssl http2;` parameter, and
+  the socket is shared with neighbouring projects' vhosts — treat it as a change that
+  needs user confirmation.
 - The compose file is copied to the VPS as `docker-compose.yml`; `DOCKERHUB_USERNAME`
   is written into a sibling `.env` by the deploy job, because the compose file
   interpolates it into image names.
