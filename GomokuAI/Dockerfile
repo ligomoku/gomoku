@@ -19,7 +19,7 @@ RUN git clone --recurse-submodules https://github.com/vkuprin/rapfi.git rapfi &&
     mkdir build && cd build && \
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
-        -DUSE_SSE=OFF \
+        -DUSE_SSE=ON \
         -DUSE_AVX2=OFF \
         -DUSE_AVX512=OFF \
         -DUSE_BMI2=OFF \
